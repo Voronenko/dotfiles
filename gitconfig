@@ -14,5 +14,7 @@
 	dlc = diff --cached HEAD^
 	f = !git ls-files | grep -i
 	la = !git config -l | grep alias | cut -c 7-
-	latest = pull --recurse-submodules        
+	latest = pull --recurse-submodules
 	
+[push]
+	default = simple
