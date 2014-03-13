@@ -1,6 +1,6 @@
 [user]
 	name = Vyacheslav Voronenko
-	email = voronenko@gmail.com
+	email = git@voronenko.info
 [core]
 	autocrlf = input
 [alias]
@@ -17,4 +17,4 @@
 	latest = pull --recurse-submodules
 	
 [push]
-	default = simple
+	default = matching
