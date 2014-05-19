@@ -69,4 +69,5 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # aliases
 alias web='php -S localhost:8000'
+alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
 
