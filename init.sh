@@ -30,7 +30,7 @@ for file in $files; do
 done
 
 install_zsh () {
-echo"Test to see if zshell is installed.  If it is:"
+echo "Test to see if zshell is installed.  If it is:"
 if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
     echo "Clone my oh-my-zsh repository from GitHub only if it isn't already present"
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
