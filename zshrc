@@ -57,10 +57,11 @@ source $ZSH/oh-my-zsh.sh
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# Move to .local if rbenv exits
+#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+#export PATH="$HOME/.rbenv/bin:$PATH"
+#eval "$(rbenv init -)"
+#export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
 
 # # Preferred editor for local and remote sessions
@@ -79,6 +80,9 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 # aliases
 alias web='php -S localhost:8000'
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
+alias dockerlist='sudo docker ps -a'
+alias dockerstopall='sudo docker stop $(sudo docker ps -a -q)'
+alias dockerremoveall='sudo docker rm $(sudo docker ps -a -q)'
 
 
 # Anything locally specific?
