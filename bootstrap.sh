@@ -2,19 +2,27 @@
 
 # curl -sSL http://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 # ./bootstrap.sh
+
+
+if [ "$(id -u)" == "0" ]; then
+echo "Installation must NOT be done under sudo"
+echo "use your regular user account"
+exit 1
+fi
  
 sudo apt-get -y install git curl
 
-echo "current user to SUDOERS w/o password"
+SUDOERUSER="$(whoami)"
+SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
+
+sudo bash -c "touch $SUDOERFILE"
+sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
+
+echo "===================================================================="
+echo "current user was added to SUDOERS w/o password"
 echo "don't  forget to remove settings after initial box configuration"
- 
- 
-#! /bin/bash
-PATTERN="$ a\
-$(whoami) ALL=\(ALL\) NOPASSWD: ALL
-"
-# with backup
-sudo sed -i.bak -e "$PATTERN" /etc/sudoers
+echo "by removing file $SUDOERFILE"
+echo "===================================================================="
  
 sudo apt-get -y install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible
