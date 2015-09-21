@@ -17,4 +17,4 @@
 	latest = pull --recurse-submodules
 	
 [push]
-	default = matching
+	default = current
