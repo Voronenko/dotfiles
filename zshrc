@@ -57,18 +57,18 @@ source $ZSH/oh-my-zsh.sh
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+#export PATH="$HOME/.rbenv/bin:$PATH"
+#eval "$(rbenv init -)"
+#export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
 
 # # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+ if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='nano'
+ else
+   export EDITOR='nano'
+ fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
