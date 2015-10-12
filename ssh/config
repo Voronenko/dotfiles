@@ -1,0 +1,6 @@
+# For vagrant virtual machines
+Host 192.168.33.* *.vagrant.dev
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+  User root
+  LogLevel ERROR
