@@ -10,4 +10,5 @@
   'shift shift': 'fuzzy-finder:toggle-file-finder'
   'cmd-g': 'go-to-line:toggle'
   'ctrl-w': 'expand-region:expand'
+  'ctrl-shift-w': 'expand-region:shrink'
 
