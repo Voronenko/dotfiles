@@ -1,0 +1,13 @@
+# These keybindings are a combination of IntelliJ's OS X 10.5+ keybindings
+# and additive ones from Pivotal's practice.
+
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it here:
+# https://github.com/bevry/cson#what-is-cson
+
+'.editor':
+  'cmd-shift-n': 'fuzzy-finder:toggle-file-finder'
+  'shift shift': 'fuzzy-finder:toggle-file-finder'
+  'cmd-g': 'go-to-line:toggle'
+  'ctrl-w': 'expand-region:expand'
+
