@@ -82,7 +82,7 @@ alias web='php -S localhost:8000'
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
 alias dockerlist='sudo docker ps -a'
 alias dockerstopall='sudo docker stop $(sudo docker ps -a -q)'
-alias dockerremoveall='sudo docker rm $(sudo docker ps -a -q)'
+alias dockerremoveall='sudo docker -f rm $(sudo docker ps -a -q)'
 
 
 # Anything locally specific?
