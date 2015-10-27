@@ -48,7 +48,7 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git-prompt composer ssh-agent)
+plugins=(git-prompt composer)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -78,6 +78,9 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # aliases
+alias ssh='~/dotfiles/ssh/ssh-ident'
+alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
+
 alias web='php -S localhost:8000'
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
 alias dockerlist='sudo docker ps -a'

@@ -7,7 +7,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc zshrc gitconfig oh-my-zsh conkyrc jshintrc jscsrc"    # list of files/folders to symlink in homedir
+files="bashrc zshrc gitconfig oh-my-zsh conkyrc jshintrc jscsrc ssh-ident"    # list of files/folders to symlink in homedir
 
 ##########
 
