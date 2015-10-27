@@ -1,0 +1,19 @@
+<application>
+  <component name="UpdatesConfigurable">
+    <knownUpdateChannels>
+      <item value="WI1" />
+      <item value="WI2" />
+      <item value="WI3" />
+      <item value="WI4" />
+      <item value="WI5" />
+      <item value="WI6" />
+      <item value="WI7" />
+      <item value="WI8" />
+      <item value="WI9" />
+      <item value="EAP" />
+    </knownUpdateChannels>
+    <option name="CHECK_NEEDED" value="false" />
+    <option name="LAST_TIME_CHECKED" value="1445947985810" />
+    <option name="LAST_BUILD_CHECKED" value="PS-141.2462" />
+  </component>
+</application>
