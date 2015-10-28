@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=HipChat
+Exec="/opt/HipChat/bin/hipchat" %f
+Icon=
+Comment=Hip Chat
+Categories=Development;IDE;
+Terminal=false
+StartupNotify=true
+StartupWMClass=gui
