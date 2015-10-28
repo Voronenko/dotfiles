@@ -6,7 +6,8 @@
 MATCH_PATH = [
     # (directory pattern, identity)
     (r"dotfiles", "personal"),
-    (r"ansible-developer_recipes", "personal")
+    (r"ansible-developer_recipes", "personal"),
+    (r"personal/", "personal")
 ]
 
 # If any of the ssh arguments have 'cweb' in it, the 'personal' identity
