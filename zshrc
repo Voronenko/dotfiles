@@ -78,7 +78,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # aliases
-alias ssh='~/dotfiles/ssh/ssh-ident'
+alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
 
 alias web='php -S localhost:8000'
