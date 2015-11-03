@@ -1,5 +1,6 @@
-dir=~/.WebIde90                    # webide directory
-olddir=~/WebIde90_old             # old webide backup directory
+WEBIDEVERSION=${WEBIDEVERSION-WebIde90}
+dir=~/.$WEBIDEVERSION                    # webide directory
+olddir=~/$WEBIDEVERSION_old             # old webide backup directory
 files="config/codestyles/Slavko.xml config/options/code.style.schemes.xml config/templates/angular_basic.xml config/templates/es_basic.xml  config/templates/jasmine_basic.xml config/templates/lodash_basic.xml"    # list of files/folders to symlink in webide dir
 
 ##########
