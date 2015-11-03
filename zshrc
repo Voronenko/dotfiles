@@ -55,6 +55,8 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # Move to .local if rbenv exits
