@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sublime
+Exec="/opt/sublime_text_2/sublime_text" %f
+Icon=
+Comment=Sublime Text
+Categories=Development;IDE;
+Terminal=false
+StartupNotify=true
+StartupWMClass=gui

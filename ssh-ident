@@ -1,0 +1,47 @@
+# Specifies which identity to use depending on the path I'm running ssh
+# from.
+# For example: ("mod-xslt", "personal") means that for any path that
+# contains the word "mod-xslt", the "personal" identity should be used.
+# This is optional - don't include any MATCH_PATH if you don't need it.
+MATCH_PATH = [
+    # (directory pattern, identity)
+    (r"dotfiles", "personal"),
+    (r"ansible-developer_recipes", "personal"),
+    (r"personal/", "personal")
+]
+
+# If any of the ssh arguments have 'cweb' in it, the 'personal' identity
+# has to be used. For example: "ssh myhost.cweb.com" will have cweb in
+# argv, and the "personal" identity will be used.
+# This is optional - don't include any MATCH_ARGV if you don't
+# need it.
+#  MATCH_ARGV = [
+#    (r"cweb", "personal"),
+#    (r"corp", "work"),
+#  ]
+
+# Note that if no match is found, the DEFAULT_IDENTITY is used. This is
+# generally your loginname, no need to change it.
+# This is optional - don't include any DEFAULT_IDENTITY if you don't
+# need it.
+# DEFAULT_IDENTITY = "foo"
+
+# This is optional - don't include any SSH_ADD_OPTIONS if you don't
+# need it.
+#  SSH_ADD_OPTIONS = {
+#    # Regardless, ask for confirmation before using any of the
+#    # work keys.
+#    "work": "-c",
+#    # Forget about secret keys after ten minutes. ssh-ident will
+#    # automatically ask you your passphrase again if they are needed.
+#    "secret": "-t 600",
+#  }
+
+# Which options to use by default if no match with SSH_ADD_OPTIONS
+# was found. Note that ssh-ident hard codes -t 7200 to prevent your
+# keys from remaining in memory for too long.
+SSH_ADD_DEFAULT_OPTIONS = "-t 7200"
+
+# Output verbosity
+# valid values are: LOG_ERROR, LOG_WARN, LOG_INFO, LOG_DEBUG
+VERBOSITY = LOG_ERROR
