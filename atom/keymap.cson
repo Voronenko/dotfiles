@@ -5,11 +5,10 @@
 # If you are unfamiliar with CSON, you can read more about it here:
 # https://github.com/bevry/cson#what-is-cson
 
-'.editor':
+'.atom-text-editor:
   'cmd-shift-n': 'fuzzy-finder:toggle-file-finder'
   'shift shift': 'fuzzy-finder:toggle-file-finder'
   'cmd-g': 'go-to-line:toggle'
   'ctrl-w': 'expand-region:expand'
   'ctrl-shift-w': 'expand-region:shrink'
   'alt-shift-1': 'tree-view:reveal-active-file'
-
