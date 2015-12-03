@@ -1,0 +1,9 @@
+"*":
+  welcome:
+    showOnStartup: false
+  core: {}
+  editor:
+    invisibles: {}
+    showInvisibles: true
+  "tree-view":
+    hideVcsIgnoredFiles: false
