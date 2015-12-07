@@ -7,3 +7,5 @@
     showInvisibles: true
   "tree-view":
     hideVcsIgnoredFiles: false
+  "highlight-line":
+    hideHighlightOnSelect: true
