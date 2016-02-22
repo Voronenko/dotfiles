@@ -5,6 +5,7 @@
   editor:
     invisibles: {}
     showInvisibles: true
+    fontSize: 12
   "tree-view":
     hideVcsIgnoredFiles: false
   "highlight-line":
