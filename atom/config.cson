@@ -1,12 +1,14 @@
 "*":
-  welcome:
-    showOnStartup: false
+  "atom-beautify":
+    _analyticsUserId: "96daa94a-2f34-42ae-9352-0918e32cfe74"
   core: {}
   editor:
+    fontSize: 12
     invisibles: {}
     showInvisibles: true
-    fontSize: 12
-  "tree-view":
-    hideVcsIgnoredFiles: false
   "highlight-line":
     hideHighlightOnSelect: true
+  "tree-view":
+    hideVcsIgnoredFiles: false
+  welcome:
+    showOnStartup: false

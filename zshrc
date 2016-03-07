@@ -83,11 +83,19 @@ export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
 
+# Start built-in LAMP server in current directory
 alias web='php -S localhost:8000'
+
+# remove locally all branches merged into develop
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
+
+#docker helpers
 alias dockerlist='sudo docker ps -a'
 alias dockerstopall='sudo docker stop $(sudo docker ps -a -q)'
 alias dockerremoveall='sudo docker -f rm $(sudo docker ps -a -q)'
+
+# ssh - add's github public ssh keys to authorized_keys of the current host
+alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
 
 
 # Anything locally specific?
