@@ -92,7 +92,9 @@ alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 
 #docker helpers
 alias dockerlist='sudo docker ps -a'
 alias dockerstopall='sudo docker stop $(sudo docker ps -a -q)'
-alias dockerremoveall='sudo docker -f rm $(sudo docker ps -a -q)'
+alias dockercleanimages="sudo docker rmi $(docker images | grep "^<none>"  | awk '{ print $3 }')"
+alias dockercleancontainers='sudo docker rm $(docker ps -a -q)'
+
 
 # ssh - add's github public ssh keys to authorized_keys of the current host
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
