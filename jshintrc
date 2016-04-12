@@ -18,5 +18,35 @@
   "trailing": true,
   "strict": true,
   "unused": "vars",
-  "undef": true
+  "undef": true,
+    "predef": [
+        "moment",
+        "angular",
+        "window",
+        "console",
+        "dump",
+        "jQuery",
+        "module",
+        "inject",
+        "jasmine",
+        "describe",
+        "expect",
+        "it",
+        "before",
+        "beforeEach",
+        "after",
+        "afterEach",
+        "browser",
+        "element",
+        "_",
+        "Blob",
+        "spyOn",
+        "xdescribe",
+        "xit",
+        "mockService",
+        "mockConstant",
+        "injectService",
+        "localStorage"
+    ]
+
 }
