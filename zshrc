@@ -10,10 +10,6 @@ ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="robbyrussell"
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
 
@@ -59,12 +55,20 @@ export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# Move to .local if rbenv exits
-#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-#export PATH="$HOME/.rbenv/bin:$PATH"
-#eval "$(rbenv init -)"
-#export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# DETECT CHRUBY support
 
+if [[ -d /usr/local/share/chruby/ ]]; then
+	# Linux installation of chruby
+	chruby_path=/usr/local/share/chruby/
+elif [[ -d /usr/local/opt/chruby/share/chruby/ ]]; then
+	# Homebrew installation of chruby
+	chruby_path=/usr/local/opt/chruby/share/chruby/
+fi
+
+if [[ -d $chruby_path ]]; then
+	source $chruby_path/chruby.sh
+	source $chruby_path/auto.sh
+fi
 
 # # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
@@ -103,3 +107,5 @@ alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
+
+alias project='${HOME}/dotfiles/tmux_start.sh $1'
