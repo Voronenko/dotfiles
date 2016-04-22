@@ -1,6 +1,5 @@
 #!/bin/sh
 
-cd ${PWD}/../
 VERSION=$1
 if [ -z $1 ]
 then

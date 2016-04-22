@@ -1,6 +1,5 @@
 #!/bin/sh
 
-cd ${PWD}/../
 VERSION=$1
 if [ -z $1 ]
 then
@@ -27,8 +26,8 @@ git push
 git checkout develop
 
 # COMMENT LINES BELOW IF YOU BUMP VERSION AT THE END
-NEXTVERSION=`./bump-version-drynext.sh`
-./bump-version.sh $NEXTVERSION
+NEXTVERSION=`~/dotfiles/gitflow/bump-version-drynext.sh`
+~/dotfiles/gitflow/bump-version.sh $NEXTVERSION
 git commit -am "Bumps version to $NEXTVERSION"
 git push origin develop
 

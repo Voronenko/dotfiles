@@ -103,6 +103,12 @@ alias dockercleancontainers='sudo docker rm $(docker ps -a -q)'
 # ssh - add's github public ssh keys to authorized_keys of the current host
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
 
+# gitflow 
+alias gitflow-release-start='~/dotfiles/gitflow/release_start.sh'
+alias gitflow-release-finish='~/dotfiles/gitflow/release_finish.sh'
+alias gitflow-hotfix-start='~/dotfiles/gitflow/hotfix_start.sh'
+alias gitflow-hotfix-finish='~/dotfiles/gitflow/hotfix_finish.sh'
+
 
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
