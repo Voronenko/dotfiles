@@ -3,8 +3,7 @@
 VERSION=$1
 if [ -z $1 ]
 then
-  echo "Please provide uniqie hotfix name. Jira ticket number is a good candidate"
-  exit 1
+  VERSION=`~/dotfiles/gitflow/bump-minorversion-drynext.sh`
 fi
 
 #Initialize gitflow
@@ -21,8 +20,8 @@ git checkout develop
 
 git flow hotfix start $VERSION
 
-NEXTVERSION=`./bump-minorversion-drynext.sh`
-./bump-version.sh $NEXTVERSION
+NEXTVERSION=`~/dotfiles/gitflow/bump-minorversion-drynext.sh`
+~/dotfiles/gitflow/bump-version.sh $NEXTVERSION
 git commit -am "Bumps version to $NEXTVERSION"
 
 # bump hotfix version to server
