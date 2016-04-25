@@ -84,8 +84,8 @@ fi
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # 1604 compability
-alias grep="/usr/bin/grep $GREP_OPTIONS"
-unset GREP_OPTIONS
+# alias grep="/usr/bin/grep $GREP_OPTIONS"
+# unset GREP_OPTIONS
 
 # aliases
 alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
