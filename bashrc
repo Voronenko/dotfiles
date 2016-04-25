@@ -108,3 +108,8 @@ fi
 
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
+
+# Anything locally specific?
+[ -f ~/.bashrc.local ] && source ~/bashrc.local
+#[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+

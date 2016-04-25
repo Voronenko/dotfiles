@@ -36,7 +36,7 @@ ZSH_THEME="robbyrussell"
 # much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment following line if you want to  shown in the command execution time stamp 
+# Uncomment following line if you want to  shown in the command execution time stamp
 # in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
 # yyyy-mm-dd
 # HIST_STAMPS="mm/dd/yyyy"
@@ -83,6 +83,10 @@ fi
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
+# 1604 compability
+alias grep="/usr/bin/grep $GREP_OPTIONS"
+unset GREP_OPTIONS
+
 # aliases
 alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
@@ -96,22 +100,22 @@ alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 
 #docker helpers
 alias dockerlist='sudo docker ps -a'
 alias dockerstopall='sudo docker stop $(sudo docker ps -a -q)'
-alias dockercleanimages="sudo docker rmi $(docker images | grep "^<none>"  | awk '{ print $3 }')"
+alias dockercleanimages='sudo docker rmi $(docker images | grep "^<none>"  | awk "{ print $3 }")'
 alias dockercleancontainers='sudo docker rm $(docker ps -a -q)'
 
 
 # ssh - add's github public ssh keys to authorized_keys of the current host
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
 
-# gitflow 
+alias project='${HOME}/dotfiles/tmux_start.sh $1'
+
+# gitflow
 alias gitflow-release-start='~/dotfiles/gitflow/release_start.sh'
 alias gitflow-release-finish='~/dotfiles/gitflow/release_finish.sh'
 alias gitflow-hotfix-start='~/dotfiles/gitflow/hotfix_start.sh'
 alias gitflow-hotfix-finish='~/dotfiles/gitflow/hotfix_finish.sh'
 
-
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
-
-alias project='${HOME}/dotfiles/tmux_start.sh $1'
+# [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
