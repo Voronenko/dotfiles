@@ -29,6 +29,9 @@ sudo apt-get install -y python-pip
 sudo pip install -U pip
 sudo pip install ansible
 
+echo "ssh-agent:"
+eval "$(ssh-agent)"
+
 curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/dotfiles_rsa > ./dotfiles_rsa && chmod 600 ./dotfiles_rsa
 ssh-add ./dotfiles_rsa; git clone git@github.com:Voronenko/dotfiles.git;
 rm ./dotfiles_rsa
