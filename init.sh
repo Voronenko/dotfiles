@@ -7,7 +7,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc conkyrc gitconfig jshintrc jscsrc oh-my-zsh ssh-ident selected_editor zshrc tmux.conf ruby-version"    # list of files/folders to symlink in homedir
+files="bashrc conkyrc gitconfig jshintrc jscsrc editorconfig oh-my-zsh ruby-version ssh-ident selected_editor tmux.conf zshrc"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -22,8 +22,8 @@ cd $dir
 echo "done"
 
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
+echo "Moving any existing dotfiles from ~ to $olddir :"
 for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $olddir"
     mv ~/.$file ~/dotfiles_old/
     echo "Creating symlink to $file in home directory."
     ln -s $dir/$file ~/.$file
