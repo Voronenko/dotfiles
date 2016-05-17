@@ -110,6 +110,7 @@ alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
 alias project='${HOME}/dotfiles/tmux_start.sh $1'
 
 # gitflow
+alias gitflow-init='git flow init -f -d'
 alias gitflow-release-start='~/dotfiles/gitflow/release_start.sh'
 alias gitflow-release-finish='~/dotfiles/gitflow/release_finish.sh'
 alias gitflow-hotfix-start='~/dotfiles/gitflow/hotfix_start.sh'

@@ -8,6 +8,8 @@
     showInvisibles: true
   "highlight-line":
     hideHighlightOnSelect: true
+  linter:
+    errorPanelHeight: 24
   "tree-view":
     hideVcsIgnoredFiles: false
   welcome:
