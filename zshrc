@@ -120,3 +120,5 @@ alias gitflow-hotfix-finish='~/dotfiles/gitflow/hotfix_finish.sh'
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
 # [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+if [[ -f ~/.nvm/nvm.sh ]]; then source ~/.nvm/nvm.sh; fi
+

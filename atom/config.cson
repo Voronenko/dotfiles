@@ -1,6 +1,6 @@
 "*":
   "atom-beautify":
-    _analyticsUserId: "96daa94a-2f34-42ae-9352-0918e32cfe74"
+    _analyticsUserId: ""
   core: {}
   editor:
     fontSize: 12
@@ -9,7 +9,7 @@
   "highlight-line":
     hideHighlightOnSelect: true
   linter:
-    errorPanelHeight: 24
+    errorPanelHeight: 476
   "tree-view":
     hideVcsIgnoredFiles: false
   welcome:
