@@ -3,6 +3,7 @@
 # curl -sSL http://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 # ./bootstrap.sh
 
+set -e
 
 if [ "$(id -u)" == "0" ]; then
 echo "Installation must NOT be done under sudo"
@@ -24,7 +25,7 @@ echo "don't  forget to remove settings after initial box configuration"
 echo "by removing file $SUDOERFILE"
 echo "===================================================================="
 
-sudo apt-get -y install -y software-properties-common git python-dev wget
+sudo apt-get -y install -y software-properties-common git python-dev wget apt-transport-https libffi-dev libssl-dev
 sudo apt-get install -y python-pip
 sudo pip install -U pip
 sudo pip install ansible

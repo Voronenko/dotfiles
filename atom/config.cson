@@ -9,7 +9,7 @@
   "highlight-line":
     hideHighlightOnSelect: true
   linter:
-    errorPanelHeight: 476
+    errorPanelHeight: 164
   "tree-view":
     hideVcsIgnoredFiles: false
   welcome:
