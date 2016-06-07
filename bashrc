@@ -108,6 +108,13 @@ fi
 
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
+# PYTHON DEV
+
+[ -f /usr/local/bin/virtualenvwrapper.sh ] && export WORKON_HOME=$HOME/.virtualenvs
+[ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
+
+# / PYTHONDEV
+
 
 # Anything locally specific?
 [ -f ~/.bashrc.local ] && source ~/bashrc.local
