@@ -139,3 +139,14 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 fi
+
+# Python development
+
+if [[ -f /usr/local/bin/virtualenvwrapper.sh ]]; then
+
+mkdir -p ~/.virtualenvs
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+fi
+
