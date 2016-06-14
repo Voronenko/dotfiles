@@ -87,6 +87,25 @@ fi
 # alias grep="/usr/bin/grep $GREP_OPTIONS"
 # unset GREP_OPTIONS
 
+if [[ -f /usr/bin/tmux ]]; then
+
+# alias functions
+function onproject() {
+  gnome-terminal -x tmuxinator ${1}_env&
+}
+
+function offproject() {
+  tmux kill-session -t ${1} &
+}
+
+
+autoload -Uz onproject
+autoload -Uz offproject
+
+alias killproject='tmux kill-server'
+
+fi
+
 # aliases
 alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
@@ -106,8 +125,6 @@ alias dockercleancontainers='sudo docker rm $(docker ps -a -q)'
 
 # ssh - add's github public ssh keys to authorized_keys of the current host
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
-
-alias project='${HOME}/dotfiles/tmux_start.sh $1'
 
 # gitflow
 alias gitflow-init='git flow init -f -d'
