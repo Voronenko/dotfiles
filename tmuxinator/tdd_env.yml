@@ -1,0 +1,17 @@
+name: tdd
+root: ~/
+
+pre_window: |
+  echo "import environment, if any"
+
+windows:
+  - project_editor:
+      layout: matrix
+      panes:
+        - echo code
+        - echo tests
+        - echo console
+  - project_server:
+    - echo execute backend serverm if any
+  - project_logs:
+    - echo execute logs, if any

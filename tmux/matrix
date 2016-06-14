@@ -1,0 +1,33 @@
+# MATRIX Layout
+# aa EE gg
+# bb EE hh
+# cc FF ii
+# dd FF jj
+
+# create 3 columns
+selectp -t 0
+splitw -h -p 67
+splitw -h # half of 67 ~ 33
+
+# split last column to 4 rows
+splitw -v
+splitw -v
+selectp -U
+selectp -U
+splitw -v
+
+# split middle column into 2 rows
+selectp -L
+splitw -v
+
+# spilit first column into 4 rows
+selectp -L
+splitw -v
+splitw -v
+selectp -U
+selectp -U
+splitw -v
+
+# select middle bottom pane
+selectp -R
+selectp -D

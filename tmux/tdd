@@ -1,0 +1,15 @@
+
+# TDD Layout
+# cc TT
+# rr TT
+# c = code, r = repl, T = tests
+
+# create test pane
+split -h -p 25
+
+# create repl pane
+select -L
+split -v -p 20
+
+# select code pane
+select -U
