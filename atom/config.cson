@@ -1,6 +1,4 @@
 "*":
-  "atom-beautify":
-    _analyticsUserId: ""
   core: {}
   editor:
     fontSize: 12

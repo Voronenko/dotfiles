@@ -91,7 +91,7 @@ if [[ -f /usr/bin/tmux ]]; then
 
 # alias functions
 function onproject() {
-  gnome-terminal -x tmuxinator ${1}_env&
+  gnome-terminal -x tmuxinator ${1}_env &
 }
 
 function offproject() {
@@ -125,6 +125,7 @@ alias dockercleancontainers='sudo docker rm $(docker ps -a -q)'
 
 # ssh - add's github public ssh keys to authorized_keys of the current host
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
+alias mykey='xclip -selection c -i ~/.ssh/id_rsa.pub'
 
 # gitflow
 alias gitflow-init='git flow init -f -d'
