@@ -12,3 +12,5 @@
   'ctrl-w': 'expand-region:expand'
   'ctrl-shift-w': 'expand-region:shrink'
   'alt-shift-1': 'tree-view:reveal-active-file'
+  'ctrl-k': 'editor:delete-line'
+  'ctrl-y': 'editor:delete-line'
