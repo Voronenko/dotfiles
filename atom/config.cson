@@ -1,7 +1,7 @@
 "*":
   core: {}
   editor:
-    fontSize: 12
+    fontSize: 10
     invisibles: {}
     showInvisibles: true
   "highlight-line":

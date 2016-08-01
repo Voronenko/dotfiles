@@ -91,7 +91,7 @@ if [[ -f /usr/bin/tmux ]]; then
 
 # alias functions
 function onproject() {
-  gnome-terminal -x tmuxinator ${1}_env &
+  MODE=$2 gnome-terminal -x tmuxinator ${1}_env &
 }
 
 function offproject() {
