@@ -111,7 +111,7 @@ alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
 
 # Start built-in LAMP server in current directory
-alias web='php -S localhost:8000'
+alias web='python -m SimpleHTTPServer 8000'
 
 # remove locally all branches merged into develop
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
