@@ -4,3 +4,16 @@ Host 192.168.33.* *.vagrant.dev
   UserKnownHostsFile=/dev/null
   User root
   LogLevel ERROR
+
+
+# AWS hosts https://ip-ranges.amazonaws.com/ip-ranges.json
+Host 52.*.*.*
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
+
+# Local subnetworks
+Host 192.168.*.*
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
