@@ -32,6 +32,12 @@ done
 install_zsh () {
 echo "Test to see if zshell is installed.  If it is:"
 if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
+
+    echo keyscan github.com
+    touch ~/.ssh/known_hosts
+    ssh-keyscan -t rsa,dsa github.com 2>&1 | sort -u - ~/.ssh/known_hosts > ~/.ssh/tmp_hosts
+    mv ~/.ssh/tmp_hosts ~/.ssh/known_hosts
+
     echo "Clone my oh-my-zsh repository from GitHub only if it isn't already present"
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
         git clone http://github.com/michaeljsmalley/oh-my-zsh.git
@@ -46,7 +52,7 @@ else
     platform=$(uname);
     # If the platform is Linux, try an apt-get to install zsh and then recurse
     if [[ $platform == 'Linux' ]]; then
-        sudo apt-get install zsh
+        sudo apt-get install zsh -y
         install_zsh
     # If the platform is OS X, tell the user to install zsh :)
     elif [[ $platform == 'Darwin' ]]; then
