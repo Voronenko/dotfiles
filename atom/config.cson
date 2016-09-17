@@ -8,6 +8,8 @@
     hideHighlightOnSelect: true
   linter:
     errorPanelHeight: 164
+  "rst-preview-pandoc":
+    pandocOpts: "-frst -thtml --webtex"
   "tree-view":
     hideVcsIgnoredFiles: false
   welcome:
