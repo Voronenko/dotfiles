@@ -1,3 +1,8 @@
 [ui]
 # Name data to appear in commits
 username = Vyacheslav <git@voronenko.info>
+
+[trusted]
+users = slavko
+groups = slavko
+
