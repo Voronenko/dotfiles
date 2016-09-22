@@ -84,8 +84,10 @@ fi
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # 1604 compability
-# alias grep="/usr/bin/grep $GREP_OPTIONS"
-# unset GREP_OPTIONS
+GREPPATH=`which grep`
+alias grep="$GREPPATH $GREP_OPTIONS"
+unset GREP_OPTIONS
+unset GREPPATH
 
 if [[ -f /usr/bin/tmux ]]; then
 
@@ -193,7 +195,7 @@ else
     start_agent;
 fi
 
-if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+if [[ -n $SSH_CONNECTION ]]; then
   echo " .... remote session `echo $USER`@`hostname` .... "
   PROMPT="%{$fg_bold[yellow]%}⇕ ${PROMPT}"
 fi
