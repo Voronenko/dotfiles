@@ -168,7 +168,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 fi
 
-
 # Autoload ssh agent
 
 SSH_ENV="$HOME/.ssh/environment"
@@ -193,3 +192,9 @@ if [ -f "${SSH_ENV}" ]; then
 else
     start_agent;
 fi
+
+if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+  echo " .... remote session `echo $USER`@`hostname` .... "
+  PROMPT="%{$fg_bold[yellow]%}⇕ ${PROMPT}"
+fi
+
