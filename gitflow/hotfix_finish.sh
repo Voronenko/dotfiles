@@ -22,6 +22,7 @@ then
   exit 1
 fi
 
+cd $(git rev-parse --show-cdup)
 
 #Initialize gitflow
 git flow init -f -d

@@ -6,6 +6,8 @@ then
   VERSION=`~/dotfiles/gitflow/bump-minorversion-drynext.sh`
 fi
 
+cd $(git rev-parse --show-cdup)
+
 #Initialize gitflow
 git flow init -f -d
 
