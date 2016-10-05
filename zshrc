@@ -136,6 +136,9 @@ alias gitflow-release-finish='~/dotfiles/gitflow/release_finish.sh'
 alias gitflow-hotfix-start='~/dotfiles/gitflow/hotfix_start.sh'
 alias gitflow-hotfix-finish='~/dotfiles/gitflow/hotfix_finish.sh'
 
+alias sharesession='screen -d -m -S shared'
+alias joinsession='screen -x shared'
+
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
