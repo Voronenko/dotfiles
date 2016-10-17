@@ -10,6 +10,18 @@
     errorPanelHeight: 164
   "rst-preview-pandoc":
     pandocOpts: "-frst -thtml --webtex"
+  "todo-show":
+    findTheseTodos: [
+      "FIXME"
+      "TODO"
+      "CHANGED"
+      "XXX"
+      "IDEA"
+      "HACK"
+      "NOTE"
+      "REVIEW"
+      "[VS]"
+    ]
   "tree-view":
     hideVcsIgnoredFiles: false
   welcome:

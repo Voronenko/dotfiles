@@ -1,12 +1,8 @@
 <templateSet group="lodash_basic">
   <template name="_.map" value="_(items)&#10; .chain()&#10; .map(function (item) {&#10;   return [item.key, item];&#10;  })&#10; .object()&#10; .value();" description="Maps list of objects to dictionary" toReformat="true" toShortenFQNames="true">
     <context>
-      <option name="HTML_TEXT" value="true" />
       <option name="HTML" value="true" />
       <option name="JAVA_SCRIPT" value="true" />
-      <option name="JS_EXPRESSION" value="true" />
-      <option name="JS_STATEMENT" value="true" />
-      <option name="TypeScript" value="false" />
     </context>
   </template>
 </templateSet>
