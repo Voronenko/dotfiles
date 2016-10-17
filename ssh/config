@@ -11,6 +11,9 @@ Host 52.*.*.*
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 
+Host 35.160.*.*
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
 
 # Local subnetworks
 Host 192.168.*.*
