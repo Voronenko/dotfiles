@@ -22,7 +22,9 @@ then
   exit 1
 fi
 
-cd $(git rev-parse --show-cdup)
+if [ ! -d ".git" ]; then
+  cd $(git rev-parse --show-cdup)
+fi
 
 #Initialize gitflow
 git flow init -f -d
