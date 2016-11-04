@@ -5,7 +5,9 @@ set -e
 CURRENT_DIR=`pwd`
 VERSION=$1
 
-cd $(git rev-parse --show-cdup)
+if [ ! -d ".git" ]; then
+  cd $(git rev-parse --show-cdup)
+fi
 
 echo $VERSION > version.txt
 
