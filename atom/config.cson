@@ -2,7 +2,7 @@
   core:
     telemetryConsent: "no"
   editor:
-    fontSize: 10
+    fontSize: 15
     invisibles: {}
     showInvisibles: true
   "highlight-line":
