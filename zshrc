@@ -120,11 +120,44 @@ alias web='python -m SimpleHTTPServer 8000'
 # remove locally all branches merged into develop
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
 
+
+
+
+if [[ -f /usr/bin/docker ]]; then
+
 #docker helpers
-alias dockerlist='sudo docker ps -a'
-alias dockerstopall='sudo docker stop $(sudo docker ps -a -q)'
-alias dockercleanimages='sudo docker rmi $(docker images | grep "^<none>"  | awk "{ print $3 }")'
-alias dockercleancontainers='docker ps -a | grep 'weeks ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm'
+
+function dck() {
+
+case "$1" in
+    list)
+        sudo docker ps -a
+        ;;
+    ui)
+        docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
+        ;;
+    inspect)
+        docker inspect $2 | jq $3
+        ;;
+    stopall)
+        sudo docker stop $(sudo docker ps -a -q)
+        ;;
+    cleanimages)
+        sudo docker rmi $(docker images | grep "^<none>"  | awk "{ print $3 }")
+        ;;
+    cleancontainers)
+        docker ps -a | grep 'weeks ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm
+        ;;
+    *)
+        echo "Usage: $0 {list |stopall |cleanimages |cleancontainers | ui | inspect <container name> <jq filter>}"
+        ;;
+esac
+
+}
+
+autoload -Uz dck
+
+fi
 
 
 # ssh - add's github public ssh keys to authorized_keys of the current host
