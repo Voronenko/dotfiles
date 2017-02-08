@@ -1,0 +1,24 @@
+// Place your key bindings in this file to overwrite the defaults
+[
+  {
+    "key": "cmd+g",
+    "command":"workbench.action.gotoLine"
+  },
+  {
+    "key": "ctrl+w",
+    "command":"editor.action.smartSelect.grow"
+  },
+  {
+    "key": "ctrl+shift+w",
+    "command":"editor.action.smartSelect.shrink"
+  },
+  {
+    "key": "alt+shift+1",
+    "command":"workbench.files.action.showActiveFileInExplorer"
+  },
+  {
+    "key": "ctrl+y",
+    "command":"editor.action.deleteLines"
+  }
+]
+
