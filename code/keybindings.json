@@ -19,6 +19,45 @@
   {
     "key": "ctrl+y",
     "command":"editor.action.deleteLines"
+  },
+  {
+    "key": "F8",
+    "command":"workbench.action.debug.stepOver"
+  },
+  {
+    "key": "F7",
+    "command":"workbench.action.debug.stepInto"
+  },
+  {
+    "key": "shift+F8",
+    "command":"workbench.action.debug.stepOver"
+  },
+  {
+    "key": "shift+F10",
+    "command":"workbench.action.debug.run"
+  },
+  {
+    "key": "alt+F9",
+    "command":"editor.debug.action.runToCursor"
+  },
+  {
+    "key": "ctrl+F8",
+    "command":"editor.debug.action.toggleBreakpoint"
+  },
+  {
+    "key": "shift+F2",
+    "command":"workbench.action.debug.stop"
+  },
+  {
+    "key": "F9",
+    "command":"workbench.action.debug.continue"
   }
+
+
+
+
+
+
+
 ]
 
