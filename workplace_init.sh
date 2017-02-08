@@ -2,14 +2,21 @@
 
 gem install tmuxinator
 
+mkdir -p ~/.atom
+
 mv ~/.atom/keymap.cson ~/.atom/keymap.cson.old || true
 ln -s $PWD/atom/keymap.cson ~/.atom/keymap.cson
 
 mv ~/.atom/config.cson ~/.atom/config.cson.old || true
 ln -s $PWD/atom/config.cson ~/.atom/config.cson
 
+mkdir -p ~/.config/Code/User
+
 mv ~/.config/Code/User/settings.json ~/.config/Code/User/settings.old || true
 ln -s $PWD/code/settings.json ~/.config/Code/User/settings.json
+
+mv ~/.config/Code/User/keybindings.json ~/.config/Code/User/keybindings.old || true
+ln -s $PWD/code/keybindings.json ~/.config/Code/User/keybindings.json
 
 
 mkdir -p ~/.zsh/completion
