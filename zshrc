@@ -110,17 +110,17 @@ alias killproject='tmux kill-server'
 
 fi
 
+if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
 # aliases
 alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
+fi
 
 # Start built-in LAMP server in current directory
 alias web='python -m SimpleHTTPServer 8000'
 
 # remove locally all branches merged into develop
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
-
-
 
 
 if [[ -f /usr/bin/docker ]]; then
@@ -164,12 +164,16 @@ fi
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
 alias mykey='xclip -selection c -i ~/.ssh/id_rsa.pub'
 
+if [[ -f ~/dotfiles/gitflow/release_start.sh ]]; then
+
 # gitflow
 alias gitflow-init='git flow init -f -d'
 alias gitflow-release-start='~/dotfiles/gitflow/release_start.sh'
 alias gitflow-release-finish='~/dotfiles/gitflow/release_finish.sh'
 alias gitflow-hotfix-start='~/dotfiles/gitflow/hotfix_start.sh'
 alias gitflow-hotfix-finish='~/dotfiles/gitflow/hotfix_finish.sh'
+
+fi
 
 # sharing
 alias sessionshare='screen -d -m -S shared'

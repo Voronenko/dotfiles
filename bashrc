@@ -56,7 +56,7 @@ fi
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='\[$(tput setaf 3)\]⇕\[$(tput sgr0)\] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -86,6 +86,12 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# sharing
+alias sessionshare='screen -d -m -S shared'
+alias sessionjoin='screen -x shared'
+alias wanip='getent hosts `dig +short myip.opendns.com @resolver1.opendns.com`'
+
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -106,6 +112,33 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+
+# DETECT CHRUBY support
+
+if [[ -d /usr/local/share/chruby/ ]]; then
+        # Linux installation of chruby
+        chruby_path=/usr/local/share/chruby/
+elif [[ -d /usr/local/opt/chruby/share/chruby/ ]]; then
+        # Homebrew installation of chruby
+        chruby_path=/usr/local/opt/chruby/share/chruby/
+fi
+
+if [[ -d $chruby_path ]]; then
+        source $chruby_path/chruby.sh
+        source $chruby_path/auto.sh
+fi
+
+# # Preferred editor for local and remote sessions
+ if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='nano'
+ else
+   export EDITOR='nano'
+ fi
+
+# /RUBYDEV
+
+# 
+
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
 # PYTHON DEV
@@ -114,6 +147,18 @@ export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
 
 # / PYTHONDEV
+
+
+# NODEDEV
+
+if [[ -f ~/.nvm/nvm.sh ]]; then
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+fi
+
+# /NODEDEV
 
 
 # Auto load SSH Agent
@@ -144,5 +189,6 @@ fi
 
 # Anything locally specific?
 [ -f ~/.bashrc.local ] && source ~/bashrc.local
+
 #[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
