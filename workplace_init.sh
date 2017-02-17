@@ -21,6 +21,7 @@ ln -s $PWD/code/keybindings.json ~/.config/Code/User/keybindings.json
 
 mkdir -p ~/.zsh/completion
 curl -L https://raw.githubusercontent.com/sdurrheimer/docker-compose-zsh-completion/master/_docker-compose > ~/.zsh/completion/_docker-compose
+curl -L https://raw.githubusercontent.com/eriwen/gradle-completion/master/_gradle > ~/.zsh/completion/_gradle
 exec $SHELL -l
 
 # and add
