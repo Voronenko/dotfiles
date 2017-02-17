@@ -223,6 +223,17 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 fi
 
+# Java development
+
+if [[ -d /opt/gradle ]]; then
+
+export PATH=$PATH:/opt/gradle/gradle-3.3/bin
+
+fi
+
+# /Java development
+
+
 # Autoload ssh agent
 
 SSH_ENV="$HOME/.ssh/environment"

@@ -161,6 +161,18 @@ fi
 # /NODEDEV
 
 
+# Java development
+
+if [[ -d /opt/gradle ]]; then
+
+export PATH=$PATH:/opt/gradle/gradle-3.3/bin
+
+fi
+
+# /Java development
+
+
+
 # Auto load SSH Agent
 
 SSH_ENV="$HOME/.ssh/environment"
