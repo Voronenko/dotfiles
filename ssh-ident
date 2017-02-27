@@ -7,6 +7,7 @@ MATCH_PATH = [
     # (directory pattern, identity)
     (r"dotfiles", "personal"),
     (r"ansible-developer_recipes", "personal"),
+    (r"personal/2014", "edge"),
     (r"personal/", "personal")
 ]
 
