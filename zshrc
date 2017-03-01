@@ -85,12 +85,6 @@ fi
 
 alias pps='ps -eo uname:20,pid,pcpu,pmem,sz,tty,stat,time,cmd'
 
-# 1604 compability
-GREPPATH=`which grep`
-alias grep="$GREPPATH $GREP_OPTIONS"
-unset GREP_OPTIONS
-unset GREPPATH
-
 if [[ -f /usr/bin/tmux ]]; then
 
 # alias functions
