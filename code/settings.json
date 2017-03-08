@@ -1,3 +1,4 @@
 // Place your settings in this file to overwrite the default vscode settings
 {
+  "editor.minimap.enabled": true
 }
