@@ -87,10 +87,20 @@ alias pps='ps -eo uname:20,pid,pcpu,pmem,sz,tty,stat,time,cmd'
 
 if [[ -f /usr/bin/tmux ]]; then
 
-# alias functions
+if [[ -d /mnt/c/Windows/ ]]; then
+# Holy shit, I am on windows linux subsystem
+
+function onproject() {
+  TMUXMODE=$2 tmuxinator ${1}_env
+}
+
+else
+
 function onproject() {
   TMUXMODE=$2 gnome-terminal -x tmuxinator ${1}_env &
 }
+
+fi
 
 function offproject() {
   tmux kill-session -t ${1} &
