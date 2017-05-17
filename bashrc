@@ -200,7 +200,7 @@ fi
 
 
 # Anything locally specific?
-[ -f ~/.bashrc.local ] && source ~/bashrc.local
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local
 
 #[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
