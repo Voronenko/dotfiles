@@ -107,6 +107,18 @@ function offproject() {
 }
 
 
+function tmst() {
+
+  paneltitle=
+  while [ -z $paneltitle ]
+      do
+    echo -n 'Pane Title? '
+    read paneltitle
+  done
+  tmux set-window-option -q window-status-format "#[fg=white, bg=cyan]#I:${paneltitle}#[fg=cyan, bg=cyan]"
+  tmux set-window-option -q window-status-current-format "#[fg=white, bg=red]#I:${paneltitle} #[fg=red, bg=red]"
+}
+
 autoload -Uz onproject
 autoload -Uz offproject
 
