@@ -128,7 +128,7 @@ case "$1" in
         sudo docker ps -a
         ;;
     ui)
-        docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
+        docker run -d -p 9999:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
         ;;
     inspect)
         docker inspect $2 | jq $3
