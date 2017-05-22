@@ -7,8 +7,7 @@
     showInvisibles: true
   "highlight-line":
     hideHighlightOnSelect: true
-  linter:
-    errorPanelHeight: 164
+  linter: {}
   "rst-preview-pandoc":
     pandocOpts: "-frst -thtml --webtex"
   "todo-show":
