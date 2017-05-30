@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 VERSION=$1
 if [ -z $1 ]
 then
@@ -21,6 +23,9 @@ git checkout -
 git checkout master
 git pull origin master
 git checkout develop
+
+# ensure master has no conflicts with develop
+git merge master
 
 git flow release start $VERSION
 
