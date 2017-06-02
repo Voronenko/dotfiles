@@ -44,6 +44,7 @@ then
     sudo yum groupinstall -y "Development Tools"
     sudo yum install -y python-devel
     sudo yum install -y openssl-devel
+    sudo yum install -y nano
 elif [ -e /usr/bin/apt ]
 then
     sudo apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
