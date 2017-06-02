@@ -7,11 +7,22 @@ set -e
 
 if [ "$(id -u)" == "0" ]; then
 echo "Installation must NOT be done under sudo"
-echo "use your regular user account"
+echo "use your reg ular user account"
 exit 1
 fi
 
-sudo apt-get -y install git curl
+if [ -e /usr/bin/yum ]
+then
+    pkgmanager=yum
+elif [ -e /usr/bin/apt ]
+then
+    pkgmanager=apt-get
+else
+    echo "No supported package manager"
+    exit 1
+fi
+
+sudo $pkgmanager -y install git curl
 
 SUDOERUSER="$(whoami)"
 SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
@@ -25,8 +36,20 @@ echo "don't  forget to remove settings after initial box configuration"
 echo "by removing file $SUDOERFILE"
 echo "===================================================================="
 
-sudo apt-get -y install -y software-properties-common git python-dev wget apt-transport-https libffi-dev libssl-dev
-sudo apt-get install -y python-pip
+
+if [ -e /usr/bin/yum ]
+then
+    sudo yum install -y epel-release
+    sudo yum install -y python-cffi
+    sudo yum groupinstall -y "Development Tools"
+    sudo yum install -y python-devel
+    sudo yum install -y openssl-devel
+elif [ -e /usr/bin/apt ]
+then
+    sudo apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
+fi
+
+sudo $pkgmanager install -y python-pip
 sudo pip install -U pip
 sudo pip install ansible
 
