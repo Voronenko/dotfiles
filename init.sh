@@ -52,8 +52,21 @@ else
     platform=$(uname);
     # If the platform is Linux, try an apt-get to install zsh and then recurse
     if [[ $platform == 'Linux' ]]; then
-        sudo apt-get install zsh -y
-        install_zsh
+
+      if [ -e /usr/bin/yum ]
+      then
+          pkgmanager=yum
+      elif [ -e /usr/bin/apt ]
+      then
+          pkgmanager=apt-get
+      else
+          echo "No supported package manager"
+          exit 1
+      fi
+      
+      sudo $pkgmanager install zsh -y
+      install_zsh
+
     # If the platform is OS X, tell the user to install zsh :)
     elif [[ $platform == 'Darwin' ]]; then
         echo "Please install zsh, then re-run this script!"
