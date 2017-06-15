@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # curl -sSL http://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
-# ./bootstrap.sh
+# ./bootstrap.sh  <optional: simple | full>
 
 set -e
 
@@ -24,35 +24,39 @@ fi
 
 sudo $pkgmanager -y install git curl
 
-SUDOERUSER="$(whoami)"
-SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
+if [ "$1" == "full" ]; then
 
-sudo bash -c "touch $SUDOERFILE"
-sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
+  SUDOERUSER="$(whoami)"
+  SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
 
-echo "===================================================================="
-echo "current user was added to SUDOERS w/o password"
-echo "don't  forget to remove settings after initial box configuration"
-echo "by removing file $SUDOERFILE"
-echo "===================================================================="
+  sudo bash -c "touch $SUDOERFILE"
+  sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
+
+  echo "===================================================================="
+  echo "current user was added to SUDOERS w/o password"
+  echo "don't  forget to remove settings after initial box configuration"
+  echo "by removing file $SUDOERFILE"
+  echo "===================================================================="
 
 
-if [ -e /usr/bin/yum ]
-then
-    sudo yum install -y epel-release
-    sudo yum install -y python-cffi
-    sudo yum groupinstall -y "Development Tools"
-    sudo yum install -y python-devel
-    sudo yum install -y openssl-devel
-    sudo yum install -y nano
-elif [ -e /usr/bin/apt ]
-then
-    sudo apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
+  if [ -e /usr/bin/yum ]
+  then
+      sudo yum install -y epel-release
+      sudo yum install -y python-cffi
+      sudo yum groupinstall -y "Development Tools"
+      sudo yum install -y python-devel
+      sudo yum install -y openssl-devel
+      sudo yum install -y nano
+  elif [ -e /usr/bin/apt ]
+  then
+      sudo apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
+  fi
+
+  sudo $pkgmanager install -y python-pip
+  sudo pip install -U pip
+  sudo pip install ansible
+
 fi
-
-sudo $pkgmanager install -y python-pip
-sudo pip install -U pip
-sudo pip install ansible
 
 echo "ssh-agent:"
 eval "$(ssh-agent)"
@@ -63,11 +67,18 @@ chmod 600 ./dotfiles_rsa
 ssh-add ./dotfiles_rsa; git clone git@github.com:Voronenko/dotfiles.git;
 rm ./dotfiles_rsa
 
+if [ "$1" == "full" ]; then
 
-curl -sSL https://raw.githubusercontent.com/Voronenko/ansible-developer_recipes/master/recipes_rsa > ./recipes_rsa && chmod 600 ./recipes_rsa
-ssh-add ./recipes_rsa; git clone git@github.com:Voronenko/ansible-developer_recipes.git;
-rm ./recipes_rsa
+  curl -sSL https://raw.githubusercontent.com/Voronenko/ansible-developer_recipes/master/recipes_rsa > ./recipes_rsa && chmod 600 ./recipes_rsa
+  ssh-add ./recipes_rsa; git clone git@github.com:Voronenko/ansible-developer_recipes.git;
+  rm ./recipes_rsa
+
+fi
 
 cd dotfiles
 
-./init.sh
+if [ "$1" == "simple" ]; then
+  ./init_simple.sh
+else
+  ./init.sh
+if

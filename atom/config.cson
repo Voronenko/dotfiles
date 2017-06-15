@@ -5,6 +5,8 @@
     fontSize: 16
     invisibles: {}
     showInvisibles: true
+  "exception-reporting":
+    userId: "d4514b2d-9892-4708-bac9-c068513b8eaa"
   "highlight-line":
     hideHighlightOnSelect: true
   linter: {}

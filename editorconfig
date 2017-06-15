@@ -10,12 +10,18 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[{.jshintrc,*.json,*.yml}]
+# 2 space indentation
+[{.jshintrc,*.json,*.yml,*.js, .groovy, *.gradle, *.html}]
 indent_style = space
 indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+
+# 4 space indentation
+[*.{py}]
+indent_style = space
+indent_size = 4
 
 # The indent size used in the `package.json` file cannot be changed
 # https://github.com/npm/npm/pull/3180#issuecomment-16336516
