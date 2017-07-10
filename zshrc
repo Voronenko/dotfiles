@@ -121,6 +121,7 @@ fi
 
 # Start built-in LAMP server in current directory
 alias web='python -m SimpleHTTPServer 8000'
+alias webcors='http-server -p 8000 --cors'
 
 # remove locally all branches merged into develop
 alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
@@ -137,7 +138,7 @@ case "$1" in
         sudo docker ps -a
         ;;
     ui)
-        docker run -d -p 9999:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
+        docker start docker_ui || docker run -d -p 9999:9000 --name docker_ui --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
         ;;
     inspect)
         docker inspect $2 | jq $3
