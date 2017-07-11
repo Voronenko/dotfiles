@@ -152,8 +152,11 @@ case "$1" in
     cleancontainers)
         docker ps -a | grep 'weeks ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm
         ;;
+    registry)
+        docker start registry || docker run -d -p 5000:5000 --restart=always --name registry registry:2
+        ;;
     *)
-        echo "Usage: $0 {list |stopall |cleanimages |cleancontainers | ui | inspect <container name> <jq filter>}"
+        echo "Usage: $0 {list |stopall |cleanimages |cleancontainers | ui | registry | inspect <container name> <jq filter>}"
         ;;
 esac
 
