@@ -10,6 +10,8 @@
   "highlight-line":
     hideHighlightOnSelect: true
   linter: {}
+  "linter-ui-default":
+    panelHeight: 69
   "rst-preview-pandoc":
     pandocOpts: "-frst -thtml --webtex"
   "todo-show":

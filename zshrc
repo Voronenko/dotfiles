@@ -146,6 +146,10 @@ case "$1" in
     stopall)
         sudo docker stop $(sudo docker ps -a -q)
         ;;
+    sh)
+        sudo docker exec -it $(sudo docker ps -lq) ${2-/bin/sh} $3 $4 $5 $6 $7 $8 $9
+        ;;
+
     cleanimages)
         sudo docker rmi $(docker images | grep "^<none>"  | awk "{ print $3 }")
         ;;
@@ -156,7 +160,7 @@ case "$1" in
         docker start registry || docker run -d -p 5000:5000 --restart=always --name registry registry:2
         ;;
     *)
-        echo "Usage: $0 {list |stopall |cleanimages |cleancontainers | ui | registry | inspect <container name> <jq filter>}"
+        echo "Usage: $0 {dck sh | list |stopall |cleanimages |cleancontainers | ui | registry | inspect <container name> <jq filter>}"
         ;;
 esac
 
