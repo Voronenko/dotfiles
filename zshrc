@@ -151,10 +151,19 @@ case "$1" in
         ;;
 
     cleanimages)
+        if [[ ! -f /usr/sbin/docker-gc ]]; then
         sudo docker rmi $(docker images | grep "^<none>"  | awk "{ print $3 }")
+        else
+        sudo EXCLUDE_FROM_GC={$EXCLUDE_FROM_GC-/etc/docker-gc-exclude} MINIMUM_IMAGES_TO_SAVE=1 FORCE_IMAGE_REMOVAL=1 docker-gc
+        fi
         ;;
     cleancontainers)
+        if [[ ! -f /usr/bin/docker ]]; then
         docker ps -a | grep 'weeks ago' | awk '{print $1}' | xargs --no-run-if-empty docker rm
+        else
+        sudo EXCLUDE_CONTAINERS_FROM_GC={$EXCLUDE_CONTAINERS_FROM_GC-/etc/docker-gc-exclude-containers} docker-gc
+        fi
+
         ;;
     registry)
         docker start registry || docker run -d -p 5000:5000 --restart=always --name registry registry:2
