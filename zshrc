@@ -200,8 +200,6 @@ alias sessionshare='screen -d -m -S shared'
 alias sessionjoin='screen -x shared'
 alias wanip='getent hosts `dig +short myip.opendns.com @resolver1.opendns.com`'
 
-# Anything locally specific?
-if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
 # [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
@@ -283,4 +281,10 @@ if [[ -n $SSH_CONNECTION ]]; then
   echo " .... remote session `echo $USER`@`hostname` .... "
   PROMPT="%{$fg_bold[yellow]%}⇕ ${PROMPT}"
 fi
+
+# Load cd helper
+if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
+
+# Anything locally specific?
+if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
