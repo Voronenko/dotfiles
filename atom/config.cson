@@ -2,7 +2,6 @@
   core:
     telemetryConsent: "no"
   editor:
-    fontSize: 16
     invisibles: {}
     showInvisibles: true
   "exception-reporting":

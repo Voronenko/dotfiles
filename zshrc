@@ -200,6 +200,9 @@ alias sessionshare='screen -d -m -S shared'
 alias sessionjoin='screen -x shared'
 alias wanip='getent hosts `dig +short myip.opendns.com @resolver1.opendns.com`'
 
+# source management
+alias reset_rights_here='find -type f -exec chmod --changes 644 {} + -o -type d -exec chmod --changes 755 {} +'
+
 
 # [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
