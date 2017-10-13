@@ -156,6 +156,7 @@ case "$1" in
         else
         sudo EXCLUDE_FROM_GC={$EXCLUDE_FROM_GC-/etc/docker-gc-exclude} MINIMUM_IMAGES_TO_SAVE=1 FORCE_IMAGE_REMOVAL=1 docker-gc
         fi
+        docker rmi $(docker images -f "dangling=true" -q)
         ;;
     cleancontainers)
         if [[ ! -f /usr/bin/docker ]]; then
