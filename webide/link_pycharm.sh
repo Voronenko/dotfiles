@@ -1,12 +1,14 @@
-WEBIDEVERSION=${WEBIDEVERSION-WebIde90}
-dir=~/.$WEBIDEVERSION                    # webide directory
-olddir=~/$WEBIDEVERSION_old             # old webide backup directory
+IDEVERSION=${PYCHARMVERSION-PyCharmCE2017.2}
+dir=~/.$IDEVERSION                    # webide directory
+olddir=~/$IDEVERSION_old             # old webide backup directory
 files="config/codestyles/Slavko.xml config/options/code.style.schemes.xml config/templates/angular_basic.xml config/templates/es_basic.xml  config/templates/jasmine_basic.xml config/templates/lodash_basic.xml"    # list of files/folders to symlink in webide dir
 
 ##########
 
-# create WebIde90_old in homedir
-echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
+echo Processing IDE linking for $IDEVERSION
+
+# create $IDEVERSION_old in homedir
+echo -n "Creating $olddir for backup of any existing config in ~ ..."
 mkdir -p $olddir
 echo "done"
 
