@@ -4,5 +4,9 @@
   "atomKeymap.promptV3Features": true,
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.formatOnPaste": true,
-  "workbench.iconTheme": "vscode-icons"
+  // Controls how the editor should render the current line highlight, possibilities are 'none', 'gutter', 'line', and 'all'.
+  "editor.renderLineHighlight": "all",
+  "workbench.iconTheme": "vscode-icons",
+
+  "python.venvPath": "./p-env, ~/.virtualenvs"
 }

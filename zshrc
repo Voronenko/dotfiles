@@ -293,6 +293,10 @@ fi
 # Load cd helper
 if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 
+# Windows syntethic sugar
+
+alias 'startdot'='xdg-open .'
+
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
