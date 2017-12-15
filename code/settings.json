@@ -8,5 +8,6 @@
   "editor.renderLineHighlight": "all",
   "workbench.iconTheme": "vscode-icons",
 
-  "python.venvPath": "./p-env, ~/.virtualenvs"
+  "python.venvPath": "./p-env, ~/.virtualenvs",
+  "window.zoomLevel": 0
 }

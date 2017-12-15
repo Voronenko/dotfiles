@@ -1,5 +1,5 @@
 <templateSet group="angular_basic">
-  <template name="$q" value="var deferred = $q.defer();&#10;Resource.query({})&#10;        .$promise&#10;        .then(function(results){&#10;           if (true) {&#10;             deferred.resolve(results);&#10;           } else {&#10;             deferred.reject('reason');&#10;           }&#10;        });&#10;return deferred.promise;&#10;" toReformat="true" toShortenFQNames="true">
+  <template name="$q" value="var deferred = $q.defer();&#10;Resource.query({})&#10;        .$promise&#10;        .then(function(results){&#10;           if (true) {&#10;             deferred.resolve(results);&#10;           } else {&#10;             deferred.reject('reason');&#10;           }&#10;        });&#10;return deferred.promise;&#10;" description="" toReformat="true" toShortenFQNames="true">
     <context>
       <option name="HTML" value="true" />
       <option name="JAVA_SCRIPT" value="true" />

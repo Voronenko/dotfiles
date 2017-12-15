@@ -6,5 +6,5 @@ for file in ~/.PhpStorm*; do
 done
 
 IDEVERSION=`basename $IDEVERSIONRAW`
-export PHPSTORMVERSION=${IDEVERSION:1:${#WEBIDEVERSION}-1}
+export PHPSTORMVERSION=${IDEVERSION:1:${#IDEVERSION}-1}
 ./link_phpstorm.sh
