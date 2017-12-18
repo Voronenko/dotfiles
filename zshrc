@@ -119,6 +119,11 @@ alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
 fi
 
+if [[ -f /usr/bin/direnv ]]; then
+# direnv
+eval "$(direnv hook zsh)"
+fi
+
 # Start built-in LAMP server in current directory
 alias web='python -m SimpleHTTPServer 8000'
 alias webcors='http-server -p 8000 --cors'

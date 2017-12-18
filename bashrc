@@ -200,6 +200,10 @@ else
     start_agent;
 fi
 
+if [[ -f /usr/bin/direnv ]]; then
+# direnv
+eval "$(direnv hook bash)"
+fi
 
 # Anything locally specific?
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
