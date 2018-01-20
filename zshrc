@@ -305,3 +305,6 @@ alias 'startdot'='xdg-open .'
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
+
+# Time to sleep
+alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'

@@ -9,5 +9,7 @@
   "workbench.iconTheme": "vscode-icons",
 
   "python.venvPath": "./p-env, ~/.virtualenvs",
-  "window.zoomLevel": 0
+  "window.zoomLevel": 0,
+
+  "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py"
 }
