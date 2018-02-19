@@ -81,4 +81,4 @@ if [ "$1" == "simple" ]; then
   ./init_simple.sh
 else
   ./init.sh
-if
+fi
