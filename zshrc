@@ -4,6 +4,9 @@ ZSH=$HOME/.oh-my-zsh
 ### Do we run interactively?
 [[ $- != *i* ]] && return
 
+# custom completion scripts
+fpath=($HOME/dotfiles/completions $fpath)
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -187,6 +190,12 @@ esac
 
 autoload -Uz dck
 
+fi
+
+
+if type "kubectl" > /dev/null; then
+  # load support for kubernetes context switch
+  export PATH=$PATH:${HOME}/dotfiles/docker
 fi
 
 

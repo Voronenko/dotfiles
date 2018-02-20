@@ -1,4 +1,6 @@
 "*":
+  "atom-package-deps":
+    ignored: []
   core:
     telemetryConsent: "no"
   editor:
