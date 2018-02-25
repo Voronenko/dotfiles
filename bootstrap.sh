@@ -7,7 +7,7 @@ set -e
 
 if [ "$(id -u)" == "0" ]; then
 echo "Installation must NOT be done under sudo"
-echo "use your reg ular user account"
+echo "use your regular user account"
 exit 1
 fi
 
@@ -60,6 +60,17 @@ fi
 
 echo "ssh-agent:"
 eval "$(ssh-agent)"
+
+if [ "$1" == "simple" ]; then
+  git clone https://github.com/Voronenko/dotfiles.git
+else
+  curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/dotfiles_rsa > ./dotfiles_rsa
+  ansible-vault decrypt ./dotfiles_rsa
+  chmod 600 ./dotfiles_rsa
+  ssh-add ./dotfiles_rsa; git clone git@github.com:Voronenko/dotfiles.git;
+  rm ./dotfiles_rsa
+fi
+
 
 curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/dotfiles_rsa > ./dotfiles_rsa
 ansible-vault decrypt ./dotfiles_rsa
