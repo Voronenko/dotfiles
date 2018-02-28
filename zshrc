@@ -263,6 +263,13 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 fi
 
+if [[ -d ~/.virtualenvs/project_notes ]]; then
+
+alias znotes='workon project_notes && cd ${ZNOTES_PATH-~/z_personal_notes} && jupyter lab'
+
+fi
+
+
 # Java development
 
 if [[ -d /opt/gradle ]]; then
