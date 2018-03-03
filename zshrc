@@ -47,7 +47,7 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git-prompt composer docker docker-compose)
+plugins=(composer docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -306,10 +306,21 @@ else
     start_agent;
 fi
 
+
 if [[ -n $SSH_CONNECTION ]]; then
-  echo " .... remote session `echo $USER`@`hostname` .... "
-  PROMPT="%{$fg_bold[yellow]%}⇕ ${PROMPT}"
+echo " .... remote session `echo $USER`@`hostname` .... "
+PROMPT="%{$fg_bold[yellow]%}⇕ ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)"
+else
+PROMPT=$'%{$fg[yellow]%}┌[%{$fg[green]%}%c%{$reset_color%}%{$fg[yellow]%}]> %{$(git_prompt_info)%}%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])
+%{$fg[yellow]%}└──${ret_status}%{$reset_color%}'
+PS2=$' %{$fg[green]%}|>%{$reset_color%} '
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[red]%}[%{$fg_bold[white]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[red]%}] "
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}⚡%{$reset_color%}"
 fi
+
+
 
 # Load cd helper
 if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
