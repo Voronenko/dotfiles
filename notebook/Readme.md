@@ -1,3 +1,6 @@
+# portions of https://github.com/Voronenko/znotebook
+
+
 In Ipython, first,
 
 import iplantuml
