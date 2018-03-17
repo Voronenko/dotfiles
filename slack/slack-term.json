@@ -13,7 +13,7 @@
             "j": "channel-down",
             "g": "channel-top",
             "<down>": "channel-down",
-            "<up>": "channel-top",
+            "<up>": "channel-up",
             "G": "channel-bottom",
             "<previous>": "chat-up",
             "C-b": "chat-up",
