@@ -64,20 +64,14 @@ eval "$(ssh-agent)"
 if [ "$1" == "simple" ]; then
   git clone https://github.com/Voronenko/dotfiles.git
 else
-  curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/dotfiles_rsa > ./dotfiles_rsa
-  ansible-vault decrypt ./dotfiles_rsa
-  chmod 600 ./dotfiles_rsa
-  ssh-add ./dotfiles_rsa; git clone git@github.com:Voronenko/dotfiles.git;
-  rm ./dotfiles_rsa
+  git clone https://github.com/Voronenko/dotfiles.git
+  git remote set-url origin git@github.com:Voronenko/dotfiles.git
 fi
 
 
 if [ "$1" == "full" ]; then
-
-  curl -sSL https://raw.githubusercontent.com/Voronenko/ansible-developer_recipes/master/recipes_rsa > ./recipes_rsa && chmod 600 ./recipes_rsa
-  ssh-add ./recipes_rsa; git clone git@github.com:Voronenko/ansible-developer_recipes.git;
-  rm ./recipes_rsa
-
+  git clone https://github.com/Voronenko/ansible-developer_recipes.git
+  git remote set-url origin git@github.com:Voronenko/ansible-developer_recipes.git
 fi
 
 cd dotfiles
