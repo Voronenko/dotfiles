@@ -65,13 +65,13 @@ if [ "$1" == "simple" ]; then
   git clone https://github.com/Voronenko/dotfiles.git
 else
   git clone https://github.com/Voronenko/dotfiles.git
-  git remote set-url origin git@github.com:Voronenko/dotfiles.git
+  cd dotfiles && git remote set-url origin git@github.com:Voronenko/dotfiles.git && cd ~
 fi
 
 
 if [ "$1" == "full" ]; then
   git clone https://github.com/Voronenko/ansible-developer_recipes.git
-  git remote set-url origin git@github.com:Voronenko/ansible-developer_recipes.git
+  cd ansible-developer_recipes && git remote set-url origin git@github.com:Voronenko/ansible-developer_recipes.git && cd ~
 fi
 
 cd dotfiles
