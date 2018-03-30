@@ -47,7 +47,7 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(composer docker-compose kubectl)
+plugins=(composer docker-compose kubectl shrink-path)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -315,7 +315,7 @@ PROMPT=$'%{$fg[yellow]%}┌%{$fg_bold[yellow]%}[⇕]%{$reset_color%}$fg[yellow]%
 PS2=$' %{$fg[green]%}|>%{$reset_color%} '
 
 else
-PROMPT=$'%{$fg[yellow]%}┌[%{$fg[cyan]%}%c%{$reset_color%}%{$fg[yellow]%}]> %{$(git_prompt_info)%}%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])
+PROMPT=$'%{$fg[yellow]%}┌[%{$fg[cyan]%}$(shrink_path -f)%{$reset_color%}%{$fg[yellow]%}]> %{$(git_prompt_info)%}%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])
 %{$fg[yellow]%}└──${ret_status}%{$reset_color%}'
 PS2=$' %{$fg[green]%}|>%{$reset_color%} '
 
