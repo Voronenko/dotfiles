@@ -193,9 +193,23 @@ autoload -Uz dck
 fi
 
 
+if type "gcloud" > /dev/null; then
+
+source ${HOME}/dotfiles/completions/gcloud_completion.zsh
+source ${HOME}/dotfiles/docker/gcloud.zsh
+
+
+fi
+
 if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
   export PATH=$PATH:${HOME}/dotfiles/docker
+
+function onkubernetes() {
+  source ${HOME}/dotfiles/docker/kube-ps1.sh
+  RPROMPT='$(kube_ps1)-%{$fg[yellow]%}($ZSH_GCLOUD_PROMPT_PROJECT)%{$reset_color%}'
+}
+
 fi
 
 
