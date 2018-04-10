@@ -4,9 +4,25 @@ ZSH=$HOME/.oh-my-zsh
 ### Do we run interactively?
 [[ $- != *i* ]] && return
 
+### Do we profile ?
+
+# Credit: https://kev.inburke.com/kevin/profiling-zsh-startup-time/
+
+PROFILE_STARTUP=false
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    zmodload zsh/zprof # Output load-time statistics
+    # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+    PS4=$'%D{%M%S%.} %N:%i> '
+    exec 3>&2 2>"${XDG_CACHE_HOME:-$HOME/tmp}/zsh_statup.$$"
+    setopt xtrace prompt_subst
+fi
+
 # custom completion scripts
 fpath=($HOME/dotfiles/completions $fpath)
 
+# params block
+
+# /params block
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -196,7 +212,6 @@ fi
 if type "gcloud" > /dev/null; then
 
 source ${HOME}/dotfiles/completions/gcloud_completion.zsh
-source ${HOME}/dotfiles/docker/gcloud.zsh
 
 
 fi
@@ -205,8 +220,10 @@ if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
   export PATH=$PATH:${HOME}/dotfiles/docker
 
+# heavy init
 function onkubernetes() {
   source ${HOME}/dotfiles/docker/kube-ps1.sh
+  source ${HOME}/dotfiles/docker/gcloud.zsh
   RPROMPT='$(kube_ps1)-%{$fg[yellow]%}($ZSH_GCLOUD_PROMPT_PROJECT)%{$reset_color%}'
 }
 
@@ -353,3 +370,12 @@ if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
 # Time to sleep
 alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'
+
+
+
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    zprof > ~/dotfiles/startup.log
+    unsetopt xtrace
+    exec 2>&3 3>&-
+fi
+
