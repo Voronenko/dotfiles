@@ -1,3 +1,4 @@
 zshrc.local
 oh-my-zsh
 startup.log
+docker/stern
