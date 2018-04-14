@@ -1,3 +1,4 @@
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -223,8 +224,8 @@ if type "kubectl" > /dev/null; then
 # heavy init
 function onkubernetes() {
   source ${HOME}/dotfiles/docker/kube-ps1.sh
-  source ${HOME}/dotfiles/docker/gcloud.zsh
-  RPROMPT='$(kube_ps1)-%{$fg[yellow]%}($ZSH_GCLOUD_PROMPT_PROJECT)%{$reset_color%}'
+  source ${HOME}/dotfiles/docker/gcloud-ps1.sh
+  RPROMPT='$(kube_ps1)$(gcloud_ps1)'
 }
 
 fi
