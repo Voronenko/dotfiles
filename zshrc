@@ -283,6 +283,8 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
+alias node_add_bin_path='export PATH="./node_modules/.bin/:$PATH"'
+
 fi
 
 # Python development
