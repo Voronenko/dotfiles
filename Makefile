@@ -7,6 +7,9 @@ install-k8s-stern:
 	wget -O ~/dotfiles/docker/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/docker/stern
 
+install-deepmind-kapitan:
+	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
+
 workplace-init:
 	./workplace_init.sh
 

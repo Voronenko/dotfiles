@@ -11,5 +11,7 @@
   "python.venvPath": "./p-env, ~/.virtualenvs",
   "window.zoomLevel": 0,
 
+  "jsonnet.outputFormat": "json",
+
   "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py"
 }
