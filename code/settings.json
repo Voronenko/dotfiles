@@ -12,6 +12,10 @@
   "window.zoomLevel": 0,
 
   "jsonnet.outputFormat": "json",
+  "jsonnet.libPaths": ["~/.local/lib/python3.6/site-packages/kapitan", "./"],
 
-  "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py"
+  "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
+  "[jsonnet]": {
+
+    }
 }
