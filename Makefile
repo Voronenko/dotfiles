@@ -10,6 +10,12 @@ install-k8s-stern:
 install-deepmind-kapitan:
 	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
 
+install-github-release:
+	mkdir -p /tmp/gh-release
+	wget -O /tmp/gh-release/linux-amd64-github-release.tar.bz2 "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2"
+	cd /tmp/gh-release && tar jxf /tmp/linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/docker
+
+
 workplace-init:
 	./workplace_init.sh
 

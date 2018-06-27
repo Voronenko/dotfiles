@@ -3,3 +3,4 @@ oh-my-zsh
 startup.log
 docker/stern
 docker/ks
+docker/github-release
