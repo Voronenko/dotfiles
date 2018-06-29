@@ -162,6 +162,9 @@ case "$1" in
     list)
         sudo docker ps -a
         ;;
+    manage)
+        docker volume create portainer_data &&  docker run -d -p 9999:9000  -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+        ;;
     ui)
         docker start docker_ui || docker run -d -p 9999:9000 --name docker_ui --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
         ;;
@@ -199,7 +202,8 @@ case "$1" in
         docker start registry || docker run -d -p 5000:5000 --restart=always --name registry registry:2
         ;;
     *)
-        echo "Usage: $0 {dck sh | bash | list |stopall |cleanimages |cleancontainers | ui | registry | inspect <container name> <jq filter>}"
+        echo "Usage: $0 {dck sh | bash | list |stopall |cleanimages |cleancontainers | ui | manage | registry | inspect <container name> <jq filter>}"
+        echo "manage launches portrainer, ui - now obsolete ui for docker (retiring...)"
         ;;
 esac
 
