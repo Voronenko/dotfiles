@@ -1,6 +1,7 @@
 [user]
 	name = Vyacheslav Voronenko
 	email = git@voronenko.info
+	signingkey = F262FB038EFB3A88
 [core]
 	autocrlf = input
 [alias]
@@ -20,3 +21,5 @@
         set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 [push]
 	default = current
+[commit]
+	gpgsign = true
