@@ -8,7 +8,7 @@ install-k8s-stern:
 	chmod +x ~/dotfiles/docker/stern
 
 install-docker-dry:
-	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-darwin-amd64
+	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/docker/dry
 
 install-deepmind-kapitan:
