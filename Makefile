@@ -7,6 +7,10 @@ install-k8s-stern:
 	wget -O ~/dotfiles/docker/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/docker/stern
 
+install-docker-dry:
+	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-darwin-amd64
+	chmod +x ~/dotfiles/docker/dry
+
 install-deepmind-kapitan:
 	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
 
