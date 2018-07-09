@@ -154,6 +154,9 @@ alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 
 
 if [[ -f /usr/bin/docker ]]; then
 
+export FORCE_IMAGE_REMOVAL=1
+export MINIMUM_IMAGES_TO_SAVE=3
+
 #docker helpers
 
 function dck() {
