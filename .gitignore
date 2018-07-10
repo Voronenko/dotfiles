@@ -5,3 +5,4 @@ docker/stern
 docker/ks
 docker/github-release
 docker/dry
+docker/heptio-authenticator-aws*
