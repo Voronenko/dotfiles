@@ -24,6 +24,9 @@ install-k8s-heptio-authenticator-aws:
 	curl -o ~/dotfiles/docker/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
 	chmod +x ~/dotfiles/docker/heptio-authenticator-aws
 
+install-k8s-weaveworks-eksctl:
+	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
+	mv /tmp/eksctl ~/dotfiles/docker
 
 workplace-init:
 	./workplace_init.sh
