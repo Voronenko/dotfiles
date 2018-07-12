@@ -7,6 +7,12 @@ install-k8s-stern:
 	wget -O ~/dotfiles/docker/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/docker/stern
 
+install-k8s-helm:
+	mkdir -p /tmp/helm
+	wget -O /tmp/helm/helm.tar.gz "https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz"
+	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/docker
+	rm -rf /tmp/helm
+
 install-docker-dry:
 	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/docker/dry
@@ -17,7 +23,8 @@ install-deepmind-kapitan:
 install-github-release:
 	mkdir -p /tmp/gh-release
 	wget -O /tmp/gh-release/linux-amd64-github-release.tar.bz2 "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2"
-	cd /tmp/gh-release && tar jxf /tmp/linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
+	cd /tmp/gh-release && tar jxf linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
+	rm -rf /tmp/gh-release
 
 install-k8s-heptio-authenticator-aws:
 	curl -o ~/dotfiles/docker/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
