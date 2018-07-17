@@ -5,6 +5,7 @@ docker/helm
 docker/heptio-authenticator-aws*
 docker/ks
 docker/stern
+docker/terraform-docs
 oh-my-zsh
 startup.log
 zshrc.local
