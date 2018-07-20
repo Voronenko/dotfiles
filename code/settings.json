@@ -11,5 +11,11 @@
   "python.venvPath": "./p-env, ~/.virtualenvs",
   "window.zoomLevel": 0,
 
-  "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py"
+  "jsonnet.outputFormat": "json",
+  "jsonnet.libPaths": ["~/.local/lib/python3.6/site-packages/kapitan", "./"],
+
+  "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
+  "[jsonnet]": {
+
+    }
 }

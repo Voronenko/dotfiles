@@ -1,6 +1,7 @@
 [user]
 	name = Vyacheslav Voronenko
 	email = git@voronenko.info
+	signingkey = F262FB038EFB3A88
 [core]
 	autocrlf = input
 [alias]
@@ -17,6 +18,8 @@
 	latest = pull --recurse-submodules
         clean-master = "!git checkout master && git branch --merged | grep -v 'develop' | grep -v '\\*' | xargs -n 1 git branch -d"
         clean-develop = "!git checkout develop && git branch --merged | grep -v 'master' | grep -v '\\*' | xargs -n 1 git branch -d"
-        set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+        fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 [push]
 	default = current
+[commit]
+	gpgsign = false

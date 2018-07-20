@@ -1,4 +1,12 @@
-zshrc.local
+docker/dry
+docker/eksctl
+docker/github-release
+docker/helm
+docker/heptio-authenticator-aws*
+docker/ks
+docker/stern
+docker/terraform-docs
 oh-my-zsh
 startup.log
-docker/stern
+zshrc.local
+
