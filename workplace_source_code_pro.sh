@@ -9,6 +9,7 @@ echo "\n* Downloading https://github.com/adobe-fonts/source-code-pro/archive/${v
 wget https://github.com/adobe-fonts/source-code-pro/archive/$version -O /tmp/source_code_pro.zip
 
 echo "\n* Unziping package"
+cd /tmp
 unzip /tmp/source_code_pro.zip
 mkdir -p ~/.fonts
 
