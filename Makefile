@@ -58,3 +58,14 @@ kube-dashboard-insecure-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
 	echo possible to grant admin via  kubectl create -f ~/dotfiles/docker/k8s/dashboard-admin.yaml
 	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
+
+
+gnome-dropdown-terminal:
+	rm -rf /tmp/gnome-dropdown-terminal
+	git clone https://github.com/zzrough/gs-extensions-drop-down-terminal /tmp/gnome-dropdown-terminal
+	mv /tmp/gnome-dropdown-terminal/drop-down-terminal@gs-extensions.zzrough.org ~/.local/share/gnome-shell/extensions/drop-down-terminal@gs-extensions.zzrough.org
+
+gnome-dash-to-dock:
+	rm -rf /tmp/dash-to-dock
+	git clone https://github.com/micheleg/dash-to-dock.git /tmp/dash-to-dock
+	cd /tmp/dash-to-dock && make && make install
