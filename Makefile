@@ -69,3 +69,9 @@ gnome-dash-to-dock:
 	rm -rf /tmp/dash-to-dock
 	git clone https://github.com/micheleg/dash-to-dock.git /tmp/dash-to-dock
 	cd /tmp/dash-to-dock && make && make install
+
+gnome-unite-shell:
+	rm -rf /tmp/gnome-unite-shell
+	git clone https://github.com/hardpixel/unite-shell.git /tmp/gnome-unite-shell
+	mv /tmp/gnome-unite-shell/unite@hardpixel.eu ~/.local/share/gnome-shell/extensions/unite@hardpixel.eu
+
