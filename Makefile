@@ -75,3 +75,9 @@ gnome-unite-shell:
 	git clone https://github.com/hardpixel/unite-shell.git /tmp/gnome-unite-shell
 	mv /tmp/gnome-unite-shell/unite@hardpixel.eu ~/.local/share/gnome-shell/extensions/unite@hardpixel.eu
 
+gnome-shell-system-monitor:
+	sudo apt-get install gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
+	rm -rf /tmp/gnome-shell-system-monitor-applet
+	git clone https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet.git /tmp/gnome-shell-system-monitor-applet
+	mv /tmp/gnome-shell-system-monitor-applet/system-monitor@paradoxxx.zero.gmail.com ~/.local/share/gnome-shell/extensions/system-monitor@paradoxxx.zero.gmail.com
+
