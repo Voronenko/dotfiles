@@ -378,6 +378,8 @@ alias desktop_shortcut='gnome-desktop-item-edit ~/Desktop/ --create-new'
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
+# Battery
+alias batteries_fullcharge='sudo tlp fullcharge BAT0 && sudo tlp fullcharge BAT1'
 
 # Time to sleep
 alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'
