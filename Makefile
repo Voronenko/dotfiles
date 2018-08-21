@@ -35,6 +35,14 @@ install-k8s-weaveworks-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 	mv /tmp/eksctl ~/dotfiles/docker
 
+install-k8s-kubectl-ubuntu:
+	sudo apt-get update && sudo apt-get install -y apt-transport-https
+	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	sudo touch /etc/apt/sources.list.d/kubernetes.list
+	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+	sudo apt-get update
+	sudo apt-get install -y kubectl
+
 workplace-init:
 	./workplace_init.sh
 
@@ -84,3 +92,7 @@ gnome-shell-system-monitor:
 gnome-shell-extension-timezone:
 	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
 	gnome-shell-extension-tool -e timezone@jwendell
+
+zsh-desktop-notify:
+#	git clone git@github.com:marzocchi/zsh-notify.git ~/.oh-my-zsh/custom/plugins/notify
+	git clone https://github.com/t413/zsh-background-notify ~/.oh-my-zsh/custom/zsh-background-notify

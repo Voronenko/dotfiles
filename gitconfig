@@ -23,3 +23,5 @@
 	default = current
 [commit]
 	gpgsign = false
+[gpg]
+	program = gpg2
