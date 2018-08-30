@@ -1,3 +1,41 @@
+install-console-bat:
+	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
+	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
+
+install-console-prettytyping:
+	wget -O ~/dotfiles/docker/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
+	chmod +x ~/dotfiles/docker/prettyping
+
+# https://github.com/junegunn/fzf
+install-console-fzf:
+	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz
+	tar -xvzf /tmp/fzf.tar.gz -C /tmp
+	cp /tmp/fzf ~/dotfiles/docker
+
+# https://github.com/so-fancy/diff-so-fancy
+install-console-diffsofancy:
+	wget -O ~/dotfiles/docker/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+	chmod +x ~/dotfiles/docker/diff-so-fancy
+
+
+install-console-fd:
+	wget -O /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
+	sudo dpkg -i /tmp/fd.deb
+
+install-console-ripgrep:
+	wget -O /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
+	sudo dpkg -i /tmp/ripgrep.deb
+
+install-console-glances:
+	sudo pip install -U glances
+
+# https://tldr.sh/
+install-console-tldr:
+	npm install -g tldr
+
+install-console-ncdu:
+	sudo apt-get install ncdu
+
 install-k8s-ksonnet:
 	wget -O /tmp/ks_linux_amd64.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.10.1/ks_0.10.1_linux_amd64.tar.gz
 	tar -xvzf /tmp/ks_linux_amd64.tar.gz -C /tmp
@@ -75,3 +113,8 @@ gnome-unite-shell:
 	git clone https://github.com/hardpixel/unite-shell.git /tmp/gnome-unite-shell
 	mv /tmp/gnome-unite-shell/unite@hardpixel.eu ~/.local/share/gnome-shell/extensions/unite@hardpixel.eu
 
+zsh-fzf:
+	git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
+	~/.oh-my-zsh/custom/plugins/fzf/install --bin
+	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
+	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my-zsh/custom/plugins/fzf-zsh

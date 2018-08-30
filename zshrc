@@ -64,7 +64,7 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(composer docker-compose kubectl) #shrink-path for fish like
+plugins=(composer docker-compose kubectl fzf-zsh) #shrink-path for fish like
 
 source $ZSH/oh-my-zsh.sh
 
@@ -366,7 +366,6 @@ ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
 fi
 
 
-
 # Load cd helper
 if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 
@@ -375,13 +374,30 @@ if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 alias 'startdot'='xdg-open .'
 alias desktop_shortcut='gnome-desktop-item-edit ~/Desktop/ --create-new'
 
-# Anything locally specific?
-if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
-
-
 # Time to sleep
 alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'
 
+
+if [[ -f /usr/bin/bat ]]; then
+alias ccat='bat'
+if type "fzf" > /dev/null; then
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+fi
+fi
+
+if type "fzf" > /dev/null; then
+# add support for ctrl+o to open selected file in VS Code
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+fi
+
+
+if [[ -f ~/dotfiles/docker/prettyping ]]; then
+alias pping='prettyping --nolegend'
+fi
+
+
+# Anything locally specific?
+if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
 
 if [[ "$PROFILE_STARTUP" == true ]]; then
