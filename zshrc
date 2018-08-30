@@ -75,6 +75,18 @@ export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
+# notifications
+if [[ -d $HOME/.oh-my-zsh/custom/zsh-background-notify ]]; then
+bgnotify_threshold=4  ## set your own notification threshold
+
+function notify_formatted {
+  ## $1=exit_status, $2=command, $3=elapsed_time
+  [ $1 -eq 0 ] && title="Completed" || title="Failure"
+  bgnotify "$title -- after $3 s" "$2";
+}
+source $HOME/.oh-my-zsh/custom/zsh-background-notify
+fi
+
 # DETECT CHRUBY support
 
 if [[ -d /usr/local/share/chruby/ ]]; then
@@ -224,6 +236,10 @@ source ${HOME}/dotfiles/completions/gcloud_completion.zsh
 
 fi
 
+if type "docker" > /dev/null; then
+  export PATH=$PATH:${HOME}/dotfiles/docker
+fi
+
 if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
   export PATH=$PATH:${HOME}/dotfiles/docker
@@ -366,6 +382,7 @@ ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
 fi
 
 
+
 # Load cd helper
 if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 
@@ -373,6 +390,9 @@ if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 
 alias 'startdot'='xdg-open .'
 alias desktop_shortcut='gnome-desktop-item-edit ~/Desktop/ --create-new'
+
+# Battery
+alias batteries_fullcharge='sudo tlp fullcharge BAT0 && sudo tlp fullcharge BAT1'
 
 # Time to sleep
 alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'
