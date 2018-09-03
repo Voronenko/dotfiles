@@ -1,3 +1,16 @@
+install-cdci-gitlab-runner:
+	sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+	sudo chmod +x /usr/local/bin/gitlab-runner
+
+install-cdci-gitlab-runner-service:
+	sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+	sudo chmod +x /usr/local/bin/gitlab-runner
+	sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
+	sudo gitlab-runner start
+
+install-cdci-circleci-runner:
+	curl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh --fail --show-error | sudo bash
+
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
