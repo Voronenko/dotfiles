@@ -219,9 +219,83 @@ AWS EKS  heptio-authenticator-aws , eksctl
 
 docker:  dry console tool
 
-and few more...
+and few more:
+
+`install-cdci-gitlab-runner`, `install-cdci-gitlab-runner-service` - helpers to debug gitlab pipelines locally
+
+`install-cdci-circleci-runner` - helper to debug circleci pipeline locally
+
+`install-console-bat` - `bat` is a `cat` on steroids with built in syntax colouring and git integration, https://github.com/sharkdp/bat
+
+`install-console-prettytyping` - a bit visualization with ping, like `pping bbc.com`
+
+`install-console-fzf` - A command-line fuzzy finder  https://github.com/junegunn/fzf , which extremely cool integrates into the shell ctrl-R, giving a nicier preview. I mostly use it in ctrl-R fashion, but interactive file finder is also used from time to time, followed by ctrl+O - open in vscode
+
+`install-console-diffsofancy` - for me, better diff-er for git   https://github.com/so-fancy/diff-so-fancy
+
+`install-console-fd` - quickier file finder (kind of fzf), syntax: fd PATTERN instead of find -iname '*PATTERN*'.  https://github.com/sharkdp/fd
+
+
+`install-console-ripgrep` - ripgrep is a line-oriented search tool that recursively searches your current directory for a regex pattern while respecting your gitignore rules  https://github.com/BurntSushi/ripgrep
+
+`install-console-glances` -   Glances is a cross-platform monitoring tool which aims to present a large amount of monitoring information through a curses or Web based interface. The information dynamically adapts depending on the size of the user interface.  https://github.com/nicolargo/glances
+
+`install-console-tldr` - community driven help on commands, usually provides more examples. Cool when you are not on your native linux distribution
+
+`install-console-ncdu` - simply answers, where space goes, per directory.  https://dev.yorhel.nl/ncdu
 
 ```makefile
+
+install-cdci-gitlab-runner:
+	sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+	sudo chmod +x /usr/local/bin/gitlab-runner
+
+install-cdci-gitlab-runner-service:
+	sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+	sudo chmod +x /usr/local/bin/gitlab-runner
+	sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
+	sudo gitlab-runner start
+
+install-cdci-circleci-runner:
+	curl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh --fail --show-error | sudo bash
+
+install-console-bat:
+	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
+	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
+
+install-console-prettytyping:
+	wget -O ~/dotfiles/docker/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
+	chmod +x ~/dotfiles/docker/prettyping
+
+# https://github.com/junegunn/fzf
+install-console-fzf:
+	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz
+	tar -xvzf /tmp/fzf.tar.gz -C /tmp
+	cp /tmp/fzf ~/dotfiles/docker
+
+# https://github.com/so-fancy/diff-so-fancy
+install-console-diffsofancy:
+	wget -O ~/dotfiles/docker/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+	chmod +x ~/dotfiles/docker/diff-so-fancy
+
+
+install-console-fd:
+	wget -O /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
+	sudo dpkg -i /tmp/fd.deb
+
+install-console-ripgrep:
+	wget -O /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
+	sudo dpkg -i /tmp/ripgrep.deb
+
+install-console-glances:
+	sudo pip install -U glances
+
+# https://tldr.sh/
+install-console-tldr:
+	npm install -g tldr
+
+install-console-ncdu:
+	sudo apt-get install ncdu
 
 install-k8s-ksonnet:
 	wget -O /tmp/ks_linux_amd64.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.10.1/ks_0.10.1_linux_amd64.tar.gz
@@ -231,6 +305,12 @@ install-k8s-ksonnet:
 install-k8s-stern:
 	wget -O ~/dotfiles/docker/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/docker/stern
+
+install-k8s-helm:
+	mkdir -p /tmp/helm
+	wget -O /tmp/helm/helm.tar.gz "https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz"
+	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/docker
+	rm -rf /tmp/helm
 
 install-docker-dry:
 	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
@@ -242,7 +322,8 @@ install-deepmind-kapitan:
 install-github-release:
 	mkdir -p /tmp/gh-release
 	wget -O /tmp/gh-release/linux-amd64-github-release.tar.bz2 "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2"
-	cd /tmp/gh-release && tar jxf /tmp/linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
+	cd /tmp/gh-release && tar jxf linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
+	rm -rf /tmp/gh-release
 
 install-k8s-heptio-authenticator-aws:
 	curl -o ~/dotfiles/docker/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
@@ -252,6 +333,14 @@ install-k8s-heptio-authenticator-aws:
 install-k8s-weaveworks-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 	mv /tmp/eksctl ~/dotfiles/docker
+
+install-k8s-kubectl-ubuntu:
+	sudo apt-get update && sudo apt-get install -y apt-transport-https
+	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	sudo touch /etc/apt/sources.list.d/kubernetes.list
+	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+	sudo apt-get update
+	sudo apt-get install -y kubectl
 
 workplace-init:
 	./workplace_init.sh
@@ -267,6 +356,52 @@ init:
 
 init_simple:
 	./init_simple.sh
+
+
+kube-dashboard-normal-install:
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+kube-dashboard-insecure-install:
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
+	echo possible to grant admin via  kubectl create -f ~/dotfiles/docker/k8s/dashboard-admin.yaml
+	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
+
+
+gnome-dropdown-terminal:
+	rm -rf /tmp/gnome-dropdown-terminal
+	git clone https://github.com/zzrough/gs-extensions-drop-down-terminal /tmp/gnome-dropdown-terminal
+	mv /tmp/gnome-dropdown-terminal/drop-down-terminal@gs-extensions.zzrough.org ~/.local/share/gnome-shell/extensions/drop-down-terminal@gs-extensions.zzrough.org
+
+gnome-dash-to-dock:
+	rm -rf /tmp/dash-to-dock
+	git clone https://github.com/micheleg/dash-to-dock.git /tmp/dash-to-dock
+	cd /tmp/dash-to-dock && make && make install
+
+gnome-unite-shell:
+	rm -rf /tmp/gnome-unite-shell
+	git clone https://github.com/hardpixel/unite-shell.git /tmp/gnome-unite-shell
+	mv /tmp/gnome-unite-shell/unite@hardpixel.eu ~/.local/share/gnome-shell/extensions/unite@hardpixel.eu
+
+gnome-shell-system-monitor:
+	sudo apt-get install gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
+	rm -rf /tmp/gnome-shell-system-monitor-applet
+	git clone https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet.git /tmp/gnome-shell-system-monitor-applet
+	mv /tmp/gnome-shell-system-monitor-applet/system-monitor@paradoxxx.zero.gmail.com ~/.local/share/gnome-shell/extensions/system-monitor@paradoxxx.zero.gmail.com
+
+gnome-shell-extension-timezone:
+	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
+	gnome-shell-extension-tool -e timezone@jwendell
+
+zsh-desktop-notify:
+#	git clone git@github.com:marzocchi/zsh-notify.git ~/.oh-my-zsh/custom/plugins/notify
+	git clone https://github.com/t413/zsh-background-notify ~/.oh-my-zsh/custom/zsh-background-notify
+
+zsh-fzf:
+	git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
+	~/.oh-my-zsh/custom/plugins/fzf/install --bin
+	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
+	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my
+
 ```
 
 
