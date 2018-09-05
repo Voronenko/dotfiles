@@ -24,6 +24,7 @@ install-console-fzf:
 	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz
 	tar -xvzf /tmp/fzf.tar.gz -C /tmp
 	cp /tmp/fzf ~/dotfiles/docker
+	echo "Consider running make zsh-fzf to install zsh shell integration"
 
 # https://github.com/so-fancy/diff-so-fancy
 install-console-diffsofancy:
@@ -152,4 +153,4 @@ zsh-fzf:
 	git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
 	~/.oh-my-zsh/custom/plugins/fzf/install --bin
 	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
-	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my
+	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my-zsh/custom/plugins/fzf-zsh
