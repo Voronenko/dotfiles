@@ -231,6 +231,8 @@ and few more:
 
 `install-console-fzf` - A command-line fuzzy finder  https://github.com/junegunn/fzf , which extremely cool integrates into the shell ctrl-R, giving a nicier preview. I mostly use it in ctrl-R fashion, but interactive file finder is also used from time to time, followed by ctrl+O - open in vscode
 
+In order to configure zsh integration - `zsh-fzh` action of the makefile.
+
 `install-console-diffsofancy` - for me, better diff-er for git   https://github.com/so-fancy/diff-so-fancy
 
 `install-console-fd` - quickier file finder (kind of fzf), syntax: fd PATTERN instead of find -iname '*PATTERN*'.  https://github.com/sharkdp/fd
