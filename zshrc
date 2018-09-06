@@ -18,6 +18,11 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     setopt xtrace prompt_subst
 fi
 
+if [ -f /.dockerenv ]; then
+    ZSH_IN_DOCKER=true
+fi
+
+
 # custom completion scripts
 fpath=($HOME/dotfiles/completions $fpath)
 
