@@ -1,11 +1,18 @@
 #!/bin/bash
 
 # curl -sSL http://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
-# ./bootstrap.sh  <optional: simple | full>
+# ./bootstrap.sh  <optional: simple | full | docker>
 
 set -e
 
-if [ "$(id -u)" == "0" ]; then
+SUDO=sudo
+
+if [ "$1" == "docker" ]; then
+SUDO=""
+EXTRA_PACKAGES=sudo
+fi
+
+if [ "$(id -u)" == "0" ] && [ "$1" != "docker" ]; then
 echo "Installation must NOT be done under sudo"
 echo "use your regular user account"
 exit 1
@@ -22,7 +29,7 @@ else
     exit 1
 fi
 
-sudo $pkgmanager -y install git curl
+$SUDO $pkgmanager -y install git curl nano $EXTRA_PACKAGES
 
 if [ "$1" == "full" ]; then
 
@@ -63,10 +70,14 @@ if [ "$1" == "full" ]; then
 
 fi
 
+if [ "$1" != "docker" ]; then
+
 echo "ssh-agent:"
 eval "$(ssh-agent)"
 
-if [ "$1" == "simple" ]; then
+fi
+
+if [ "$1" == "simple" ] || [ "$1" == "docker" ]; then
   git clone https://github.com/Voronenko/dotfiles.git
 else
   git clone https://github.com/Voronenko/dotfiles.git
@@ -81,7 +92,7 @@ fi
 
 cd dotfiles
 
-if [ "$1" == "simple" ]; then
+if [ "$1" == "simple" ] || [ "$1" == "docker" ] ; then
   ./init_simple.sh
 else
   ./init.sh
