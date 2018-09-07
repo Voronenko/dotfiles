@@ -241,9 +241,7 @@ source ${HOME}/dotfiles/completions/gcloud_completion.zsh
 
 fi
 
-if type "docker" > /dev/null; then
-  export PATH=$PATH:${HOME}/dotfiles/docker
-fi
+export PATH=$PATH:${HOME}/dotfiles/docker
 
 if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
