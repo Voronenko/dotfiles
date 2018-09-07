@@ -9,7 +9,7 @@ SUDO=sudo
 
 if [ "$1" == "docker" ]; then
 SUDO=""
-EXTRA_PACKAGES=sudo
+EXTRA_PACKAGES=sudo less
 fi
 
 if [ "$(id -u)" == "0" ] && [ "$1" != "docker" ]; then
