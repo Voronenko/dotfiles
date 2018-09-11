@@ -8,7 +8,7 @@
 preferred_shell=${1-DEFAULT}
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc ruby-version selected_editor vimrc zshrc"    # list of files/folders to symlink in homedir
+files="bashrc gitconfig ruby-version selected_editor vimrc zshrc oh-my-zsh"    # list of files/folders to symlink in homedir
 
 ##########
 

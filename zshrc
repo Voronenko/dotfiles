@@ -18,6 +18,11 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     setopt xtrace prompt_subst
 fi
 
+if [ -f /.dockerenv ]; then
+    ZSH_IN_DOCKER=true
+fi
+
+
 # custom completion scripts
 fpath=($HOME/dotfiles/completions $fpath)
 
@@ -64,7 +69,7 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(composer docker-compose kubectl fzf-zsh) #shrink-path for fish like
+plugins=(composer docker-compose kubectl fzf-zsh) 
 
 source $ZSH/oh-my-zsh.sh
 
@@ -236,9 +241,7 @@ source ${HOME}/dotfiles/completions/gcloud_completion.zsh
 
 fi
 
-if type "docker" > /dev/null; then
-  export PATH=$PATH:${HOME}/dotfiles/docker
-fi
+export PATH=$PATH:${HOME}/dotfiles/docker
 
 if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
@@ -367,7 +370,13 @@ fi
 if [[ -n $SSH_CONNECTION ]]; then
 echo " .... remote session `echo $USER`@`hostname` .... "
 #PROMPT="%{$fg_bold[yellow]%}⇕ ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)"
-PROMPT=$'%{$fg[yellow]%}┌%{$fg_bold[yellow]%}[⇕]%{$reset_color%}$fg[yellow]%}[%{$fg[cyan]%}%c%{$reset_color%}%{$fg[yellow]%}]> %{$(git_prompt_info)%}%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])
+PROMPT=$'%{$fg[yellow]%}┌%{$fg_bold[yellow]%}⇕%{$reset_color%}$fg[yellow]%}[%{$fg[cyan]%}%c%{$reset_color%}%{$fg[yellow]%}]> %{$(git_prompt_info)%}%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])
+%{$fg[yellow]%}└──${ret_status}%{$reset_color%}'
+PS2=$' %{$fg[green]%}|>%{$reset_color%} '
+
+elif [[ -f /.dockerenv ]]; then
+
+PROMPT=$'%{$fg[yellow]%}┌%{$fg_bold[yellow]%}⭕ %{$reset_color%}$fg[yellow]%}[%{$fg[cyan]%}%c%{$reset_color%}%{$fg[yellow]%}]> %{$(git_prompt_info)%}%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])
 %{$fg[yellow]%}└──${ret_status}%{$reset_color%}'
 PS2=$' %{$fg[green]%}|>%{$reset_color%} '
 

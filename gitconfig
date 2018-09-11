@@ -4,6 +4,7 @@
 	signingkey = F262FB038EFB3A88
 [core]
 	autocrlf = input
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
@@ -28,3 +29,17 @@
        show = diff-so-fancy | less --tabs=1,5 -RFX
 [gpg]
 	program = gpg2
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
