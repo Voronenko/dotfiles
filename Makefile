@@ -46,6 +46,12 @@ install-console-glances:
 install-console-tldr:
 	npm install -g tldr
 
+install-console-toggle-cli:
+	mkdir -p ~/apps
+	git clone git@github.com:drobertadams/toggl-cli.git ~/apps/toggle-cli
+	ln -s ~/apps/toggle-cli/toggl.sh ~/dotfiles/docker/toggl
+	chmod +x ~/dotfiles/docker/toggl
+
 install-console-ncdu:
 	sudo apt-get install ncdu
 
