@@ -88,6 +88,13 @@ eval "$(direnv hook zsh)"
 fi
 ```
 
+Quick note on getting "merged" environments: placing `source_env` directive into `.envrc`
+allows that effect. In other case, other environment variables will be uploaded.
+
+
+```
+source_env ..
+```
 
 
 # Gitflow fun?
