@@ -160,3 +160,10 @@ zsh-fzf:
 	~/.oh-my-zsh/custom/plugins/fzf/install --bin
 	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
 	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my-zsh/custom/plugins/fzf-zsh
+
+terraform-ing:
+	gem install terraforming
+
+terraform-docs:
+	wget -O ~/dotfiles/docker/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
+	chmod +x ~/dotfiles/docker/terraform-docs
