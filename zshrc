@@ -66,10 +66,19 @@ ZSH_THEME="robbyrussell"
 # yyyy-mm-dd
 # HIST_STAMPS="mm/dd/yyyy"
 
+# notifications
+bgnotify_threshold=4  ## set your own notification threshold
+
+function notify_formatted {
+  ## $1=exit_status, $2=command, $3=elapsed_time
+  [ $1 -eq 0 ] && title="Completed" || title="Failure"
+  bgnotify "$title -- after $3 s" "$2";
+}
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(composer docker-compose kubectl fzf-zsh) 
+plugins=(composer docker-compose kubectl fzf-zsh bgnotify) 
 
 source $ZSH/oh-my-zsh.sh
 
@@ -79,18 +88,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
 # export MANPATH="/usr/local/man:$MANPATH"
-
-# notifications
-if [[ -d $HOME/.oh-my-zsh/custom/zsh-background-notify ]]; then
-bgnotify_threshold=4  ## set your own notification threshold
-
-function notify_formatted {
-  ## $1=exit_status, $2=command, $3=elapsed_time
-  [ $1 -eq 0 ] && title="Completed" || title="Failure"
-  bgnotify "$title -- after $3 s" "$2";
-}
-source $HOME/.oh-my-zsh/custom/zsh-background-notify
-fi
 
 # DETECT CHRUBY support
 

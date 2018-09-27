@@ -151,10 +151,6 @@ gnome-shell-extension-timezone:
 	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
 	gnome-shell-extension-tool -e timezone@jwendell
 
-zsh-desktop-notify:
-#	git clone git@github.com:marzocchi/zsh-notify.git ~/.oh-my-zsh/custom/plugins/notify
-	git clone https://github.com/t413/zsh-background-notify ~/.oh-my-zsh/custom/zsh-background-notify
-
 zsh-fzf:
 	git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
 	~/.oh-my-zsh/custom/plugins/fzf/install --bin
