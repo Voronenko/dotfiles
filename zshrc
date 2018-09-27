@@ -159,6 +159,7 @@ fi
 if [[ -f /usr/bin/direnv ]]; then
 # direnv
 eval "$(direnv hook zsh)"
+alias envrc_here='cp ~/dotfiles/direnv/derived.env ./.envrc'
 fi
 
 # Start built-in LAMP server in current directory
@@ -170,6 +171,9 @@ alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 
 
 
 if [[ -f /usr/bin/docker ]]; then
+
+alias docker_offload='export DOCKER_HOST="tcp://192.168.2.2:2375"'
+alias docker_on='unset DOCKER_HOST && sudo service docker start'
 
 export FORCE_IMAGE_REMOVAL=1
 export MINIMUM_IMAGES_TO_SAVE=3
