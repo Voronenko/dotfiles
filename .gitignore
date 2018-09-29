@@ -8,6 +8,7 @@ docker/stern
 docker/terraform-docs
 docker/fzf
 docker/toggl
+docker/vault
 oh-my-zsh
 startup.log
 zshrc.local

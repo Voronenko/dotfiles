@@ -163,3 +163,7 @@ terraform-ing:
 terraform-docs:
 	wget -O ~/dotfiles/docker/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
 	chmod +x ~/dotfiles/docker/terraform-docs
+
+hashicorp-vault:
+	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/0.11.1/vault_0.11.1_linux_amd64.zip"
+	cd ~/dotfiles/docker/ && unzip vault.zip && chmod +x vault && rm vault.zip
