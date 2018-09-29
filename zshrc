@@ -346,6 +346,12 @@ export PATH=$PATH:/opt/gradle/gradle-3.3/bin
 
 fi
 
+if [[ -d ~/apps/hashi_vault_utils ]]; then
+
+export PATH=$PATH:~/apps/hashi_vault_utils
+
+fi
+
 # /Java development
 
 
