@@ -10,6 +10,7 @@ docker/fzf
 docker/toggl
 docker/vault
 docker/terraform
+docker/gimme
 oh-my-zsh
 startup.log
 zshrc.local
