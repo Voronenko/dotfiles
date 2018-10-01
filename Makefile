@@ -167,3 +167,8 @@ terraform-docs:
 hashicorp-vault:
 	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/0.11.1/vault_0.11.1_linux_amd64.zip"
 	cd ~/dotfiles/docker/ && unzip vault.zip && chmod +x vault && rm vault.zip
+
+hashicorp-terraform:
+	wget -O ~/dotfiles/docker/terraform.zip "https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip"
+	cd ~/dotfiles/docker/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+

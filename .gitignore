@@ -9,6 +9,7 @@ docker/terraform-docs
 docker/fzf
 docker/toggl
 docker/vault
+docker/terraform
 oh-my-zsh
 startup.log
 zshrc.local
