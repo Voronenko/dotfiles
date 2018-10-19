@@ -409,7 +409,7 @@ fi
 
 # cmd aliases
 
-alias rsync_mirror='rsync_current() { [[ -n $1 ]] && rsync --progress -azh $PWD $1:$PWD };rsync_current'
+alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] && rsync --progress -azh $PWD $1:$PARENTDIR };dsfdscfdsfdsf'
 
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
