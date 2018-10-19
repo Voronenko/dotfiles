@@ -124,6 +124,8 @@ if [[ -f /usr/bin/tmux ]]; then
 if [[ -d /mnt/c/Windows/ ]]; then
 # Holy shit, I am on windows linux subsystem
 
+unsetopt BG_NICE
+
 function onproject() {
   TMUXMODE=$2 tmuxinator ${1}_env
 }

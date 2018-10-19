@@ -175,3 +175,9 @@ install-hashicorp-terraform:
 install-go-gimme:
 	curl -sL -o ~/dotfiles/docker/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
 	chmod +x ~/dotfiles/docker/gimme
+
+go-rename:
+	go get golang.org/x/tools/cmd/gorename
+
+go-eg:
+	go get golang.org/x/tools/cmd/eg
