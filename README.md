@@ -218,6 +218,22 @@ fi
 
 alias 'startdot'='xdg-open .'
 
+
+# Windows WSL pervertions
+
+If you want ssh service to be auto started on windows boot, you can create Windows Task Scheduler/Action -
+
+```
+Run when system startup
+
+Run whether user is logged on or not. Save Password !!
+
+%windir%\System32\bash.exe
+
+-c "sudo service ssh start"
+```
+
+
 # Anything locally specific?
 
 Add .zshrc.local - it gets parsed.
