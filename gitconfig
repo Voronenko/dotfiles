@@ -19,7 +19,7 @@
 	latest = pull --recurse-submodules
         clean-on-master = "!git checkout master && git branch --merged | grep -v 'develop' | grep -v '\\*' | xargs -n 1 git branch -d"
         clean-on-develop = "!git checkout develop && git branch --merged | grep -v 'master' | grep -v '\\*' | xargs -n 1 git branch -d"
-        clean-hard = "!echo enter for git clean -dfx && read && git clean -dfx"
+        clean-hard-dfx = "clean -dfx"
         fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 [push]
 	default = current
