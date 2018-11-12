@@ -378,6 +378,9 @@ fi
 # Load cd helper
 if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 
+# Load aws helper
+if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_zsh_completer.sh; fi
+
 # Windows syntethic sugar
 
 alias 'startdot'='xdg-open .'
