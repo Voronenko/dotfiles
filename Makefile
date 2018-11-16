@@ -181,3 +181,9 @@ go-rename:
 
 go-eg:
 	go get golang.org/x/tools/cmd/eg
+
+install-aws-key-importer:
+	wget -O ~/dotfiles/docker/aws-key-importer https://github.com/Voronenko/aws-key-importer/releases/download/0.2.0/aws-key-importer-linux-amd64
+	chmod +x ~/dotfiles/docker/aws-key-importer
+
+

@@ -11,6 +11,7 @@ docker/toggl
 docker/vault
 docker/terraform
 docker/gimme
+docker/aws-key-importer
 oh-my-zsh
 startup.log
 zshrc.local
