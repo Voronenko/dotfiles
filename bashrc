@@ -246,4 +246,5 @@ fi
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
 
 #[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+#complete -C ~/dotfiles/docker/vault vault
 

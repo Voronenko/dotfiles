@@ -5,6 +5,7 @@ ZSH=$HOME/.oh-my-zsh
 ### Do we run interactively?
 [[ $- != *i* ]] && return
 
+autoload -U +X bashcompinit && bashcompinit
 ### Do we profile ?
 
 # Credit: https://kev.inburke.com/kevin/profiling-zsh-startup-time/
@@ -209,6 +210,10 @@ if type "gcloud" > /dev/null; then
 source ${HOME}/dotfiles/completions/gcloud_completion.zsh
 
 
+fi
+
+if [[ -f ~/dotfiles/docker/vault ]]; then
+  complete -o nospace -C /home/slavko/dotfiles/docker/vault vault
 fi
 
 export PATH=$PATH:${HOME}/dotfiles/docker
@@ -423,4 +428,5 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
+
 

@@ -165,11 +165,11 @@ install-terraform-docs:
 	chmod +x ~/dotfiles/docker/terraform-docs
 
 install-hashicorp-vault:
-	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/0.11.1/vault_0.11.1_linux_amd64.zip"
+	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/0.11.5/vault_0.11.5_linux_amd64.zip"
 	cd ~/dotfiles/docker/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/docker/terraform.zip "https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip"
+	wget -O ~/dotfiles/docker/terraform.zip "https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip"
 	cd ~/dotfiles/docker/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-go-gimme:
