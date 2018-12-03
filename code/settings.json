@@ -17,5 +17,6 @@
   "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
   "[jsonnet]": {
 
-    }
+    },
+    "editor.mouseWheelZoom": true
 }
