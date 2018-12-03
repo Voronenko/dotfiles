@@ -5,7 +5,6 @@ ZSH=$HOME/.oh-my-zsh
 ### Do we run interactively?
 [[ $- != *i* ]] && return
 
-autoload -U +X bashcompinit && bashcompinit
 ### Do we profile ?
 
 # Credit: https://kev.inburke.com/kevin/profiling-zsh-startup-time/
@@ -18,6 +17,10 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     exec 3>&2 2>"${XDG_CACHE_HOME:-$HOME/tmp}/zsh_statup.$$"
     setopt xtrace prompt_subst
 fi
+
+# completion sugar
+autoload -U +X bashcompinit && bashcompinit
+autoload -Uz compinit && compinit -i
 
 if [ -f /.dockerenv ]; then
     ZSH_IN_DOCKER=true
@@ -46,7 +49,7 @@ function notify_formatted {
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(composer docker-compose kubectl fzf-zsh bgnotify) 
+plugins=(composer docker-compose kubectl fzf-zsh bgnotify)
 
 source $ZSH/oh-my-zsh.sh
 

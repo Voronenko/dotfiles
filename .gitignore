@@ -12,6 +12,8 @@ docker/vault
 docker/terraform
 docker/gimme
 docker/aws-key-importer
+docker/docker-machine
+docker/postman
 oh-my-zsh
 startup.log
 zshrc.local

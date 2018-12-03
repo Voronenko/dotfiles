@@ -19,6 +19,10 @@ install-console-prettytyping:
 	wget -O ~/dotfiles/docker/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
 	chmod +x ~/dotfiles/docker/prettyping
 
+install-docker-machine:
+	wget -O ~/dotfiles/docker/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
+	chmod +x ~/dotfiles/docker/docker-machine
+
 # https://github.com/junegunn/fzf
 install-console-fzf:
 	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz
