@@ -1,0 +1,16 @@
+#compdef set-aws-profile
+
+_set-aws-profile() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments '1: :->csi'
+
+    case $state in
+    csi)
+      _arguments "1: :($(aws-profiles))"
+    ;;
+    esac
+}
+
+_set-aws-profile "$@"
