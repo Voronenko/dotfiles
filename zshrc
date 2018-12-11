@@ -399,6 +399,8 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
   set-aws-profile() {
     local aws_profile=$1
     set -x
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
     export AWS_PROFILE=${aws_profile}
     set +x
   }
