@@ -14,6 +14,7 @@ docker/gimme
 docker/aws-key-importer
 docker/docker-machine
 docker/postman
+docker/myaws
 oh-my-zsh
 startup.log
 zshrc.local

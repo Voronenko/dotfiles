@@ -190,4 +190,7 @@ install-aws-key-importer:
 	wget -O ~/dotfiles/docker/aws-key-importer https://github.com/Voronenko/aws-key-importer/releases/download/0.2.0/aws-key-importer-linux-amd64
 	chmod +x ~/dotfiles/docker/aws-key-importer
 
+install-aws-myaws:
+	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.3/myaws_v0.3.3_linux_amd64.tar.gz
+	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/docker
 
