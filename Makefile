@@ -168,8 +168,13 @@ install-terraform-docs:
 	wget -O ~/dotfiles/docker/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
 	chmod +x ~/dotfiles/docker/terraform-docs
 
+install-terraform-virtualbox-bridge:
+	go get github.com/terra-farm/terraform-provider-virtualbox
+	mkdir -p ~/.terraform.d/plugins
+	cp $(GOPATH)/bin/terraform-provider-virtualbox ~/.terraform.d/plugins
+
 install-hashicorp-vault:
-	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/0.11.5/vault_0.11.5_linux_amd64.zip"
+	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/1.0.1/vault_1.0.1_linux_amd64.zip"
 	cd ~/dotfiles/docker/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
 install-hashicorp-terraform:
