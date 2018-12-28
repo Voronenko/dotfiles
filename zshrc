@@ -9,7 +9,7 @@ ZSH=$HOME/.oh-my-zsh
 
 # Credit: https://kev.inburke.com/kevin/profiling-zsh-startup-time/
 
-PROFILE_STARTUP=true
+PROFILE_STARTUP=false
 if [[ "$PROFILE_STARTUP" == true ]]; then
     zmodload zsh/zprof # Output load-time statistics
     # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
