@@ -194,3 +194,6 @@ install-aws-myaws:
 	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.3/myaws_v0.3.3_linux_amd64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/docker
 
+install-ovh-nova:
+	sudo pip install python-openstackclient
+

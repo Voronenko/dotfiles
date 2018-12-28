@@ -9,7 +9,7 @@ ZSH=$HOME/.oh-my-zsh
 
 # Credit: https://kev.inburke.com/kevin/profiling-zsh-startup-time/
 
-PROFILE_STARTUP=false
+PROFILE_STARTUP=true
 if [[ "$PROFILE_STARTUP" == true ]]; then
     zmodload zsh/zprof # Output load-time statistics
     # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
@@ -17,6 +17,9 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     exec 3>&2 2>"${XDG_CACHE_HOME:-$HOME/tmp}/zsh_statup.$$"
     setopt xtrace prompt_subst
 fi
+
+# autoload zsh async
+source ${HOME}/dotfiles/helpers/async.zsh
 
 # completion sugar
 autoload -U +X bashcompinit && bashcompinit
