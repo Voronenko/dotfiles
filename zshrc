@@ -125,7 +125,6 @@ fi
 
 if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
 # aliases
-alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
 alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
 fi
 

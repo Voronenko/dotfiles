@@ -2,6 +2,14 @@
 # vim: tabstop=2 shiftwidth=2 expandtab
 """Start and use ssh-agent and load identities as necessary.
 
+=================zsh=======================
+if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
+# aliases
+alias ssh='export LC_ALL=C;~/dotfiles/ssh/ssh-ident'
+alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
+fi
+===============/zsh=======================
+
 Use this script to start ssh-agents and load ssh keys on demand,
 when they are first needed.
 
