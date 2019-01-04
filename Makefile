@@ -159,6 +159,7 @@ gnome-shell-extension-timezone:
 	gnome-shell-extension-tool -e timezone@jwendell
 
 zsh-fzf:
+	rm -rf ~/.oh-my-zsh/custom/plugins/fzf || true
 	git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
 	~/.oh-my-zsh/custom/plugins/fzf/install --bin
 	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
