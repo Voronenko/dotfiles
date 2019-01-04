@@ -13,7 +13,7 @@ else
     exit 1
 fi
 
-sudo $pkgmanager -y install curl make
+sudo $pkgmanager -y install curl make uzip
 
 curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/bootstrap.sh > ~/bootstrap.sh
 curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/bashrc > ~/.bashrc
