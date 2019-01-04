@@ -11,6 +11,23 @@ So, to recap, the install script will:
 * Check to see if zsh is installed, if it isn't, try to install it.
 * If zsh is installed, run a chsh -s to set it as the default shell.
 
+TLDR;
+
+Get basic zshrc + bashrc right now and optional bootstrap.sh for the future
+
+```
+
+curl -sSL http://bit.ly/getmyshell > getmyshell.sh && chmod +x getmyshell.sh && ./getmyshell.sh
+```
+
+OR http://bit.ly/sadotfiles for bootstrap.sh only
+
+```
+curl -sSL http://bit.ly/sadotfiles > bootstrap.sh && chmod +x bootstrap.sh
+./bootstrap.sh  <optional: simple | full | docker>
+
+```
+
 
 # Folder specific SSH identity for git
 
