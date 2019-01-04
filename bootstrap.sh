@@ -95,7 +95,7 @@ fi
 cd dotfiles
 
 if [ "$1" == "simple" ] || [ "$1" == "docker" ] ; then
-  ./init_simple.sh
+  ./init_simple.sh $PREFERRED_SHELL
 else
   ./init.sh
 fi

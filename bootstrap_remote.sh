@@ -19,5 +19,5 @@ curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/bootstrap.
 curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/bashrc > ~/.bashrc
 curl -sSL https://raw.githubusercontent.com/Voronenko/dotfiles/master/zshrc > ~/.zshrc
 touch ~/.zshrc.local
-touch ~/bashrc.local
+touch ~/.bashrc.local
 chmod +x ~/bootstrap.sh
