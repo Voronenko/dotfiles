@@ -17,13 +17,13 @@ Get basic zshrc + bashrc right now and optional bootstrap.sh for the future
 
 ```
 
-curl -sSL http://bit.ly/getmyshell > getmyshell.sh && chmod +x getmyshell.sh && ./getmyshell.sh
+curl -sSL https://bit.ly/getmyshell > getmyshell.sh && chmod +x getmyshell.sh && ./getmyshell.sh
 ```
 
-OR http://bit.ly/sadotfiles for bootstrap.sh only
+OR https://bit.ly/slavkodotfiles for bootstrap.sh only
 
 ```
-curl -sSL http://bit.ly/sadotfiles > bootstrap.sh && chmod +x bootstrap.sh
+curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 ./bootstrap.sh  <optional: simple | full | docker>
 
 ```
