@@ -1,3 +1,6 @@
+swiss-knife: install-console-prettytyping install-console-fzf install-console-diffsofancy install-docker-dry zsh-fzf install-hashicorp-terraform install-aws-key-importer
+	@echo OK
+
 install-cdci-gitlab-runner:
 	sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
 	sudo chmod +x /usr/local/bin/gitlab-runner

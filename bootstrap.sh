@@ -12,7 +12,9 @@ SUDO=""
 EXTRA_PACKAGES=sudo less
 fi
 
-if [ "$(id -u)" == "0" ] && [ "$1" != "docker" ]; then
+PREFERRED_SHELL=${2:-zsh}
+
+if [ "$(id -u)" == "0" ] && [ "$1" == "full" ]; then
 echo "Installation must NOT be done under sudo"
 echo "use your regular user account"
 exit 1
