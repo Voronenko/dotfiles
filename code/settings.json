@@ -18,5 +18,6 @@
   "[jsonnet]": {
 
     },
-    "editor.mouseWheelZoom": true
+    "editor.mouseWheelZoom": true,
+    "terminal.integrated.rendererType": "dom"
 }

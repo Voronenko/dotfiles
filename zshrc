@@ -107,7 +107,7 @@ function onproject() {
 else
 
 function onproject() {
-  TMUXMODE=$2 gnome-terminal -x tmuxinator ${1}_env &
+  TMUXMODE=$2 gnome-terminal --title="${1}" -x tmuxinator ${1}_env &
 }
 
 fi
