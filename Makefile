@@ -1,6 +1,14 @@
 swiss-knife: install-console-prettytyping install-console-fzf install-console-diffsofancy install-docker-dry zsh-fzf install-hashicorp-terraform install-aws-key-importer
 	@echo OK
 
+
+# ZSH
+
+# /ZSH
+
+
+# CD CI local runners
+
 install-cdci-gitlab-runner:
 	sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
 	sudo chmod +x /usr/local/bin/gitlab-runner
@@ -14,6 +22,11 @@ install-cdci-gitlab-runner-service:
 install-cdci-circleci-runner:
 	curl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh --fail --show-error | sudo bash
 
+# /CD CI local runners
+
+
+# CONSOLE TOOLS
+
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
@@ -21,10 +34,6 @@ install-console-bat:
 install-console-prettytyping:
 	wget -O ~/dotfiles/docker/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
 	chmod +x ~/dotfiles/docker/prettyping
-
-install-docker-machine:
-	wget -O ~/dotfiles/docker/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
-	chmod +x ~/dotfiles/docker/docker-machine
 
 # https://github.com/junegunn/fzf
 install-console-fzf:
@@ -54,14 +63,47 @@ install-console-glances:
 install-console-tldr:
 	npm install -g tldr
 
-install-console-toggle-cli:
+install-console-ncdu:
+	sudo apt-get install ncdu
+
+# /CONSOLE TOOLS
+
+# WORKSPACE TOOLS
+
+install-workspace-github-release:
+	mkdir -p /tmp/gh-release
+	wget -O /tmp/gh-release/linux-amd64-github-release.tar.bz2 "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2"
+	cd /tmp/gh-release && tar jxf linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
+	rm -rf /tmp/gh-release
+
+install-workspace-toggle-cli:
 	mkdir -p ~/apps
 	git clone git@github.com:drobertadams/toggl-cli.git ~/apps/toggle-cli
 	ln -s ~/apps/toggle-cli/toggl.sh ~/dotfiles/docker/toggl
 	chmod +x ~/dotfiles/docker/toggl
 
-install-console-ncdu:
-	sudo apt-get install ncdu
+install-slack-term:
+	wget -O ~/dotfiles/docker/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64
+	chmod +x ~/dotfiles/docker/slack-term
+
+# /WORKSPACE TOOLS
+
+
+# DOKER TOOLS
+
+
+install-docker-machine:
+	wget -O ~/dotfiles/docker/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
+	chmod +x ~/dotfiles/docker/docker-machine
+
+install-docker-dry:
+	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
+	chmod +x ~/dotfiles/docker/dry
+
+# /DOKER TOOLS
+
+
+# KUBERNETES
 
 install-k8s-ksonnet:
 	wget -O /tmp/ks_linux_amd64.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.10.1/ks_0.10.1_linux_amd64.tar.gz
@@ -78,18 +120,8 @@ install-k8s-helm:
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/docker
 	rm -rf /tmp/helm
 
-install-docker-dry:
-	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
-	chmod +x ~/dotfiles/docker/dry
-
-install-deepmind-kapitan:
+install-k8s-deepmind-kapitan:
 	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
-
-install-github-release:
-	mkdir -p /tmp/gh-release
-	wget -O /tmp/gh-release/linux-amd64-github-release.tar.bz2 "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2"
-	cd /tmp/gh-release && tar jxf linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
-	rm -rf /tmp/gh-release
 
 install-k8s-heptio-authenticator-aws:
 	curl -o ~/dotfiles/docker/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
@@ -108,6 +140,16 @@ install-k8s-kubectl-ubuntu:
 	sudo apt-get update
 	sudo apt-get install -y kubectl
 
+kube-dashboard-normal-install:
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+kube-dashboard-insecure-install:
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
+	echo possible to grant admin via  kubectl create -f ~/dotfiles/docker/k8s/dashboard-admin.yaml
+	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
+
+# /KUBERNETES
+
 workplace-init:
 	./workplace_init.sh
 
@@ -124,14 +166,7 @@ init_simple:
 	./init_simple.sh
 
 
-kube-dashboard-normal-install:
-	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
-
-kube-dashboard-insecure-install:
-	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
-	echo possible to grant admin via  kubectl create -f ~/dotfiles/docker/k8s/dashboard-admin.yaml
-	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
-
+# GNOME specific extensions
 
 gnome-dropdown-terminal:
 	rm -rf /tmp/gnome-dropdown-terminal
@@ -158,12 +193,17 @@ gnome-shell-extension-timezone:
 	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
 	gnome-shell-extension-tool -e timezone@jwendell
 
+# /GNOME specific extensions
+
 zsh-fzf:
 	rm -rf ~/.oh-my-zsh/custom/plugins/fzf || true
 	git clone https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
 	~/.oh-my-zsh/custom/plugins/fzf/install --bin
 	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
 	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my-zsh/custom/plugins/fzf-zsh
+
+
+# TERRAFORM
 
 install-terraform-ing:
 	gem install terraforming
@@ -177,6 +217,10 @@ install-terraform-virtualbox-bridge:
 	mkdir -p ~/.terraform.d/plugins
 	cp $(GOPATH)/bin/terraform-provider-virtualbox ~/.terraform.d/plugins
 
+# /TERRAFORM
+
+
+# HASHICORP
 install-hashicorp-vault:
 	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/1.0.1/vault_1.0.1_linux_amd64.zip"
 	cd ~/dotfiles/docker/ && unzip vault.zip && chmod +x vault && rm vault.zip
@@ -184,6 +228,10 @@ install-hashicorp-vault:
 install-hashicorp-terraform:
 	wget -O ~/dotfiles/docker/terraform.zip "https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip"
 	cd ~/dotfiles/docker/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+
+#/HASHICORP
+
+# GO
 
 install-go-gimme:
 	curl -sL -o ~/dotfiles/docker/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
@@ -194,6 +242,10 @@ go-rename:
 
 go-eg:
 	go get golang.org/x/tools/cmd/eg
+
+# /GO
+
+# CLOUDS
 
 install-aws-key-importer:
 	wget -O ~/dotfiles/docker/aws-key-importer https://github.com/Voronenko/aws-key-importer/releases/download/0.2.0/aws-key-importer-linux-amd64
@@ -206,3 +258,4 @@ install-aws-myaws:
 install-ovh-nova:
 	sudo pip install python-openstackclient
 
+# / CLOUDS
