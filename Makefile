@@ -77,10 +77,7 @@ install-workspace-github-release:
 	rm -rf /tmp/gh-release
 
 install-workspace-toggle-cli:
-	mkdir -p ~/apps
-	git clone git@github.com:drobertadams/toggl-cli.git ~/apps/toggle-cli
-	ln -s ~/apps/toggle-cli/toggl.sh ~/dotfiles/docker/toggl
-	chmod +x ~/dotfiles/docker/toggl
+	sudo pip install togglCli
 
 install-slack-term:
 	wget -O ~/dotfiles/docker/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64

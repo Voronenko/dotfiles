@@ -404,6 +404,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     unset AWS_ACCESS_KEY_ID
     unset AWS_SECRET_ACCESS_KEY
     export AWS_PROFILE=${aws_profile}
+    export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
     set +x
   }
 
@@ -417,6 +418,8 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     set +x
+    export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY 
   }
 
 fi
