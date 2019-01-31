@@ -217,20 +217,20 @@ source ${HOME}/dotfiles/completions/gcloud_completion.zsh
 
 fi
 
-if [[ -f ~/dotfiles/docker/vault ]]; then
-  complete -o nospace -C /home/slavko/dotfiles/docker/vault vault
+if [[ -f ~/dotfiles/bin/vault ]]; then
+  complete -o nospace -C /home/slavko/dotfiles/bin/vault vault
 fi
 
-export PATH=$PATH:${HOME}/dotfiles/docker
+export PATH=$PATH:${HOME}/dotfiles/bin
 
 if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
-  export PATH=$PATH:${HOME}/dotfiles/docker
+  export PATH=$PATH:${HOME}/dotfiles/bin
 
 # heavy init
 function onkubernetes() {
-  source ${HOME}/dotfiles/docker/kube-ps1.sh
-  source ${HOME}/dotfiles/docker/gcloud-ps1.sh
+  source ${HOME}/dotfiles/bin/kube-ps1.sh
+  source ${HOME}/dotfiles/bin/gcloud-ps1.sh
   RPROMPT='$(kube_ps1)$(gcloud_ps1)'
 }
 
@@ -419,7 +419,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     set +x
     export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY 
+    export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   }
 
 fi
@@ -449,7 +449,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 fi
 
 
-if [[ -f ~/dotfiles/docker/prettyping ]]; then
+if [[ -f ~/dotfiles/bin/prettyping ]]; then
 alias pping='prettyping --nolegend'
 fi
 

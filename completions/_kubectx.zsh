@@ -1,6 +1,6 @@
 #compdef kubectx kctx=kubectx
 
-local KUBECTX="${HOME}/dotfiles/docker/kubectx"
+local KUBECTX="${HOME}/dotfiles/bin/kubectx"
 PREV=""
 if [ -f "$KUBECTX" ]; then
     # show '-' only if there's a saved previous context
