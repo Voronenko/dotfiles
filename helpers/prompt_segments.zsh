@@ -2,6 +2,12 @@
 # Prompt Segment Definitions
 ################################################################
 
+# POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
+# POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
+# POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
+# POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
+
+
 ################################################################
 # Anaconda Environment
 prompt_anaconda() {
@@ -72,6 +78,20 @@ prompt_newline() {
     "NONE" "NONE" "${newline}"
   POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=$lws
 }
+
+prompt_mybr() {
+  local lws newline
+  [[ "$1" == "right" ]] && return
+  newline=$"\n%{$fg[yellow]%}└──${ret_status}%{$reset_color%}"
+  lws=$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS
+  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
+  "$1_prompt_segment" \
+    "$0" \
+    "$2" \
+    "NONE" "NONE" "${newline}"
+  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=$lws
+}
+
 
 ################################################################
 # Segment that indicates usage level of current partition.
