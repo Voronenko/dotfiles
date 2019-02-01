@@ -21,6 +21,8 @@ fi
 # autoload zsh async
 source ${HOME}/dotfiles/helpers/async.zsh
 
+#source ${HOME}/dotfiles/helpers/powerline_prompt.zsh
+
 # completion sugar
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -i
@@ -473,5 +475,3 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
-
-
