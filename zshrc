@@ -21,7 +21,7 @@ fi
 # autoload zsh async
 source ${HOME}/dotfiles/helpers/async.zsh
 
-#source ${HOME}/dotfiles/helpers/powerline_prompt.zsh
+source ${HOME}/dotfiles/helpers/powerline_prompt.zsh
 
 # completion sugar
 autoload -U +X bashcompinit && bashcompinit

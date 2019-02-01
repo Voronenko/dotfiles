@@ -5,27 +5,11 @@
 #zstyle ':vcs_info:*+*:*' debug true
 #set -o xtrace
 
-################################################################
-# Source icon functions
-################################################################
-
 source "${HOME}/dotfiles/helpers/icons.zsh"
-
-################################################################
-# Source utility functions
-################################################################
 
 source "${HOME}/dotfiles/helpers/utilities.zsh"
 
-################################################################
-# Source color functions
-################################################################
-
 source "${HOME}/dotfiles/helpers/colors.zsh"
-
-################################################################
-# Color Scheme
-################################################################
 
 DEFAULT_COLOR=black
 DEFAULT_COLOR_INVERTED=white
@@ -340,17 +324,6 @@ $(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
     RPROMPT="${RPROMPT_PREFIX}"'%f%b%k$(build_right_prompt)%{$reset_color%}'"${RPROMPT_SUFFIX}"
   fi
 
-local NEWLINE='
-'
-
-  if [[ $POWERLEVEL9K_PROMPT_ADD_NEWLINE == true ]]; then
-    NEWLINES=""
-    repeat ${POWERLEVEL9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=$NEWLINE }
-    PROMPT="$NEWLINES$PROMPT"
-  fi
-
-  # Allow iTerm integration to work
-  [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
 zle-keymap-select () {
@@ -379,31 +352,8 @@ prompt_powerlevel9k_setup() {
   # not initialized via promptinit.
   setopt noprompt{bang,cr,percent,sp,subst} "prompt${^prompt_opts[@]}"
 
-  # Display a warning if the terminal does not support 256 colors
-  termColors
-
-  # If the terminal `LANG` is set to `C`, this theme will not work at all.
-  if [[ $POWERLEVEL9K_IGNORE_TERM_LANG == false ]]; then
-      local term_lang
-      term_lang=$(echo $LANG)
-      if [[ $term_lang == 'C' ]]; then
-          print -P "\t%F{red}WARNING!%f Your terminal's 'LANG' is set to 'C', which breaks this theme!"
-          print -P "\t%F{red}WARNING!%f Please set your 'LANG' to a UTF-8 language, like 'en_US.UTF-8'"
-          print -P "\t%F{red}WARNING!%f _before_ loading this theme in your \~\.zshrc. Putting"
-          print -P "\t%F{red}WARNING!%f %F{blue}export LANG=\"en_US.UTF-8\"%f at the top of your \~\/.zshrc is sufficient."
-      fi
-  fi
-
   defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
   defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-
-  # Display a warning if deprecated segments are in use.
-  typeset -AH deprecated_segments
-  # old => new
-  deprecated_segments=(
-    'longstatus'      'status'
-  )
-  print_deprecation_warning deprecated_segments
 
   # initialize colors
   autoload -U colors && colors
