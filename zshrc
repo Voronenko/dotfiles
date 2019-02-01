@@ -457,6 +457,13 @@ fi
 
 alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] && rsync --progress -azh $PWD $1:$PARENTDIR };dsfdscfdsfdsf'
 
+# terminal shortcuts
+
+if type "toggl" > /dev/null; then
+  # bind ctrl-t to see currently tracked activity
+  bindkey -s "^t" "^Q toggl now^J"
+fi
+
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
 
