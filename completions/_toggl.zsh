@@ -1,18 +1,42 @@
 #compdef toggl
 
+__toggl-workspaces() {
+    toggl workspaces
+}
+
+__toggl-projects() {
+    toggl projects | awk '{ print $2 }'
+}
+
+__toggl-now() {
+    echo "''d1:20''"
+    echo "'`date '+%Y-%m-%d %H:%M:%S'`'"
+}
+
+__toggl-duration() {
+    echo "''d1:20''"
+}
+
+__toggl-recent-entries() {
+    toggl ls | grep @ | awk -F'@' '{print $1}'
+}
+
+
 _toggl-commands() {
   local -a commands
 
   commands=(
-    'add:creates a completed time entry'
+    'add: DESCR [:WORKSPACE] [@PROJECT | #PROJECT_ID] START_DATETIME (''d''DURATION | END_DATETIME) creates a completed time entry, DURATION = [[Hours:]Minutes:]Seconds'
+    'add: DESCR [:WORKSPACE] [@PROJECT | #PROJECT_ID] ''d''DURATION creates a completed time entry, with start time DURATION ago, DURATION = [[Hours:]Minutes:]Seconds'
     'clients:lists all clients'
-    'continue:restarts the last entry'
+    'continue: [from DATETIME | ''d''DURATION] restarts the last entry, DURATION = [[Hours:]Minutes:]Seconds'
+    'continue: DESCR [from DATETIME | ''d''DURATION] restarts the last entry matching DESCR'
     'ls:list recent time entries'
     'now:print what you''re working on now'
     'workspaces:lists all workspaces'
-    'projects:lists all projects'
+    'projects: [:WORKSPACE] lists all projects'
     'rm:delete a time entry by id'
-    'start:starts a new entry'
+    'start: DESCR [:WORKSPACE] [@PROJECT | #PROJECT_ID] [''d''DURATION | DATETIME] starts a new entry , DURATION = [[Hours:]Minutes:]Seconds'
     'stop:stops the current entry'
     'www:visits toggl.com'
   )
@@ -20,6 +44,7 @@ _toggl-commands() {
   _arguments -s : $nul_args && ret=0
   _describe -t commands 'toggl command' commands && ret=0
 }
+
 
 _toggl() {
   local -a nul_args
@@ -38,8 +63,30 @@ _toggl() {
     shift words
     (( CURRENT -- ))
     curcontext="${curcontext%:*:*}:toggl-$words[1]:"
-    _call_function ret _toggl-command
-  fi
+    case $words[1] in
+    add)
+      _arguments "2: :($(__toggl-workspaces))" \
+                 "3: :($(__toggl-projects))" \
+                 "4: :($(__toggl-now))" \
+                 "5: :($(__toggl-duration))"
+      ;;
+    start)
+      _arguments "2: :($(__toggl-workspaces))" \
+                 "3: :($(__toggl-projects))" \
+                 "4: :($(__toggl-now))"
+      ;;
+    stop)
+      _arguments "1: :($(__toggl-now))"
+      ;;
+    projects)
+      _arguments "1: :($(__toggl-workspaces))"
+      ;;
+    continue)
+      _arguments "1: :($(__toggl-recent-entries))"
+      ;;
+
+
+    esac  fi
 }
 
 _toggl "$@"

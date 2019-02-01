@@ -217,20 +217,20 @@ source ${HOME}/dotfiles/completions/gcloud_completion.zsh
 
 fi
 
-if [[ -f ~/dotfiles/docker/vault ]]; then
-  complete -o nospace -C /home/slavko/dotfiles/docker/vault vault
+if [[ -f ~/dotfiles/bin/vault ]]; then
+  complete -o nospace -C /home/slavko/dotfiles/bin/vault vault
 fi
 
-export PATH=$PATH:${HOME}/dotfiles/docker
+export PATH=$PATH:${HOME}/dotfiles/bin
 
 if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
-  export PATH=$PATH:${HOME}/dotfiles/docker
+  export PATH=$PATH:${HOME}/dotfiles/bin
 
 # heavy init
 function onkubernetes() {
-  source ${HOME}/dotfiles/docker/kube-ps1.sh
-  source ${HOME}/dotfiles/docker/gcloud-ps1.sh
+  source ${HOME}/dotfiles/bin/kube-ps1.sh
+  source ${HOME}/dotfiles/bin/gcloud-ps1.sh
   RPROMPT='$(kube_ps1)$(gcloud_ps1)'
 }
 
@@ -404,6 +404,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     unset AWS_ACCESS_KEY_ID
     unset AWS_SECRET_ACCESS_KEY
     export AWS_PROFILE=${aws_profile}
+    export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
     set +x
   }
 
@@ -417,6 +418,8 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     set +x
+    export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   }
 
 fi
@@ -446,13 +449,20 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 fi
 
 
-if [[ -f ~/dotfiles/docker/prettyping ]]; then
+if [[ -f ~/dotfiles/bin/prettyping ]]; then
 alias pping='prettyping --nolegend'
 fi
 
 # cmd aliases
 
 alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] && rsync --progress -azh $PWD $1:$PARENTDIR };dsfdscfdsfdsf'
+
+# terminal shortcuts
+
+if type "toggl" > /dev/null; then
+  # bind ctrl-t to see currently tracked activity
+  bindkey -s "^t" "^Q toggl now^J"
+fi
 
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi

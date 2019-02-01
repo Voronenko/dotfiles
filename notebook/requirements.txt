@@ -1,7 +1,6 @@
 backports-abc==0.5
 backports.shutil-get-terminal-size==1.0.0
 bash-kernel==0.7.1
-bleach==2.1.2
 certifi==2018.1.18
 configparser==3.5.0
 decorator==4.2.1

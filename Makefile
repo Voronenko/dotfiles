@@ -32,20 +32,20 @@ install-console-bat:
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
 
 install-console-prettytyping:
-	wget -O ~/dotfiles/docker/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
-	chmod +x ~/dotfiles/docker/prettyping
+	wget -O ~/dotfiles/bin/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
+	chmod +x ~/dotfiles/bin/prettyping
 
 # https://github.com/junegunn/fzf
 install-console-fzf:
 	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz
 	tar -xvzf /tmp/fzf.tar.gz -C /tmp
-	cp /tmp/fzf ~/dotfiles/docker
+	cp /tmp/fzf ~/dotfiles/bin
 	echo "Consider running make zsh-fzf to install zsh shell integration"
 
 # https://github.com/so-fancy/diff-so-fancy
 install-console-diffsofancy:
-	wget -O ~/dotfiles/docker/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
-	chmod +x ~/dotfiles/docker/diff-so-fancy
+	wget -O ~/dotfiles/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+	chmod +x ~/dotfiles/bin/diff-so-fancy
 
 
 install-console-fd:
@@ -73,18 +73,15 @@ install-console-ncdu:
 install-workspace-github-release:
 	mkdir -p /tmp/gh-release
 	wget -O /tmp/gh-release/linux-amd64-github-release.tar.bz2 "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2"
-	cd /tmp/gh-release && tar jxf linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/docker
+	cd /tmp/gh-release && tar jxf linux-amd64-github-release.tar.bz2 && mv /tmp/gh-release/bin/linux/amd64/github-release ~/dotfiles/bin
 	rm -rf /tmp/gh-release
 
 install-workspace-toggle-cli:
-	mkdir -p ~/apps
-	git clone git@github.com:drobertadams/toggl-cli.git ~/apps/toggle-cli
-	ln -s ~/apps/toggle-cli/toggl.sh ~/dotfiles/docker/toggl
-	chmod +x ~/dotfiles/docker/toggl
+	sudo pip install togglCli
 
 install-slack-term:
-	wget -O ~/dotfiles/docker/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64
-	chmod +x ~/dotfiles/docker/slack-term
+	wget -O ~/dotfiles/bin/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64
+	chmod +x ~/dotfiles/bin/slack-term
 
 # /WORKSPACE TOOLS
 
@@ -93,12 +90,12 @@ install-slack-term:
 
 
 install-docker-machine:
-	wget -O ~/dotfiles/docker/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
-	chmod +x ~/dotfiles/docker/docker-machine
+	wget -O ~/dotfiles/bin/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
+	chmod +x ~/dotfiles/bin/docker-machine
 
 install-docker-dry:
-	wget -O ~/dotfiles/docker/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
-	chmod +x ~/dotfiles/docker/dry
+	wget -O ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
+	chmod +x ~/dotfiles/bin/dry
 
 # /DOKER TOOLS
 
@@ -108,29 +105,29 @@ install-docker-dry:
 install-k8s-ksonnet:
 	wget -O /tmp/ks_linux_amd64.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.10.1/ks_0.10.1_linux_amd64.tar.gz
 	tar -xvzf /tmp/ks_linux_amd64.tar.gz -C /tmp
-	cp /tmp/ks_0.10.1_linux_amd64/ks ~/dotfiles/docker
+	cp /tmp/ks_0.10.1_linux_amd64/ks ~/dotfiles/bin
 
 install-k8s-stern:
-	wget -O ~/dotfiles/docker/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
-	chmod +x ~/dotfiles/docker/stern
+	wget -O ~/dotfiles/bin/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
+	chmod +x ~/dotfiles/bin/stern
 
 install-k8s-helm:
 	mkdir -p /tmp/helm
 	wget -O /tmp/helm/helm.tar.gz "https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz"
-	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/docker
+	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin
 	rm -rf /tmp/helm
 
 install-k8s-deepmind-kapitan:
 	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
 
 install-k8s-heptio-authenticator-aws:
-	curl -o ~/dotfiles/docker/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
-	curl -o ~/dotfiles/docker/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
-	chmod +x ~/dotfiles/docker/heptio-authenticator-aws
+	curl -o ~/dotfiles/bin/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
+	curl -o ~/dotfiles/bin/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
+	chmod +x ~/dotfiles/bin/heptio-authenticator-aws
 
 install-k8s-weaveworks-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-	mv /tmp/eksctl ~/dotfiles/docker
+	mv /tmp/eksctl ~/dotfiles/bin
 
 install-k8s-kubectl-ubuntu:
 	sudo apt-get update && sudo apt-get install -y apt-transport-https
@@ -145,7 +142,7 @@ kube-dashboard-normal-install:
 
 kube-dashboard-insecure-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
-	echo possible to grant admin via  kubectl create -f ~/dotfiles/docker/k8s/dashboard-admin.yaml
+	echo possible to grant admin via  kubectl create -f ~/dotfiles/bin/k8s/dashboard-admin.yaml
 	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
 
 # /KUBERNETES
@@ -209,8 +206,8 @@ install-terraform-ing:
 	gem install terraforming
 
 install-terraform-docs:
-	wget -O ~/dotfiles/docker/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
-	chmod +x ~/dotfiles/docker/terraform-docs
+	wget -O ~/dotfiles/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
+	chmod +x ~/dotfiles/bin/terraform-docs
 
 install-terraform-virtualbox-bridge:
 	go get github.com/terra-farm/terraform-provider-virtualbox
@@ -222,20 +219,20 @@ install-terraform-virtualbox-bridge:
 
 # HASHICORP
 install-hashicorp-vault:
-	wget -O ~/dotfiles/docker/vault.zip "https://releases.hashicorp.com/vault/1.0.1/vault_1.0.1_linux_amd64.zip"
-	cd ~/dotfiles/docker/ && unzip vault.zip && chmod +x vault && rm vault.zip
+	wget -O ~/dotfiles/bin/vault.zip "https://releases.hashicorp.com/vault/1.0.1/vault_1.0.1_linux_amd64.zip"
+	cd ~/dotfiles/bin/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/docker/terraform.zip "https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip"
-	cd ~/dotfiles/docker/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip"
+	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 #/HASHICORP
 
 # GO
 
 install-go-gimme:
-	curl -sL -o ~/dotfiles/docker/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
-	chmod +x ~/dotfiles/docker/gimme
+	curl -sL -o ~/dotfiles/bin/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+	chmod +x ~/dotfiles/bin/gimme
 
 go-rename:
 	go get golang.org/x/tools/cmd/gorename
@@ -248,12 +245,12 @@ go-eg:
 # CLOUDS
 
 install-aws-key-importer:
-	wget -O ~/dotfiles/docker/aws-key-importer https://github.com/Voronenko/aws-key-importer/releases/download/0.2.0/aws-key-importer-linux-amd64
-	chmod +x ~/dotfiles/docker/aws-key-importer
+	wget -O ~/dotfiles/bin/aws-key-importer https://github.com/Voronenko/aws-key-importer/releases/download/0.2.0/aws-key-importer-linux-amd64
+	chmod +x ~/dotfiles/bin/aws-key-importer
 
 install-aws-myaws:
 	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.3/myaws_v0.3.3_linux_amd64.tar.gz
-	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/docker
+	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
 
 install-ovh-nova:
 	sudo pip install python-openstackclient
