@@ -7,6 +7,23 @@
 # POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
 # POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
 
+######################## DOTFILES SIMPLE PROMPTS
+
+prompt_dot_status() {
+
+  "$1_prompt_segment" "$0" "$2" none none "%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])" ''
+
+}
+
+prompt_git_status() {
+
+  "$1_prompt_segment" "$0" "$2" none none "$(git_prompt_info)" ''
+
+}
+
+
+########################
+
 
 ################################################################
 # Anaconda Environment

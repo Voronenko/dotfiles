@@ -1,26 +1,47 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
-## Turn on for Debugging
-#PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
-#zstyle ':vcs_info:*+*:*' debug true
-#set -o xtrace
+# # Turn on for Debugging
+# PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
+# zstyle ':vcs_info:*+*:*' debug true
+# set -o xtrace
 
 POWERLEVEL9K_MODE='awesome-fontconfig'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs status mybr "R")
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(git_status dot_status mybr) #icons_test
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv dir)
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}[%{$fg_bold[white]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[yellow]%}] "
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
+
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
 
+source "${HOME}/dotfiles/helpers/colors.zsh"
+
 source "${HOME}/dotfiles/helpers/icons.zsh"
 
 source "${HOME}/dotfiles/helpers/utilities.zsh"
 
-source "${HOME}/dotfiles/helpers/colors.zsh"
-
 DEFAULT_COLOR=black
 DEFAULT_COLOR_INVERTED=white
+
+
+function snpt() {
+  local icon_name=$1
+  local color=""
+  if [[ ! -z $2 ]]; then
+    local color="%{$fg[$2]%}"
+  fi
+  local ICON_USER_VARIABLE=POWERLEVEL9K_${icon_name}
+  if defined "$ICON_USER_VARIABLE"; then
+    echo -n "${color}${(P)ICON_USER_VARIABLE}"
+  else
+    echo -n "${color}${icons[$icon_name]}"
+  fi
+}
+
 
 
 ################################################################
@@ -52,6 +73,7 @@ CURRENT_BG='NONE'
 # The latter three can be omitted,
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
+
 left_prompt_segment() {
   local segment_name="${1}"
   local current_index=$2
@@ -234,7 +256,7 @@ right_prompt_segment() {
   last_right_element_index=$current_index
 }
 
-source "${HOME}/dotfiles/helpers/prompt_segments.zsh"
+source "${HOME}/dotfiles/helpers/dotfiles_prompt_segments.zsh"
 
 
 ################################################################
@@ -314,7 +336,7 @@ RPROMPT_SUFFIX='%{'$'\e[1B''%}%{$reset_color%}' # one line down
 RPROMPT="${RPROMPT_PREFIX}${RPROMPT_SUFFIX}"
 
 
-PROMPT=$'$(print_icon "DOTFILES_UL_START")%{$fg[cyan]%}%c%{$reset_color%}$(print_icon "DOTFILES_UL_FINISH")%f%b%k$(build_left_prompt)'
+PROMPT=$'$(snpt "DOTFILES_UL_START" "yellow")%{$fg[cyan]%}%c%{$reset_color%}$(snpt "DOTFILES_UL_FINISH" "yellow")%f%b%k$(build_left_prompt)'
 PS2=$'%{$fg[green]%}|>%{$reset_color%}'
 
   ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}[%{$fg_bold[white]%}"
