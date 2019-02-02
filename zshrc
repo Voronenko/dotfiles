@@ -18,10 +18,25 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     setopt xtrace prompt_subst
 fi
 
-# autoload zsh async
-source ${HOME}/dotfiles/helpers/async.zsh
 
-source ${HOME}/dotfiles/helpers/dotfiles_prompt.zsh
+###
+#CONFIG
+
+POWERLEVEL9K_MODE='awesome-fontconfig' # compatible | awesome-fontconfig | nerdfont-complete
+POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv dot_ssh dot_dck)
+
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_SHORTEN_DELIMITER=""
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=""
+
+##
+
+# async prompt helpers
+#source ${HOME}/dotfiles/helpers/dotfiles_async.zsh
+
 
 # completion sugar
 autoload -U +X bashcompinit && bashcompinit
@@ -364,6 +379,8 @@ fi
 if [[ -n $SSH_CONNECTION ]]; then
 echo " .... remote session `echo $USER`@`hostname` .... "
 fi
+
+source ${HOME}/dotfiles/helpers/dotfiles_prompt.zsh
 
 # if [[ -n $SSH_CONNECTION ]]; then
 # echo " .... remote session `echo $USER`@`hostname` .... "

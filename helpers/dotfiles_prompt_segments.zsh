@@ -21,6 +21,19 @@ prompt_dot_dir() {
   "$1_prompt_segment" "$0" "$2" none none "%{$fg[cyan]%}%c%{$reset_color%}$(snpt "DOTFILES_UL_FINISH" "yellow")" ''
 }
 
+prompt_dot_ssh() {
+   if [[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]]; then
+  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%}⇕%{$reset_color%}" ''
+   fi
+}
+
+prompt_dot_dck() {
+   if [[ -f /.dockerenv ]]; then
+  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[red]%}⭕%{$reset_color%}" ''
+   fi
+}
+
+
 ########################
 # AWS Profile
 prompt_aws() {
