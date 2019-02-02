@@ -507,13 +507,14 @@ case $POWERLEVEL9K_MODE in
   ;;
 esac
 
+# DOTCUSTOM
     icons[DOTFILES_UL_START]="┌["
     icons[DOTFILES_UL_FINISH]="]>"
     icons[DOTFILES_BOTTOM_ARR]="%{$fg[yellow]%}└──${ret_status}%{$reset_color%}"
     icons[LEFT_SEGMENT_SEPARATOR]=''
     icons[RIGHT_SEGMENT_SEPARATOR]=''
-    icons[LEFT_SUBSEGMENT_SEPARATOR]=' '
-    icons[RIGHT_SUBSEGMENT_SEPARATOR]=' '
+    icons[LEFT_SUBSEGMENT_SEPARATOR]=''
+    icons[RIGHT_SUBSEGMENT_SEPARATOR]=''
 
 
 

@@ -6,7 +6,8 @@
 # set -o xtrace
 
 POWERLEVEL9K_MODE='awesome-fontconfig'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(git_status dot_status mybr) #icons_test
+POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv dir)
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}[%{$fg_bold[white]%}"
@@ -17,6 +18,7 @@ ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=""
 
 source "${HOME}/dotfiles/helpers/colors.zsh"
 
@@ -80,7 +82,6 @@ left_prompt_segment() {
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_left_element_index "$POWERLEVEL9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
-
   # Colors
   local backgroundColor="${3}"
   local foregroundColor="${4}"
@@ -336,40 +337,8 @@ RPROMPT_SUFFIX='%{'$'\e[1B''%}%{$reset_color%}' # one line down
 RPROMPT="${RPROMPT_PREFIX}${RPROMPT_SUFFIX}"
 
 
-PROMPT=$'$(snpt "DOTFILES_UL_START" "yellow")%{$fg[cyan]%}%c%{$reset_color%}$(snpt "DOTFILES_UL_FINISH" "yellow")%f%b%k$(build_left_prompt)'
+PROMPT=$'$(snpt "DOTFILES_UL_START" "yellow")$(build_left_prompt)'
 PS2=$'%{$fg[green]%}|>%{$reset_color%}'
-
-  ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}[%{$fg_bold[white]%}"
-  ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[yellow]%}] "
-  ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
-
-
-#   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-#     PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-# $(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
-#     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
-#       # The right prompt should be on the same line as the first line of the left
-#       # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
-#       # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
-#       # advise it to go one line down. See:
-#       # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-#       local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
-#       RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
-#       RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
-#     else
-#       RPROMPT_PREFIX=''
-#       RPROMPT_SUFFIX=''
-#     fi
-#   else
-#     PROMPT='%f%b%k$(build_left_prompt)'
-#     RPROMPT_PREFIX=''
-#     RPROMPT_SUFFIX=''
-#   fi
-
-  # if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-  #   RPROMPT="${RPROMPT_PREFIX}"'%f%b%k$(build_right_prompt)%{$reset_color%}'"${RPROMPT_SUFFIX}"
-  # fi
-
 }
 
 zle-keymap-select () {
@@ -403,10 +372,6 @@ prompt_powerlevel9k_setup() {
 
   # initialize colors
   autoload -U colors && colors
-
-  if segment_in_use "vcs"; then
-    powerlevel9k_vcs_init
-  fi
 
   # initialize timing functions
   zmodload zsh/datetime

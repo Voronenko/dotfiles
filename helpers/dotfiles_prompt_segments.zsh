@@ -10,17 +10,16 @@
 ######################## DOTFILES SIMPLE PROMPTS
 
 prompt_dot_status() {
-
   "$1_prompt_segment" "$0" "$2" none none "%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])" ''
-
 }
 
-prompt_git_status() {
-
+prompt_dot_git() {
   "$1_prompt_segment" "$0" "$2" none none "$(git_prompt_info)" ''
-
 }
 
+prompt_dot_dir() {
+  "$1_prompt_segment" "$0" "$2" none none "%{$fg[cyan]%}%c%{$reset_color%}$(snpt "DOTFILES_UL_FINISH" "yellow")" ''
+}
 
 ########################
 # AWS Profile
@@ -197,7 +196,7 @@ function getUniqueFolder() {
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
 set_default POWERLEVEL9K_HOME_FOLDER_ABBREVIATION "~"
 set_default POWERLEVEL9K_DIR_PATH_HIGHLIGHT_BOLD false
-prompt_dir() {
+prompt_dot_dir_ex() {
   # using $PWD instead of "$(print -P '%~')" to allow use of POWERLEVEL9K_DIR_PATH_ABSOLUTE
   local current_path=$PWD # WAS: local current_path="$(print -P '%~')"
   # check if the user wants to use absolute paths or "~" paths
@@ -440,7 +439,7 @@ prompt_dir() {
     current_path=${current_path:s/~/$POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}
   fi
 
-  "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
+  "$1_prompt_segment" "$0_${current_state}" "$2" "none" "cyan" "${current_path}%{$fg[yellow]%}]" "${dir_states[$current_state]}"
 }
 
 ################################################################
