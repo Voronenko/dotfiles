@@ -10,11 +10,6 @@ POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv dir)
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}[%{$fg_bold[white]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[yellow]%}] "
-ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
-
-
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
@@ -335,6 +330,11 @@ RPROMPT_SUFFIX='%{'$'\e[1B''%}%{$reset_color%}' # one line down
 
 #RPROMPT="${RPROMPT_PREFIX}"'%f%b%k$(build_right_prompt)%{$reset_color%}'"${RPROMPT_SUFFIX}"
 RPROMPT="${RPROMPT_PREFIX}${RPROMPT_SUFFIX}"
+
+
+ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg[yellow]%}[%{$fg_bold[white]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[yellow]%}] "
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[yellow]%}⚡%{$reset_color%}"
 
 
 PROMPT=$'$(snpt "DOTFILES_UL_START" "yellow")$(build_left_prompt)'

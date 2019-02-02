@@ -515,6 +515,7 @@ esac
     icons[RIGHT_SEGMENT_SEPARATOR]=''
     icons[LEFT_SUBSEGMENT_SEPARATOR]=''
     icons[RIGHT_SUBSEGMENT_SEPARATOR]=''
+    icons[HOME_ICON]=''
 
 
 
