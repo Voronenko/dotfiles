@@ -5,16 +5,6 @@
 # zstyle ':vcs_info:*+*:*' debug true
 # set -o xtrace
 
-POWERLEVEL9K_MODE='awesome-fontconfig'
-POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv)
-
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL9K_SHORTEN_DELIMITER=""
-POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=""
-
 source "${HOME}/dotfiles/helpers/colors.zsh"
 
 source "${HOME}/dotfiles/helpers/icons.zsh"
