@@ -34,8 +34,9 @@ POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=""
 
 ##
 
-# autoload zsh async
-source ${HOME}/dotfiles/helpers/async.zsh
+# async prompt helpers
+#source ${HOME}/dotfiles/helpers/dotfiles_async.zsh
+
 
 # completion sugar
 autoload -U +X bashcompinit && bashcompinit
