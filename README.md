@@ -568,3 +568,13 @@ Done with work? Handy shortcut.
 ```sh
 alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'
 ```
+
+
+#  Fonts for prompt snippets
+
+
+Adobe Source Code Pro: https://github.com/adobe-fonts/source-code-pro
+Source Code Pro + Powerline: https://github.com/powerline/fonts/tree/master/SourceCodePro
+Nerd Fonts Sauce Code Pro (might be derived from #2?): https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/SourceCodePro/Regular
+Awesome Fonts Sauce Code Powerline: https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/fonts
+This random file that floats around. No idea where it came from, but it's referenced in many blog posts: https://github.com/bhilburn/dotfiles/blob/master/fonts/SourceCodePro%2BPowerline%2BAwesome%2BRegular.ttf
