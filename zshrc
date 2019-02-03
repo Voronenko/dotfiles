@@ -9,7 +9,7 @@ ZSH=$HOME/.oh-my-zsh
 
 # Credit: https://kev.inburke.com/kevin/profiling-zsh-startup-time/
 
-PROFILE_STARTUP=true
+PROFILE_STARTUP=false
 if [[ "$PROFILE_STARTUP" == true ]]; then
     zmodload zsh/zprof # Output load-time statistics
     # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
@@ -282,11 +282,28 @@ alias reset_rights_here='find -type f -exec chmod --changes 644 {} + -o -type d 
 
 if [[ -f ~/.nvm/nvm.sh ]]; then
 
-source ~/.nvm/nvm.sh
+#source ~/.nvm/nvm.sh
+
+declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+NODE_GLOBALS+=("nvm", "nvm_find_nvmrc")
+
+load_nvm () {
+    export NVM_DIR=~/.nvm
+    source ~/.nvm/nvm.sh
+}
+
+for cmd in "${NODE_GLOBALS[@]}"; do
+    eval "${cmd}(){echo node lazy; unset -f ${NODE_GLOBALS} || true; load_nvm; ${cmd} \$@ }"
+done
+
 
 # place this after nvm initialization!
 autoload -U add-zsh-hook
 load-nvmrc() {
+  if ! type "nvm" > /dev/null; then
+    unset -f ${NODE_GLOBALS} || true;
+    load_nvm
+  fi
   local node_version="$(nvm version)"
   local nvmrc_path="$(nvm_find_nvmrc)"
 
@@ -304,7 +321,6 @@ load-nvmrc() {
   fi
 }
 add-zsh-hook chpwd load-nvmrc
-load-nvmrc
 
 alias node_add_bin_path='export PATH="./node_modules/.bin/:$PATH"'
 
@@ -330,7 +346,7 @@ alias mkvirtualenv_penv3='WORKON_HOME=$(pwd) mkvirtualenv --python python3 --no-
 }
 
 for cmd in "${VRTENV_GLOBALS[@]}"; do
-    eval "${cmd}(){ echo lazy; unset -f ${VRTENV_GLOBALS}; load_vrtenv; ${cmd} \$@ }"
+    eval "${cmd}(){ unset -f ${VRTENV_GLOBALS}; load_vrtenv; ${cmd} \$@ }"
 done
 
 fi
