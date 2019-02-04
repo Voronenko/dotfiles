@@ -36,8 +36,10 @@ prompt_dot_dck() {
 
 # * * * * * /usr/bin/python /usr/local/bin/toggl now > ~/.toggl_now
 prompt_dot_toggl() {
-  TOGGLE_ACTIVITY=$(cat ~/.toggl_now | awk 'BEGIN { FS="[ ]" } ; { print $2 }' )
-  "$1_prompt_segment" "$0" "$2" gray white "$(print_icon 'TODO_ICON') ${TOGGLE_ACTIVITY}" ''
+  if [[ -f ~/.toggl_now ]]; then
+    TOGGLE_ACTIVITY=$(cat ~/.toggl_now | awk 'BEGIN { FS="[ ]" } ; { print $2 }' )
+    "$1_prompt_segment" "$0" "$2" gray white "$(print_icon 'TODO_ICON') ${TOGGLE_ACTIVITY}" ''
+  fi
 }
 
 
