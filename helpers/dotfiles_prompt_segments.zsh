@@ -34,6 +34,12 @@ prompt_dot_dck() {
 }
 
 
+prompt_dot_toggl() {
+  TOGGLE_ACTIVITY=$(cat ~/.toggl_now | awk 'BEGIN { FS="[ ]" } ; { print $2 }' )
+  "$1_prompt_segment" "$0" "$2" gray white "$(print_icon 'TODO_ICON') ${TOGGLE_ACTIVITY}" ''
+}
+
+
 ########################
 # AWS Profile
 prompt_aws() {
