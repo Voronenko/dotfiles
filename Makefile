@@ -284,3 +284,6 @@ fonts-source-code-pro-patched:
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf"
 	fc-cache -fv ~/.fonts
 	fc-list | grep "Source Code Pro"
+
+z-clean-downloads:
+	rm ~/Downloads/*.rdp
