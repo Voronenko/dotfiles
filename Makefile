@@ -83,6 +83,11 @@ install-slack-term:
 	wget -O ~/dotfiles/bin/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64
 	chmod +x ~/dotfiles/bin/slack-term
 
+install-direnv:
+	wget -O ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
+	chmod +x ~/dotfiles/bin/direnv
+
+https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
 # /WORKSPACE TOOLS
 
 
