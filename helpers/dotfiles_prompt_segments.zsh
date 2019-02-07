@@ -33,6 +33,16 @@ prompt_dot_dck() {
    fi
 }
 
+prompt_dot_terraform() {
+    # dont show 'default' workspace in home dir
+    [[ "$PWD" == ~ ]] && return
+    # check if in terraform dir
+    if [ -d .terraform ]; then
+      local workspace=$(terraform workspace show 2> /dev/null) || return
+      "$1_prompt_segment" "$0" "$2" gray yellow "$(print_icon 'SERVER_ICON') ${workspace}" ''
+    fi
+}
+
 
 # * * * * * /usr/bin/python /usr/local/bin/toggl now > ~/.toggl_now
 prompt_dot_toggl() {
