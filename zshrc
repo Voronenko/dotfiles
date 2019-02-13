@@ -454,12 +454,12 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     set +x
     export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
     export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    
+
   }
 
   set-aws-keys() {
     local aws_profile=$1
-    profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4) | grep -B 15 "^$"
+    profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4 | grep -B 15 "^$")
     AWS_ACCESS_KEY_ID="$(echo $profile_data | grep aws_access_key_id | cut -f2 -d'=' | tr -d ' ')"
     AWS_SECRET_ACCESS_KEY="$(echo $profile_data | grep aws_secret_access_key | cut -f2 -d'=' | tr -d ' ')"
     region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
