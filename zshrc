@@ -435,6 +435,18 @@ if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 # AWS simplification
 if [[ -d $HOME/.aws ]]; then
 
+
+#
+declare -a AWS_GLOBALS=(ec2ssh)
+
+load_ec2ssh() {
+source $HOME/dotfiles/helpers/ec2ssh.zsh
+}
+
+for cmd in "${AWS_GLOBALS[@]}"; do
+    eval "${cmd}(){ unset -f ${AWS_GLOBALS}; load_ec2ssh; ${cmd} \$@ }"
+done
+
 # Load aws helper
 if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_zsh_completer.sh; fi
 
@@ -451,6 +463,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     unset AWS_SECRET_ACCESS_KEY
     export AWS_PROFILE=${aws_profile}
     export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    export AWS_DEFAULT_PROFILE=${aws_profile}
     set +x
     export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
     export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
