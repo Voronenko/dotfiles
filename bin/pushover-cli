@@ -1,0 +1,239 @@
+#!/bin/bash
+
+DIR_CONFIG="$HOME/.pushover"
+
+USER=""
+TOKEN=""
+TITLE=""
+MESSAGE=""
+URL=""
+URL_TITLE=""
+DEVICE=""
+SOUND=""
+HTML=""
+TIMESTAMP=""
+PRIORITY="0"
+RETRY="60"
+EXPIRE="3600"
+
+# Colours
+readonly C_NOC="\\033[0m"    # No colour
+readonly C_RED="\\033[0;31m" # Red
+readonly C_GRN="\\033[0;32m" # Green
+readonly C_BLU="\\033[0;34m" # Blue
+readonly C_PUR="\\033[0;35m" # Purple
+readonly C_CYA="\\033[0;36m" # Cyan
+readonly C_WHI="\\033[0;37m" # White
+
+### Helper functions
+print_red () { local i; for i in "$@"; do echo -e "${C_RED}${i}${C_NOC}"; done }
+print_grn () { local i; for i in "$@"; do echo -e "${C_GRN}${i}${C_NOC}"; done }
+print_blu () { local i; for i in "$@"; do echo -e "${C_BLU}${i}${C_NOC}"; done }
+print_pur () { local i; for i in "$@"; do echo -e "${C_PUR}${i}${C_NOC}"; done }
+print_cya () { local i; for i in "$@"; do echo -e "${C_CYA}${i}${C_NOC}"; done }
+print_whi () { local i; for i in "$@"; do echo -e "${C_WHI}${i}${C_NOC}"; done }
+
+
+config() {
+	LABEL_USER_KEY="User Key"
+	LABEL_API_TOKEN="API Token"
+	if [ -e $DIR_CONFIG/config ]; then
+	    USER_KEY=$(awk -F'"' '/^USER_KEY=/ {print $2}' $DIR_CONFIG/config)
+	    APP_TOKEN=$(awk -F'"' '/^APP_TOKEN=/ {print $2}' $DIR_CONFIG/config)
+	    if [ -z "$USER_KEY" ]; then echo -ne "$LABEL_USER_KEY: "; else echo -ne "$LABEL_USER_KEY [****************${USER_KEY: -4}]: "; fi
+	    read USER_KEY
+	    if [ -z "$APP_TOKEN" ]; then echo -ne "$LABEL_API_TOKEN: "; else echo -ne "$LABEL_API_TOKEN [****************${APP_TOKEN: -4}]: "; fi
+	    read APP_TOKEN
+	else
+		echo -ne "$LABEL_USER_KEY: "
+		read USER_KEY
+		echo -ne "$LABEL_API_TOKEN: "
+		read APP_TOKEN
+		if [ ! -d $DIR_CONFIG ]; then mkdir $DIR_CONFIG; fi
+		if [ -e $DIR_CONFIG/config ]; then touch $DIR_CONFIG/config; fi
+	fi
+	cat <<EOF > $DIR_CONFIG/config
+USER_KEY="$USER_KEY"
+APP_TOKEN="$APP_TOKEN"
+EOF
+	chmod 600 $DIR_CONFIG/config
+	print_grn "\nPushover CLI configured successfully.\n\n"
+}
+usage() {
+	echo "
+Usage:
+	pushover-cli [options]
+Options:
+	--user          Pushover user key. REQUIRED.
+	--token         Pushover application API token. REQUIRED.
+	--title         Notification title.
+	--message       Notification message. If you are seeing errors, try wrapping your message in 'single quotes.' REQUIRED.
+	--url           A supplementary URL to show with your message.
+	--url-title     A title for your supplementary URL, otherwise just the URL is shown.
+	--device        The target device(s) to send the notification to. Comma separated, no spaces. DEFAULT = All devices.
+	--sound	        The notification sound to play upon delivery. More Info: https://pushover.net/api#sounds
+	--html          Enabled HTML message. Set to 1 to enable. More Info: https://pushover.net/api#html
+	--timestamp     A Unix timestamp of your message's date and time to display to the user. DEFAULT = The time your message is received by the Pushover API.
+	--priority      Message priority, see: https://pushover.net/api#priority. DEFAULT = $PRIORITY.
+	--retry         How many seconds between retries. Only applies when --priority is set to 2 (emergency). DEFAULT = $RETRY.
+	--expire        How many seconds until emergency notification retries will stop. Only applies when --priority is set to 2 (emergency). DEFAULT = $EXPIRE.
+	--config        Configure global Pushover user key and application API token. Set to 'delete' to remove configuration files.
+	--help          Usage instructions.
+Example:
+	pushover-cli \\
+	--user YOUR_USER_KEY \\
+	--token YOUR_APP_TOKEN \\
+	--title \"Test Notification\" \\
+	--message \"Here is the notification!\"
+	"
+}
+
+while [[ $# -gt 0 ]]; do
+	key="$1"
+	case $key in
+		--token)
+			TOKEN="${2:-$TOKEN}"
+			shift
+			shift
+		;;
+		--user)
+			USER="${2:-$USER}"
+			shift
+			shift
+		;;
+		--title)
+			TITLE="${2:-$TITLE}"
+			shift
+			shift
+		;;
+		--message)
+			MESSAGE="${2:-$MESSAGE}"
+			shift
+			shift
+		;;
+		--url)
+			URL="${2:-$URL}"
+			shift
+			shift
+		;;
+		--url-title)
+			URL_TITLE="${2:-$URL_TITLE}"
+			shift
+			shift
+		;;
+		--device)
+			DEVICE="${2:-$DEVICE}"
+			shift
+			shift
+		;;
+		--sound)
+			SOUND="${2:-$SOUND}"
+			shift
+			shift
+		;;
+		--html)
+			HTML="${2:-$HTML}"
+			shift
+			shift
+		;;
+		--timestamp)
+			TIMESTAMP="${2:-$TIMESTAMP}"
+			shift
+			shift
+		;;
+		--priority)
+			PRIORITY="${2:-$PRIORITY}"
+			shift
+			shift
+		;;
+		--retry)
+			RETRY="${2:-$RETRY}"
+			shift
+			shift
+		;;
+		--expire)
+			EXPIRE="${2:-$EXPIRE}"
+			shift
+			shift
+		;;
+		--config)
+			CONFIG="${2:-$CONFIG}"
+			config
+			exit 0
+		;;
+		--upgrade)
+			UPGRADE="${2:-$UPGRADE}"
+			upgrade
+		;;
+		-v | --version)
+			version
+			exit 0
+		;;
+		--help)
+			usage
+			exit 0
+		;;
+		*) 
+			INVALID+=("$1")
+			shift
+			echo -ne "\033[0;31m\nERROR:\033[0;37m Invalid arguement: $INVALID\033[0m\n"
+			usage
+			exit 1
+		;;
+	esac
+done
+
+if [ -z "$USER" ] || [ -z "$TOKEN" ] || [ -z "$MESSAGE" ]; then
+	echo -ne '\n'
+	if [ -z "$USER" ]; then 
+		if [ -e $DIR_CONFIG/config ]; then
+		    USER=$(awk -F'"' '/^USER_KEY=/ {print $2}' $DIR_CONFIG/config)
+		    if [ -z "$USER" ]; then
+		        print_red "ERROR: --user is required.\n"
+		    fi
+		else
+			print_red "ERROR: --user is required.\n"
+		fi
+	fi
+	if [ -z "$TOKEN" ]; then
+		if [ -e $DIR_CONFIG/config ]; then
+		    TOKEN=$(awk -F'"' '/^APP_TOKEN=/ {print $2}' $DIR_CONFIG/config)
+		    if [ -z "$TOKEN" ]; then
+		      print_red "ERROR: --token is required.\n"
+		    fi
+		else
+                      print_red "ERROR: --token is required.\n"
+		fi
+	fi
+	if [ -z "$MESSAGE" ]; then print_red "ERROR: --message is required.\n"; fi
+fi
+
+if [ -z "$USER" ] || [ -z "$TOKEN" ] || [ -z "$MESSAGE" ]; then
+	usage
+	exit 1
+else
+	print_whi "> Sending notification..."
+	/usr/bin/curl -s \
+		-F "token=${TOKEN}" \
+		-F "user=${USER}" \
+		-F "title=${TITLE}" \
+		-F "message=$(echo -e ${MESSAGE})" \
+		-F "url=${URL}" \
+		-F "url_title=${URL_TITLE}" \
+		-F "device=${DEVICE}" \
+		-F "sound=${SOUND}" \
+		-F "html=${HTML}" \
+		-F "timestamp=${TIMESTAMP}" \
+		-F "priority=${PRIORITY}" \
+		-F "retry=${RETRY}" \
+		-F "expire=${EXPIRE}" \
+		https://api.pushover.net/1/messages.json \
+	| grep 'errors' > /dev/null 2>&1
+	if [ $? != 0 ];	then 
+		print_grn "success!\n\n";
+		exit 0
+	else
+		print_red "failed!\n\n";
+		exit 1;
+	fi
+fi
