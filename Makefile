@@ -66,6 +66,11 @@ install-console-tldr:
 install-console-ncdu:
 	sudo apt-get install ncdu
 
+install-console-yq:
+	wget -O ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
+	chmod +x ~/dotfiles/bin/yq
+
+
 # /CONSOLE TOOLS
 
 # WORKSPACE TOOLS
