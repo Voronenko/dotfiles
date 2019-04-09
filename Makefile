@@ -226,6 +226,11 @@ install-hashicorp-terraform:
 	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
+install-hashicorp-packer:
+	wget -O ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_linux_amd64.zip"
+	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
+
+
 #/HASHICORP
 
 # GO

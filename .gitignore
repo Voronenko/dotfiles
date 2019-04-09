@@ -10,6 +10,7 @@ bin/fzf
 bin/toggl
 bin/vault
 bin/terraform
+bin/packer
 bin/gimme
 bin/aws-key-importer
 bin/docker-machine
