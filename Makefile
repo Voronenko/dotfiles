@@ -66,6 +66,11 @@ install-console-tldr:
 install-console-ncdu:
 	sudo apt-get install ncdu
 
+install-console-yq:
+	wget -O ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
+	chmod +x ~/dotfiles/bin/yq
+
+
 # /CONSOLE TOOLS
 
 # WORKSPACE TOOLS
@@ -83,6 +88,11 @@ install-slack-term:
 	wget -O ~/dotfiles/bin/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64
 	chmod +x ~/dotfiles/bin/slack-term
 
+install-direnv:
+	wget -O ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
+	chmod +x ~/dotfiles/bin/direnv
+
+https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
 # /WORKSPACE TOOLS
 
 
@@ -289,3 +299,6 @@ fonts-source-code-pro-patched:
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf"
 	fc-cache -fv ~/.fonts
 	fc-list | grep "Source Code Pro"
+
+z-clean-downloads:
+	rm ~/Downloads/*.rdp

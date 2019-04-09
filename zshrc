@@ -25,7 +25,7 @@ fi
 POWERLEVEL9K_MODE='awesome-fontconfig' # compatible | awesome-fontconfig | nerdfont-complete
 POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv aws dot_ssh dot_dck dot_toggl)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv aws dot_ssh dot_dck dot_toggl dot_terraform)
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
@@ -435,6 +435,18 @@ if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 # AWS simplification
 if [[ -d $HOME/.aws ]]; then
 
+
+#
+declare -a AWS_GLOBALS=(ec2ssh)
+
+load_ec2ssh() {
+source $HOME/dotfiles/helpers/ec2ssh.zsh
+}
+
+for cmd in "${AWS_GLOBALS[@]}"; do
+    eval "${cmd}(){ unset -f ${AWS_GLOBALS}; load_ec2ssh; ${cmd} \$@ }"
+done
+
 # Load aws helper
 if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_zsh_completer.sh; fi
 
@@ -444,26 +456,36 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
 
   set-aws-profile() {
     local aws_profile=$1
+    region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
+    AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
     set -x
     unset AWS_ACCESS_KEY_ID
     unset AWS_SECRET_ACCESS_KEY
     export AWS_PROFILE=${aws_profile}
-    export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
+    export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    export AWS_DEFAULT_PROFILE=${aws_profile}
     set +x
+    export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
+    export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+
   }
 
   set-aws-keys() {
     local aws_profile=$1
-    profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4)
+    profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4 | grep -B 15 "^$")
     AWS_ACCESS_KEY_ID="$(echo $profile_data | grep aws_access_key_id | cut -f2 -d'=' | tr -d ' ')"
     AWS_SECRET_ACCESS_KEY="$(echo $profile_data | grep aws_secret_access_key | cut -f2 -d'=' | tr -d ' ')"
+    region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
+    AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
     # output to screen, so you know
     set -x
     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
     set +x
     export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
   }
 
 fi
@@ -490,6 +512,8 @@ fi
 if type "fzf" > /dev/null; then
 # add support for ctrl+o to open selected file in VS Code
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
 

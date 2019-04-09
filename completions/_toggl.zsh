@@ -18,7 +18,7 @@ __toggl-duration() {
 }
 
 __toggl-recent-entries() {
-    toggl ls | grep @ | awk -F'@' '{print $1}'
+    toggl ls | grep @ | awk -F'@' '{gsub(/^[ \t\r\n]+/, "", $1);gsub(/[ \t\r\n]+$/, "", $1);print "\""$1"\""}' | sort | uniq
 }
 
 

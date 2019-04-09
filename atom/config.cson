@@ -1,7 +1,13 @@
 "*":
+  "atom-ide-ui":
+    "atom-ide-code-format":
+      formatOnSave: true
   "atom-package-deps":
     ignored: []
   core:
+    disabledPackages: [
+      "linter"
+    ]
     telemetryConsent: "no"
   editor:
     invisibles: {}

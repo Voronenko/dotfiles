@@ -33,12 +33,24 @@ prompt_dot_dck() {
    fi
 }
 
+prompt_dot_terraform() {
+    # dont show 'default' workspace in home dir
+    [[ "$PWD" == ~ ]] && return
+    # check if in terraform dir
+    if [ -d .terraform ]; then
+      local workspace=$(terraform workspace show 2> /dev/null) || return
+      "$1_prompt_segment" "$0" "$2" gray yellow "$(print_icon 'SERVER_ICON') ${workspace}" ''
+    fi
+}
+
 
 # * * * * * /usr/bin/python /usr/local/bin/toggl now > ~/.toggl_now
 prompt_dot_toggl() {
   if [[ -f ~/.toggl_now ]]; then
     TOGGLE_ACTIVITY=$(cat ~/.toggl_now | awk 'BEGIN { FS="[ ]" } ; { print $2 }' )
-    "$1_prompt_segment" "$0" "$2" gray white "$(print_icon 'TODO_ICON') ${TOGGLE_ACTIVITY}" ''
+     if [[ "$TOGGLE_ACTIVITY" != "not" ]]; then
+      "$1_prompt_segment" "$0" "$2" gray white "$(print_icon 'TODO_ICON') ${TOGGLE_ACTIVITY}" ''
+     fi
   fi
 }
 
@@ -47,9 +59,10 @@ prompt_dot_toggl() {
 # AWS Profile
 prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
+  local aws_region="${AWS_REGION:-$AWS_DEFAULT_REGION}"
 
-  if [[ -n "$aws_profile" ]]; then
-    "$1_prompt_segment" "$0" "$2" red white "$aws_profile" 'AWS_ICON'
+  if [[ -n "${aws_profile}${aws_region}" ]]; then
+    "$1_prompt_segment" "$0" "$2" red white "$aws_profile $aws_region" 'AWS_ICON'
   fi
 }
 

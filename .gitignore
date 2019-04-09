@@ -18,6 +18,8 @@ bin/postman
 bin/myaws
 bin/slack-term
 bin/amtool
+bin/direnv
+bin/yq
 oh-my-zsh
 startup.log
 zshrc.local
