@@ -20,12 +20,15 @@ echo "use your regular user account"
 exit 1
 fi
 
-if [ -e /usr/bin/yum ]
-then
-    pkgmanager=yum
-elif [ -e /usr/bin/apt ]
+if [ -e /usr/bin/apt ]
 then
     pkgmanager=apt-get
+elif [ -e /usr/bin/yum ]
+then
+    pkgmanager=yum
+elif [ -e /usr/bin/dnf ]
+then
+    pkgmanager=dnf
 else
     echo "No supported package manager"
     exit 1
