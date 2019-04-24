@@ -9,7 +9,7 @@ SUDO=sudo
 
 if [ "$1" == "docker" ]; then
 SUDO=""
-EXTRA_PACKAGES=sudo less
+EXTRA_PACKAGES="sudo less"
 fi
 
 PREFERRED_SHELL=${2:-zsh}
@@ -20,12 +20,16 @@ echo "use your regular user account"
 exit 1
 fi
 
-if [ -e /usr/bin/yum ]
-then
-    pkgmanager=yum
-elif [ -e /usr/bin/apt ]
+if [ -e /usr/bin/apt ]
 then
     pkgmanager=apt-get
+    $SUDO apt-get update
+elif [ -e /usr/bin/yum ]
+then
+    pkgmanager=yum
+elif [ -e /usr/bin/dnf ]
+then
+    pkgmanager=dnf
 else
     echo "No supported package manager"
     exit 1
