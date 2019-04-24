@@ -27,10 +27,13 @@ install-cdci-circleci-runner:
 
 # CONSOLE TOOLS
 
+# cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
 
+# https://github.com/denilsonsa/prettyping
+# prettyping 8.8.8.8
 install-console-prettytyping:
 	wget -O ~/dotfiles/bin/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
 	chmod +x ~/dotfiles/bin/prettyping
@@ -47,15 +50,20 @@ install-console-diffsofancy:
 	wget -O ~/dotfiles/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
 	chmod +x ~/dotfiles/bin/diff-so-fancy
 
-
+# fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
+# fd service
 install-console-fd:
 	wget -O /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
 	sudo dpkg -i /tmp/fd.deb
 
+# ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep
+# rg -n -w '[A-Z]+_SUSPEND'
 install-console-ripgrep:
 	wget -O /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
 	sudo dpkg -i /tmp/ripgrep.deb
 
+# Glances is a cross-platform monitoring tool which aims
+# to present a large amount of monitoring information
 install-console-glances:
 	sudo pip install -U glances
 
@@ -63,9 +71,11 @@ install-console-glances:
 install-console-tldr:
 	npm install -g tldr
 
+# disk usage analyzer with an ncurses interface
 install-console-ncdu:
 	sudo apt-get install ncdu
 
+# jql for yml
 install-console-yq:
 	wget -O ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
@@ -103,6 +113,7 @@ install-docker-machine:
 	wget -O ~/dotfiles/bin/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
 	chmod +x ~/dotfiles/bin/docker-machine
 
+# docker console manager
 install-docker-dry:
 	wget -O ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
