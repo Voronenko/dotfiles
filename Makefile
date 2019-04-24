@@ -313,3 +313,10 @@ fonts-source-code-pro-patched:
 
 z-clean-downloads:
 	rm ~/Downloads/*.rdp
+
+
+# LAPTOP
+# Free terminal based CPU monitoring tool for Linux
+throttling-stui:
+	sudo pip install s-tui
+# /LAPTOP
