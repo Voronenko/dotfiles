@@ -1,6 +1,7 @@
 code --install-extension alefragnani.numbered-bookmarks
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
+code --install-extension CoenraadS.bracket-pair-colorizer-2
 code --install-extension dbaeumer.jshint
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension deerawan.vscode-dash
