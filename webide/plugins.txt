@@ -1,0 +1,21 @@
+BashSupport
+ChefIntegration
+Go
+Google Java Format
+Grep Console
+HashiCorp Terraform
+Kubernetes and Openshift resource support
+Node.js Remote interpreter
+NodeJS
+PHP
+PlantUml Integration
+Python
+Rainbow Brackets
+Restructured Text Support
+Ruby
+String Manipulation
+Ruby
+Toml
+Zero width Character Locator
+
+
