@@ -28,6 +28,7 @@ code --install-extension PeterJausovec.vscode-docker
 code --install-extension rebornix.ruby
 code --install-extension redhat.java
 code --install-extension searKing.preview-vscode
+code --install-extension shardulm94.trailing-spaces
 code --install-extension vscode-icons-team.vscode-icons
 code --install-extension waderyan.gitblame
 code --install-extension wholroyd.jinja
