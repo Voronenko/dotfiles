@@ -283,6 +283,16 @@ install-ovh-nova:
 
 # / CLOUDS
 
+# ESXI
+# https://github.com/softasap/esxi-vm
+install-esxi-tools:
+	wget -O ~/dotfiles/bin/esxi-vm-create https://raw.githubusercontent.com/softasap/esxi-vm/master/esxi-vm-create
+	chmod +x ~/dotfiles/bin/esxi-vm-create
+	wget -O ~/dotfiles/bin/esxi-vm-destroy https://github.com/softasap/esxi-vm/blob/master/esxi-vm-destroy
+	chmod +x ~/dotfiles/bin/esxi-vm-destroy
+	wget -O ~/dotfiles/bin/esxi_vm_functions.py https://raw.githubusercontent.com/softasap/esxi-vm/master/esxi_vm_functions.py
+# /ESXI
+
 
 fonts-awesome-terminal-fonts:
 	wget -O ~/.fonts/devicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.sh"
