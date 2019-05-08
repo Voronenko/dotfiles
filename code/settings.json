@@ -10,6 +10,11 @@
   "python.venvPath": "./p-env, ~/.virtualenvs",
   "window.zoomLevel": 0,
 
+// https://github.com/plantuml/plantuml-stdlib
+  "plantuml.includepaths": [
+    "/home/slavko/apps/plantuml/plantuml-stdlib/"
+  ],
+
   "jsonnet.outputFormat": "json",
   "jsonnet.libPaths": ["~/.local/lib/python3.6/site-packages/kapitan", "./"],
 
@@ -18,5 +23,6 @@
 
     },
     "editor.mouseWheelZoom": true,
-    "terminal.integrated.rendererType": "dom"
+    "terminal.integrated.rendererType": "dom",
+    "plantuml.jar": "/opt/plantuml/plantuml.jar"
 }
