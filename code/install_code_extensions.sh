@@ -5,6 +5,7 @@ code --install-extension CoenraadS.bracket-pair-colorizer-2
 code --install-extension dbaeumer.jshint
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension deerawan.vscode-dash
+code --install-extension dirk-thomas.vscode-lark
 code --install-extension eamodio.gitlens
 code --install-extension EditorConfig.EditorConfig
 code --install-extension eg2.tslint
