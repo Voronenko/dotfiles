@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# usage: nbgrep 'pattern'
+
+SEARCHPATH=${ZNOTES_PATH-~/z_personal_notes}
+
+# 'jq' technique lifted with gratitude 
+# from https://gist.github.com/mlgill/5c55253a3bc84a96addf
+
+# Break on newlines instead of any whitespace
+# IPython Notebook files often have spaces in it
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+if ! type mdfind > /dev/null 2>&1; then
+    # Use find from findutils
+    FILES=$(find $SEARCHPATH -name '*.ipynb')
+else
+    # mdfind uses OSX's spotlight search, so it's almost instant
+    # generate a list of all the ipynb files in any of the directories
+    FILES=$(mdfind -onlyin $SEARCHPATH -name '.ipynb')
+fi
+
+# On the command line we get the argument to search for
+PATTERN=$1
+
+for f in $FILES
+do
+    # Use 'jq' to filter out only the code in input cells
+    # Then remove quoting
+    # Colorize it with pygments (give it the most context possible to get color right)
+    # And finally, search the remainder for a given pattern
+
+    OUTPUT=$(jq '.worksheets[]?.cells[]? | select(.cell_type=="code") | .input[]?//.input' $f \
+        | sed 's/^"//g;s/"$//g;s/\\n$//g;s/\\"/"/g;s/\\\\/\\/g;s/\\n/\n/g' \
+        | pygmentize -l python 2>/dev/null \
+        | grep $PATTERN)
+
+
+    # If the grep matched anything, print it
+    if [ $? -eq 0 ]; then
+        echo -e "$f:\n\n$OUTPUT\n\n"
+    fi
+done
+
+IFS=$SAVEIFS
