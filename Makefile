@@ -220,6 +220,10 @@ zsh-fzf:
 	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
 	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my-zsh/custom/plugins/fzf-zsh
 
+# +plugins=(... alias-tips)
+zsh-alias-tips:
+	git clone https://github.com/djui/alias-tips.git ~/.oh-my-zsh/custom/plugins/alias-tips
+
 
 # TERRAFORM
 
