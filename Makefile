@@ -80,6 +80,10 @@ install-console-yq:
 	wget -O ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
 
+install-ngrok:
+	wget -O ~/dotfiles/bin/ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+	cd ~/dotfiles/bin/ && unzip ngrok.zip
+	rm ~/dotfiles/bin/ngrok.zip
 
 # /CONSOLE TOOLS
 
@@ -106,7 +110,7 @@ https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
 # /WORKSPACE TOOLS
 
 
-# DOKER TOOLS
+# DOCKER TOOLS
 
 
 install-docker-machine:
@@ -118,7 +122,7 @@ install-docker-dry:
 	wget -O ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
 
-# /DOKER TOOLS
+# /DOCKER TOOLS
 
 
 # KUBERNETES

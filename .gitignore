@@ -20,6 +20,7 @@ bin/slack-term
 bin/amtool
 bin/direnv
 bin/yq
+bin/ngrok
 oh-my-zsh
 startup.log
 zshrc.local
