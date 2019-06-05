@@ -75,7 +75,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.jenv/bin:/usr/local/bin:$PATH
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -372,6 +372,10 @@ export PATH=$PATH:~/apps/hashi_vault_utils
 
 fi
 
+if [[ -d $HOME/.jenv ]]; then
+  eval "$(jenv init -)"
+fi
+
 # /Java development
 
 
@@ -541,3 +545,4 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# use this script with source
+
+versions=()
+  for file in /usr/lib/jvm/.*.jinfo; do
+      [[ -e $file ]] || continue
+      version=${file##*/.} version=${version%.jinfo}
+      versions+=("$version")
+  done
+  if (( ${#versions[@]} == 0 )); then
+      printf >&2 'No java installed\n'
+      return 1
+  fi
+  select version in "${versions[@]}"; do
+      if [[ -n $version ]]; then
+          export JAVA_HOME="/usr/lib/jvm/$version"
+          export PATH=$JAVA_HOME/bin:$PATH
+          hash -p "$JAVA_HOME/bin/java" java
+          break
+      fi
+  done
+  type java

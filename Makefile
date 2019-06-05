@@ -276,6 +276,23 @@ go-eg:
 
 # /GO
 
+# JAVA
+
+jenv:
+	git clone https://github.com/gcuisinier/jenv.git ~/.jenv
+	echo "================================================="
+	echo "Restart session, than once you have jenv"
+	echo "jenv enable-plugins maven"
+	echo "jenv enable-plugins export"
+	echo "======== then discover java versions:"
+	echo "update-alternatives --config java"
+	echo "======== Add java versions as"
+	echo "/usr/lib/jvm/java-11-openjdk-amd64/"
+	echo "Validate install and checking both java -version and javac -version"
+	echo "That should match"
+
+# /JAVA
+
 # CLOUDS
 
 install-aws-key-importer:
