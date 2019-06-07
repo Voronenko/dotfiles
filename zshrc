@@ -373,7 +373,18 @@ export PATH=$PATH:~/apps/hashi_vault_utils
 fi
 
 if [[ -d $HOME/.jenv ]]; then
-  eval "$(jenv init -)"
+
+  declare -a JENV_GLOBALS=(`find ~/.jenv/shims/ -maxdepth 1 -wholename '*' | xargs -n1 basename | sort | uniq`)
+  JENV_GLOBALS+=("jenv")
+
+  load_jenv () {
+    eval "$(jenv init -)"
+  }
+
+  for cmd in "${JENV_GLOBALS[@]}"; do
+      eval "${cmd}(){echo jenv lazy; unset -f ${JENV_GLOBALS} || true; load_jenv; ${cmd} \$@ }"
+  done
+
 fi
 
 # /Java development
