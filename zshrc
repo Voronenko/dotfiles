@@ -25,7 +25,7 @@ fi
 POWERLEVEL9K_MODE='awesome-fontconfig' # compatible | awesome-fontconfig | nerdfont-complete
 POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv)
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""

@@ -43,6 +43,15 @@ prompt_dot_terraform() {
     fi
 }
 
+prompt_dot_jenv() {
+  local java_version_home=$(echo $JAVA_HOME | grep .jenv | grep -v system  2>/dev/null)
+  if [[ ! -z $java_version_home ]]
+  then
+    local java_version=$(jenv version-name 2>/dev/null)
+    "$1_prompt_segment" "$0" "$2" "red" "white" "$java_version" "JAVA_ICON"
+  fi
+}
+
 
 # * * * * * /usr/bin/python /usr/local/bin/toggl now > ~/.toggl_now
 prompt_dot_toggl() {
