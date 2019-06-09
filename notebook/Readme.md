@@ -43,3 +43,10 @@ pip install jupyterlab_templates
 jupyter labextension install jupyterlab_templates
 jupyter serverextension enable --py jupyterlab_templates
 ```
+
+https://github.com/parente/jupyterlab-quickopen
+
+```
+pip install jupyterlab-quickopen
+jupyter labextension install @parente/jupyterlab-quickopen
+```

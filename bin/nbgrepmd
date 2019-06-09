@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# usage: nbgrep 'pattern'
-# Looks in code cells
+# usage: nbgrepmd 'pattern'
+# Searches for entries of type markdown
 
 SEARCHPATH=${ZNOTES_PATH-~/z_personal_notes}
-SEARCHFILTER=".cells[]? | select(.cell_type==\"code\") | .source[]?//.input"
+SEARCHFILTER=".cells[]? | select(.cell_type==\"markdown\") | .source[]?//.input"
 
 # Colours
 readonly C_NOC="\\033[0m"    # No colour
