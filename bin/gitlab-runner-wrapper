@@ -1,3 +1,8 @@
 #!/bin/sh
-mkdir -p /tmp/gitlabrunner
-gitlab-runner exec docker --docker-volumes "/tmp/gitlabrunner:/cache" --docker-volumes "/var/run/docker.sock:/var/run/docker.sock" --docker-privileged $1 $2 $3 $4 $5
+rm -rf /tmp/gitlabrunner_out
+mkdir -p /tmp/gitlabrunner /tmp/gitlabrunner_out
+gitlab-runner exec docker \
+  --docker-volumes "/tmp/gitlabrunner:/cache" \
+  --docker-volumes "/var/run/docker.sock:/var/run/docker.sock" \
+  --docker-volumes "/tmp/gitlabrunner_out:/tmp/gitlabrunner_out" \
+  --docker-privileged $1 $2 $3 $4 $5
