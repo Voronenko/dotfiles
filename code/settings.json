@@ -24,5 +24,8 @@
     },
     "editor.mouseWheelZoom": true,
     "terminal.integrated.rendererType": "dom",
-    "plantuml.jar": "/opt/plantuml/plantuml.jar"
+    "plantuml.jar": "/opt/plantuml/plantuml.jar",
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "gitlens.advanced.telemetry.enabled": false
 }
