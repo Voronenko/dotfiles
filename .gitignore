@@ -21,6 +21,7 @@ bin/amtool
 bin/direnv
 bin/yq
 bin/ngrok
+bin/oc
 oh-my-zsh
 startup.log
 zshrc.local

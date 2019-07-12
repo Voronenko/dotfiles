@@ -170,6 +170,15 @@ kube-dashboard-insecure-install:
 	echo possible to grant admin via  kubectl create -f ~/dotfiles/bin/k8s/dashboard-admin.yaml
 	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
 
+install-openshift-oc:
+	wget -O /tmp/openshift.tar.gz https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+	tar -xvzf /tmp/openshift.tar.gz -C /tmp
+	mv /tmp/openshift-origin-client-tools-*  /tmp/openshift-origin-client-tools
+	cp /tmp/openshift-origin-client-tools/oc ~/dotfiles/bin
+	type kubectl >/dev/null || /tmp/openshift-origin-client-tools/oc ~/dotfiles/bin
+	echo "If there were no kubectl in path, one was installed from oc distro."
+	echo "In other case global is used. Please check carefully"
+
 # /KUBERNETES
 
 workplace-init:

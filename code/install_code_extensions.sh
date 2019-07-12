@@ -16,7 +16,14 @@ code --install-extension HookyQR.beautify
 code --install-extension jebbs.plantuml
 code --install-extension lextudio.restructuredtext
 code --install-extension mauve.terraform
+code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-python.python
+code --install-extension ms-vscode-remote.remote-containers
+code --install-extension ms-vscode-remote.remote-ssh
+code --install-extension ms-vscode-remote.remote-ssh-edit
+code --install-extension ms-vscode-remote.remote-ssh-explorer
+code --install-extension ms-vscode-remote.remote-wsl
+code --install-extension ms-vscode-remote.vscode-remote-extensionpack
 code --install-extension ms-vscode.atom-keybindings
 code --install-extension ms-vscode.azure-account
 code --install-extension ms-vscode.cpptools
@@ -25,7 +32,6 @@ code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension openhab.openhab
 code --install-extension Pendrica.chef
-code --install-extension PeterJausovec.vscode-docker
 code --install-extension rebornix.ruby
 code --install-extension redhat.java
 code --install-extension searKing.preview-vscode
