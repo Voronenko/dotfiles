@@ -22,6 +22,7 @@ bin/direnv
 bin/yq
 bin/ngrok
 bin/oc
+bin/ignite
 oh-my-zsh
 startup.log
 zshrc.local

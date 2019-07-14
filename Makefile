@@ -181,6 +181,19 @@ install-openshift-oc:
 
 # /KUBERNETES
 
+# IGNITE
+install-weaveworks-ignite:
+	curl -fLo ~/dotfiles/bin/ignite https://github.com/weaveworks/ignite/releases/download/v0.4.1/ignite
+	chmod +x ~/dotfiles/bin/ignite
+remove-weaveworks-ignite:
+	# Force-remove all running VMs
+	sudo ignite ps -q | xargs sudo ignite rm -f
+	# Remove the data directory
+	sudo rm -r /var/lib/firecracker
+	# Remove the Ignite binary
+	rm ~/dotfiles/bin/ignite
+# /IGNITE
+
 workplace-init:
 	./workplace_init.sh
 
