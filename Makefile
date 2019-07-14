@@ -185,6 +185,8 @@ install-openshift-oc:
 install-weaveworks-ignite:
 	curl -fLo ~/dotfiles/bin/ignite https://github.com/weaveworks/ignite/releases/download/v0.4.1/ignite
 	chmod +x ~/dotfiles/bin/ignite
+	# eliminate when ignite adds support for sudoer
+	sudo cp /home/slavko/dotfiles/bin/ignite /usr/local/bin
 remove-weaveworks-ignite:
 	# Force-remove all running VMs
 	sudo ignite ps -q | xargs sudo ignite rm -f
