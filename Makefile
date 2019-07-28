@@ -276,7 +276,7 @@ install-hashicorp-vault:
 	cd ~/dotfiles/bin/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.3/terraform_0.12.3_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.5/terraform_0.12.5_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:
@@ -378,4 +378,14 @@ z-clean-downloads:
 # Free terminal based CPU monitoring tool for Linux
 throttling-stui:
 	sudo pip install s-tui
+
+install-vmware-ovftool:
+	wget -O /tmp/ovftool.bundle https://raw.githubusercontent.com/smarunich/avitoolbox/master/files/VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+	md5sum /tmp/ovftool.bundle
+	@echo d0dd9006d720a26278b94591a4111457   ovftool.bundle
+	chmod +x /tmp/ovftool.bundle
+	echo sudo /tmp/ovftool.bundle --eulas-agreed --required --console
+
 # /LAPTOP
+
+
