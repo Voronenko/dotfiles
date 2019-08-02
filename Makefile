@@ -386,6 +386,11 @@ install-vmware-ovftool:
 	chmod +x /tmp/ovftool.bundle
 	echo sudo /tmp/ovftool.bundle --eulas-agreed --required --console
 
+install-mitmproxy-org:
+	wget -O /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/4.0.4/mitmproxy-4.0.4-linux.tar.gz
+	tar -xvzf /tmp/mitmproxy.tar.gz -C ~/dotfiles/bin
+
+
 # /LAPTOP
 
 

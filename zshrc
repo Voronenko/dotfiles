@@ -78,6 +78,8 @@ source $ZSH/oh-my-zsh.sh
 export PATH=$HOME/bin:$HOME/.jenv/bin:/usr/local/bin:$PATH
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
+zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # DETECT CHRUBY support

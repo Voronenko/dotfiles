@@ -23,6 +23,7 @@ bin/yq
 bin/ngrok
 bin/oc
 bin/ignite
+bin/mitm*
 oh-my-zsh
 startup.log
 zshrc.local
