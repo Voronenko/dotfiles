@@ -19,6 +19,7 @@
   linter: {}
   "linter-ui-default":
     panelHeight: 69
+    showPanel: true
   "rst-preview-pandoc":
     pandocOpts: "-frst -thtml --webtex"
   "todo-show":

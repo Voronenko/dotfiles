@@ -27,5 +27,6 @@
     "plantuml.jar": "/opt/plantuml/plantuml.jar",
     "telemetry.enableCrashReporter": false,
     "telemetry.enableTelemetry": false,
-    "gitlens.advanced.telemetry.enabled": false
+    "gitlens.advanced.telemetry.enabled": false,
+    "vsicons.dontShowNewVersionMessage": true
 }

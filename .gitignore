@@ -3,6 +3,7 @@ bin/eksctl
 bin/github-release
 bin/helm
 bin/heptio-authenticator-aws*
+bin/aws-iam-authenticator*
 bin/ks
 bin/stern
 bin/terraform-docs
