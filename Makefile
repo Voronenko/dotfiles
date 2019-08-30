@@ -398,3 +398,10 @@ install-mitmproxy-org:
 # /LAPTOP
 
 
+# AWS
+
+#https://aws.amazon.com/serverless/sam/
+install-aws-sam-cli:
+	pip install --user aws-sam-cli
+
+# /AWS

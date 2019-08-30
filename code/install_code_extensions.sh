@@ -1,4 +1,5 @@
 code --install-extension alefragnani.numbered-bookmarks
+code --install-extension amazonwebservices.aws-toolkit-vscode
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
 code --install-extension CoenraadS.bracket-pair-colorizer-2
