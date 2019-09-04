@@ -404,4 +404,9 @@ install-mitmproxy-org:
 install-aws-sam-cli:
 	pip install --user aws-sam-cli
 
+#https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html#install-plugin-linux
+install-aws-session-manager-plugin:
+	curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "/tmp/session-manager-plugin.deb"
+	sudo dpkg -i session-manager-plugin.deb
+
 # /AWS

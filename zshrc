@@ -456,14 +456,15 @@ if [[ -d $HOME/.aws ]]; then
 
 
 #
-declare -a AWS_GLOBALS=(ec2ssh)
+declare -a AWS_GLOBALS=(ec2ssh ec2forward)
 
-load_ec2ssh() {
+load_ec2tools() {
 source $HOME/dotfiles/helpers/ec2ssh.zsh
+source $HOME/dotfiles/helpers/ec2forward.zsh
 }
 
 for cmd in "${AWS_GLOBALS[@]}"; do
-    eval "${cmd}(){ unset -f ${AWS_GLOBALS}; load_ec2ssh; ${cmd} \$@ }"
+    eval "${cmd}(){ unset -f ${AWS_GLOBALS}; load_ec2tools; ${cmd} \$@ }"
 done
 
 # Load aws helper
