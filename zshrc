@@ -532,6 +532,8 @@ fi
 
 if type "fzf" > /dev/null; then
 # add support for ctrl+o to open selected file in VS Code
+source ~/dotfiles/completions/fzf-completion.zsh
+source ~/dotfiles/completions/fzf-key-binding.zsh
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

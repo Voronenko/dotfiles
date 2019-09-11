@@ -3,7 +3,8 @@ swiss-knife: install-console-prettytyping install-console-fzf install-console-di
 
 
 # ZSH
-
+zsh-fzf-repo:
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # /ZSH
 
 
