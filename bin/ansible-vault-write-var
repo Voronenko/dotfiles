@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+if [[ -z $1 ]];
+then
+	echo "Specify string to encode"
+        echo "Example:  ansible-vault-write-var 'secretstring' "
+        echo "Example:  ansible-vault-write-var 'secretstring' varname"
+        exit 1
+fi
+
+if [[ ! -z "$2" ]]; then
+ansible-vault encrypt_string $1 --name $2
+else
+ansible-vault encrypt_string $1
+fi
+
