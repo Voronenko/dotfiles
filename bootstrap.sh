@@ -5,10 +5,10 @@
 
 set -e
 
-SUDO=sudo
+SUDO=${BECOME_METHOD:-sudo}
 
 if [ "$1" == "docker" ]; then
-SUDO=""
+SUDO="${BECOME_METHOD:-}"
 EXTRA_PACKAGES="sudo less"
 fi
 
@@ -42,13 +42,13 @@ if [ "$1" == "full" ]; then
   SUDOERUSER="$(whoami)"
   SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
 
-  sudo bash -c "touch $SUDOERFILE"
-  sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
-  sudo bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /usr/bin/truecrypt >> $SUDOERFILE"
-  sudo bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /bin/systemctl >> $SUDOERFILE"
-  sudo bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown >> $SUDOERFILE"
-  sudo bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /etc/init.d/nginx, /etc/init.d/mysql, /etc/init.d/mongod, /etc/init.d/redis, /etc/init.d/php-fpm >> $SUDOERFILE"
-  sudo bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD:SETENV: /usr/bin/docker, /usr/sbin/docker-gc >> $SUDOERFILE"
+  $SUDO bash -c "touch $SUDOERFILE"
+  $SUDO bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
+  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /usr/bin/truecrypt >> $SUDOERFILE"
+  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /bin/systemctl >> $SUDOERFILE"
+  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown >> $SUDOERFILE"
+  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /etc/init.d/nginx, /etc/init.d/mysql, /etc/init.d/mongod, /etc/init.d/redis, /etc/init.d/php-fpm >> $SUDOERFILE"
+  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD:SETENV: /usr/bin/docker, /usr/sbin/docker-gc >> $SUDOERFILE"
 
   echo "===================================================================="
   echo "current user was added to SUDOERS w/o password"
@@ -59,20 +59,20 @@ if [ "$1" == "full" ]; then
 
   if [ -e /usr/bin/yum ]
   then
-      sudo yum install -y epel-release
-      sudo yum install -y python-cffi
-      sudo yum groupinstall -y "Development Tools"
-      sudo yum install -y python-devel
-      sudo yum install -y openssl-devel
-      sudo yum install -y nano
+      $SUDO yum install -y epel-release
+      $SUDO yum install -y python-cffi
+      $SUDO yum groupinstall -y "Development Tools"
+      $SUDO yum install -y python-devel
+      $SUDO yum install -y openssl-devel
+      $SUDO yum install -y nano
   elif [ -e /usr/bin/apt ]
   then
-      sudo apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
+      $SUDO apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
   fi
 
-  sudo $pkgmanager install -y python-pip
-  sudo pip install -U pip
-  sudo pip install ansible
+  $SUDO $pkgmanager install -y python-pip
+  $SUDO pip install -U pip
+  $SUDO pip install ansible
 
 fi
 

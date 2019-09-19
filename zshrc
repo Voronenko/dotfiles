@@ -184,6 +184,10 @@ case "$1" in
     ui)
         docker start docker_ui || docker run -d -p 9999:9000 --name docker_ui --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
         ;;
+    p)
+# -p 9000:9000 -p 8000:8000
+        docker start portainer || docker run -d -p 9998:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+        ;;
     inspect)
         docker inspect $2 | jq $3
         ;;
