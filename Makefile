@@ -263,6 +263,12 @@ zsh-alias-tips:
 install-terraform-ing:
 	gem install terraforming
 
+#https://github.com/GoogleCloudPlatform/terraformer
+install-terraformer:
+	wget -O ~/dotfiles/bin/terraformer https://github.com/GoogleCloudPlatform/terraformer/releases/download/0.8/terraformer-linux-amd64
+	chmod +x ~/dotfiles/bin/terraformer
+
+
 install-terraform-docs:
 	wget -O ~/dotfiles/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
 	chmod +x ~/dotfiles/bin/terraform-docs

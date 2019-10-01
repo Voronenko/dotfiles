@@ -25,6 +25,7 @@ bin/ngrok
 bin/oc
 bin/ignite
 bin/mitm*
+bin/terraformer
 oh-my-zsh
 startup.log
 zshrc.local
