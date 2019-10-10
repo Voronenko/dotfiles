@@ -28,6 +28,26 @@ curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 
 ```
 
+# console perks
+
+`kill -9 <tab>`  - with fzf
+
+`ga` Interactive git add selector
+
+`glo` Interactive git log viewer
+
+`gi` Interactive .gitignore generator
+
+`gd` Interactive git diff viewer
+
+`grh` Interactive git reset HEAD <file> selector
+
+`gcf` Interactive git checkout <file> selector
+
+`gss` Interactive git stash viewer
+
+`gclean` Interactive git clean selector
+
 
 # Folder specific SSH identity for git
 

@@ -542,6 +542,7 @@ source ~/dotfiles/completions/fzf-key-binding.zsh
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+source ~/dotfiles/helpers/forgit.plugin.zsh
 fi
 
 
