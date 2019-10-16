@@ -397,6 +397,16 @@ fi
 
 # /Java development
 
+# GO development
+if [[ -d $HOME/.gimme/envs ]]; then
+
+function gouse() {
+  source ~/.gimme/envs/$1
+}
+
+fi
+# /GO development
+
 
 # Autoload ssh agent
 
