@@ -589,6 +589,14 @@ gco_preview() {
   git checkout $(awk '{print $2}' <<<"$target" )
 }
 
+# git commit with fixup
+gcfixup() {
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  commit=$(git log --oneline origin/master.."$branch" | fzf | awk '{print $1}')
+
+  git commit --fixup="$commit"
+}
+
 fi
 
 
