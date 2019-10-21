@@ -287,7 +287,7 @@ install-hashicorp-vault:
 	cd ~/dotfiles/bin/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.5/terraform_0.12.5_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:
