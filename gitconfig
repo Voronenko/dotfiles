@@ -21,6 +21,7 @@
         clean-on-develop = "!git checkout develop && git branch --merged | grep -v 'master' | grep -v '\\*' | xargs -n 1 git branch -d"
         clean-hard-dfx = "clean -dfx"
         fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+        pam = checkout $(git recent | fzf)
 [push]
 	default = current
 [commit]
