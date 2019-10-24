@@ -1,5 +1,6 @@
 code --install-extension alefragnani.numbered-bookmarks
 code --install-extension amazonwebservices.aws-toolkit-vscode
+code --install-extension chef-software.chef
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
 code --install-extension CoenraadS.bracket-pair-colorizer-2
@@ -14,6 +15,7 @@ code --install-extension evilz.vscode-reveal
 code --install-extension felixfbecker.php-debug
 code --install-extension heptio.jsonnet
 code --install-extension HookyQR.beautify
+code --install-extension humao.rest-client
 code --install-extension jebbs.plantuml
 code --install-extension lextudio.restructuredtext
 code --install-extension mauve.terraform
@@ -32,7 +34,6 @@ code --install-extension ms-vscode.Go
 code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension openhab.openhab
-code --install-extension Pendrica.chef
 code --install-extension rebornix.ruby
 code --install-extension redhat.java
 code --install-extension searKing.preview-vscode
