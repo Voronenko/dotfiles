@@ -1,4 +1,4 @@
-# adopted community recipes (wip)
+# adopted community recipes (wip) https://medium.com/@calbertts/docker-and-fuzzy-finder-fzf-4c6416f5e0b5
 
 dck_run() {
   export FZF_DEFAULT_OPTS='--height 90% --reverse --border'
