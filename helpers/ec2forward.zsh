@@ -21,7 +21,7 @@ function _load_aws_region() {
 function _load_port() {
     local port=$1
     if [ -z "${port}" ]; then
-        port=80
+        port=22
     fi
     echo $port
     return
