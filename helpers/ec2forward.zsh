@@ -38,8 +38,8 @@ function _load_local_port() {
 
 
 function ec2forward() {
-    local aws_remote_port=$1
-    local aws_local_port=$2
+    local aws_remote_port=${1:-80}
+    local aws_local_port=${2:-8080}
     local aws_profile_name=$3
     local aws_region=$4
 

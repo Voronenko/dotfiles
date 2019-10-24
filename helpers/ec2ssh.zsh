@@ -50,7 +50,7 @@ function ec2ssh() {
     local aws_region=$2
     local target_user=$3
     local target_private_key_path=$4
-    local target_port=$5
+    local target_port=${5:-22}
     local proxy_host=$6
     local proxy_user=$7
     local proxy_key_path=$8
