@@ -1,5 +1,30 @@
-swiss-knife: install-console-prettytyping install-console-fzf install-console-diffsofancy install-docker-dry zsh-fzf install-hashicorp-terraform install-aws-key-importer
+swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh
 	@echo OK
+
+swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
+	@echo FZF OK
+
+swiss-docker: install-docker-dry install-docker-machine
+	@echo docker ok
+
+swiss-console: install-console-bat install-console-prettytyping install-console-diffsofancy install-console-fd install-console-ripgrep install-console-ncdu install-console-yq install-ngrok install-direnv
+	@echo console ok
+
+swiss-console-python: install-console-glances
+	@echo python based console tools ok
+
+swiss-ops: install-hashicorp-terraform install-terraformer install-terraform-docs install-hashicorp-vault install-hashicorp-packer
+	@echo ops tools ok
+
+swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm
+	@echo k8s tools ok
+
+swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
+	@echo zsh extras ok
+
+swiss-aws:  install-aws-key-importer install-aws-myaws
+	@echo aws tools added
+
 
 
 # ZSH
@@ -45,6 +70,12 @@ install-console-fzf:
 	tar -xvzf /tmp/fzf.tar.gz -C /tmp
 	cp /tmp/fzf ~/dotfiles/bin
 	echo "Consider running make zsh-fzf to install zsh shell integration"
+
+install-console-wtfutil:
+	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.23.0/wtf_0.23.0_linux_amd64.tar.gz
+	tar -xvzf /tmp/wtf.tar.gz -C /tmp
+	cp /tmp/wtf_0.23.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
+	chmod +x ~/dotfiles/bin/wtfutil
 
 # https://github.com/so-fancy/diff-so-fancy
 install-console-diffsofancy:
@@ -107,7 +138,6 @@ install-direnv:
 	wget -O ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
 	chmod +x ~/dotfiles/bin/direnv
 
-https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
 # /WORKSPACE TOOLS
 
 
@@ -397,6 +427,7 @@ install-vmware-ovftool:
 	chmod +x /tmp/ovftool.bundle
 	echo sudo /tmp/ovftool.bundle --eulas-agreed --required --console
 
+# interactive https proxy https://mitmproxy.org/
 install-mitmproxy-org:
 	wget -O /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/4.0.4/mitmproxy-4.0.4-linux.tar.gz
 	tar -xvzf /tmp/mitmproxy.tar.gz -C ~/dotfiles/bin
@@ -417,3 +448,4 @@ install-aws-session-manager-plugin:
 	sudo dpkg -i session-manager-plugin.deb
 
 # /AWS
+

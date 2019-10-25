@@ -28,9 +28,26 @@ curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 
 ```
 
-# console perks
+# Some console perks (but not all)
 
-`kill -9 <tab>`  - with fzf
+#fzf
+
+`COMMAND [DIRECTORY/][FUZZY_PATTERN]**<TAB>`  - lookup file/folder
+
+`kill -9 <TAB>`  - lookup process
+
+`ssh **<TAB>` - lookup host from ~/.ssh/confog
+
+operate with envvars
+```
+unset **<TAB>
+export **<TAB>
+unalias **<TAB>
+```
+
+#/fzf
+
+`z <tab>`  - quickly change to most often used dir with cd
 
 `ga` Interactive git add selector
 
@@ -47,6 +64,10 @@ curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 `gss` Interactive git stash viewer
 
 `gclean` Interactive git clean selector
+
+`ec2ssh` - lookup and template ssh connection to machines you want to connect
+
+`ec2ssm` - lookup instances to connect using aws ssm
 
 
 # Folder specific SSH identity for git
