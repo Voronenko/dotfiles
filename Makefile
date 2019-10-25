@@ -365,7 +365,7 @@ install-aws-key-importer:
 	chmod +x ~/dotfiles/bin/aws-key-importer
 
 install-aws-myaws:
-	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.3/myaws_v0.3.3_linux_amd64.tar.gz
+	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.10/myaws_v0.3.10_linux_amd64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
 
 install-ovh-nova:

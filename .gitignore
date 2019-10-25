@@ -26,6 +26,7 @@ bin/oc
 bin/ignite
 bin/mitm*
 bin/terraformer
+bin/wtfutil
 oh-my-zsh
 startup.log
 zshrc.local
