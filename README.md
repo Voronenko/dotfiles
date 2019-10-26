@@ -662,3 +662,33 @@ slavko ALL=(ALL) NOPASSWD:SETENV: /usr/bin/docker, /usr/sbin/docker-gc, /usr/bin
 ```
 
 DO NOT PROCEED with similar setup on internet facing production servers
+
+
+# Deep Perversions
+
+Mac look for ubuntu boxes
+
+1. Dependencies
+```
+sudo apt-get install gtk2-engines-murrine gtk2-engines-pixbuf
+sudo apt install gnome-shell-extensions 
+```
+
+later enable user themes extensions
+
+2. Download theme itself
+
+https://www.gnome-look.org/p/1275087/
+
+3. Install icons set, saying
+
+https://github.com/keeferrourke/la-capitaine-icon-theme
+
+```
+mkdir -p ~/.icons
+cd ~/.icons
+git clone https://github.com/keeferrourke/la-capitaine-icon-theme.git
+./configure
+```
+
+4. Using gnome tweaking tool change current theme and icon pack

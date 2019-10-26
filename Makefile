@@ -274,6 +274,11 @@ gnome-shell-extension-timezone:
 	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
 	gnome-shell-extension-tool -e timezone@jwendell
 
+gnome-shell-window-corner-preview:
+	rm -rf /tmp/window-corner-preview
+	git clone https://github.com/medenagan/window-corner-preview.git /tmp/window-corner-preview
+	mv /tmp/window-corner-preview/window-corner-preview@fabiomereu.it ~/.local/share/gnome-shell/extensions/window-corner-preview@fabiomereu.it
+
 # /GNOME specific extensions
 
 zsh-fzf:
