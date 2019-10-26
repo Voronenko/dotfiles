@@ -680,6 +680,10 @@ later enable user themes extensions
 
 https://www.gnome-look.org/p/1275087/
 
+```
+mkdir -p ~/.themes
+```
+
 3. Install icons set, saying
 
 https://github.com/keeferrourke/la-capitaine-icon-theme
