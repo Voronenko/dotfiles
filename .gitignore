@@ -27,6 +27,7 @@ bin/ignite
 bin/mitm*
 bin/terraformer
 bin/wtfutil
+bin/govc
 oh-my-zsh
 startup.log
 zshrc.local

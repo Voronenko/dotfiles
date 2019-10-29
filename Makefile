@@ -386,6 +386,9 @@ install-esxi-tools:
 	wget -O ~/dotfiles/bin/esxi-vm-destroy https://github.com/softasap/esxi-vm/blob/master/esxi-vm-destroy
 	chmod +x ~/dotfiles/bin/esxi-vm-destroy
 	wget -O ~/dotfiles/bin/esxi_vm_functions.py https://raw.githubusercontent.com/softasap/esxi-vm/master/esxi_vm_functions.py
+
+install-esxi-govc:
+	curl -L https://github.com/vmware/govmomi/releases/download/v0.21.0/govc_linux_amd64.gz | gunzip > ~/dotfiles/bin/govc
 # /ESXI
 
 
