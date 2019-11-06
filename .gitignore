@@ -28,6 +28,12 @@ bin/mitm*
 bin/terraformer
 bin/wtfutil
 bin/govc
+bin/kubectl-spy
+bin/kubespy
+bin/kubeval
+bin/polaris
+bin/popeye
+bin/rakkess
 oh-my-zsh
 startup.log
 zshrc.local

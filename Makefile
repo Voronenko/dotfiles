@@ -202,6 +202,55 @@ install-k8s-kubectl-ubuntu:
 	sudo apt-get update
 	sudo apt-get install -y kubectl
 
+# https://github.com/txn2/kubefwd/
+install-k8s-kubefwd:
+	wget -O /tmp/kubefwd.deb https://github.com/txn2/kubefwd/releases/download/v1.9.3/kubefwd_amd64.deb
+	sudo apt install /tmp/kubefwd.deb
+
+# https://github.com/instrumenta/kubeval/
+install-k8s-kubeval:
+	wget -O /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/0.14.0/kubeval-linux-amd64.tar.gz
+	tar -xvzf /tmp/kubeval.tar.gz -C /tmp
+	cp /tmp/kubeval ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/kubeval
+
+# https://github.com/vmware-tanzu/octant/
+install-k8s-vmware-octant:
+	wget -O /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.9.1/octant_0.9.1_Linux-64bit.deb
+	sudo apt install /tmp/octant.deb
+
+# https://github.com/corneliusweig/rakkess
+install-k8s-rakkess:
+	curl -Lo /tmp/rakkess.gz https://github.com/corneliusweig/rakkess/releases/download/v0.4.1/rakkess-linux-amd64.gz && \
+	cd /tmp && gunzip rakkess.gz && chmod +x rakkess && mv rakkess ~/dotfiles/bin
+
+# https://github.com/derailed/popeye
+install-k8s-popeye:
+	wget -O /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/v0.4.3/popeye_0.4.3_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/popeye.tar.gz -C /tmp
+	cp /tmp/popeye ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/popeye
+
+#  https://github.com/FairwindsOps/polaris
+install-k8s-polaris:
+	wget -O /tmp/polaris.tar.gz https://github.com/FairwindsOps/polaris/releases/download/0.4.0/polaris_0.4.0_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/polaris.tar.gz -C /tmp
+	cp /tmp/polaris ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/polaris
+	echo with KUBECONFIG set, polaris --dashboard --dashboard-port 8080
+	echo you can also install inside cluster:
+	echo kubectl apply -f https://github.com/fairwindsops/polaris/releases/latest/download/dashboard.yaml
+	echo kubectl port-forward --namespace polaris svc/polaris-dashboard 8080:80
+
+# https://github.com/pulumi/kubespy
+install-k8s-kubespy:
+	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/v0.4.0/kubespy-linux-amd64.tar.gz
+	tar -xvzf /tmp/kubespy.tar.gz -C /tmp
+	cp /tmp/releases/kubespy-linux-amd64/kubespy ~/dotfiles/bin
+	ln -s ~/dotfiles/bin/kubespy  ~/dotfiles/bin/kubectl-spy
+
+
+
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
