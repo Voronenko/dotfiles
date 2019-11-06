@@ -338,13 +338,38 @@ In order to configure zsh integration - `zsh-fzh` action of the makefile.
 `install-console-ncdu` - simply answers, where space goes, per directory.  https://dev.yorhel.nl/ncdu
 
 ```makefile
-
-swiss-knife: install-console-prettytyping install-console-fzf install-console-diffsofancy install-docker-dry zsh-fzf install-hashicorp-terraform install-aws-key-importer
+swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh
 	@echo OK
+
+swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
+	@echo FZF OK
+
+swiss-docker: install-docker-dry install-docker-machine
+	@echo docker ok
+
+swiss-console: install-console-bat install-console-prettytyping install-console-diffsofancy install-console-fd install-console-ripgrep install-console-ncdu install-console-yq install-ngrok install-direnv
+	@echo console ok
+
+swiss-console-python: install-console-glances
+	@echo python based console tools ok
+
+swiss-ops: install-hashicorp-terraform install-terraformer install-terraform-docs install-hashicorp-vault install-hashicorp-packer
+	@echo ops tools ok
+
+swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm
+	@echo k8s tools ok
+
+swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
+	@echo zsh extras ok
+
+swiss-aws:  install-aws-key-importer install-aws-myaws
+	@echo aws tools added
+
 
 
 # ZSH
-
+zsh-fzf-repo:
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # /ZSH
 
 
@@ -368,10 +393,13 @@ install-cdci-circleci-runner:
 
 # CONSOLE TOOLS
 
+# cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
 
+# https://github.com/denilsonsa/prettyping
+# prettyping 8.8.8.8
 install-console-prettytyping:
 	wget -O ~/dotfiles/bin/prettyping https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
 	chmod +x ~/dotfiles/bin/prettyping
@@ -383,20 +411,31 @@ install-console-fzf:
 	cp /tmp/fzf ~/dotfiles/bin
 	echo "Consider running make zsh-fzf to install zsh shell integration"
 
+install-console-wtfutil:
+	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.23.0/wtf_0.23.0_linux_amd64.tar.gz
+	tar -xvzf /tmp/wtf.tar.gz -C /tmp
+	cp /tmp/wtf_0.23.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
+	chmod +x ~/dotfiles/bin/wtfutil
+
 # https://github.com/so-fancy/diff-so-fancy
 install-console-diffsofancy:
 	wget -O ~/dotfiles/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
 	chmod +x ~/dotfiles/bin/diff-so-fancy
 
-
+# fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
+# fd service
 install-console-fd:
 	wget -O /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
 	sudo dpkg -i /tmp/fd.deb
 
+# ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep
+# rg -n -w '[A-Z]+_SUSPEND'
 install-console-ripgrep:
 	wget -O /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
 	sudo dpkg -i /tmp/ripgrep.deb
 
+# Glances is a cross-platform monitoring tool which aims
+# to present a large amount of monitoring information
 install-console-glances:
 	sudo pip install -U glances
 
@@ -404,8 +443,19 @@ install-console-glances:
 install-console-tldr:
 	npm install -g tldr
 
+# disk usage analyzer with an ncurses interface
 install-console-ncdu:
 	sudo apt-get install ncdu
+
+# jql for yml
+install-console-yq:
+	wget -O ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
+	chmod +x ~/dotfiles/bin/yq
+
+install-ngrok:
+	wget -O ~/dotfiles/bin/ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+	cd ~/dotfiles/bin/ && unzip ngrok.zip
+	rm ~/dotfiles/bin/ngrok.zip
 
 # /CONSOLE TOOLS
 
@@ -424,21 +474,31 @@ install-slack-term:
 	wget -O ~/dotfiles/bin/slack-term https://github.com/erroneousboat/slack-term/releases/download/v0.4.1/slack-term-linux-amd64
 	chmod +x ~/dotfiles/bin/slack-term
 
+install-direnv:
+	wget -O ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
+	chmod +x ~/dotfiles/bin/direnv
+
 # /WORKSPACE TOOLS
 
 
-# DOKER TOOLS
+# DOCKER TOOLS
 
 
 install-docker-machine:
 	wget -O ~/dotfiles/bin/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
 	chmod +x ~/dotfiles/bin/docker-machine
 
+# docker console manager
 install-docker-dry:
 	wget -O ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
 
-# /DOKER TOOLS
+install-docker-dive:
+	wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.8.1/dive_0.8.1_linux_amd64.deb
+	sudo apt install /tmp/dive.deb
+
+
+# /DOCKER TOOLS
 
 
 # KUBERNETES
@@ -466,6 +526,10 @@ install-k8s-heptio-authenticator-aws:
 	curl -o ~/dotfiles/bin/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
 	chmod +x ~/dotfiles/bin/heptio-authenticator-aws
 
+install-k8s-aws-iam-authenticator:
+	curl -o ~/dotfiles/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+	chmod +x ~/dotfiles/bin/aws-iam-authenticator
+
 install-k8s-weaveworks-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 	mv /tmp/eksctl ~/dotfiles/bin
@@ -478,6 +542,55 @@ install-k8s-kubectl-ubuntu:
 	sudo apt-get update
 	sudo apt-get install -y kubectl
 
+# https://github.com/txn2/kubefwd/
+install-k8s-kubefwd:
+	wget -O /tmp/kubefwd.deb https://github.com/txn2/kubefwd/releases/download/v1.9.3/kubefwd_amd64.deb
+	sudo apt install /tmp/kubefwd.deb
+
+# https://github.com/instrumenta/kubeval/
+install-k8s-kubeval:
+	wget -O /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/0.14.0/kubeval-linux-amd64.tar.gz
+	tar -xvzf /tmp/kubeval.tar.gz -C /tmp
+	cp /tmp/kubeval ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/kubeval
+
+# https://github.com/vmware-tanzu/octant/
+install-k8s-vmware-octant:
+	wget -O /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.9.1/octant_0.9.1_Linux-64bit.deb
+	sudo apt install /tmp/octant.deb
+
+# https://github.com/corneliusweig/rakkess
+install-k8s-rakkess:
+	curl -Lo /tmp/rakkess.gz https://github.com/corneliusweig/rakkess/releases/download/v0.4.1/rakkess-linux-amd64.gz && \
+	cd /tmp && gunzip rakkess.gz && chmod +x rakkess && mv rakkess ~/dotfiles/bin
+
+# https://github.com/derailed/popeye
+install-k8s-popeye:
+	wget -O /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/v0.4.3/popeye_0.4.3_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/popeye.tar.gz -C /tmp
+	cp /tmp/popeye ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/popeye
+
+#  https://github.com/FairwindsOps/polaris
+install-k8s-polaris:
+	wget -O /tmp/polaris.tar.gz https://github.com/FairwindsOps/polaris/releases/download/0.4.0/polaris_0.4.0_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/polaris.tar.gz -C /tmp
+	cp /tmp/polaris ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/polaris
+	echo with KUBECONFIG set, polaris --dashboard --dashboard-port 8080
+	echo you can also install inside cluster:
+	echo kubectl apply -f https://github.com/fairwindsops/polaris/releases/latest/download/dashboard.yaml
+	echo kubectl port-forward --namespace polaris svc/polaris-dashboard 8080:80
+
+# https://github.com/pulumi/kubespy
+install-k8s-kubespy:
+	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/v0.4.0/kubespy-linux-amd64.tar.gz
+	tar -xvzf /tmp/kubespy.tar.gz -C /tmp
+	cp /tmp/releases/kubespy-linux-amd64/kubespy ~/dotfiles/bin
+	ln -s ~/dotfiles/bin/kubespy  ~/dotfiles/bin/kubectl-spy
+
+
+
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
@@ -486,7 +599,31 @@ kube-dashboard-insecure-install:
 	echo possible to grant admin via  kubectl create -f ~/dotfiles/bin/k8s/dashboard-admin.yaml
 	echo run kubectl proxy followed with http://localhost:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/#!/overview?namespace=default
 
+install-openshift-oc:
+	wget -O /tmp/openshift.tar.gz https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+	tar -xvzf /tmp/openshift.tar.gz -C /tmp
+	mv /tmp/openshift-origin-client-tools-*  /tmp/openshift-origin-client-tools
+	cp /tmp/openshift-origin-client-tools/oc ~/dotfiles/bin
+	type kubectl >/dev/null || /tmp/openshift-origin-client-tools/oc ~/dotfiles/bin
+	echo "If there were no kubectl in path, one was installed from oc distro."
+	echo "In other case global is used. Please check carefully"
+
 # /KUBERNETES
+
+# IGNITE
+install-weaveworks-ignite:
+	curl -fLo ~/dotfiles/bin/ignite https://github.com/weaveworks/ignite/releases/download/v0.4.1/ignite
+	chmod +x ~/dotfiles/bin/ignite
+	# eliminate when ignite adds support for sudoer
+	sudo cp /home/slavko/dotfiles/bin/ignite /usr/local/bin
+remove-weaveworks-ignite:
+	# Force-remove all running VMs
+	sudo ignite ps -q | xargs sudo ignite rm -f
+	# Remove the data directory
+	sudo rm -r /var/lib/firecracker
+	# Remove the Ignite binary
+	rm ~/dotfiles/bin/ignite
+# /IGNITE
 
 workplace-init:
 	./workplace_init.sh
@@ -531,6 +668,11 @@ gnome-shell-extension-timezone:
 	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
 	gnome-shell-extension-tool -e timezone@jwendell
 
+gnome-shell-window-corner-preview:
+	rm -rf /tmp/window-corner-preview
+	git clone https://github.com/medenagan/window-corner-preview.git /tmp/window-corner-preview
+	mv /tmp/window-corner-preview/window-corner-preview@fabiomereu.it ~/.local/share/gnome-shell/extensions/window-corner-preview@fabiomereu.it
+
 # /GNOME specific extensions
 
 zsh-fzf:
@@ -540,11 +682,21 @@ zsh-fzf:
 	mkdir -p ~/.oh-my-zsh/custom/plugins/fzf-zsh
 	cp ~/dotfiles/helpers/fzf-zsh.plugin.zsh ~/.oh-my-zsh/custom/plugins/fzf-zsh
 
+# +plugins=(... alias-tips)
+zsh-alias-tips:
+	git clone https://github.com/djui/alias-tips.git ~/.oh-my-zsh/custom/plugins/alias-tips
+
 
 # TERRAFORM
 
 install-terraform-ing:
 	gem install terraforming
+
+#https://github.com/GoogleCloudPlatform/terraformer
+install-terraformer:
+	wget -O ~/dotfiles/bin/terraformer https://github.com/GoogleCloudPlatform/terraformer/releases/download/0.8/terraformer-linux-amd64
+	chmod +x ~/dotfiles/bin/terraformer
+
 
 install-terraform-docs:
 	wget -O ~/dotfiles/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
@@ -564,8 +716,13 @@ install-hashicorp-vault:
 	cd ~/dotfiles/bin/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+
+install-hashicorp-packer:
+	wget -O ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_linux_amd64.zip"
+	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
+
 
 #/HASHICORP
 
@@ -583,6 +740,23 @@ go-eg:
 
 # /GO
 
+# JAVA
+
+jenv:
+	git clone https://github.com/gcuisinier/jenv.git ~/.jenv
+	echo "================================================="
+	echo "Restart session, than once you have jenv"
+	echo "jenv enable-plugins maven"
+	echo "jenv enable-plugins export"
+	echo "======== then discover java versions:"
+	echo "update-alternatives --config java"
+	echo "======== Add java versions as"
+	echo "/usr/lib/jvm/java-11-openjdk-amd64/"
+	echo "Validate install and checking both java -version and javac -version"
+	echo "That should match"
+
+# /JAVA
+
 # CLOUDS
 
 install-aws-key-importer:
@@ -590,13 +764,93 @@ install-aws-key-importer:
 	chmod +x ~/dotfiles/bin/aws-key-importer
 
 install-aws-myaws:
-	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.3/myaws_v0.3.3_linux_amd64.tar.gz
+	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.10/myaws_v0.3.10_linux_amd64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
 
 install-ovh-nova:
 	sudo pip install python-openstackclient
 
 # / CLOUDS
+
+# ESXI
+# https://github.com/softasap/esxi-vm
+install-esxi-tools:
+	wget -O ~/dotfiles/bin/esxi-vm-create https://raw.githubusercontent.com/softasap/esxi-vm/master/esxi-vm-create
+	chmod +x ~/dotfiles/bin/esxi-vm-create
+	wget -O ~/dotfiles/bin/esxi-vm-destroy https://github.com/softasap/esxi-vm/blob/master/esxi-vm-destroy
+	chmod +x ~/dotfiles/bin/esxi-vm-destroy
+	wget -O ~/dotfiles/bin/esxi_vm_functions.py https://raw.githubusercontent.com/softasap/esxi-vm/master/esxi_vm_functions.py
+
+install-esxi-govc:
+	curl -L https://github.com/vmware/govmomi/releases/download/v0.21.0/govc_linux_amd64.gz | gunzip > ~/dotfiles/bin/govc
+# /ESXI
+
+
+fonts-awesome-terminal-fonts:
+	wget -O ~/.fonts/devicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.sh"
+	wget -O ~/.fonts/devicons-regular.ttf "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.ttf"
+	wget -O ~/.fonts/fontawesome-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/fontawesome-regular.sh"
+	wget -O ~/.fonts/fontawesome-regular.ttf "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/fontawesome-regular.ttf"
+	wget -O ~/.fonts/octicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/octicons-regular.sh"
+	wget -O ~/.fonts/octicons-regular.ttf "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/octicons-regular.ttf"
+	wget -O ~/.fonts/pomicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/pomicons-regular.sh"
+	wget -O ~/.fonts/pomicons-regular.ttf "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/pomicons-regular.ttf"
+	fc-cache -fv ~/.fonts
+	fc-list | grep "FontAwesome"
+
+fonts-source-code-pro:
+	wget -O ~/.fonts/SourceCodeVariable-Italic.otf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Italic.otf"
+	wget -O ~/.fonts/SourceCodeVariable-Italic.ttf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Italic.ttf"
+	wget -O ~/.fonts/SourceCodeVariable-Roman.otf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Roman.otf"
+	wget -O ~/.fonts/SourceCodeVariable-Roman.ttf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Roman.ttf"
+	fc-cache -fv ~/.fonts
+	fc-list | grep "Source Code Pro"
+fonts-source-code-pro-patched:
+	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono%20Windows%20Compatible.ttf"
+	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf"
+	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Windows%20Compatible.ttf"
+	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf"
+	fc-cache -fv ~/.fonts
+	fc-list | grep "Source Code Pro"
+
+z-clean-downloads:
+	rm ~/Downloads/*.rdp
+
+
+# LAPTOP
+# Free terminal based CPU monitoring tool for Linux
+throttling-stui:
+	sudo pip install s-tui
+
+install-vmware-ovftool:
+	wget -O /tmp/ovftool.bundle https://raw.githubusercontent.com/smarunich/avitoolbox/master/files/VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+	md5sum /tmp/ovftool.bundle
+	@echo d0dd9006d720a26278b94591a4111457   ovftool.bundle
+	chmod +x /tmp/ovftool.bundle
+	echo sudo /tmp/ovftool.bundle --eulas-agreed --required --console
+
+# interactive https proxy https://mitmproxy.org/
+install-mitmproxy-org:
+	wget -O /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/4.0.4/mitmproxy-4.0.4-linux.tar.gz
+	tar -xvzf /tmp/mitmproxy.tar.gz -C ~/dotfiles/bin
+
+
+# /LAPTOP
+
+
+# AWS
+
+#https://aws.amazon.com/serverless/sam/
+install-aws-sam-cli:
+	pip install --user aws-sam-cli
+
+#https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html#install-plugin-linux
+install-aws-session-manager-plugin:
+	curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "/tmp/session-manager-plugin.deb"
+	sudo dpkg -i session-manager-plugin.deb
+
+# /AWS
+
 
 
 ```
