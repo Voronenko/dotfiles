@@ -153,6 +153,11 @@ install-docker-dry:
 	wget -O ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
 
+install-docker-dive:
+	wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.8.1/dive_0.8.1_linux_amd64.deb
+	sudo apt install /tmp/dive.deb
+
+
 # /DOCKER TOOLS
 
 
