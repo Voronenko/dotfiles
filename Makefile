@@ -356,7 +356,7 @@ install-terraform-ing:
 install-terraformer:
 	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-all-linux-amd64
 	chmod +x terraformer-all-linux-amd64
-	mv terraformer-all-linux-amd64 ~/dotfiles/bin/terraformer_all
+	mv terraformer-all-linux-amd64 ~/dotfiles/bin/terraformer
 	chmod +x ~/dotfiles/bin/terraformer_all
 
 	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-google-linux-amd64
