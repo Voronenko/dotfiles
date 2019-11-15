@@ -354,9 +354,25 @@ install-terraform-ing:
 
 #https://github.com/GoogleCloudPlatform/terraformer
 install-terraformer:
-	wget -O ~/dotfiles/bin/terraformer https://github.com/GoogleCloudPlatform/terraformer/releases/download/0.8/terraformer-linux-amd64
-	chmod +x ~/dotfiles/bin/terraformer
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-all-linux-amd64
+	chmod +x terraformer-all-linux-amd64
+	mv terraformer-all-linux-amd64 ~/dotfiles/bin/terraformer_all
+	chmod +x ~/dotfiles/bin/terraformer_all
 
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-google-linux-amd64
+	chmod +x terraformer-google-linux-amd64
+	mv terraformer-google-linux-amd64 ~/dotfiles/bin/terraformer_google
+	chmod +x ~/dotfiles/bin/terraformer_google
+
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-aws-linux-amd64
+	chmod +x terraformer-aws-linux-amd64
+	mv terraformer-aws-linux-amd64 ~/dotfiles/bin/terraformer_aws
+	chmod +x ~/dotfiles/bin/terraformer_aws
+
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-kubernetes-linux-amd64
+	chmod +x terraformer-kubernetes-linux-amd64
+	mv terraformer-kubernetes-linux-amd64 ~/dotfiles/bin/terraformer_kubernetes
+	chmod +x ~/dotfiles/bin/terraformer_kubernetes
 
 install-terraform-docs:
 	wget -O ~/dotfiles/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
