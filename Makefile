@@ -527,3 +527,11 @@ install-aws-session-manager-plugin:
 
 # /AWS
 
+# SECURITY
+
+sec-nmap-sandmap:
+	sudo apt-get install proxychains
+	rm -rf /tmp/sandmap && cd /tmp && git clone --recursive https://github.com/trimstray/sandmap
+	cd /tmp/sandmap && sudo ./setup.sh install
+	echo use sandmap
+# /SECURITY
