@@ -336,6 +336,8 @@ fi
 
 # Python development
 
+export PIPENV_VENV_IN_PROJECT=true
+
 if [[ -f /usr/local/bin/virtualenvwrapper.sh ]]; then
 
 mkdir -p ~/.virtualenvs
