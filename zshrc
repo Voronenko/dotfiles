@@ -526,6 +526,13 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
   }
 
+  set-aws-region() {
+    export AWS_DEFAULT_REGION=${1}
+    export AWS_REGION=${1}
+    export TF_AWS_DEFAULT_REGION=${1}
+    export TF_AWS_REGION=${1}
+  }
+
 fi
 
 # Windows syntethic sugar
@@ -557,6 +564,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source ~/dotfiles/helpers/forgit.plugin.zsh
+source ~/dotfiles/helpers/fzf-docker.zsh
 
 # fco - checkout git branch/tag
 gco() {

@@ -45,6 +45,30 @@ export **<TAB>
 unalias **<TAB>
 ```
 
+as a part of helper for docker https://github.com/MartinRamm/fzf-docker.git
+
+| command | description                                               | fzf mode | command arguments (optional)                                                                                 |
+| ------- | --------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| dr      | docker restart && open logs (in follow mode)              | multiple |                                                                                                              |
+| dl      | docker logs (in follow mode)                              | multiple | time interval - e.g.: `1m` for 1 minute - (defaults to all available logs)                                   |
+| dla     | docker logs (in follow mode) all containers               |          | time interval - e.g.: `1m` for 1 minute - (defaults to all available logs)                                   |
+| de      | docker exec in interactive mode                           | single   | command to exec (default - see below)                                                                        |
+| drm     | docker remove container (with force)                      | multiple |                                                                                                              |
+| drma    | docker remove all containers (with force)                 |          |                                                                                                              |
+| ds      | docker stop                                               | multiple |                                                                                                              |
+| dsa     | docker stop all running containers                        |          |                                                                                                              |
+| dsrm    | docker stop and remove container                          | multiple |                                                                                                              |
+| dsrma   | docker stop and remove all container                      |          |
+
+| dk      | docker kill                                               | multiple |                                                                                                              |
+| dka     | docker kill all containers                                |          |                                                                                                              |
+| dkrm    | docker kill and remove container                          | multiple |                                                                                                              |
+| dkrma   | docker kill and remove all container                      |          |                                                                                                              |
+| drmi    | docker remove image (with force)                          | multiple |                                                                                                              |
+| drmia   | docker remove all images (with force)                     |          |                                                                                                              |
+| dclean  | `dsrma` and `drmia`                                       |          |                                                                                                              |
+
+
 #/fzf
 
 `z <tab>`  - quickly change to most often used dir with cd
