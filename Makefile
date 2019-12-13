@@ -396,7 +396,7 @@ install-hashicorp-terraform:
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:
-	wget -O ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
 
 
@@ -535,3 +535,12 @@ sec-nmap-sandmap:
 	cd /tmp/sandmap && sudo ./setup.sh install
 	echo use sandmap
 # /SECURITY
+
+
+# DOCUMENTATION
+
+# https://www.mkdocs.org/
+install-mkdocs:
+	pip install mkdocs
+
+#/ DOCUMENTATION

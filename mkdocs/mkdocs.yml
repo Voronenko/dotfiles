@@ -1,0 +1,22 @@
+site_name: SPECIFY
+
+repo_url: https://github.com/voronenko/SPECIFY
+site_description: 'SPECIFY'
+theme: readthedocs
+
+#extra_javascript:
+#  - js/custom.js
+
+markdown_extensions:
+  - toc:
+      permalink: True
+  - nl2br
+  - fenced_code
+  - plantuml: 
+        outpath: "docs/images"
+
+pages:
+  - Home: 'index.md'
+  - Getting Started:
+    - Installation:
+      - 'Linux': 'getting-started/installation-linux.md'
