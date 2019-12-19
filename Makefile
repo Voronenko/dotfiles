@@ -71,10 +71,11 @@ install-console-fzf:
 	cp /tmp/fzf ~/dotfiles/bin
 	echo "Consider running make zsh-fzf to install zsh shell integration"
 
+# WTF is a personal information dashboard for your terminal, developed for those who spend most of their day in the command line.
 install-console-wtfutil:
-	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.23.0/wtf_0.23.0_linux_amd64.tar.gz
+	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.25.0/wtf_0.25.0_linux_amd64.tar.gz
 	tar -xvzf /tmp/wtf.tar.gz -C /tmp
-	cp /tmp/wtf_0.23.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
+	cp /tmp/wtf_0.25.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
 	chmod +x ~/dotfiles/bin/wtfutil
 
 # https://github.com/so-fancy/diff-so-fancy
@@ -544,3 +545,17 @@ install-mkdocs:
 	pip install mkdocs
 
 #/ DOCUMENTATION
+
+# GARBAGE
+
+install-traefik1:
+	wget -O ~/dotfiles/bin/traefik1 https://github.com/containous/traefik/releases/download/v1.7.19/traefik_linux-amd64
+	chmod +x ~/dotfiles/bin/traefik1
+
+install-traefik:
+	wget -O /tmp/traefik2.tar.gz https://github.com/containous/traefik/releases/download/v2.1.1/traefik_v2.1.1_linux_amd64.tar.gz
+	tar -xvzf /tmp/traefik2.tar.gz -C /tmp
+	mv /tmp/traefik ~/dotfiles/bin/traefik
+	chmod +x ~/dotfiles/bin/traefik
+
+# / GARBAGE

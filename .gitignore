@@ -38,6 +38,8 @@ bin/terraformer_all
 bin/terraformer_aws
 bin/terraformer_google
 bin/terraformer_kubernetes
+bin/traefik
+bin/traefik1
 oh-my-zsh
 startup.log
 zshrc.local
