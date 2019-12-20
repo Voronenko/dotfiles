@@ -49,4 +49,4 @@ bin/esxi-vm-create
 bin/esxi-vm-destroy
 bin/esxi_vm_functions.py
 bin/esxi_vm_functions.pyc
-
+*.phar

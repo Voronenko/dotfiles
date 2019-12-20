@@ -505,6 +505,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     set +x
     export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
     export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
 
   }
 
@@ -524,6 +525,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
   }
 
   set-aws-region() {

@@ -69,9 +69,13 @@ prompt_dot_toggl() {
 prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
   local aws_region="${AWS_REGION:-$AWS_DEFAULT_REGION}"
+  local aws_orgname="${AWS_ORG_NAME}"
+  if [ "${aws_orgname}" = "None" ]; then
+    aws_orgname = ""
+  fi
 
   if [[ -n "${aws_profile}${aws_region}" ]]; then
-    "$1_prompt_segment" "$0" "$2" red white "$aws_profile $aws_region" 'AWS_ICON'
+    "$1_prompt_segment" "$0" "$2" red white "$aws_orgname $aws_profile $aws_region" 'AWS_ICON'
   fi
 }
 
