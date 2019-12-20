@@ -84,9 +84,9 @@ function ec2ssh() {
     local selected_host=$(myaws ec2 ls --profile=${aws_profile_name} --region=${aws_region} --fields='InstanceId PublicIpAddress PrivateIpAddress LaunchTime Tag:Name Tag:attached_asg' | sort -k4 | fzf | cut -f2)
     if [ -n "${selected_host}" ]; then
         if [ -z "${proxy_host}" ]; then
-            BUFFER="ssh -i ${target_private_key_path} -p ${target_port} ${target_user}@${selected_host} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+            BUFFER="ssh -i ${target_private_key_path} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${target_port} ${target_user}@${selected_host}"
         else
-            BUFFER="ssh -i ${proxy_key_path} -p ${proxy_port} -t ${proxy_user}@${proxy_host} ssh ${target_user}@${selected_host} -i ${target_private_key_path} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+            BUFFER="ssh -i ${proxy_key_path} -p ${proxy_port} -t ${proxy_user}@${proxy_host} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${target_private_key_path} ${target_user}@${selected_host}"
         fi
         if zle; then
             zle accept-line
