@@ -1,0 +1,2 @@
+#!/bin/bash -i
+java -jar $HOME/dotfiles/bin/swagger-codegen-cli.jar $@

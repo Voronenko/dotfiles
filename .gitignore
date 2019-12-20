@@ -50,3 +50,4 @@ bin/esxi-vm-destroy
 bin/esxi_vm_functions.py
 bin/esxi_vm_functions.pyc
 *.phar
+bin/swagger-codegen-cli.jar

@@ -75,7 +75,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$HOME/bin:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:.$HOME/config/composer/vendor/bin:$PATH
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 
 zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
