@@ -40,6 +40,7 @@ bin/terraformer_google
 bin/terraformer_kubernetes
 bin/traefik
 bin/traefik1
+bin/phpmd
 oh-my-zsh
 startup.log
 zshrc.local

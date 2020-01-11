@@ -559,3 +559,10 @@ install-traefik:
 	chmod +x ~/dotfiles/bin/traefik
 
 # / GARBAGE
+
+# PHP
+
+install-phpmd:
+	wget -O ~/dotfiles/bin/phpmd https://phpmd.org/static/latest/phpmd.phar
+	chmod +x ~/dotfiles/bin/phpmd
+# /PHP
