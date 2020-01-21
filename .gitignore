@@ -44,6 +44,8 @@ bin/phpmd
 oh-my-zsh
 startup.log
 zshrc.local
+bin/jsonnet
+bin/jsonnetfmt
 
 # esxi toolset
 bin/esxi-vm-create

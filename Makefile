@@ -53,6 +53,14 @@ install-cdci-circleci-runner:
 
 # CONSOLE TOOLS
 
+# jsonnet processing tool
+install-console-jsonnet: install-console-yq
+	wget -O /tmp/jsonnet.tar.gz https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz
+	tar -xvzf /tmp/jsonnet.tar.gz -C /tmp
+	cp /tmp/jsonnet ~/dotfiles/bin
+	cp /tmp/jsonnetfmt ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/jsonnet ~/dotfiles/bin/jsonnetfmt
+
 # cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
