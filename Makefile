@@ -1,4 +1,4 @@
-swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh
+swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh fonts-swiss-knife
 	@echo OK
 
 swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
@@ -29,6 +29,7 @@ swiss-aws:  install-aws-key-importer install-aws-myaws
 
 # ZSH
 zsh-fzf-repo:
+	rm -rf ~/.fzf
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # /ZSH
 
@@ -470,6 +471,11 @@ install-esxi-govc:
 	curl -L https://github.com/vmware/govmomi/releases/download/v0.21.0/govc_linux_amd64.gz | gunzip > ~/dotfiles/bin/govc
 # /ESXI
 
+fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts fonts-source-code-pro-patched
+	mkdir -p ~/.fonts
+
+fonts-init:
+	sudo apt install fontconfig
 
 fonts-awesome-terminal-fonts:
 	wget -O ~/.fonts/devicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.sh"
