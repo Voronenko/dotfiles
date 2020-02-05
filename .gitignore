@@ -41,6 +41,7 @@ bin/terraformer_kubernetes
 bin/traefik
 bin/traefik1
 bin/phpmd
+bin/diff-so-fancy
 oh-my-zsh
 startup.log
 zshrc.local
