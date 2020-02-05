@@ -15,6 +15,17 @@
     "/home/slavko/apps/plantuml/plantuml-stdlib/"
   ],
 
+  "remote.SSH.defaultExtensions": [
+    "alefragnani.numbered-bookmarks",
+    "CoenraadS.bracket-pair-colorizer-2",
+    "eamodio.gitlens",
+    "EditorConfig.EditorConfig",
+    "felixfbecker.php-debug",
+    "humao.rest-client",
+    "shardulm94.trailing-spaces",
+    "waderyan.gitblame"
+  ],  
+
   "jsonnet.outputFormat": "json",
   "jsonnet.libPaths": ["~/.local/lib/python3.6/site-packages/kapitan", "./"],
 

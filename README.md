@@ -315,6 +315,21 @@ Run whether user is logged on or not. Save Password !!
 -c "sudo service ssh start"
 ```
 
+If for some reason you do not know sudo password for your wsl user (sic!), use
+
+```
+wsl --user root
+```
+
+to get root session for wsl, and than
+
+```
+passwd user
+```
+
+where `user` is your wsl user
+
+
 
 # Anything locally specific?
 
