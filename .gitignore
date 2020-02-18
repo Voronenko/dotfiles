@@ -34,6 +34,8 @@ bin/kubeval
 bin/polaris
 bin/popeye
 bin/rakkess
+bin/skeema
+bin/webhook
 bin/terraformer_all
 bin/terraformer_aws
 bin/terraformer_google
@@ -41,6 +43,7 @@ bin/terraformer_kubernetes
 bin/traefik
 bin/traefik1
 bin/phpmd
+bin/dbmate
 oh-my-zsh
 startup.log
 zshrc.local

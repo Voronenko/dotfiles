@@ -62,6 +62,16 @@ install-console-jsonnet: install-console-yq
 	cp /tmp/jsonnetfmt ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/jsonnet ~/dotfiles/bin/jsonnetfmt
 
+install-mysql-skeema:
+	wget -O /tmp/skeema.tar.gz https://github.com/skeema/skeema/releases/download/v1.4.2/skeema_1.4.2_linux_amd64.tar.gz
+	tar -xvzf /tmp/skeema.tar.gz -C /tmp
+	cp /tmp/skeema ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/skeema
+
+install-mysql-dbmate:
+	wget -O ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-amd64
+	chmod +x ~/dotfiles/bin/dbmate
+
 # cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
