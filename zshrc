@@ -56,6 +56,9 @@ fpath=($HOME/dotfiles/completions $fpath)
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="robbyrussell"
+if [[ -d /mnt/c/Windows/ ]]; then
+ZSH_DISABLE_COMPFIX=true
+fi
 
 # notifications
 bgnotify_threshold=4  ## set your own notification threshold

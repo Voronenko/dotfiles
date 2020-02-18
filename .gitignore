@@ -44,6 +44,7 @@ bin/traefik
 bin/traefik1
 bin/phpmd
 bin/dbmate
+bin/diff-so-fancy
 oh-my-zsh
 startup.log
 zshrc.local
