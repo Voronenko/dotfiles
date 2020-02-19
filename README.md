@@ -377,7 +377,7 @@ In order to configure zsh integration - `zsh-fzh` action of the makefile.
 `install-console-ncdu` - simply answers, where space goes, per directory.  https://dev.yorhel.nl/ncdu
 
 ```makefile
-swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh
+swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh fonts-swiss-knife
 	@echo OK
 
 swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
@@ -408,6 +408,7 @@ swiss-aws:  install-aws-key-importer install-aws-myaws
 
 # ZSH
 zsh-fzf-repo:
+	rm -rf ~/.fzf
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # /ZSH
 
@@ -432,6 +433,24 @@ install-cdci-circleci-runner:
 
 # CONSOLE TOOLS
 
+# jsonnet processing tool
+install-console-jsonnet: install-console-yq
+	wget -O /tmp/jsonnet.tar.gz https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz
+	tar -xvzf /tmp/jsonnet.tar.gz -C /tmp
+	cp /tmp/jsonnet ~/dotfiles/bin
+	cp /tmp/jsonnetfmt ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/jsonnet ~/dotfiles/bin/jsonnetfmt
+
+install-mysql-skeema:
+	wget -O /tmp/skeema.tar.gz https://github.com/skeema/skeema/releases/download/v1.4.2/skeema_1.4.2_linux_amd64.tar.gz
+	tar -xvzf /tmp/skeema.tar.gz -C /tmp
+	cp /tmp/skeema ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/skeema
+
+install-mysql-dbmate:
+	wget -O ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-amd64
+	chmod +x ~/dotfiles/bin/dbmate
+
 # cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
@@ -450,10 +469,11 @@ install-console-fzf:
 	cp /tmp/fzf ~/dotfiles/bin
 	echo "Consider running make zsh-fzf to install zsh shell integration"
 
+# WTF is a personal information dashboard for your terminal, developed for those who spend most of their day in the command line.
 install-console-wtfutil:
-	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.23.0/wtf_0.23.0_linux_amd64.tar.gz
+	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.25.0/wtf_0.25.0_linux_amd64.tar.gz
 	tar -xvzf /tmp/wtf.tar.gz -C /tmp
-	cp /tmp/wtf_0.23.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
+	cp /tmp/wtf_0.25.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
 	chmod +x ~/dotfiles/bin/wtfutil
 
 # https://github.com/so-fancy/diff-so-fancy
@@ -551,10 +571,17 @@ install-k8s-stern:
 	wget -O ~/dotfiles/bin/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/bin/stern
 
-install-k8s-helm:
+install-k8s-helm3-fixed:
 	mkdir -p /tmp/helm
-	wget -O /tmp/helm/helm.tar.gz "https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz"
-	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin
+	wget -O /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.1.0-linux-amd64.tar.gz"
+	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
+	rm -rf /tmp/helm
+
+
+install-k8s-helm-latest:
+	mkdir -p /tmp/helm
+	wget -O /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-$(shell curl -s https://api.github.com/repos/helm/helm/releases/latest | grep tag_name | cut -d '"' -f 4)"
+	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
 install-k8s-deepmind-kapitan:
@@ -582,8 +609,10 @@ install-k8s-kubectl-ubuntu:
 	sudo apt-get install -y kubectl
 
 # https://github.com/txn2/kubefwd/
+# Bulk port forwarding Kubernetes services for local development.
+# https://imti.co/kubernetes-port-forwarding/
 install-k8s-kubefwd:
-	wget -O /tmp/kubefwd.deb https://github.com/txn2/kubefwd/releases/download/v1.9.3/kubefwd_amd64.deb
+	wget -O /tmp/kubefwd.deb https://github.com/txn2/kubefwd/releases/download/1.12.0/kubefwd_amd64.deb
 	sudo apt install /tmp/kubefwd.deb
 
 # https://github.com/instrumenta/kubeval/
@@ -594,25 +623,29 @@ install-k8s-kubeval:
 	chmod +x ~/dotfiles/bin/kubeval
 
 # https://github.com/vmware-tanzu/octant/
+# Kubernetes dashboard by VMWare
 install-k8s-vmware-octant:
-	wget -O /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.9.1/octant_0.9.1_Linux-64bit.deb
+	wget -O /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.10.2/octant_0.10.2_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
 
 # https://github.com/corneliusweig/rakkess
+# Review Access - kubectl plugin to show an access matrix for k8s server resources
 install-k8s-rakkess:
 	curl -Lo /tmp/rakkess.gz https://github.com/corneliusweig/rakkess/releases/download/v0.4.1/rakkess-linux-amd64.gz && \
 	cd /tmp && gunzip rakkess.gz && chmod +x rakkess && mv rakkess ~/dotfiles/bin
 
 # https://github.com/derailed/popeye
+# A Kubernetes cluster resource sanitizer
 install-k8s-popeye:
-	wget -O /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/v0.4.3/popeye_0.4.3_Linux_x86_64.tar.gz
+	wget -O /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/v0.6.2/popeye_0.6.2_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/popeye.tar.gz -C /tmp
 	cp /tmp/popeye ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/popeye
 
 #  https://github.com/FairwindsOps/polaris
+#  Validation of best practices in your Kubernetes clusters https://www.fairwinds.com/polaris 
 install-k8s-polaris:
-	wget -O /tmp/polaris.tar.gz https://github.com/FairwindsOps/polaris/releases/download/0.4.0/polaris_0.4.0_Linux_x86_64.tar.gz
+	wget -O /tmp/polaris.tar.gz https://github.com/FairwindsOps/polaris/releases/download/0.6.0/polaris_0.6.0_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/polaris.tar.gz -C /tmp
 	cp /tmp/polaris ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/polaris
@@ -622,8 +655,9 @@ install-k8s-polaris:
 	echo kubectl port-forward --namespace polaris svc/polaris-dashboard 8080:80
 
 # https://github.com/pulumi/kubespy
+# Tools for observing Kubernetes resources in real time, powered by Pulumi
 install-k8s-kubespy:
-	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/v0.4.0/kubespy-linux-amd64.tar.gz
+	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/v0.5.0/kubespy-linux-amd64.tar.gz
 	tar -xvzf /tmp/kubespy.tar.gz -C /tmp
 	cp /tmp/releases/kubespy-linux-amd64/kubespy ~/dotfiles/bin
 	ln -s ~/dotfiles/bin/kubespy  ~/dotfiles/bin/kubectl-spy
@@ -733,9 +767,25 @@ install-terraform-ing:
 
 #https://github.com/GoogleCloudPlatform/terraformer
 install-terraformer:
-	wget -O ~/dotfiles/bin/terraformer https://github.com/GoogleCloudPlatform/terraformer/releases/download/0.8/terraformer-linux-amd64
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-all-linux-amd64
+	chmod +x terraformer-all-linux-amd64
+	mv terraformer-all-linux-amd64 ~/dotfiles/bin/terraformer
 	chmod +x ~/dotfiles/bin/terraformer
 
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-google-linux-amd64
+	chmod +x terraformer-google-linux-amd64
+	mv terraformer-google-linux-amd64 ~/dotfiles/bin/terraformer_google
+	chmod +x ~/dotfiles/bin/terraformer_google
+
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-aws-linux-amd64
+	chmod +x terraformer-aws-linux-amd64
+	mv terraformer-aws-linux-amd64 ~/dotfiles/bin/terraformer_aws
+	chmod +x ~/dotfiles/bin/terraformer_aws
+
+	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-kubernetes-linux-amd64
+	chmod +x terraformer-kubernetes-linux-amd64
+	mv terraformer-kubernetes-linux-amd64 ~/dotfiles/bin/terraformer_kubernetes
+	chmod +x ~/dotfiles/bin/terraformer_kubernetes
 
 install-terraform-docs:
 	wget -O ~/dotfiles/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
@@ -759,7 +809,7 @@ install-hashicorp-terraform:
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:
-	wget -O ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
 
 
@@ -824,8 +874,14 @@ install-esxi-govc:
 	curl -L https://github.com/vmware/govmomi/releases/download/v0.21.0/govc_linux_amd64.gz | gunzip > ~/dotfiles/bin/govc
 # /ESXI
 
+fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts fonts-source-code-pro-patched
+	mkdir -p ~/.fonts
+
+fonts-init:
+	sudo apt install fontconfig
 
 fonts-awesome-terminal-fonts:
+	mkdir -p ~/.fonts
 	wget -O ~/.fonts/devicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.sh"
 	wget -O ~/.fonts/devicons-regular.ttf "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.ttf"
 	wget -O ~/.fonts/fontawesome-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/fontawesome-regular.sh"
@@ -838,6 +894,7 @@ fonts-awesome-terminal-fonts:
 	fc-list | grep "FontAwesome"
 
 fonts-source-code-pro:
+	mkdir -p ~/.fonts
 	wget -O ~/.fonts/SourceCodeVariable-Italic.otf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Italic.otf"
 	wget -O ~/.fonts/SourceCodeVariable-Italic.ttf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Italic.ttf"
 	wget -O ~/.fonts/SourceCodeVariable-Roman.otf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Roman.otf"
@@ -845,6 +902,7 @@ fonts-source-code-pro:
 	fc-cache -fv ~/.fonts
 	fc-list | grep "Source Code Pro"
 fonts-source-code-pro-patched:
+	mkdir -p ~/.fonts
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono%20Windows%20Compatible.ttf"
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf"
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Windows%20Compatible.ttf"
@@ -890,6 +948,44 @@ install-aws-session-manager-plugin:
 
 # /AWS
 
+# SECURITY
+
+sec-nmap-sandmap:
+	sudo apt-get install proxychains
+	rm -rf /tmp/sandmap && cd /tmp && git clone --recursive https://github.com/trimstray/sandmap
+	cd /tmp/sandmap && sudo ./setup.sh install
+	echo use sandmap
+# /SECURITY
+
+
+# DOCUMENTATION
+
+# https://www.mkdocs.org/
+install-mkdocs:
+	pip install mkdocs
+
+#/ DOCUMENTATION
+
+# GARBAGE
+
+install-traefik1:
+	wget -O ~/dotfiles/bin/traefik1 https://github.com/containous/traefik/releases/download/v1.7.19/traefik_linux-amd64
+	chmod +x ~/dotfiles/bin/traefik1
+
+install-traefik:
+	wget -O /tmp/traefik2.tar.gz https://github.com/containous/traefik/releases/download/v2.1.1/traefik_v2.1.1_linux_amd64.tar.gz
+	tar -xvzf /tmp/traefik2.tar.gz -C /tmp
+	mv /tmp/traefik ~/dotfiles/bin/traefik
+	chmod +x ~/dotfiles/bin/traefik
+
+# / GARBAGE
+
+# PHP
+
+install-phpmd:
+	wget -O ~/dotfiles/bin/phpmd https://phpmd.org/static/latest/phpmd.phar
+	chmod +x ~/dotfiles/bin/phpmd
+# /PHP
 
 
 ```
