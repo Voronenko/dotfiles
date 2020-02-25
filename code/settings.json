@@ -40,5 +40,6 @@
     "telemetry.enableTelemetry": false,
     "gitlens.advanced.telemetry.enabled": false,
     "vsicons.dontShowNewVersionMessage": true,
-    "aws.samcli.location": "/home/slavko/.local/bin/sam"
+    "aws.samcli.location": "/home/slavko/.local/bin/sam",
+    "diffEditor.renderSideBySide": false
 }
