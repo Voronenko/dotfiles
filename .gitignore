@@ -1,4 +1,5 @@
 bin/dry
+bin/circleci
 bin/eksctl
 bin/github-release
 bin/helm

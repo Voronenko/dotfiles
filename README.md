@@ -1085,3 +1085,14 @@ git clone https://github.com/keeferrourke/la-capitaine-icon-theme.git
 ```
 
 4. Using gnome tweaking tool change current theme and icon pack
+
+
+# Working with workplaces
+
+If you appear to be working with multiple independent tasks, you can ask alt-tab to switch only through windows in current workplace only
+
+```sh
+gsettings set org.gnome.shell.app-switcher current-workspace-only true
+```
+
+set to false if it does not suite your work habits
