@@ -367,6 +367,10 @@ gnome-shell-window-corner-preview:
 	git clone https://github.com/medenagan/window-corner-preview.git /tmp/window-corner-preview
 	mv /tmp/window-corner-preview/window-corner-preview@fabiomereu.it ~/.local/share/gnome-shell/extensions/window-corner-preview@fabiomereu.it
 
+gnome-shell-gnome-extension-quicktoggler:
+	rm -rf /tmp/gnome-extension-quicktoggler
+	git clone https://github.com/Shihira/gnome-extension-quicktoggler.git /tmp/gnome-extension-quicktoggler
+	mv /tmp/gnome-extension-quicktoggler ~/.local/share/gnome-shell/extensions/quicktoggler@shihira.github.com
 # /GNOME specific extensions
 
 zsh-fzf:
