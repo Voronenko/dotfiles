@@ -47,6 +47,7 @@ bin/phpmd
 bin/dbmate
 bin/diff-so-fancy
 bin/schemacrawler
+bin/tfschema
 oh-my-zsh
 startup.log
 zshrc.local

@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "DEFAULT_GITLAB_PREBUILD_SCRIPT"

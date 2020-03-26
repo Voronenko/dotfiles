@@ -421,6 +421,12 @@ install-terraform-virtualbox-bridge:
 	mkdir -p ~/.terraform.d/plugins
 	cp $(GOPATH)/bin/terraform-provider-virtualbox ~/.terraform.d/plugins
 
+install-terraform-tfschema:
+	wget -O /tmp/tfschema.tar.gz https://github.com/minamijoyo/tfschema/releases/download/v0.3.0/tfschema_0.3.0_linux_amd64.tar.gz
+	tar -xvzf /tmp/tfschema.tar.gz -C /tmp
+	cp /tmp/tfschema ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/tfschema
+
 # /TERRAFORM
 
 

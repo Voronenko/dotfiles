@@ -1,8 +1,14 @@
-#!/bin/sh
+#!/bin/bash
+export PRE_BUILD_SCRIPT=~/dotfiles/bin/gitlablocal_prebuild_script.sh
+if test -f "$PWD/.gitlab-local/prebuild_script.sh"; then
+    export PRE_BUILD_SCRIPT="$PWD/.gitlab-local/prebuild_script.sh"
+fi
+
 rm -rf /tmp/gitlabrunner_out
 mkdir -p /tmp/gitlabrunner /tmp/gitlabrunner_out
 gitlab-runner exec docker \
   --docker-volumes "/tmp/gitlabrunner:/cache" \
   --docker-volumes "/var/run/docker.sock:/var/run/docker.sock" \
   --docker-volumes "/tmp/gitlabrunner_out:/tmp/gitlabrunner_out" \
+  --pre-build-script "${PRE_BUILD_SCRIPT}" \
   --docker-privileged $1 $2 $3 $4 $5 $6 $7 $8 $9
