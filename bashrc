@@ -185,6 +185,22 @@ export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && export WORKON_HOME=$HOME/.virtualenvs
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
 
+
+# >>> conda initialize >>>
+# Get latest conda from https://docs.conda.io/en/latest/miniconda.html
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 # / PYTHONDEV
 
 
@@ -247,4 +263,3 @@ fi
 
 #[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 #complete -C ~/dotfiles/bin/vault vault
-
