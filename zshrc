@@ -295,7 +295,7 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
 
 #source ~/.nvm/nvm.sh
 
-declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
 NODE_GLOBALS+=("nvm", "nvm_find_nvmrc")
 
 load_nvm () {

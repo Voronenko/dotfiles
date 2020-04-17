@@ -12,7 +12,7 @@ python3 -m bash_kernel.install
 pip3 install iplantuml
 
 
-pip install jupyterlab_templates
+pip3 install jupyterlab_templates
 jupyter labextension install jupyterlab_templates
 jupyter serverextension enable --py jupyterlab_templates
 
