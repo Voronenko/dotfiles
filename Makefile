@@ -17,7 +17,7 @@ swiss-ops: install-hashicorp-terraform install-terraform-docs install-hashicorp-
 	@echo ops tools ok
 	@echo if you need reverse engineering consider make install-terraformer
 
-swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm install-k8s-kubectl-ubuntu
+swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm3-fixed install-k8s-kubectl-ubuntu
 	@echo k8s tools ok
 
 swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
