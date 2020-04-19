@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+if [[ -z $TF_VAR_esxi_hostname ]]; then
+  echo "source esxi creds and specify command, like"
+  echo esxicli vm process list
+  exit 1
+fi
+esxcli --server ${TF_VAR_esxi_hostname} --username root --password "${TF_VAR_esxi_password}" --thumbprint "${TF_VAR_esxi_thumb}" $@

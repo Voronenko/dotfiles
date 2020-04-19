@@ -57,6 +57,7 @@ bin/jsonnet
 bin/jsonnetfmt
 
 # esxi toolset
+esxcli.logesxcli.log
 bin/esxi-vm-create
 bin/esxi-vm-destroy
 bin/esxi_vm_functions.py
