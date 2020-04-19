@@ -48,6 +48,8 @@ bin/dbmate
 bin/diff-so-fancy
 bin/schemacrawler
 bin/tfschema
+bin/jfrog
+bin/k3sup
 oh-my-zsh
 startup.log
 zshrc.local

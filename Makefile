@@ -182,6 +182,14 @@ install-docker-dive:
 
 
 # KUBERNETES
+# includes upgrade, disables k3s by default as you don't need it up on dev notebook
+install-k3s-local:
+	curl -sfL https://get.k3s.io | sh -
+	sudo systemctl disable k3s
+# https://github.com/alexellis/k3sup/
+install-k3s-up:
+	wget -O ~/dotfiles/bin/k3sup https://github.com/alexellis/k3sup/releases/download/0.9.2/k3sup
+	chmod +x ~/dotfiles/bin/k3sup
 
 install-k8s-ksonnet:
 	wget -O /tmp/ks_linux_amd64.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.10.1/ks_0.10.1_linux_amd64.tar.gz
@@ -264,7 +272,7 @@ install-k8s-popeye:
 	chmod +x ~/dotfiles/bin/popeye
 
 #  https://github.com/FairwindsOps/polaris
-#  Validation of best practices in your Kubernetes clusters https://www.fairwinds.com/polaris 
+#  Validation of best practices in your Kubernetes clusters https://www.fairwinds.com/polaris
 install-k8s-polaris:
 	wget -O /tmp/polaris.tar.gz https://github.com/FairwindsOps/polaris/releases/download/0.6.0/polaris_0.6.0_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/polaris.tar.gz -C /tmp
