@@ -13,10 +13,11 @@ swiss-console: install-console-bat install-console-prettytyping install-console-
 swiss-console-python: install-console-glances
 	@echo python based console tools ok
 
-swiss-ops: install-hashicorp-terraform install-terraformer install-terraform-docs install-hashicorp-vault install-hashicorp-packer
+swiss-ops: install-hashicorp-terraform install-terraform-docs install-hashicorp-vault install-hashicorp-packer
 	@echo ops tools ok
+	@echo if you need reverse engineering consider make install-terraformer
 
-swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm
+swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm install-k8s-kubectl-ubuntu
 	@echo k8s tools ok
 
 swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
@@ -547,7 +548,7 @@ fonts-source-code-pro-patched:
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Windows%20Compatible.ttf"
 	wget -O ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf"
 	fc-cache -fv ~/.fonts
-	fc-list | grep "Source Code Pro"
+	fc-list | grep "Source Code"
 
 z-clean-downloads:
 	rm ~/Downloads/*.rdp
