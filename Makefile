@@ -436,6 +436,10 @@ install-terraform-tfschema:
 	cp /tmp/tfschema ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/tfschema
 
+# interactive d3js-graphviz visualization for terraform graph (beta)
+install-terraform-blast:
+	pip install blastradius
+
 # /TERRAFORM
 
 
