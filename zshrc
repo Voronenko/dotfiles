@@ -227,6 +227,8 @@ case "$1" in
     *)
         echo "Usage: $0 {dck sh | bash | list |stopall |cleanimages |cleancontainers | ui | manage | registry | inspect <container name> <jq filter>}"
         echo "manage launches portrainer, ui - now obsolete ui for docker (retiring...)"
+        echo "You are logged to following registries, if any"
+        docker system info | grep -E 'Username|Registry'
         ;;
 esac
 
