@@ -257,6 +257,7 @@ install-k8s-kubeval:
 install-k8s-vmware-octant:
 	wget -O /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.10.2/octant_0.10.2_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
+	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely	
 
 # https://github.com/corneliusweig/rakkess
 # Review Access - kubectl plugin to show an access matrix for k8s server resources
@@ -448,6 +449,11 @@ install-hashicorp-vault:
 	wget -O ~/dotfiles/bin/vault.zip "https://releases.hashicorp.com/vault/1.0.1/vault_1.0.1_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip vault.zip && chmod +x vault && rm vault.zip
 
+install-hashicorp-terraform011:
+	wget -O ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip"
+	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform011 && chmod +x terraform011 && rm terraform.zip && mv terraform011 ~/dotfiles/bin/
+
+
 install-hashicorp-terraform:
 	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
@@ -630,3 +636,9 @@ install-phpmd:
 	wget -O ~/dotfiles/bin/phpmd https://phpmd.org/static/latest/phpmd.phar
 	chmod +x ~/dotfiles/bin/phpmd
 # /PHP
+
+
+# RUNS
+
+run-octant-remote:
+	octant --listener-addr 0.0.0.0:7777

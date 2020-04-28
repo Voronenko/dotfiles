@@ -55,6 +55,7 @@ startup.log
 zshrc.local
 bin/jsonnet
 bin/jsonnetfmt
+bin/terraform011
 
 # esxi toolset
 esxcli.logesxcli.log
