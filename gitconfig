@@ -19,7 +19,8 @@
 	latest = pull --recurse-submodules
         clean-on-master = "!git checkout master && git branch --merged | grep -v 'develop' | grep -v '\\*' | xargs -n 1 git branch -d"
         clean-on-develop = "!git checkout develop && git branch --merged | grep -v 'master' | grep -v '\\*' | xargs -n 1 git branch -d"
-        clean-hard-dfx = "clean -dfx"
+        clean-hard-dfx = "clean -dfx -e .vscode/ -e .idea/"
+        clean-hard-dfx-windows = "clean -dxf -e *.user -e *.bat -e *.cmd -e packages/ -e .vs/ -e .vscode/ -e .idea/"
         fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
         pam = checkout $(git recent | fzf)
 [push]
