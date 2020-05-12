@@ -1,6 +1,7 @@
 code --install-extension aaron-bond.better-comments
 code --install-extension alefragnani.numbered-bookmarks
 code --install-extension amazonwebservices.aws-toolkit-vscode
+code --install-extension bpmn-io.vs-code-bpmn-io
 code --install-extension chef-software.chef
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
@@ -14,11 +15,14 @@ code --install-extension EditorConfig.EditorConfig
 code --install-extension eg2.tslint
 code --install-extension evilz.vscode-reveal
 code --install-extension felixfbecker.php-debug
+code --install-extension felixfbecker.php-intellisense
 code --install-extension formulahendry.code-runner
+code --install-extension hediet.vscode-drawio
 code --install-extension heptio.jsonnet
 code --install-extension HookyQR.beautify
 code --install-extension humao.rest-client
 code --install-extension jebbs.plantuml
+code --install-extension kevinglasson.cornflakes-linter
 code --install-extension lextudio.restructuredtext
 code --install-extension mauve.terraform
 code --install-extension ms-azuretools.vscode-docker
@@ -42,7 +46,6 @@ code --install-extension redhat.java
 code --install-extension redhat.vscode-yaml
 code --install-extension searKing.preview-vscode
 code --install-extension shardulm94.trailing-spaces
-code --install-extension vscode-icons-team.vscode-icons
 code --install-extension waderyan.gitblame
 code --install-extension wholroyd.jinja
 code --install-extension wingrunr21.vscode-ruby
