@@ -41,5 +41,8 @@
     "gitlens.advanced.telemetry.enabled": false,
     "vsicons.dontShowNewVersionMessage": true,
     "aws.samcli.location": "/home/slavko/.local/bin/sam",
-    "diffEditor.renderSideBySide": false
+    "diffEditor.renderSideBySide": false,
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }
