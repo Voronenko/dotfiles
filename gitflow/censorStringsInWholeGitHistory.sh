@@ -7,3 +7,5 @@ do
   echo "================ Censoring string "$string": ================"
   ~/dotfiles/gitflow/replaceStringInWholeGitHistory.sh "$string" "********"
 done
+
+echo "When done - git push <remote> -f --all"

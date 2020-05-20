@@ -10,3 +10,5 @@ for branch in $(git branch | cut -c 3-); do
   echo ""
   ~/dotfiles/gitflow/replaceStringInBranch.sh "$branch" "$1" "$2"
 done
+
+echo "When done - git push <remote> -f --all"
