@@ -207,11 +207,10 @@ case "$1" in
 
     cleanimages)
         if [[ ! -f /usr/sbin/docker-gc ]]; then
-        sudo docker rmi $(docker images | grep "^<none>"  | awk "{ print $3 }")
+        docker image prune --all --filter "until=400h"
         else
         sudo EXCLUDE_FROM_GC={$EXCLUDE_FROM_GC-/etc/docker-gc-exclude} MINIMUM_IMAGES_TO_SAVE=1 FORCE_IMAGE_REMOVAL=1 docker-gc
         fi
-        docker rmi $(docker images -f "dangling=true" -q)
         ;;
     cleancontainers)
         if [[ ! -f /usr/bin/docker ]]; then
