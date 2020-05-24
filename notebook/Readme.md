@@ -6,7 +6,62 @@ https://medium.com/@V_Voronenko/your-personal-knowledge-base-with-jupyterlab-cc2
 
 ```sh
 mkvirtualenv project_notes --python=/usr/local/bin/python3
-pip install -r ~/dotfiles/notebook/requirements.txt 
+pip install -r ~/dotfiles/notebook/requirements.txt#
+```
+
+## Registering notes as default viewer for ipynb files
+
+### Create a ipynb.xml mime-info file
+
+```xml
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+    <mime-type type="application/x-ipynb+json">
+        <comment>IPython Notebook</comment>
+        <glob pattern="*.ipynb"/>
+    </mime-type>
+</mime-info>
+```
+
+Then store the file in `~/.local/share/mime` and update the mime database.
+
+```sh
+cp ipynb.xml ~/.local/share/mime
+update-mime-database ~/.local/share/mime
+```
+
+### Create a jupyter.desktop file
+
+```
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Jupyter
+Icon=/usr/share/icons/gnome/scalable/mimetypes/application/x-ipynb+json.svg
+Exec=/path/to/jupyter notebook %F
+Comment=Jupyter notebook
+MimeType=application/x-ipynb+json;
+Categories=Science;
+Terminal=true
+```
+
+Then install the desktop file:
+
+```sh
+desktop-file-install --dir="$HOME/.local/share/applications"  jupyter.desktop
+```
+
+### 3. Add the jupyter icon
+I chose the svg version from the design repository of jupyter, and installed in ~/.local/share/icons
+
+```sh
+wget https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg -o $HOME/.local/share/icons/jupyter-sq-text.svg
+```
+
+Finally, link the mime-type icon to the system:
+
+```sh
+sudo ln -s $HOME/.local/share/icons/jupyter-sq-text.svg /usr/share/icons/gnome/scalable/mimetypes/application-x-ipynb+json.svg
+sudo gtk-update-icon-cache /usr/share/icons/gnome/ -f || true
 ```
 
 

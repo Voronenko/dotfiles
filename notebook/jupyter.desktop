@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Jupyter
+Icon=/usr/share/icons/gnome/scalable/mimetypes/application/x-ipynb+json.svg
+Exec=/home/slavko/.virtualenvs/project_notes/bin/jupyter notebook %F
+Comment=Jupyter notebook
+MimeType=application/x-ipynb+json;
+Categories=Science;
+Terminal=true

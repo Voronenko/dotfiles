@@ -1,0 +1,6 @@
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+    <mime-type type="application/x-ipynb+json">
+        <comment>IPython Notebook</comment>
+        <glob pattern="*.ipynb"/>
+    </mime-type>
+</mime-info>
