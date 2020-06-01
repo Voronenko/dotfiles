@@ -44,5 +44,8 @@
     "diffEditor.renderSideBySide": false,
     "[json]": {
       "editor.defaultFormatter": "vscode.json-language-features"
-    }
+    },
+    "plantuml.render": "PlantUMLServer",
+    "plantuml.server": "https://www.plantuml.com/plantuml",
+    "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg"
 }
