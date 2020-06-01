@@ -1,4 +1,4 @@
-#compdef toggl
+#compdef toggl1
 
 __toggl-workspaces() {
     toggl workspaces

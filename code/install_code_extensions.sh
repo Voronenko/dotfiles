@@ -1,6 +1,7 @@
 code --install-extension aaron-bond.better-comments
 code --install-extension alefragnani.numbered-bookmarks
 code --install-extension amazonwebservices.aws-toolkit-vscode
+code --install-extension arcsine.chronicler
 code --install-extension bpmn-io.vs-code-bpmn-io
 code --install-extension chef-software.chef
 code --install-extension christian-kohler.npm-intellisense
@@ -10,6 +11,7 @@ code --install-extension dbaeumer.jshint
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension deerawan.vscode-dash
 code --install-extension dirk-thomas.vscode-lark
+code --install-extension dsznajder.es7-react-js-snippets
 code --install-extension eamodio.gitlens
 code --install-extension EditorConfig.EditorConfig
 code --install-extension eg2.tslint
@@ -46,6 +48,7 @@ code --install-extension redhat.java
 code --install-extension redhat.vscode-yaml
 code --install-extension searKing.preview-vscode
 code --install-extension shardulm94.trailing-spaces
+code --install-extension voronenko.vscode-plantuml-stdlib-snippets
 code --install-extension waderyan.gitblame
 code --install-extension wholroyd.jinja
 code --install-extension wingrunr21.vscode-ruby
