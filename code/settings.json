@@ -45,7 +45,8 @@
     "[json]": {
       "editor.defaultFormatter": "vscode.json-language-features"
     },
-    "plantuml.render": "PlantUMLServer",
+    "plantuml.render": "Local",
     "plantuml.server": "https://www.plantuml.com/plantuml",
-    "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg"
+    "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg",
+    "plantuml.exportOutDir": "./"
 }
