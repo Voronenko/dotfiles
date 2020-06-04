@@ -237,6 +237,12 @@ install-k8s-kubectl-ubuntu:
 	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 	sudo apt-get update
 	sudo apt-get install -y kubectl
+# kubie is an alternative to kubectx, kubens and the k on prompt modification script. It offers context switching, namespace switching and prompt modification
+# in a way that makes each shell independent from others. It also has support for split configuration files, meaning it can load Kubernetes contexts from 
+# multiple files. You can configure the paths where kubie will look for context
+install-k8s-kubie:
+	curl -J -L -o ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.9.1/kubie-linux-amd64
+	chmod +x ~/dotfiles/bin/kubie
 
 # https://github.com/txn2/kubefwd/
 # Bulk port forwarding Kubernetes services for local development.

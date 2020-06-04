@@ -32,6 +32,7 @@ bin/govc
 bin/kubectl-spy
 bin/kubespy
 bin/kubeval
+bin/kubie
 bin/polaris
 bin/popeye
 bin/rakkess
