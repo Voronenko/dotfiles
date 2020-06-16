@@ -68,3 +68,7 @@
 	trustExitCode = true
 [pull]
 	rebase = false
+
+# go development for private repos
+#[url "ssh://git@github.com/voronenko"]
+#	insteadOf = https://github.com/voronenko
