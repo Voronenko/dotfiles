@@ -19,6 +19,8 @@ code --install-extension evilz.vscode-reveal
 code --install-extension felixfbecker.php-debug
 code --install-extension felixfbecker.php-intellisense
 code --install-extension formulahendry.code-runner
+code --install-extension golang.Go
+code --install-extension hashicorp.terraform
 code --install-extension hediet.vscode-drawio
 code --install-extension heptio.jsonnet
 code --install-extension HookyQR.beautify
@@ -26,7 +28,6 @@ code --install-extension humao.rest-client
 code --install-extension jebbs.plantuml
 code --install-extension kevinglasson.cornflakes-linter
 code --install-extension lextudio.restructuredtext
-code --install-extension mauve.terraform
 code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-python.anaconda-extension-pack
 code --install-extension ms-python.python
@@ -38,7 +39,6 @@ code --install-extension ms-vscode-remote.vscode-remote-extensionpack
 code --install-extension ms-vscode.atom-keybindings
 code --install-extension ms-vscode.azure-account
 code --install-extension ms-vscode.cpptools
-code --install-extension ms-vscode.Go
 code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension njpwerner.autodocstring
