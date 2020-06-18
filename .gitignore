@@ -53,6 +53,7 @@ bin/jfrog
 bin/k3sup
 bin/docker-slim
 bin/docker-slim-sensor
+bin/lazygit
 oh-my-zsh
 startup.log
 zshrc.local

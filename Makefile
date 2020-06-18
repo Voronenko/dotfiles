@@ -78,6 +78,12 @@ install-console-bat:
 	wget -O /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
 
+# https://github.com/jesseduffield/lazygit
+install-console-lazygit:
+	wget -O /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.20.4/lazygit_0.20.4_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/lazygit.tar.gz -C /tmp
+	mv /tmp/lazygit ~/dotfiles/bin
+
 # https://github.com/denilsonsa/prettyping
 # prettyping 8.8.8.8
 install-console-prettytyping:
