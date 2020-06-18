@@ -51,6 +51,8 @@ bin/schemacrawler
 bin/tfschema
 bin/jfrog
 bin/k3sup
+bin/docker-slim
+bin/docker-slim-sensor
 oh-my-zsh
 startup.log
 zshrc.local

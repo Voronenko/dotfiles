@@ -178,6 +178,12 @@ install-docker-dive:
 	wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.8.1/dive_0.8.1_linux_amd64.deb
 	sudo apt install /tmp/dive.deb
 
+# https://dockersl.im
+install-docker-slim:
+	wget -O /tmp/docker-slim.tar.gz https://downloads.dockerslim.com/releases/1.29.0/dist_linux.tar.gz
+	tar -xvzf /tmp/docker-slim.tar.gz -C /tmp
+	mv /tmp/dist_linux/* ~/dotfiles/bin
+
 
 # /DOCKER TOOLS
 
