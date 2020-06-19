@@ -54,6 +54,8 @@ bin/k3sup
 bin/docker-slim
 bin/docker-slim-sensor
 bin/lazygit
+bin/ag
+bin/lnav
 oh-my-zsh
 startup.log
 zshrc.local

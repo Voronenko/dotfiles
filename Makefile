@@ -84,6 +84,19 @@ install-console-lazygit:
 	tar -xvzf /tmp/lazygit.tar.gz -C /tmp
 	mv /tmp/lazygit ~/dotfiles/bin
 
+# http://lnav.org/
+install-console-logreader-lnav:
+	wget -O /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.8.5/lnav-0.8.5-linux-64bit.zip
+	cd /tmp && unzip lnav.zip
+	mv /tmp/lnav-0.8.5/lnav ~/dotfiles/bin
+
+# https://github.com/rcoh/angle-grinder#query-syntax
+install-console-logreader-agrind:
+	wget -O /tmp/agrind.tar.gz https://github.com/rcoh/angle-grinder/releases/download/v0.13.0/angle_grinder-v0.13.0-x86_64-unknown-linux-musl.tar.gz
+	tar -xvzf /tmp/agrind.tar.gz -C /tmp
+	cp /tmp/agrind ~/dotfiles/bin/ag
+	chmod +x ~/dotfiles/bin/ag
+
 # https://github.com/denilsonsa/prettyping
 # prettyping 8.8.8.8
 install-console-prettytyping:
