@@ -89,6 +89,7 @@ install-console-logreader-lnav:
 	wget -O /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.8.5/lnav-0.8.5-linux-64bit.zip
 	cd /tmp && unzip lnav.zip
 	mv /tmp/lnav-0.8.5/lnav ~/dotfiles/bin
+	lnav -i extra
 
 # https://github.com/rcoh/angle-grinder#query-syntax
 install-console-logreader-agrind:
@@ -112,9 +113,9 @@ install-console-fzf:
 
 # WTF is a personal information dashboard for your terminal, developed for those who spend most of their day in the command line.
 install-console-wtfutil:
-	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.29.0/wtf_0.29.0_linux_amd64.tar.gz
+	wget -O /tmp/wtf.tar.gz https://github.com/wtfutil/wtf/releases/download/v0.30.0/wtf_0.30.0_linux_amd64.tar.gz
 	tar -xvzf /tmp/wtf.tar.gz -C /tmp
-	cp /tmp/wtf_0.29.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
+	cp /tmp/wtf_0.30.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
 	chmod +x ~/dotfiles/bin/wtfutil
 
 # https://github.com/so-fancy/diff-so-fancy
@@ -399,6 +400,7 @@ gnome-shell-system-monitor:
 	git clone https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet.git /tmp/gnome-shell-system-monitor-applet
 	mv /tmp/gnome-shell-system-monitor-applet/system-monitor@paradoxxx.zero.gmail.com ~/.local/share/gnome-shell/extensions/system-monitor@paradoxxx.zero.gmail.com
 
+# Check issue  https://github.com/jwendell/gnome-shell-extension-timezone/issues/41
 gnome-shell-extension-timezone:
 	git clone https://github.com/jwendell/gnome-shell-extension-timezone.git ~/.local/share/gnome-shell/extensions/timezone@jwendell
 	gnome-shell-extension-tool -e timezone@jwendell
