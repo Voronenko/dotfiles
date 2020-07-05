@@ -80,6 +80,7 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH=$HOME/bin:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:.$HOME/config/composer/vendor/bin:$PATH
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
+export DISABLE_AUTO_TITLE='true'
 
 zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
 
@@ -564,6 +565,9 @@ alias desktop_shortcut='gnome-desktop-item-edit ~/Desktop/ --create-new'
 
 # Battery
 alias batteries_fullcharge='sudo tlp fullcharge BAT0 && sudo tlp fullcharge BAT1'
+alias battery_ext_fullcharge='sudo tlp fullcharge BAT1'
+alias battery_ext_status='upower -i $(upower -e | grep BAT1)'
+alias battery_int_status='upower -i $(upower -e | grep BAT0)'
 
 # Time to sleep
 alias 'nah'='echo "shutdown (ctrl-c to abort)?" && read && sudo shutdown 0'
@@ -639,6 +643,9 @@ fi
 # cmd aliases
 
 alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] && rsync --progress -azh $PWD $1:$PARENTDIR };dsfdscfdsfdsf'
+alias gpu_on='sudo prime-select nvidia'
+alias gpu_off='sudo prime-select intel'
+alias gpu='sudo prime-select query'
 # eliminate snaps from df output
 alias df='df -x"squashfs"'
 
@@ -658,4 +665,5 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
+
 

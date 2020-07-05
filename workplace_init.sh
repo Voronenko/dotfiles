@@ -1,6 +1,8 @@
 #!/bin/sh
 
 gem install tmuxinator
+pip3 install --user tmuxp
+# tmuxp import tmuxinator /path/to/file.{json,yaml}
 
 mkdir -p ~/.atom
 
