@@ -195,7 +195,7 @@ install-docker-dry:
 	chmod +x ~/dotfiles/bin/dry
 
 install-docker-dive:
-	wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.8.1/dive_0.8.1_linux_amd64.deb
+	wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
 	sudo apt install /tmp/dive.deb
 
 # https://dockersl.im
