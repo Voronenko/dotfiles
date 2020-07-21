@@ -565,6 +565,7 @@ alias desktop_shortcut='gnome-desktop-item-edit ~/Desktop/ --create-new'
 
 # Battery
 alias batteries_fullcharge='sudo tlp fullcharge BAT0 && sudo tlp fullcharge BAT1'
+alias battery_int_fullcharge='sudo tlp fullcharge BAT0'
 alias battery_ext_fullcharge='sudo tlp fullcharge BAT1'
 alias battery_ext_status='upower -i $(upower -e | grep BAT1)'
 alias battery_int_status='upower -i $(upower -e | grep BAT0)'
@@ -648,6 +649,8 @@ alias gpu_off='sudo prime-select intel'
 alias gpu='sudo prime-select query'
 # eliminate snaps from df output
 alias df='df -x"squashfs"'
+# shows tag matched to checked-out commit or branch otherwise
+alias gitinfo='git describe --exact-match --tags $(git log -n1 --pretty='%h') 2>/dev/null || echo "no tag, branch $(git branch --show-current)"'
 
 # terminal shortcuts
 
