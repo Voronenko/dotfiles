@@ -204,6 +204,8 @@ install-docker-slim:
 	tar -xvzf /tmp/docker-slim.tar.gz -C /tmp
 	mv /tmp/dist_linux/* ~/dotfiles/bin
 
+install-docker-envplate:
+	curl -sLo ~/dotfiles/bin/ep https://github.com/kreuzwerker/envplate/releases/download/v0.0.8/ep-linux && chmod +x ~/dotfiles/bin/ep
 
 # /DOCKER TOOLS
 
