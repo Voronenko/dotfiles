@@ -648,6 +648,8 @@ alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] &&
 alias gpu_on='sudo prime-select nvidia'
 alias gpu_off='sudo prime-select intel'
 alias gpu='sudo prime-select query'
+# turn displays off
+alias doff='sleep 3; xset dpms force off'
 # eliminate snaps from df output
 alias df='df -x"squashfs"'
 # shows tag matched to checked-out commit or branch otherwise
