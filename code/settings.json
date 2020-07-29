@@ -7,8 +7,8 @@
   // Controls how the editor should render the current line highlight, possibilities are 'none', 'gutter', 'line', and 'all'.
   "editor.renderLineHighlight": "all",
 
-  "python.venvPath": "./p-env, ~/.virtualenvs",
-  "window.zoomLevel": 0,
+  "python.venvPath": "./p-env, ~/.virtualenvs, ./venv",
+  "window.zoomLevel": 1,
 
 // https://github.com/plantuml/plantuml-stdlib
   "plantuml.includepaths": [
@@ -24,7 +24,16 @@
     "humao.rest-client",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
-  ],  
+  ],
+
+  "remote.containers.defaultExtensions": [
+    "alefragnani.numbered-bookmarks",
+    "CoenraadS.bracket-pair-colorizer-2",
+    "eamodio.gitlens",
+    "EditorConfig.EditorConfig",
+    "shardulm94.trailing-spaces",
+    "waderyan.gitblame"
+  ],
 
   "jsonnet.outputFormat": "json",
   "jsonnet.libPaths": ["~/.local/lib/python3.6/site-packages/kapitan", "./"],
@@ -33,20 +42,32 @@
   "[jsonnet]": {
 
     },
-    "editor.mouseWheelZoom": true,
-    "terminal.integrated.rendererType": "dom",
-    "plantuml.jar": "/opt/plantuml/plantuml.jar",
-    "telemetry.enableCrashReporter": false,
-    "telemetry.enableTelemetry": false,
-    "gitlens.advanced.telemetry.enabled": false,
-    "vsicons.dontShowNewVersionMessage": true,
-    "aws.samcli.location": "/home/slavko/.local/bin/sam",
-    "diffEditor.renderSideBySide": false,
-    "[json]": {
-      "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "plantuml.render": "Local",
-    "plantuml.server": "https://www.plantuml.com/plantuml",
-    "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg",
-    "plantuml.exportOutDir": "./"
+  "editor.mouseWheelZoom": true,
+  "terminal.integrated.rendererType": "dom",
+  "plantuml.jar": "/opt/plantuml/plantuml.jar",
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "gitlens.advanced.telemetry.enabled": false,
+  "vsicons.dontShowNewVersionMessage": true,
+  "aws.samcli.location": "/home/slavko/.local/bin/sam",
+  "diffEditor.renderSideBySide": false,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "plantuml.render": "Local",
+  "plantuml.server": "https://www.plantuml.com/plantuml",
+  "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg",
+  "plantuml.exportOutDir": "./",
+  "remote.extensionKind": {
+
+    "pub.name": [
+      "ui"
+    ]
+  },
+  "dotfiles.repository": "https: //github.com/voronenko/dotfiles.git",
+  "dotfiles.targetPath": "~/dotfiles",
+  "dotfiles.installCommand": "~/dotfiles/init_simple.sh zsh",
+  "remote.containers.dotfiles.repository": "https: //github.com/voronenko/dotfiles.git",
+  "remote.containers.dotfiles.installCommand": "~/dotfiles",
+  "remote.containers.dotfiles.targetPath": "~/dotfiles/init_simple.sh zsh"
 }
