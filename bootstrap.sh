@@ -13,6 +13,8 @@ EXTRA_PACKAGES="sudo less"
 fi
 
 PREFERRED_SHELL=${2:-zsh}
+PREFFERED_PYTHON=python3
+PREFFERED_PIP=pip3
 
 if [ "$(id -u)" == "0" ] && [ "$1" == "full" ]; then
 echo "Installation must NOT be done under sudo"
@@ -60,19 +62,19 @@ if [ "$1" == "full" ]; then
   if [ -e /usr/bin/yum ]
   then
       $SUDO yum install -y epel-release
-      $SUDO yum install -y python-cffi
+      $SUDO yum install -y $PREFFERED_PYTHON-cffi
       $SUDO yum groupinstall -y "Development Tools"
-      $SUDO yum install -y python-devel
+      $SUDO yum install -y $PREFFERED_PYTHON-devel
       $SUDO yum install -y openssl-devel
       $SUDO yum install -y nano
   elif [ -e /usr/bin/apt ]
   then
-      $SUDO apt-get -y install -y software-properties-common python-dev wget apt-transport-https libffi-dev libssl-dev
+      $SUDO apt-get -y install -y software-properties-common $PREFFERED_PYTHON-dev wget apt-transport-https libffi-dev libssl-dev
   fi
 
-  $SUDO $pkgmanager install -y python-pip
-  $SUDO pip install -U pip
-  $SUDO pip install ansible
+  $SUDO $pkgmanager install -y $PREFFERED_PYTHON-pip
+  $SUDO $PREFFERED_PIP install -U $PREFFERED_PIP
+  $SUDO $PREFFERED_PIP install ansible
 
 fi
 
