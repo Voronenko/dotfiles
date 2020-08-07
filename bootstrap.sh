@@ -16,6 +16,8 @@ PREFERRED_SHELL=${2:-zsh}
 PREFFERED_PYTHON=python3
 PREFFERED_PIP=pip3
 
+INSTALL_ANSIBLE=${3:-no}
+
 if [ "$(id -u)" == "0" ] && [ "$1" == "full" ]; then
 echo "Installation must NOT be done under sudo"
 echo "use your regular user account"
@@ -61,21 +63,34 @@ if [ "$1" == "full" ]; then
 
   if [ -e /usr/bin/yum ]
   then
+      if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
       $SUDO yum install -y epel-release
-      $SUDO yum install -y $PREFFERED_PYTHON-cffi
       $SUDO yum groupinstall -y "Development Tools"
       $SUDO yum install -y $PREFFERED_PYTHON-devel
+      $SUDO yum install -y $PREFFERED_PYTHON-cffi
       $SUDO yum install -y openssl-devel
+      fi
       $SUDO yum install -y nano
+  elif [ -e /usr/bin/dnf ]
+  then
+      $SUDO dnf install -y epel-release
+      $SUDO dnf groupinstall -y "Development Tools"
+      $SUDO dnf install -y $PREFFERED_PYTHON-devel
+      $SUDO dnf install -y $PREFFERED_PYTHON-cffi
+      $SUDO dnf install -y openssl-devel
   elif [ -e /usr/bin/apt ]
   then
-      $SUDO apt-get -y install -y software-properties-common $PREFFERED_PYTHON-dev wget apt-transport-https libffi-dev libssl-dev
+      if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
+      $SUDO apt-get install -y software-properties-common $PREFFERED_PYTHON-dev apt-transport-https libffi-dev libssl-dev
+      fi
+      $SUDO apt-get install -y wget
   fi
 
+  if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
   $SUDO $pkgmanager install -y $PREFFERED_PYTHON-pip
   $SUDO $PREFFERED_PIP install -U $PREFFERED_PIP
   $SUDO $PREFFERED_PIP install ansible
-
+  fi
 fi
 
 if [ "$1" != "docker" ]; then

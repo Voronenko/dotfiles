@@ -66,7 +66,6 @@
   },
   "dotfiles.repository": "voronenko/dotfiles",
   "dotfiles.targetPath": "~/dotfiles",
-  "dotfiles.installCommand": "~/dotfiles/init_simple.sh zsh",
   "remote.containers.dotfiles.repository": "voronenko/dotfiles",
   "remote.containers.dotfiles.installCommand": "~/dotfiles",
   "remote.containers.dotfiles.targetPath": "~/dotfiles/init_simple.sh zsh",
