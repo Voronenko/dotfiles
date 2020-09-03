@@ -19,7 +19,7 @@ code --install-extension evilz.vscode-reveal
 code --install-extension felixfbecker.php-debug
 code --install-extension felixfbecker.php-intellisense
 code --install-extension formulahendry.code-runner
-code --install-extension golang.Go
+code --install-extension golang.go
 code --install-extension hashicorp.terraform
 code --install-extension hediet.vscode-drawio
 code --install-extension heptio.jsonnet
@@ -43,6 +43,7 @@ code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension njpwerner.autodocstring
 code --install-extension openhab.openhab
+code --install-extension Orta.vscode-jest
 code --install-extension rebornix.ruby
 code --install-extension redhat.java
 code --install-extension redhat.vscode-yaml
