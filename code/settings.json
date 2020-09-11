@@ -8,7 +8,7 @@
   "editor.renderLineHighlight": "all",
 
   "python.venvPath": "./p-env, ~/.virtualenvs, ./venv",
-  "window.zoomLevel": 1,
+  "window.zoomLevel": 0,
 
 // https://github.com/plantuml/plantuml-stdlib
   "plantuml.includepaths": [
@@ -21,6 +21,7 @@
     "eamodio.gitlens",
     "EditorConfig.EditorConfig",
     "felixfbecker.php-debug",
+    "felixfbecker.php-intellisense",
     "humao.rest-client",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
@@ -31,6 +32,8 @@
     "CoenraadS.bracket-pair-colorizer-2",
     "eamodio.gitlens",
     "EditorConfig.EditorConfig",
+    "felixfbecker.php-debug",
+    "felixfbecker.php-intellisense",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
   ],
@@ -67,7 +70,7 @@
   "dotfiles.repository": "voronenko/dotfiles",
   "dotfiles.targetPath": "~/dotfiles",
   "remote.containers.dotfiles.repository": "voronenko/dotfiles",
-  "remote.containers.dotfiles.installCommand": "~/dotfiles",
-  "remote.containers.dotfiles.targetPath": "~/dotfiles/init_simple.sh zsh",
+  "remote.containers.dotfiles.installCommand": "~/dotfiles/init_simple.sh",
+  "remote.containers.dotfiles.targetPath": "~/dotfiles",
   "go.formatTool": "goimports"
 }
