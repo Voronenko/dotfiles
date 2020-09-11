@@ -23,6 +23,8 @@
     "felixfbecker.php-debug",
     "felixfbecker.php-intellisense",
     "junstyle.php-cs-fixer",
+    "neilbrayfield.php-docblocker",
+    "mehedidracula.php-namespace-resolver",
     "humao.rest-client",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
@@ -35,7 +37,9 @@
     "EditorConfig.EditorConfig",
     "felixfbecker.php-debug",
     "felixfbecker.php-intellisense",
+    "mehedidracula.php-namespace-resolver",
     "junstyle.php-cs-fixer",
+    "neilbrayfield.php-docblocker",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
   ],
