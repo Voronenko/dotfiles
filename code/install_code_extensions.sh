@@ -26,6 +26,7 @@ code --install-extension heptio.jsonnet
 code --install-extension HookyQR.beautify
 code --install-extension humao.rest-client
 code --install-extension jebbs.plantuml
+code --install-extension junstyle.php-cs-fixer
 code --install-extension kevinglasson.cornflakes-linter
 code --install-extension lextudio.restructuredtext
 code --install-extension ms-azuretools.vscode-docker
@@ -44,6 +45,7 @@ code --install-extension ms-vscode.powershell
 code --install-extension njpwerner.autodocstring
 code --install-extension openhab.openhab
 code --install-extension Orta.vscode-jest
+code --install-extension phproberto.vscode-php-getters-setters
 code --install-extension rebornix.ruby
 code --install-extension redhat.java
 code --install-extension redhat.vscode-yaml

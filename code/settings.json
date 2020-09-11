@@ -22,6 +22,7 @@
     "EditorConfig.EditorConfig",
     "felixfbecker.php-debug",
     "felixfbecker.php-intellisense",
+    "junstyle.php-cs-fixer",
     "humao.rest-client",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
@@ -34,6 +35,7 @@
     "EditorConfig.EditorConfig",
     "felixfbecker.php-debug",
     "felixfbecker.php-intellisense",
+    "junstyle.php-cs-fixer",
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
   ],
@@ -72,5 +74,19 @@
   "remote.containers.dotfiles.repository": "voronenko/dotfiles",
   "remote.containers.dotfiles.installCommand": "~/dotfiles/init_simple.sh",
   "remote.containers.dotfiles.targetPath": "~/dotfiles",
-  "go.formatTool": "goimports"
+  "go.formatTool": "goimports",
+
+  "php.suggest.basic": false,
+  "editor.quickSuggestions": { "comments": true },
+  "editor.formatOnSaveTimeout": 5000,
+  "intelephense.files.exclude": [
+    "**/.git/**",
+    "**/.svn/**",
+    "**/.hg/**",
+    "**/CVS/**",
+    "**/.DS_Store/**",
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**/{Test,test,Tests,tests}/**/*Test.php"
+  ],
 }
