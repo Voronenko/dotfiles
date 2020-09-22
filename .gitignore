@@ -45,6 +45,7 @@ bin/terraformer_kubernetes
 bin/traefik
 bin/traefik1
 bin/phpmd
+bin/symphony
 bin/dbmate
 bin/diff-so-fancy
 bin/schemacrawler
