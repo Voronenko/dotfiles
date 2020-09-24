@@ -28,8 +28,8 @@
 [commit]
 	gpgsign = false
 [pager]
-       diff = diff-so-fancy | less --tabs=1,5 -RFX
-       show = diff-so-fancy | less --tabs=1,5 -RFX
+       diff = ~/dotfiles/bin/diff-so-fancy | less --tabs=1,5 -RFX
+       show = ~/dotfiles/bin/diff-so-fancy | less --tabs=1,5 -RFX
 [gpg]
 	program = gpg2
 [color]
