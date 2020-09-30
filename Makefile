@@ -327,6 +327,7 @@ install-k8s-kubespy:
 	cp /tmp/releases/kubespy-linux-amd64/kubespy ~/dotfiles/bin
 	ln -s ~/dotfiles/bin/kubespy  ~/dotfiles/bin/kubectl-spy
 
+# https://skaffold.dev/
 install-k8s-skaffold:
 	curl -Lo ~/dotfiles/bin/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 	chmod +x ~/dotfiles/bin/skaffold
