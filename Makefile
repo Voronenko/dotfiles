@@ -682,10 +682,10 @@ install-phpmd:
 	chmod +x ~/dotfiles/bin/phpmd
 
 install-php-symphony-cli:
-	wget -O /tmp/symphony.gz https://github.com/symfony/cli/releases/download/v4.18.4/symfony_linux_amd64.gz
-	gunzip /tmp/symphony.gz
-	mv /tmp/symphony ~/dotfiles/bin
-	chmod +x ~/dotfiles/bin/symphony
+	wget -O /tmp/symfony.gz https://github.com/symfony/cli/releases/download/v4.18.4/symfony_linux_amd64.gz
+	gunzip /tmp/symfony.gz
+	mv /tmp/symfony ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/symfony
 # /PHP
 
 
