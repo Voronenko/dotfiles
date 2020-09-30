@@ -58,6 +58,7 @@ bin/lazygit
 bin/ag
 bin/lnav
 bin/ep
+bin/skaffold
 oh-my-zsh
 startup.log
 zshrc.local

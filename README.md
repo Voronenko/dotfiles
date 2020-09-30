@@ -1096,3 +1096,36 @@ gsettings set org.gnome.shell.app-switcher current-workspace-only true
 ```
 
 set to false if it does not suite your work habits
+
+
+# Notifications
+
+## slack
+
+Using slacktee
+
+Configuration
+Before start using slacktee, please set following variables in the script configuration file. 
+slacktee reads the global configuration (/etc/slacktee.conf) first, then reads your local configuration (~/.slacktee). 
+You can set up your local configuration file using interactive setup mode (--setup option).
+
+You would need an authentication token for slacktee. It could be generated in 2 ways:
+
+Crate a Slack App (Preffered by Slack, but a bit complicated to setup)
+Follow steps listed in creating a Slack App.
+
+Next, create a bot user for your app, give the following 3 permissions to the Bot Token Scopes of your app: chat:write, chat:write:public, files:write. 
+More information about the permission scopes can be found at permission scopes. [Note] Even with files:write permission, Slack App can upload files only to the channels 
+where the Slack App is in. So, please add your Slack App to the channels where you want to upload files. At last, install the app to your workplace and get the Bot User 
+OAuth token in the "OAuth & Permissions" section of the app management page.
+
+Add a bot (Easy to setup, but Slack may remove it in future)
+
+Add a bot into your workspace through Slack App Directory. You can now find 'API Token' in the configuration page of the bot.
+
+token=""            # The authentication token of the bot user. Used for accessing Slack APIs.
+channel=""          # Default channel to post messages. '#' is prepended, if it doesn't start with '#' or '@'.
+tmp_dir="/tmp"      # Temporary file is created in this directory.
+username="slacktee" # Default username to post messages.
+icon="ghost"        # Default emoji or a direct url to an image to post messages. You don't have to wrap emoji with ':'. See http://www.emoji-cheat-sheet.com.
+attachment=""       # Default color of the attachments. If an empty string is specified, the attachments are not used.
