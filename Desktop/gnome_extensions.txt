@@ -1,0 +1,8 @@
+['drop-down-terminal@gs-extensions.zzrough.org', 'dash-to-dock@micxgx.gmail.com', 'system-monitor@paradoxxx.zero.gmail.com', 'window-corner-preview@fabiomereu.it', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'timezone@jwendell', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com']
+========================Local:
+dash-to-dock@micxgx.gmail.com
+drop-down-terminal@gs-extensions.zzrough.org
+quicktoggler@shihira.github.com
+system-monitor@paradoxxx.zero.gmail.com
+timezone@jwendell
+window-corner-preview@fabiomereu.it
