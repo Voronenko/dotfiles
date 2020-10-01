@@ -157,7 +157,7 @@ alias killproject='tmux kill-server'
 fi
 
 if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
-  if type "python" > /dev/null;
+  if type "python" > /dev/null; then
     # aliases
     alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
   fi
