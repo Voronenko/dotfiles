@@ -545,6 +545,11 @@ install-aws-myaws:
 	wget -O /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.10/myaws_v0.3.10_linux_amd64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
 
+install-aws-awless:
+	wget -O /tmp/awless.tar.gz https://github.com/wallix/awless/releases/download/v0.1.11/awless-linux-amd64.tar.gz
+	tar -xvzf /tmp/awless.tar.gz -C ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/awless
+
 # https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 install-aws-cli2:
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"

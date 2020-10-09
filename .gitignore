@@ -59,6 +59,7 @@ bin/ag
 bin/lnav
 bin/ep
 bin/skaffold
+bin/awless
 oh-my-zsh
 startup.log
 zshrc.local
