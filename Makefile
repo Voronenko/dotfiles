@@ -494,7 +494,7 @@ install-hashicorp-terraform011:
 
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:
@@ -663,6 +663,13 @@ sec-nmap-sandmap:
 # https://www.mkdocs.org/
 install-mkdocs:
 	pip install mkdocs
+
+# Small markdown to confluence
+install-confluence-mark:
+	wget -O /tmp/confluencemark.tar.gz https://github.com/kovetskiy/mark/releases/download/3.1/mark_3.1_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/confluencemark.tar.gz -C /tmp
+	cp /tmp/mark ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/mark
 
 #/ DOCUMENTATION
 
