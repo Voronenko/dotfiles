@@ -60,6 +60,7 @@ bin/lnav
 bin/ep
 bin/skaffold
 bin/awless
+bin/tflint
 oh-my-zsh
 startup.log
 zshrc.local

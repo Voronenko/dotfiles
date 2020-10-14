@@ -480,6 +480,12 @@ install-terraform-tfschema:
 install-terraform-blast:
 	pip install blastradius
 
+install-tflint:
+	wget -O /tmp/tflint.zip https://github.com/terraform-linters/tflint/releases/download/$(shell curl -s https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep tag_name | cut -d '"' -f 4)/tflint_linux_amd64.zip
+	cd /tmp && unzip tflint.zip
+	mv /tmp/tflint ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/tflint
+
 # /TERRAFORM
 
 
@@ -493,8 +499,12 @@ install-hashicorp-terraform011:
 	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform011 && chmod +x terraform011 && rm terraform.zip && mv terraform011 ~/dotfiles/bin/
 
 
-install-hashicorp-terraform:
+install-hashicorp-terraform012:
 	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip"
+	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+
+install-hashicorp-terraform:
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.13.4/terraform_0.13.4_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:
