@@ -69,6 +69,7 @@ bin/jsonnetfmt
 bin/terraform011
 bin/terraform012
 bin/mark
+bin/s5cmd
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
