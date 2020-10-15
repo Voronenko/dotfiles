@@ -1129,3 +1129,43 @@ tmp_dir="/tmp"      # Temporary file is created in this directory.
 username="slacktee" # Default username to post messages.
 icon="ghost"        # Default emoji or a direct url to an image to post messages. You don't have to wrap emoji with ':'. See http://www.emoji-cheat-sheet.com.
 attachment=""       # Default color of the attachments. If an empty string is specified, the attachments are not used.
+
+
+## Precommit hooks
+
+```sh
+pip3 install pre-commit
+```
+
+```sh
+DIR=~/.git-template
+git config --global init.templateDir ${DIR}
+pre-commit init-templatedir -t pre-commit ${DIR}
+````
+
+ Add configs and hooks
+
+Step into the repository you want to have the pre-commit hooks installed and run, for example
+
+```sh
+cat <<EOF > .pre-commit-config.yaml
+repos:
+- repo: git://github.com/antonbabenko/pre-commit-terraform
+  rev: <VERSION> # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+  hooks:
+    - id: terraform_fmt
+    - id: terraform_docs
+EOF
+```
+
+Automatic hooks can be installed with
+
+```sh
+pre-commit install
+```
+
+while manual hooks run can be applied using
+
+```sh
+pre-commit run -a
+```

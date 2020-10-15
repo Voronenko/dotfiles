@@ -462,7 +462,7 @@ install-terraformer:
 	chmod +x ~/dotfiles/bin/terraformer_kubernetes
 
 install-terraform-docs:
-	wget -O ~/dotfiles/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.4.0/terraform-docs-v0.4.0-linux-amd64
+	wget -O ~/dotfiles/bin/terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/$(shell curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep tag_name | cut -d '"' -f 4)/terraform-docs-$(shell curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64
 	chmod +x ~/dotfiles/bin/terraform-docs
 
 install-terraform-virtualbox-bridge:
@@ -485,7 +485,6 @@ install-tflint:
 	cd /tmp && unzip tflint.zip
 	mv /tmp/tflint ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/tflint
-
 # /TERRAFORM
 
 

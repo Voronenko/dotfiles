@@ -78,3 +78,5 @@ bin/esxi_vm_functions.pyc
 *.phar
 bin/swagger-codegen-cli.jar
 bin/toggl_*
+terraformer-all-linux-amd64
+terraformer-google-linux-amd64
