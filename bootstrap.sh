@@ -3,6 +3,7 @@
 # curl -sSL http://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh
 # ./bootstrap.sh  <optional: simple | full | docker>
 
+# curl -sSL http://bit.ly/slavkodotfiles | bash -s
 set -e
 
 SUDO=${BECOME_METHOD:-sudo}
