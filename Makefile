@@ -588,6 +588,10 @@ install-aws-cli2:
 install-ovh-nova:
 	sudo pip install python-openstackclient
 
+# https://github.com/awslabs/aws-cfn-template-flip
+install-aws-cfn-template-flip:
+	sudo pip3 install cfn-flip
+
 # / CLOUDS
 
 # ESXI
