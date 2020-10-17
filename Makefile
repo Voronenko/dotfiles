@@ -179,6 +179,19 @@ install-direnv:
 	wget -O ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
 	chmod +x ~/dotfiles/bin/direnv
 
+# https://github.com/VirtusLab/git-machete
+# https://plugins.jetbrains.com/plugin/14221-git-machete
+install-git-machete:
+	curl -L https://raw.githubusercontent.com/VirtusLab/git-machete/master/completion/git-machete.completion.zsh -o ~/dotfiles/completions/git-machete.completion.zsh
+	sudo snap install --classic git-machete
+
+# https://pre-commit.com/
+install-git-precommit:
+	pip3 install pre-commit
+	#conda install -c conda-forge pre-commit
+	git config --global init.templateDir ~/.git-template
+	pre-commit init-templatedir ~/.git-template
+
 # /WORKSPACE TOOLS
 
 
