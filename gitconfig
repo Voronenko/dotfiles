@@ -73,4 +73,5 @@
 #[url "ssh://git@github.com/voronenko"]
 #	insteadOf = https://github.com/voronenko
 [init]
-	templateDir = /home/slavko/.git-template
+	templateDir = ~/.git-template
+	defaultBranch = master
