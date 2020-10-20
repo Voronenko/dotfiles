@@ -22,16 +22,21 @@ fi
 ###
 #CONFIG
 
+KUBE_PS1_ENABLED=off #use kubeon when working with kubernetes
+KUBE_PS1_SYMBOL_USE_IMG=true
+KUBE_PS1_NS_ENABLE=true
+KUBE_PS1_DIVIDER='/'
+
 POWERLEVEL9K_MODE='awesome-fontconfig' # compatible | awesome-fontconfig | nerdfont-complete
 POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv custom_kube_ps1)
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
 POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=""
-
+POWERLEVEL9K_CUSTOM_KUBE_PS1='kube_ps1'
 
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -85,6 +90,9 @@ function notify_formatted {
 plugins=(composer docker-compose kubectl fzf-zsh bgnotify alias-tips pipenv)
 
 source $ZSH/oh-my-zsh.sh
+#if type "kubectll" > /dev/null; then # TODO: if kubectl is absent skip
+source ${HOME}/dotfiles/bin/kube-ps1.sh
+#fi
 
 # User configuration
 
@@ -269,12 +277,11 @@ if type "kubectl" > /dev/null; then
   # load support for kubernetes context switch
   export PATH=$PATH:${HOME}/dotfiles/bin
 
-# heavy init
-function onkubernetes() {
-  source ${HOME}/dotfiles/bin/kube-ps1.sh
-  source ${HOME}/dotfiles/bin/gcloud-ps1.sh
-  RPROMPT='$(kube_ps1)$(gcloud_ps1)'
-}
+  # heavy init
+  function ongloudkube() {
+    source ${HOME}/dotfiles/bin/gcloud-ps1.sh
+    RPROMPT='$(gcloud_ps1)'
+  }
 
 fi
 

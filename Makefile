@@ -48,7 +48,14 @@ install-cdci-gitlab-runner-service:
 	sudo gitlab-runner start
 
 install-cdci-circleci-runner:
-	curl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh --fail --show-error | sudo bash
+#	curl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh --fail --show-error | sudo bash
+	wget -O /tmp/circleci.tar.gz https://github.com/CircleCI-Public/circleci-cli/releases/download/v0.1.10993/circleci-cli_0.1.10993_linux_amd64.tar.gz
+	tar -xvzf /tmp/circleci.tar.gz -C /tmp
+	rm -rf /tmp/circleci-cli || true
+	cd /tmp && mv circleci-cli_* circleci-cli
+	mv /tmp/circleci-cli/circleci ~/dotfiles/bin/circleci
+	chmod +x ~/dotfiles/bin/circleci
+
 
 # /CD CI local runners
 
