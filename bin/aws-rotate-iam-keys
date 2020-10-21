@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+
+# courtesy of https://github.com/rhyeal/aws-rotate-iam-keys
+# cron:
+# aws-rotate-iam-keys --profile myProfile
+# aws-rotate-iam-keys -p myProfile
+# To rotate multiple profiles with the same key:
+# aws-rotate-iam-keys --profiles myProfile,myOtherProfile
+
+# Log to syslog if output streams not attached to a terminal (cron, launchd)
+if ! test -t 1 && ! test -t 2; then
+  exec 1> >(tee >(logger -t $(basename $0))) 2>&1
+fi
+
+# Assign the arguments to variables
+# saner programming env: these switches turn some bugs into errors
+set -eu -o errexit -o pipefail -o noclobber -o nounset
+IFS=$'\n\t'
+
+! getopt --test > /dev/null
+if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
+  if which brew &> /dev/null && test -d $(brew --prefix)/opt/gnu-getopt/bin; then
+    PATH="$(brew --prefix)/opt/gnu-getopt/bin:$PATH"
+  else
+    echo "GNU's enhanced getopt is required to run this script" >&2
+    echo "You can usually find this in the util-linux package" >&2
+    echo "On MacOS see homebrew's package: http://brewformulas.org/Gnu-getopt" >&2
+    echo "For anyone else, build from source: http://frodo.looijaard.name/project/getopt" >&2
+    exit 1
+  fi
+fi
+
+# -use ! and PIPESTATUS to get exit code with errexit set
+# -temporarily store output to be able to check for errors
+# -activate quoting/enhanced mode (e.g. by writing out “--options”)
+# -pass arguments only via   -- "$@"   to separate them correctly
+! PARSED=$(getopt --options=hvfp: --longoptions=force,profile:,profiles:,version,help --name "$0" -- "$@")
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+  # e.g. return value is 1
+  #  then getopt has complained about wrong arguments to stdout
+  exit 2
+fi
+# read getopt’s output this way to handle the quoting right:
+eval set -- "$PARSED"
+
+PROFILES=""
+FORCE=""
+# now enjoy the options in order and nicely split until we see --
+while true; do
+  case "$1" in
+    --)
+      shift
+      break
+      ;;
+    -p|--profiles|--profile)
+      PROFILES="$2"
+      shift 2
+      ;;
+    -f|--force)
+      FORCE=true
+      shift
+      ;;
+    --version|-v)
+      echo "AWS Rotate IAM Keys (c) 2018+ Adam Link."
+      echo "Licensed under the GNU General Public License."
+      echo "Thanks to all the contributors!"
+      echo "version <%VERSION%>"
+      exit 0
+      ;;
+    --help|-h)
+      echo "To rotate your default profile manually:"
+      echo '$ aws-rotate-iam-keys'
+      echo ""
+      echo "To rotate a specific profile in your ~/.aws/credentials file:"
+      echo '$ aws-rotate-iam-keys --profile myProfile'
+      echo ""
+      echo "To rotate multiple profiles *with the same key*:"
+      echo '$ aws-rotate-iam-keys --profiles myProfile,myOtherProfile'
+      echo ""
+      echo "To rotate multiple profiles *with their own keys*:"
+      echo '$ aws-rotate-iam-keys --profile myProfile'
+      echo '$ aws-rotate-iam-keys --profile myOtherProfile'
+      exit 0
+      ;;
+  esac
+done
+
+# Set the profile to default if nothing sent via CLI
+if [[ -z "$PROFILES" ]]; then
+  PROFILES=default
+fi
+
+set -f; unset IFS             # avoid globbing (expansion of *).
+PROFILES_ARR=(${PROFILES//,/ })
+
+echo "Rotating keys for profiles: $PROFILES"
+
+echo "Verifying configuration"
+ACCESS_KEY_IDS=()
+for i in "${!PROFILES_ARR[@]}"; do
+  ACCESS_KEY_ID=$(aws configure get ${PROFILES_ARR[i]}.aws_access_key_id 2>/dev/null)
+  SECRET_ACCESS_KEY=$(aws configure get ${PROFILES_ARR[i]}.aws_secret_access_key 2>/dev/null)
+  if [[ -z "$ACCESS_KEY_ID" ]] || [[ -z "$SECRET_ACCESS_KEY" ]]; then
+    echo "Could not find keys for profile ${PROFILES_ARR[i]}. Ensure you have a profile set up using 'aws configure'." >&2
+    exit 1
+  fi
+  ACCESS_KEY_IDS+=($ACCESS_KEY_ID)
+done
+
+if [[ $(echo "${ACCESS_KEY_IDS[@]}" | tr ' ' '\n' | sort -u | wc -l) -ne "1" ]]; then
+  if [[ $FORCE ]]; then
+    echo "Different access keys found for profiles ${PROFILES}. Force option enabled, so continuing anyway." >&2
+  else
+    echo "Different access keys found for profiles ${PROFILES}. Check your aws profile configuration." >&2
+    exit 1
+  fi
+fi
+
+# Set AWS CLI env vars so we can interact with the API without using a profile,
+# which means we can delete the old access key *after* updating the profiles to
+# use the new access key, without having to wait for the new key to propagate
+export AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
+
+echo "Verifying credentials"
+KEY_COUNT=$(aws iam list-access-keys --output json | jq '.AccessKeyMetadata | length' || exit 1)
+if [[ "$KEY_COUNT" -gt "1" ]]; then
+  if [[ $FORCE ]]; then
+    echo "More than 1 access key found. Force option enabled, so deleting unknown access keys"
+    KEYS=$(aws iam list-access-keys --output json | jq -r '.AccessKeyMetadata[].AccessKeyId' || exit 1)
+    for key in $KEYS; do
+      if [[ $key == $AWS_ACCESS_KEY_ID ]]; then continue; fi
+      aws iam delete-access-key --access-key-id $key
+      echo "Deleted unknown key $key"
+    done
+  else
+    echo "You have more than 1 access key. Ensure you only have 1 access key and try again."
+    exit 1
+  fi
+fi
+
+echo "Creating new access key"
+RESPONSE=$(aws iam create-access-key --output json | jq .AccessKey)
+NEW_ACCESS_KEY_ID=$(echo $RESPONSE | jq -r '.AccessKeyId')
+NEW_SECRET_ACCESS_KEY=$(echo $RESPONSE | jq -r '.SecretAccessKey')
+if [[ "$NEW_ACCESS_KEY_ID" != "" && "$NEW_SECRET_ACCESS_KEY" != "" ]]; then
+  echo "Created new key $NEW_ACCESS_KEY_ID"
+
+  OLD_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  OLD_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  export AWS_ACCESS_KEY_ID=$NEW_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY=$NEW_SECRET_ACCESS_KEY
+
+  echo "Verifying new access key"
+  for i in $(seq 1 20); do
+    ERROR=$(aws iam list-access-keys 2>&1 1>/dev/null) && break || sleep 3
+  done
+  if [[ $ERROR ]]; then
+    echo $ERROR >&2
+    export AWS_ACCESS_KEY_ID=$OLD_ACCESS_KEY_ID
+    export AWS_SECRET_ACCESS_KEY=$OLD_SECRET_ACCESS_KEY
+    aws iam delete-access-key --access-key-id $NEW_ACCESS_KEY_ID
+    exit 1
+  fi
+
+  # Rotate the keys in the credentials file for all profiles
+  for i in "${!PROFILES_ARR[@]}"
+  do
+      echo "Updating profile: ${PROFILES_ARR[i]}"
+      aws configure set aws_access_key_id $NEW_ACCESS_KEY_ID --profile ${PROFILES_ARR[i]}
+      aws configure set aws_secret_access_key $NEW_SECRET_ACCESS_KEY --profile ${PROFILES_ARR[i]}
+  done
+
+  echo "Deleting old access key"
+  aws iam delete-access-key --access-key-id $OLD_ACCESS_KEY_ID
+
+  echo "Deleted old key $OLD_ACCESS_KEY_ID"
+
+  echo "Keys rotated"
+  exit 0
+else
+  echo "Failed to create access key. Please correct reported errors and try again." >&2
+  exit 1
+fi
