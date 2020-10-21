@@ -285,8 +285,16 @@ install-k8s-kubectl-ubuntu:
 	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 	sudo apt-get update
 	sudo apt-get install -y kubectl
+
+install-k8s-k9s:
+	mkdir -p /tmp/k9s
+	wget -O /tmp/k9s/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v0.22.1/k9s_Linux_x86_64.tar.gz
+	cd /tmp/k9s && tar -xzf k9s.tar.gz && mv /tmp/k9s/k9s ~/dotfiles/bin/
+	chmod +x ~/dotfiles/bin/k9s
+	rm -rf /tmp/k9s
+
 # kubie is an alternative to kubectx, kubens and the k on prompt modification script. It offers context switching, namespace switching and prompt modification
-# in a way that makes each shell independent from others. It also has support for split configuration files, meaning it can load Kubernetes contexts from 
+# in a way that makes each shell independent from others. It also has support for split configuration files, meaning it can load Kubernetes contexts from
 # multiple files. You can configure the paths where kubie will look for context
 install-k8s-kubie:
 	curl -J -L -o ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.9.1/kubie-linux-amd64

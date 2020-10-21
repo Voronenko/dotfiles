@@ -70,6 +70,7 @@ bin/terraform011
 bin/terraform012
 bin/mark
 bin/s5cmd
+bin/k9s
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
