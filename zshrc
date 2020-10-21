@@ -560,15 +560,16 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
     AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
     # output to screen, so you know
-    set -x
+    # set -x
     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    set +x
+    # set +x
     export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
     export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
+    echo AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY were set for $1
   }
 
   set-aws-region() {
