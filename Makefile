@@ -214,6 +214,7 @@ install-docker-dry:
 	wget -O ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
 
+# inspection of the docker containers
 install-docker-dive:
 	wget -O /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
 	sudo apt install /tmp/dive.deb
@@ -224,6 +225,7 @@ install-docker-slim:
 	tar -xvzf /tmp/docker-slim.tar.gz -C /tmp
 	mv /tmp/dist_linux/* ~/dotfiles/bin
 
+# templating utility for easy config patching using bash variables syntax
 install-docker-envplate:
 	curl -sLo ~/dotfiles/bin/ep https://github.com/kreuzwerker/envplate/releases/download/v0.0.8/ep-linux && chmod +x ~/dotfiles/bin/ep
 
@@ -245,17 +247,19 @@ install-k8s-ksonnet:
 	tar -xvzf /tmp/ks_linux_amd64.tar.gz -C /tmp
 	cp /tmp/ks_0.10.1_linux_amd64/ks ~/dotfiles/bin
 
+# tail utility for kubernetes
 install-k8s-stern:
 	wget -O ~/dotfiles/bin/stern "https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/bin/stern
 
+# helm version considered stable
 install-k8s-helm3-fixed:
 	mkdir -p /tmp/helm
 	wget -O /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.1.0-linux-amd64.tar.gz"
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
-
+# latest released helm
 install-k8s-helm-latest:
 	mkdir -p /tmp/helm
 	wget -O /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-$(shell curl -s https://api.github.com/repos/helm/helm/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz"
@@ -285,7 +289,7 @@ install-k8s-kubectl-ubuntu:
 	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 	sudo apt-get update
 	sudo apt-get install -y kubectl
-
+# terminal UI to interact with your Kubernetes
 install-k8s-k9s:
 	mkdir -p /tmp/k9s
 	wget -O /tmp/k9s/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v0.22.1/k9s_Linux_x86_64.tar.gz
@@ -377,6 +381,10 @@ install-openshift-oc:
 	type kubectl >/dev/null || /tmp/openshift-origin-client-tools/oc ~/dotfiles/bin
 	echo "If there were no kubectl in path, one was installed from oc distro."
 	echo "In other case global is used. Please check carefully"
+
+zsh-kubetail:
+	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
+	git clone https://github.com/johanhaleby/kubetail.git ~/.oh-my-zsh/custom/plugins/kubetail
 
 # /KUBERNETES
 

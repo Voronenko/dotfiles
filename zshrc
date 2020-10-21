@@ -87,7 +87,7 @@ function notify_formatted {
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(composer docker-compose kubectl fzf-zsh bgnotify alias-tips pipenv)
+plugins=(composer docker-compose kubectl kubetail fzf-zsh bgnotify alias-tips pipenv)
 
 source $ZSH/oh-my-zsh.sh
 #if type "kubectll" > /dev/null; then # TODO: if kubectl is absent skip
