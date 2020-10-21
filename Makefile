@@ -246,7 +246,7 @@ install-k8s-ksonnet:
 	cp /tmp/ks_0.10.1_linux_amd64/ks ~/dotfiles/bin
 
 install-k8s-stern:
-	wget -O ~/dotfiles/bin/stern "https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64"
+	wget -O ~/dotfiles/bin/stern "https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64"
 	chmod +x ~/dotfiles/bin/stern
 
 install-k8s-helm3-fixed:
@@ -258,7 +258,7 @@ install-k8s-helm3-fixed:
 
 install-k8s-helm-latest:
 	mkdir -p /tmp/helm
-	wget -O /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-$(shell curl -s https://api.github.com/repos/helm/helm/releases/latest | grep tag_name | cut -d '"' -f 4)"
+	wget -O /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-$(shell curl -s https://api.github.com/repos/helm/helm/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz"
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 

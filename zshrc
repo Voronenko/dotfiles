@@ -278,9 +278,11 @@ if type "kubectl" > /dev/null; then
   export PATH=$PATH:${HOME}/dotfiles/bin
 
   # heavy init
-  function ongloudkube() {
-    source ${HOME}/dotfiles/bin/gcloud-ps1.sh
-    RPROMPT='$(gcloud_ps1)'
+  function onkube() {
+     kubeon	
+     source <(stern --completion=zsh)
+#    source ${HOME}/dotfiles/bin/gcloud-ps1.sh
+#    RPROMPT='$(gcloud_ps1)'
   }
 
 fi
