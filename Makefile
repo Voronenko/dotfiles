@@ -323,7 +323,7 @@ install-k8s-kubeval:
 install-k8s-vmware-octant:
 	wget -O /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.10.2/octant_0.10.2_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
-	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely	
+	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely
 
 # https://github.com/corneliusweig/rakkess
 # Review Access - kubectl plugin to show an access matrix for k8s server resources
@@ -334,7 +334,7 @@ install-k8s-rakkess:
 # https://github.com/derailed/popeye
 # A Kubernetes cluster resource sanitizer
 install-k8s-popeye:
-	wget -O /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/v0.6.2/popeye_0.6.2_Linux_x86_64.tar.gz
+	wget -O /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/$(shell curl -s https://api.github.com/repos/derailed/popeye/releases/latest | grep tag_name | cut -d '"' -f 4)/popeye_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/popeye.tar.gz -C /tmp
 	cp /tmp/popeye ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/popeye
