@@ -173,7 +173,7 @@ while [[ $# -gt 0 ]]; do
 			usage
 			exit 0
 		;;
-		*) 
+		*)
 			INVALID+=("$1")
 			shift
 			echo -ne "\033[0;31m\nERROR:\033[0;37m Invalid arguement: $INVALID\033[0m\n"
@@ -185,7 +185,7 @@ done
 
 if [ -z "$USER" ] || [ -z "$TOKEN" ] || [ -z "$MESSAGE" ]; then
 	echo -ne '\n'
-	if [ -z "$USER" ]; then 
+	if [ -z "$USER" ]; then
 		if [ -e $DIR_CONFIG/config ]; then
 		    USER=$(awk -F'"' '/^USER_KEY=/ {print $2}' $DIR_CONFIG/config)
 		    if [ -z "$USER" ]; then
@@ -229,7 +229,7 @@ else
 		-F "expire=${EXPIRE}" \
 		https://api.pushover.net/1/messages.json \
 	| grep 'errors' > /dev/null 2>&1
-	if [ $? != 0 ];	then 
+	if [ $? != 0 ];	then
 		print_grn "success!\n\n";
 		exit 0
 	else

@@ -16,5 +16,3 @@ sed -i.bak "s/version:[[:space:]]*.*/version: $VERSION/g" $CURRENT_DIR/galaxy.ym
 fi
 
 echo $VERSION > version.txt
-
-

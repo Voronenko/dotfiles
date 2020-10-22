@@ -37,4 +37,3 @@ export_alias() {
 
 
 #export_alias somealias="some shell command"
-

@@ -61,4 +61,3 @@ _bq_completer() {
 
 complete -o default -F _bq_completer bq
 complete -o nospace -F _python_argcomplete gsutil
-

@@ -9,7 +9,7 @@ class Knocker(object):
         self._parse_args(args)
 
     def _parse_args(self, args: list):
-        description_text = 'Simple port-knocking client written in python3.' 
+        description_text = 'Simple port-knocking client written in python3.'
         parser = argparse.ArgumentParser(description=description_text)
 
         help_text = 'How many milliseconds to wait on hanging connection. Default is 200 ms.'
@@ -61,4 +61,3 @@ class Knocker(object):
 
 if __name__ == '__main__':
     Knocker(sys.argv[1:]).knock()
-

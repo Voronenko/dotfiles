@@ -107,12 +107,12 @@ dck sh | bash | list |stopall |cleanimages |cleancontainers | ui | registry | in
 # Need to use Ruby?  Multiple ruby version support via chruby, if detected.
 
 ```sh
-# DETECT CHRUBY support 
+# DETECT CHRUBY support
 
 if [[ -d /usr/local/share/chruby/ ]]; then
         # Linux installation of chruby
         chruby_path=/usr/local/share/chruby/
-elif [[ -d /usr/local/opt/chruby/share/chruby/ ]]; then 
+elif [[ -d /usr/local/opt/chruby/share/chruby/ ]]; then
         # Homebrew installation of chruby
         chruby_path=/usr/local/opt/chruby/share/chruby/
 fi
@@ -146,7 +146,7 @@ function onproject() {
 
 fi
 
-function offproject() { 
+function offproject() {
   tmux kill-session -t ${1} &
 }
 
@@ -226,7 +226,7 @@ load-nvmrc() {
 
     if [ "$nvmrc_node_version" = "N/A" ]; then
       nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then 
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
       nvm use
     fi
   elif [ "$node_version" != "$(nvm version default)" ]; then
@@ -643,7 +643,7 @@ install-k8s-popeye:
 	chmod +x ~/dotfiles/bin/popeye
 
 #  https://github.com/FairwindsOps/polaris
-#  Validation of best practices in your Kubernetes clusters https://www.fairwinds.com/polaris 
+#  Validation of best practices in your Kubernetes clusters https://www.fairwinds.com/polaris
 install-k8s-polaris:
 	wget -O /tmp/polaris.tar.gz https://github.com/FairwindsOps/polaris/releases/download/0.6.0/polaris_0.6.0_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/polaris.tar.gz -C /tmp
@@ -1012,7 +1012,7 @@ This random file that floats around. No idea where it came from, but it's refere
 
 # Development box with vagrant
 
-If your workplace is rather development box, like if you use vagrant often , 
+If your workplace is rather development box, like if you use vagrant often ,
 consider modifiing sudoers exclusions, like `/etc/sudoers.d/YOURUSER` replacing slavko with your username
 
 Note that by doing so you are doing your pc potentially less secure
@@ -1060,7 +1060,7 @@ Mac look for ubuntu boxes
 1. Dependencies
 ```
 sudo apt-get install gtk2-engines-murrine gtk2-engines-pixbuf
-sudo apt install gnome-shell-extensions 
+sudo apt install gnome-shell-extensions
 ```
 
 later enable user themes extensions
@@ -1105,8 +1105,8 @@ set to false if it does not suite your work habits
 Using slacktee
 
 Configuration
-Before start using slacktee, please set following variables in the script configuration file. 
-slacktee reads the global configuration (/etc/slacktee.conf) first, then reads your local configuration (~/.slacktee). 
+Before start using slacktee, please set following variables in the script configuration file.
+slacktee reads the global configuration (/etc/slacktee.conf) first, then reads your local configuration (~/.slacktee).
 You can set up your local configuration file using interactive setup mode (--setup option).
 
 You would need an authentication token for slacktee. It could be generated in 2 ways:
@@ -1114,9 +1114,9 @@ You would need an authentication token for slacktee. It could be generated in 2 
 Crate a Slack App (Preffered by Slack, but a bit complicated to setup)
 Follow steps listed in creating a Slack App.
 
-Next, create a bot user for your app, give the following 3 permissions to the Bot Token Scopes of your app: chat:write, chat:write:public, files:write. 
-More information about the permission scopes can be found at permission scopes. [Note] Even with files:write permission, Slack App can upload files only to the channels 
-where the Slack App is in. So, please add your Slack App to the channels where you want to upload files. At last, install the app to your workplace and get the Bot User 
+Next, create a bot user for your app, give the following 3 permissions to the Bot Token Scopes of your app: chat:write, chat:write:public, files:write.
+More information about the permission scopes can be found at permission scopes. [Note] Even with files:write permission, Slack App can upload files only to the channels
+where the Slack App is in. So, please add your Slack App to the channels where you want to upload files. At last, install the app to your workplace and get the Bot User
 OAuth token in the "OAuth & Permissions" section of the app management page.
 
 Add a bot (Easy to setup, but Slack may remove it in future)

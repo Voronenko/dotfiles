@@ -15,4 +15,3 @@ pip3 install iplantuml
 pip3 install jupyterlab_templates
 jupyter labextension install jupyterlab_templates
 jupyter serverextension enable --py jupyterlab_templates
-

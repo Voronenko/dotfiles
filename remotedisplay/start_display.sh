@@ -23,6 +23,3 @@ xrandr --addmode VIRTUAL1 "1024x768_60.00"
 fi
 
 x11vnc -display :0 -clip xinerama${INNERDISPLAY} -xauth /var/lib/gdb/:0.Xauth -xrandr -forever -nonc -noxdamage -repeat
-
-
-

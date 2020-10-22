@@ -9,7 +9,7 @@ for - Loop 'for' with index
 len = $ARRAY$.length;
 for ($INDEX$ = 0; $INDEX$<len; $INDEX$ += 1) {
     $VAR$ = $ARRAY$[$INDEX$];
-    $END$    
+    $END$
 }
 
 #forin - Loop 'for-in' loops through the properties of an object

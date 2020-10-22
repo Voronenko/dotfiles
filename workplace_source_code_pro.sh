@@ -23,4 +23,3 @@ echo "\n* Looking for 'Source Code Pro' in installed fonts"
 fc-list | grep "Source Code Pro"
 
 echo "\n* Now, you can use the 'Source Code Pro' fonts"
-

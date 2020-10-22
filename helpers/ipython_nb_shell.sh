@@ -2,11 +2,11 @@
 # Written because I often want to search notebooks for snippets but the giant output
 # of embedded encoded images makes it difficult.
 
-# Ipython's nbconvert can be used to extract just the input, but this requires 
+# Ipython's nbconvert can be used to extract just the input, but this requires
 # writing to a separate file and can be quite slow when used with large notebooks.
 # Additionally, find/xargs can be used with igrep when the name of the notebook isn't known.
 
-# icat could be used to convert an IPython notebook to a standard python file if 
+# icat could be used to convert an IPython notebook to a standard python file if
 # the notebook does not contain whole-cell magics.
 
 # Michelle L. Gill, 2014/06/21
@@ -25,10 +25,10 @@ function icat {
 function igrep {
 	jq '.worksheets[].cells[] | select(.cell_type=="code") | .input[]' $argv[-1] \
 	| sed 's/^"//g;s/"$//g;s/\\n$//g;s/\\"/"/g;s/\\\\/\\/g' \
-	| grep $argv[1,-2] 
+	| grep $argv[1,-2]
 }
 
-# This simple function will clear the output cells in a notebook. This can then be 
+# This simple function will clear the output cells in a notebook. This can then be
 # redirected into a new file from the command line
 function clearoutput {
 	jq '. | .worksheets[].cells[].outputs=[] ' $1

@@ -6,7 +6,7 @@ cat << HELP
 
 dockertags  --  list all tags for a Docker image on a remote registry.
 
-EXAMPLE: 
+EXAMPLE:
     - list all tags for ubuntu:
        dockertags ubuntu
 

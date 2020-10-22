@@ -19,4 +19,3 @@ export GOBIN=${GOPATH_CURRENT}/bin
 export PATH=$GOBIN:$PATH
 export GO_PROJECT_PATH=$(pwd)/.go/src/$GL_URL/$GO_PROJECT_NAMESPACE
 echo "try cd \$GO_PROJECT_PATH"
-

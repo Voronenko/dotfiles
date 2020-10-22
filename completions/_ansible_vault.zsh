@@ -41,7 +41,7 @@
 
 _ansible-vault-commands() {
   local -a commands
-  
+
   commands=(
     'create:Create new encrypted file'
     'decrypt:Decrypt encrypted file'
@@ -50,7 +50,7 @@ _ansible-vault-commands() {
     'rekey:Change password for encrypted file'
     'view:View encrypted file'
   )
-  
+
   _arguments -s : $nul_args && ret=0
   _describe -t commands 'ansible-vault command' commands && ret=0
 }
@@ -70,9 +70,9 @@ _ansible-vault() {
   nul_args=(
     '(-h --help)'{-h,--help}'[show help message and exit.]'
   )
-  
+
   local curcontext=$curcontext ret=1
-  
+
   if ((CURRENT == 2)); then
     _ansible-vault-commands
   else

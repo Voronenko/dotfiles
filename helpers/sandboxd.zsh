@@ -24,8 +24,8 @@ function sandbox(){
   local cmd=$1
    if [[ "$(type $cmd | grep -o function)" = "function" ]]; then
     (>&2 echo "sandboxing $cmd ...")
-    sandbox_delete_hooks $cmd 
-    sandbox_init_$cmd # run user-defined sandbox 
+    sandbox_delete_hooks $cmd
+    sandbox_init_$cmd # run user-defined sandbox
   else
     (>&2 echo "sandbox '$cmd' not found.\nHave you defined sandbox_init_$cmd(){ ... } in your ~/.sandboxrc?")
     return 1

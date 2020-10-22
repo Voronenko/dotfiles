@@ -4,7 +4,7 @@ sudo apt-get update
 sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
 
 #Download and install the Microsoft signing key:
-curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null 
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
 
 #Add the Azure CLI software repository:
 

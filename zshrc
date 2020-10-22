@@ -279,7 +279,7 @@ if type "kubectl" > /dev/null; then
 
   # heavy init
   function onkube() {
-     kubeon	
+     kubeon
      source <(stern --completion=zsh)
 #    source ${HOME}/dotfiles/bin/gcloud-ps1.sh
 #    RPROMPT='$(gcloud_ps1)'
@@ -693,5 +693,3 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
-
-

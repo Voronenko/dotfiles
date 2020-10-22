@@ -63,7 +63,7 @@ else
           echo "No supported package manager"
           exit 1
       fi
-      
+
       sudo $pkgmanager install zsh -y
       install_zsh
 

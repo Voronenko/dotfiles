@@ -10,4 +10,3 @@ Resource.query({})
     }
   });
 return deferred.promise;
-

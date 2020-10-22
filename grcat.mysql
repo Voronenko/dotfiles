@@ -1,5 +1,5 @@
-# install grc with apt-get install grc and  add 
-# pager  = grcat ~/.grcat to 
+# install grc with apt-get install grc and  add
+# pager  = grcat ~/.grcat to
 # inside [mysql] section of ~/.my.cnf
 
 #default word color

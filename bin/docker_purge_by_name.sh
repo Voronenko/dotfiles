@@ -15,4 +15,3 @@
 
   echo docker images | grep ${IMAGE_ID} | awk '{print $1 ":" $2}' | xargs docker rmi
   docker images | grep ${IMAGE_ID} | awk '{print $1 ":" $2}' | xargs docker rmi
-

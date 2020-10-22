@@ -22,7 +22,7 @@ print_pur () { local i; for i in "$@"; do echo -e "${C_PUR}${i}${C_NOC}"; done }
 print_cya () { local i; for i in "$@"; do echo -e "${C_CYA}${i}${C_NOC}"; done }
 print_whi () { local i; for i in "$@"; do echo -e "${C_WHI}${i}${C_NOC}"; done }
 
-# 'jq' technique lifted with gratitude 
+# 'jq' technique lifted with gratitude
 # from https://gist.github.com/mlgill/5c55253a3bc84a96addf
 
 # Break on newlines instead of any whitespace

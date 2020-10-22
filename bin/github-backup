@@ -1,15 +1,15 @@
-#!/bin/bash 
+#!/bin/bash
 # A simple script to backup an organization's GitHub repositories.
 
 GHBU_BACKUP_DIR=${GHBU_BACKUP_DIR-"github-backups"}                  # where to place the backup files
 GHBU_ORG=${GHBU_ORG-"softasap"}                                      # the GitHub organization whose repos will be backed up
                                                                      # (if you're backing up a user's repos instead, this should be your GitHub username)
 GHBU_UNAME=${GHBU_UNAME-"voronenko"}                                 # the username of a GitHub account (to use with the GitHub API)
-GHBU_PASSWD=${GHBU_PASSWD}                                           # the password for that account 
+GHBU_PASSWD=${GHBU_PASSWD}                                           # the password for that account
 GHBU_GITHOST=${GHBU_GITHOST-"github.com"}                            # the GitHub hostname (see comments)
 GHBU_PRUNE_OLD=${GHBU_PRUNE_OLD-true}                                # when `true`, old backups will be deleted
 GHBU_PRUNE_AFTER_N_DAYS=${GHBU_PRUNE_AFTER_N_DAYS-3}                 # the min age (in days) of backup files to delete
-GHBU_SILENT=${GHBU_SILENT-false}                                     # when `true`, only show error messages 
+GHBU_SILENT=${GHBU_SILENT-false}                                     # when `true`, only show error messages
 GHBU_API=${GHBU_API-"https://api.github.com"}                        # base URI for the GitHub API
 GHBU_GIT_CLONE_CMD="git clone --quiet --mirror git@${GHBU_GITHOST}:" # base command to use to clone GitHub repos
 
@@ -64,7 +64,7 @@ if $GHBU_PRUNE_OLD; then
   $GHBU_SILENT || (echo "" && echo "=== PRUNING ===" && echo "")
   $GHBU_SILENT || echo "Pruning backup files ${GHBU_PRUNE_AFTER_N_DAYS} days old or older."
   $GHBU_SILENT || echo "Found `find $GHBU_BACKUP_DIR -name '*.tar.gz' -mtime +$GHBU_PRUNE_AFTER_N_DAYS | wc -l` files to prune."
-  find $GHBU_BACKUP_DIR -name '*.tar.gz' -mtime +$GHBU_PRUNE_AFTER_N_DAYS -exec rm -fv {} > /dev/null \; 
+  find $GHBU_BACKUP_DIR -name '*.tar.gz' -mtime +$GHBU_PRUNE_AFTER_N_DAYS -exec rm -fv {} > /dev/null \;
 fi
 
 $GHBU_SILENT || (echo "" && echo "=== DONE ===" && echo "")

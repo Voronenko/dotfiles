@@ -412,7 +412,7 @@ __kubectl_config_get_contexts()
         COMPREPLY=( $( compgen -W "${kubectl_out[*]}" -- "$cur" ) )
     fi
 }
-	
+
 _stern()
 {
     last_command="stern"
@@ -505,4 +505,3 @@ fi
 BASH_COMPLETION_EOF
 }
 __stern_bash_source <(__stern_convert_bash_to_zsh)
-

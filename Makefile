@@ -355,7 +355,7 @@ install-k8s-polaris:
 # Tools for observing Kubernetes resources in real time, powered by Pulumi
 install-k8s-kubespy:
 #	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/v0.5.0/kubespy-linux-amd64.tar.gz
-	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/$(shell curl -s https://api.github.com/repos/pulumi/kubespy/releases/latest | grep tag_name | cut -d '"' -f 4)/kubespy-$(shell curl -s https://api.github.com/repos/pulumi/kubespy/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz 
+	wget -O /tmp/kubespy.tar.gz https://github.com/pulumi/kubespy/releases/download/$(shell curl -s https://api.github.com/repos/pulumi/kubespy/releases/latest | grep tag_name | cut -d '"' -f 4)/kubespy-$(shell curl -s https://api.github.com/repos/pulumi/kubespy/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz
 	tar -xvzf /tmp/kubespy.tar.gz -C /tmp
 	rm ~/dotfiles/bin/kubectl-spy || true
 	cp /tmp/kubespy ~/dotfiles/bin

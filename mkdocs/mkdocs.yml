@@ -2,7 +2,7 @@ site_name: PROJECT
 
 repo_url: https://bitbucket.org/noviscient/
 site_description: PROJECT
-theme: mkdocs 
+theme: mkdocs
 
 #extra_javascript:
 #  - js/custom.js

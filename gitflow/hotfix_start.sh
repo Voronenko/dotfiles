@@ -30,4 +30,3 @@ git commit -am "Bumps version to $NEXTVERSION"
 
 # bump hotfix version to server
 git push
-

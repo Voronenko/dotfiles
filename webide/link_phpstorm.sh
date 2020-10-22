@@ -26,4 +26,3 @@ for file in $files; do
     echo "ln -s ~/dotfiles/webide/$file $dir/$file"
     ln -s ~/dotfiles/webide/$file $dir/$file
 done
-

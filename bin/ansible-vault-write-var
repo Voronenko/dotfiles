@@ -15,4 +15,3 @@ ansible-vault encrypt_string $1 --name $2
 else
 ansible-vault encrypt_string $1
 fi
-

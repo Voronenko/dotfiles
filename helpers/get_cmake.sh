@@ -10,4 +10,3 @@ cmake --version
 echo "============================"
 echo "to uninstall later"
 echo "sudo make uninstall"
-
