@@ -1,5 +1,5 @@
 #!/bin/bash
-export PRE_BUILD_SCRIPT=~/dotfiles/bin/gitlablocal_prebuild_script.sh
+export PRE_BUILD_SCRIPT=""
 if test -f "$PWD/.gitlab-local/prebuild_script.sh"; then
     export PRE_BUILD_SCRIPT="$PWD/.gitlab-local/prebuild_script.sh"
 fi

@@ -62,6 +62,9 @@ install-cdci-circleci-runner:
 
 # CONSOLE TOOLS
 
+install-tmuxinator:
+	gem install tmuxinator
+
 # jsonnet processing tool
 install-console-jsonnet: install-console-yq
 	wget -O /tmp/jsonnet.tar.gz https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz
@@ -477,6 +480,9 @@ zsh-alias-tips:
 install-terraform-ing:
 	gem install terraforming
 
+install-terraform-terraspace:
+	gem install terraspace
+
 #https://github.com/GoogleCloudPlatform/terraformer
 install-terraformer:
 	curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(shell curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-all-linux-amd64
@@ -541,7 +547,7 @@ install-hashicorp-terraform012:
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-terraform:
-	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.13.4/terraform_0.13.4_linux_amd64.zip"
+	wget -O ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
 
 install-hashicorp-packer:

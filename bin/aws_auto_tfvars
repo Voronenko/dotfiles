@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Temporary workaround for terraform.io remote backend"
+echo "Ensure you have a pre-commit hook preventing commiting keys installed"
+echo "Ensure aws.auto.tfvars or *.auto.tfvars to .gitignore"
+
+touch aws.auto.tfvars
+echo "###########################################" > ./aws.auto.tfvars
+echo "################## AWS ####################" >> ./aws.auto.tfvars
+echo "###########################################" >> ./aws.auto.tfvars
+
+echo "AWS_SECRET_ACCESS_KEY = \"${TF_VAR_AWS_SECRET_ACCESS_KEY}\"" >> ./aws.auto.tfvars
+echo "AWS_ACCESS_KEY_ID = \"${TF_VAR_AWS_ACCESS_KEY_ID}\"" >> ./aws.auto.tfvars
