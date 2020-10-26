@@ -9,5 +9,8 @@ echo "###########################################" > ./aws.auto.tfvars
 echo "################## AWS ####################" >> ./aws.auto.tfvars
 echo "###########################################" >> ./aws.auto.tfvars
 
+chown o-rw ./aws.auto.tfvars
+chown g-rw ./aws.auto.tfvars
+
 echo "AWS_SECRET_ACCESS_KEY = \"${TF_VAR_AWS_SECRET_ACCESS_KEY}\"" >> ./aws.auto.tfvars
 echo "AWS_ACCESS_KEY_ID = \"${TF_VAR_AWS_ACCESS_KEY_ID}\"" >> ./aws.auto.tfvars
