@@ -537,39 +537,62 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
 
   set-aws-profile() {
     local aws_profile=$1
-    region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
-    AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
-    set -x
-    unset AWS_ACCESS_KEY_ID
-    unset AWS_SECRET_ACCESS_KEY
-    export AWS_PROFILE=${aws_profile}
-    export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    export AWS_DEFAULT_PROFILE=${aws_profile}
-    set +x
-    export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
-    export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
 
+    if [[ ! -z "$aws_profile" ]]; then
+      region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
+      AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
+      set -x
+      unset AWS_ACCESS_KEY_ID
+      unset AWS_SECRET_ACCESS_KEY
+      export AWS_PROFILE=${aws_profile}
+      export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      export AWS_DEFAULT_PROFILE=${aws_profile}
+      set +x
+      export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
+      export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
+    else
+      local declare selected_profile=($(aws-profiles | fzf))
+      if [[ -n "$selected_profile" ]]; then
+       if zle; then
+            zle accept-line
+        else
+            print -z "set-aws-profile $selected_profile"
+        fi
+      fi
+    fi
   }
 
   set-aws-keys() {
     local aws_profile=$1
-    profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4 | grep -B 15 "^$")
-    AWS_ACCESS_KEY_ID="$(echo $profile_data | grep aws_access_key_id | cut -f2 -d'=' | tr -d ' ')"
-    AWS_SECRET_ACCESS_KEY="$(echo $profile_data | grep aws_secret_access_key | cut -f2 -d'=' | tr -d ' ')"
-    region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
-    AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
-    # output to screen, so you know
-    # set -x
-    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    # set +x
-    export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-    export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
-    echo AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY were set for $1
+    if [[ ! -z "$aws_profile" ]]; then
+        profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4 | grep -B 15 "^$")
+        AWS_ACCESS_KEY_ID="$(echo $profile_data | grep aws_access_key_id | cut -f2 -d'=' | tr -d ' ')"
+        AWS_SECRET_ACCESS_KEY="$(echo $profile_data | grep aws_secret_access_key | cut -f2 -d'=' | tr -d ' ')"
+        region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
+        AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
+        # output to screen, so you know
+        # set -x
+        export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+        export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+        export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+        # set +x
+        export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+        export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+        export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+        export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
+        echo AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY were set for $1
+    else
+      local declare selected_profile=($(aws-profiles | fzf))
+      if [[ -n "$selected_profile" ]]; then
+       if zle; then
+            zle accept-line
+        else
+            print -z "set-aws-keys $selected_profile"
+        fi
+      fi
+    fi
+
   }
 
   set-aws-region() {
