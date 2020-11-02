@@ -278,7 +278,7 @@ install-k8s-heptio-authenticator-aws:
 	chmod +x ~/dotfiles/bin/heptio-authenticator-aws
 
 install-k8s-aws-iam-authenticator:
-	curl -o ~/dotfiles/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+	curl -o ~/dotfiles/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/aws-iam-authenticator
 	chmod +x ~/dotfiles/bin/aws-iam-authenticator
 
 install-k8s-weaveworks-eksctl:
@@ -331,8 +331,10 @@ install-k8s-vmware-octant:
 # https://github.com/corneliusweig/rakkess
 # Review Access - kubectl plugin to show an access matrix for k8s server resources
 install-k8s-rakkess:
-	curl -Lo /tmp/rakkess.gz https://github.com/corneliusweig/rakkess/releases/download/v0.4.1/rakkess-linux-amd64.gz && \
-	cd /tmp && gunzip rakkess.gz && chmod +x rakkess && mv rakkess ~/dotfiles/bin
+	curl -Lo /tmp/rakkess.tar.gz https://github.com/corneliusweig/rakkess/releases/download/v0.4.5/rakkess-amd64-linux.tar.gz && \
+	tar -xvzf /tmp/rakkess.tar.gz -C /tmp
+	cd /tmp && mv rakkess-amd64-linux ~/dotfiles/bin/rakkess
+	chmod +x ~/dotfiles/bin/rakkess
 
 # https://github.com/derailed/popeye
 # A Kubernetes cluster resource sanitizer
@@ -368,7 +370,6 @@ install-k8s-kubespy:
 install-k8s-skaffold:
 	curl -Lo ~/dotfiles/bin/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 	chmod +x ~/dotfiles/bin/skaffold
-
 
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml

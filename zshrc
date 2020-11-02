@@ -432,6 +432,8 @@ if [[ -d $HOME/.jenv ]]; then
 
   load_jenv () {
     eval "$(jenv init -)"
+    export JAVA_HOME="$HOME/.jenv/versions/`jenv version-name`"
+    alias jenv_set_java_home='export JAVA_HOME="$HOME/.jenv/versions/`jenv version-name`"'
   }
 
   for cmd in "${JENV_GLOBALS[@]}"; do
