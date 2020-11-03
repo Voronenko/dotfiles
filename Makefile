@@ -388,6 +388,12 @@ install-openshift-oc:
 	echo "If there were no kubectl in path, one was installed from oc distro."
 	echo "In other case global is used. Please check carefully"
 
+install-helm-common-repos:
+	helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator || true
+	helm repo add gitlab https://charts.gitlab.io || true
+	helm repo add eks https://aws.github.io/eks-charts
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
 	git clone https://github.com/johanhaleby/kubetail.git ~/.oh-my-zsh/custom/plugins/kubetail
