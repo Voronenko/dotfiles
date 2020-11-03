@@ -33,6 +33,7 @@ bin/kubectl-spy
 bin/kubespy
 bin/kubeval
 bin/kubie
+bin/kubebox
 bin/polaris
 bin/popeye
 bin/rakkess

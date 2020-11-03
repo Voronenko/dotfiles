@@ -371,6 +371,11 @@ install-k8s-skaffold:
 	curl -Lo ~/dotfiles/bin/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 	chmod +x ~/dotfiles/bin/skaffold
 
+install-k8s-kubebox:
+	curl -Lo ~/dotfiles/bin/kubebox https://github.com/astefanutti/kubebox/releases/download/v0.8.0/kubebox-linux
+	chmod +x ~/dotfiles/bin/kubebox
+	echo Do not forget to install cadvisor, for example kubectl apply -f https://raw.github.com/astefanutti/kubebox/master/cadvisor.yaml
+
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
