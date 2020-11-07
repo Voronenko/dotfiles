@@ -376,6 +376,14 @@ install-k8s-kubebox:
 	chmod +x ~/dotfiles/bin/kubebox
 	echo Do not forget to install cadvisor, for example kubectl apply -f https://raw.github.com/astefanutti/kubebox/master/cadvisor.yaml
 
+# https://github.com/ksync/ksync/
+# It transparently updates containers running on the cluster from your local checkout.
+# docker run -v /foo:/bar =>  ksync create --pod=my-pod local_directory remote_directory
+# ksync watch
+install-k8s-ksync:
+	curl -Lo ~/dotfiles/bin/ksync https://github.com/ksync/ksync/releases/download/0.4.5/ksync_linux_amd64
+	chmod +x ~/dotfiles/bin/ksync
+
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 

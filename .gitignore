@@ -36,6 +36,7 @@ bin/kubie
 bin/kubebox
 bin/polaris
 bin/popeye
+bin/ksync
 bin/rakkess
 bin/skeema
 bin/webhook
