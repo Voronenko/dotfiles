@@ -605,6 +605,7 @@ install-jenv:
 	echo "/usr/lib/jvm/java-11-openjdk-amd64/"
 	echo "Validate install and checking both java -version and javac -version"
 	echo "That should match"
+	echo "run 'jenv doctor' in case of issues"
 
 # /JAVA
 
