@@ -1169,3 +1169,19 @@ while manual hooks run can be applied using
 ```sh
 pre-commit run -a
 ```
+
+
+## 3rd party work
+
+Contains portions of bash library modules released under
+
+This code is released under the Apache 2.0 License. Please see
+[LICENSE](https://github.com/gruntwork-io/bash-commons/tree/master/LICENSE) and
+[NOTICE](https://github.com/gruntwork-io/bash-commons/tree/master/NOTICE) for more details.
+
+
+Contains portions of the zsh prompt framework
+https://github.com/Powerlevel9k/powerlevel9k
+
+This code is released under MIT license , as can be found on
+https://github.com/Powerlevel9k/powerlevel9k/blob/master/LICENSE
