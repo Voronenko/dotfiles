@@ -790,3 +790,8 @@ install-php-symphony-cli:
 
 run-octant-remote:
 	octant --listener-addr 0.0.0.0:7777
+
+# Database modelling tool
+
+install-terra-er:
+	wget -O ~/dotfiles/bin/terra.jar https://github.com/rterrabh/TerraER/releases/download/TerraER3.11/TerraER3.11.jar

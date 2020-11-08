@@ -73,6 +73,7 @@ bin/terraform012
 bin/mark
 bin/s5cmd
 bin/k9s
+bin/terra.jar
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
