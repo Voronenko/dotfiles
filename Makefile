@@ -593,7 +593,7 @@ go-eg:
 
 # JAVA
 
-jenv:
+install-jenv:
 	git clone https://github.com/gcuisinier/jenv.git ~/.jenv
 	echo "================================================="
 	echo "Restart session, than once you have jenv"
