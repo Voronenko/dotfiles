@@ -1,0 +1,99 @@
+#compdef fd
+
+autoload -U is-at-least
+
+_fd() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" \
+'-d+[Set maximum search depth (default: none)]' \
+'--max-depth=[Set maximum search depth (default: none)]' \
+'--maxdepth=[]' \
+'--min-depth=[]' \
+'(-d --max-depth --min-depth)--exact-depth=[]' \
+'*-t+[Filter by type: file (f), directory (d), symlink (l),
+executable (x), empty (e), socket (s), pipe (p)]: :(f file d directory l symlink x executable e empty s socket p pipe)' \
+'*--type=[Filter by type: file (f), directory (d), symlink (l),
+executable (x), empty (e), socket (s), pipe (p)]: :(f file d directory l symlink x executable e empty s socket p pipe)' \
+'*-e+[Filter by file extension]' \
+'*--extension=[Filter by file extension]' \
+'(-l --list-details)-x+[Execute a command for each search result]' \
+'(-l --list-details)--exec=[Execute a command for each search result]' \
+'(-x --exec -l --list-details)-X+[Execute a command with all search results at once]' \
+'(-x --exec -l --list-details)--exec-batch=[Execute a command with all search results at once]' \
+'*-E+[Exclude entries that match the given glob pattern]' \
+'*--exclude=[Exclude entries that match the given glob pattern]' \
+'*--ignore-file=[]' \
+'-c+[When to use colors: never, *auto*, always]: :(never auto always)' \
+'--color=[When to use colors: never, *auto*, always]: :(never auto always)' \
+'-j+[]' \
+'--threads=[]' \
+'*-S+[Limit results based on the size of files.]' \
+'*--size=[Limit results based on the size of files.]' \
+'--max-buffer-time=[]' \
+'--changed-within=[Filter by file modification time (newer than)]' \
+'--changed-before=[Filter by file modification time (older than)]' \
+'(-x --exec -X --exec-batch -l --list-details)--max-results=[]' \
+'--base-directory=[]' \
+'--path-separator=[]' \
+'*--search-path=[]' \
+'-o+[Filter by owning user and/or group]' \
+'--owner=[Filter by owning user and/or group]' \
+'-H[Search hidden files and directories]' \
+'--hidden[Search hidden files and directories]' \
+'-I[Do not respect .(git|fd)ignore files]' \
+'--no-ignore[Do not respect .(git|fd)ignore files]' \
+'--no-ignore-vcs[]' \
+'--no-global-ignore-file[]' \
+'*-u[]' \
+'*--unrestricted[]' \
+'-s[Case-sensitive search (default: smart case)]' \
+'--case-sensitive[Case-sensitive search (default: smart case)]' \
+'-i[Case-insensitive search (default: smart case)]' \
+'--ignore-case[Case-insensitive search (default: smart case)]' \
+'(-F --fixed-strings)-g[Glob-based search (default: regular expression)]' \
+'(-F --fixed-strings)--glob[Glob-based search (default: regular expression)]' \
+'--regex[]' \
+'-F[]' \
+'--fixed-strings[]' \
+'-a[Show absolute instead of relative paths]' \
+'--absolute-path[Show absolute instead of relative paths]' \
+'(-a --absolute-path)-l[Use a long listing format with file metadata]' \
+'(-a --absolute-path)--list-details[Use a long listing format with file metadata]' \
+'-L[Follow symbolic links]' \
+'--follow[Follow symbolic links]' \
+'-p[Search full path (default: file-/dirname only)]' \
+'--full-path[Search full path (default: file-/dirname only)]' \
+'(-l --list-details)-0[Separate results by the null character]' \
+'(-l --list-details)--print0[Separate results by the null character]' \
+'(-x --exec -X --exec-batch -l --list-details)-1[]' \
+'--show-errors[]' \
+'--one-file-system[]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::pattern -- the search pattern - a regular expression unless '--glob' is used (optional):_files' \
+'::path -- the root directory for the filesystem search (optional):_files' \
+&& ret=0
+
+}
+
+(( $+functions[_fd_commands] )) ||
+_fd_commands() {
+    local commands; commands=(
+
+    )
+    _describe -t commands 'fd commands' commands "$@"
+}
+
+_fd "$@"

@@ -63,6 +63,7 @@ bin/ep
 bin/skaffold
 bin/awless
 bin/tflint
+bin/fd*
 oh-my-zsh
 startup.log
 zshrc.local

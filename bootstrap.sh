@@ -40,7 +40,7 @@ else
     exit 1
 fi
 
-$SUDO $pkgmanager -y install git curl nano $EXTRA_PACKAGES
+$SUDO $pkgmanager -y install git curl nano make $EXTRA_PACKAGES
 
 if [ "$1" == "full" ]; then
 
@@ -120,4 +120,6 @@ if [ "$1" == "simple" ] || [ "$1" == "docker" ] ; then
   ./init_simple.sh $PREFERRED_SHELL
 else
   ./init.sh
+  cd ~/dotfiles && make zsh-fzf zsh-kubetail
+  cd ~/dotfiles && make install-console-fd install-console-fzf
 fi

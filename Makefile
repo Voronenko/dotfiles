@@ -136,8 +136,12 @@ install-console-diffsofancy:
 # fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
 # fd service
 install-console-fd:
-	wget -O /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
-	sudo dpkg -i /tmp/fd.deb
+#	wget -O /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
+#	sudo dpkg -i /tmp/fd.deb
+	wget -O /tmp/fd.tar.gz https://github.com/sharkdp/fd/releases/download/v8.1.1/fd-v8.1.1-x86_64-unknown-linux-gnu.tar.gz
+	tar -xvzf /tmp/fd.tar.gz -C /tmp
+	cp /tmp/fd-v8.1.1-x86_64-unknown-linux-gnu/fd* ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/fd
 
 # ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep
 # rg -n -w '[A-Z]+_SUSPEND'
