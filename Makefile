@@ -116,7 +116,7 @@ install-console-prettytyping:
 
 # https://github.com/junegunn/fzf
 install-console-fzf:
-	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf-bin/releases/download/0.17.4/fzf-0.17.4-linux_amd64.tgz
+	wget -O /tmp/fzf.tar.gz https://github.com/junegunn/fzf/releases/download/0.24.3/fzf-0.24.3-linux_amd64.tar.gz
 	tar -xvzf /tmp/fzf.tar.gz -C /tmp
 	cp /tmp/fzf ~/dotfiles/bin
 	echo "Consider running make zsh-fzf to install zsh shell integration"
