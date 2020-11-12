@@ -803,3 +803,13 @@ install-dbtools-terra-er:
 
 install-dbtools-schemaspy:
 	wget -O ~/dotfiles/bin/schemaspy.jar https://github.com/schemaspy/schemaspy/releases/download/v6.1.0/schemaspy-6.1.0.jar
+
+install-dbtools-dbml-cli-npm:
+	which npm
+	npm install -g @dbml/cli
+	echo dbml2sql schema.dbml
+	echo dbml2sql schema.dbml --mysql
+	echo "dbml2sql <path-to-dbml-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]"
+	echo sql2dbml dump.sql --postgres
+	echo sql2dbml --mysql dump.sql -o mydatabase.dbml
+	echo sql2dbml <path-to-sql-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]
