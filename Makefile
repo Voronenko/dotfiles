@@ -807,9 +807,9 @@ install-dbtools-schemaspy:
 install-dbtools-dbml-cli-npm:
 	which npm
 	npm install -g @dbml/cli
-	echo dbml2sql schema.dbml
-	echo dbml2sql schema.dbml --mysql
-	echo "dbml2sql <path-to-dbml-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]"
-	echo sql2dbml dump.sql --postgres
-	echo sql2dbml --mysql dump.sql -o mydatabase.dbml
-	echo sql2dbml <path-to-sql-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]
+	@echo dbml2sql schema.dbml
+	@echo dbml2sql schema.dbml --mysql
+	@echo "dbml2sql <path-to-dbml-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]"
+	@echo sql2dbml dump.sql --postgres
+	@echo sql2dbml --mysql dump.sql -o mydatabase.dbml
+	@echo "sql2dbml <path-to-sql-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]"
