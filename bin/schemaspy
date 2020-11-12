@@ -6,8 +6,7 @@ WORKSPACE=$(
 )
 
 
-
-TERRAERJAR=$WORKSPACE/terra.jar
+SCHEMASPYJAR=$WORKSPACE/schemaspy.jar
 
 if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
     JAVA="${JAVA_HOME}/bin/java"
@@ -19,9 +18,9 @@ else
 fi
 
 
-if [ ! -f $TERRAERJAR ]; then
-    echo "Install terra er jar tool into $TERRAERJAR from https://github.com/rterrabh/TerraER/releases" >&2
+if [ ! -f $SCHEMASPYJAR ]; then
+    echo "Install schemaspy tool into $SCHEMASPYJAR from https://github.com/schemaspy/schemaspy/releases" >&2
     exit 1
 fi
 
-$JAVA -jar ${TERRAERJAR} ${@}
+$JAVA -jar ${SCHEMASPYJAR} ${@}
