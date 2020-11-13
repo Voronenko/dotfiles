@@ -7,6 +7,7 @@ WORKSPACE=$(
 
 
 SCHEMASPYJAR=$WORKSPACE/schemaspy.jar
+ODBCDRIVER=${ODBCDRIVER:-$WORKSPACE/mysql-connector-java-5.1.49.jar}
 
 if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
     JAVA="${JAVA_HOME}/bin/java"
@@ -23,4 +24,5 @@ if [ ! -f $SCHEMASPYJAR ]; then
     exit 1
 fi
 
-$JAVA -jar ${SCHEMASPYJAR} ${@}
+echo $JAVA -jar ${SCHEMASPYJAR} -dp $ODBCDRIVER ${@}
+$JAVA -jar ${SCHEMASPYJAR} -dp $ODBCDRIVER ${@}

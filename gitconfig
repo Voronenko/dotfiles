@@ -26,7 +26,7 @@
 [push]
 	default = current
 [commit]
-	gpgsign = false
+	gpgsign = true
 [pager]
        diff = ~/dotfiles/bin/diff-so-fancy | less --tabs=1,5 -RFX
        show = ~/dotfiles/bin/diff-so-fancy | less --tabs=1,5 -RFX

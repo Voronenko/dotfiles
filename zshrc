@@ -199,6 +199,8 @@ export MINIMUM_IMAGES_TO_SAVE=3
 
 function dck() {
 
+local universalsh='sh -c  zsh; if [ "$?" -eq "127" ]; then bash; if [ "$?" -eq "127" ]; then  ash; if [ "$?" -eq "127" ]; then sh; fi; fi; fi'
+
 case "$1" in
     list)
         sudo docker ps -a
@@ -220,11 +222,11 @@ case "$1" in
         sudo docker stop $(sudo docker ps -a -q)
         ;;
     sh)
-        sudo docker exec -it $(sudo docker ps -lq) ${2-/bin/sh} $3 $4 $5 $6 $7 $8 $9
+        sudo docker exec -it $(sudo docker ps -lq) ${2:-/bin/sh} $3 $4 $5 $6 $7 $8 $9
         ;;
 
     bash)
-        sudo docker exec -it $(sudo docker ps -lq) ${2-/bin/bash} $3 $4 $5 $6 $7 $8 $9
+        sudo docker exec -it $(sudo docker ps -lq) ${2:-/bin/sh} $3 $4 $5 $6 $7 $8 $9
         ;;
 
     cleanimages)
