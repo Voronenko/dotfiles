@@ -818,3 +818,7 @@ install-dbtools-dbml-cli-npm:
 install-borg:
 	curl -sLo ~/dotfiles/bin/borg https://github.com/borgbackup/borg/releases/download/1.1.14/borg-linux64
 	chmod +x ~/dotfiles/bin/borg
+	# https://github.com/dschep/ntfy
+	# pip3 install --upgrade ntfy[pid,emoji,xmpp,telegram,instapush,slack,rocketchat]
+	# https://github.com/witten/borgmatic
+	# pip3 install --upgrade borgmatic
