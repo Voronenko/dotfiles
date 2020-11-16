@@ -813,3 +813,8 @@ install-dbtools-dbml-cli-npm:
 	@echo sql2dbml dump.sql --postgres
 	@echo sql2dbml --mysql dump.sql -o mydatabase.dbml
 	@echo "sql2dbml <path-to-sql-file> [--mysql|--postgres] [-o|--out-file <output-filepath>]"
+
+# Backup tools
+install-borg:
+	curl -sLo ~/dotfiles/bin/borg https://github.com/borgbackup/borg/releases/download/1.1.14/borg-linux64
+	chmod +x ~/dotfiles/bin/borg
