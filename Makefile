@@ -146,7 +146,7 @@ install-console-fd:
 # ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep
 # rg -n -w '[A-Z]+_SUSPEND'
 install-console-ripgrep:
-	curl -sLo /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
+	curl -sLo /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
 	sudo dpkg -i /tmp/ripgrep.deb
 
 # Glances is a cross-platform monitoring tool which aims
