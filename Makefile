@@ -190,7 +190,7 @@ install-slack-term:
 	chmod +x ~/dotfiles/bin/slack-term
 
 install-direnv:
-	curl -sLo ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.19.1/direnv.linux-amd64
+	curl -sLo ~/dotfiles/bin/direnv https://github.com/direnv/direnv/releases/download/v2.24.0/direnv.linux-amd64
 	chmod +x ~/dotfiles/bin/direnv
 
 # https://github.com/VirtusLab/git-machete
