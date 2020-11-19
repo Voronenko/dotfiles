@@ -388,6 +388,23 @@ install-k8s-ksync:
 	curl -Lo ~/dotfiles/bin/ksync https://github.com/ksync/ksync/releases/download/0.4.5/ksync_linux_amd64
 	chmod +x ~/dotfiles/bin/ksync
 
+install-k8s-kubectl-krew:
+	~/dotfiles/bin/get_kubectl_krew.sh
+
+install-k8s-kubectl-krew-plugins:
+	# https://github.com/rajatjindal/kubectl-whoami
+	kubectl krew install whoami
+	# https://github.com/alecjacobs5401/kubectl-sick-pods
+	kubectl krew install sick-pods
+	# https://github.com/Ladicle/kubectl-rolesum
+	kubectl krew install rolesum
+	# https://github.com/Trendyol/kubectl-view-webhook#kubectl-view-webhook
+	kubectl krew install view-webhook
+	# installed separately via Makefile install-k8s-popeye
+#	kubectl krew install popeye
+	# installed separately via Makefile install-k8s-rakkess
+#	kubectl krew install access-matrix
+
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
