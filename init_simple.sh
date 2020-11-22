@@ -68,4 +68,12 @@ if [ "${preferred_shell}" = "zsh" ]; then
 
   install_zsh
 
+else
+
+  echo "Clone my oh-my-zsh repository from GitHub only if it isn't already present"
+  echo "In case if in the future you would like to use zsh :)"
+  if [[ ! -d $dir/oh-my-zsh/ ]]; then
+      git clone https://github.com/robbyrussell/oh-my-zsh.git
+  fi
+
 fi
