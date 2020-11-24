@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Value stored local config:"
+kubectl config view --raw -o json | jq -r '.clusters[] | select(.name == "'$(kubectl config current-context)'") | .cluster."certificate-authority-data"' | base64 --decode
+echo "Reported by remote cluster"
+kubectl get secret -o jsonpath="{.items[?(@.type==\"kubernetes.io/service-account-token\")].data['ca\.crt']}" | base64 --decode

@@ -427,6 +427,7 @@ install-helm-common-repos:
 	helm repo add gitlab https://charts.gitlab.io || true
 	helm repo add eks https://aws.github.io/eks-charts
 	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm repo add loki https://grafana.github.io/loki/charts
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
