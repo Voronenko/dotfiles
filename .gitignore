@@ -1,4 +1,5 @@
 bin/dry
+bin/promtool
 bin/circleci
 bin/eksctl
 bin/github-release

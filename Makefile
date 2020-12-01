@@ -172,6 +172,12 @@ install-ngrok:
 	cd ~/dotfiles/bin/ && unzip ngrok.zip
 	rm ~/dotfiles/bin/ngrok.zip
 
+install-promtool:
+	curl -sLo /tmp/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v2.23.0/prometheus-2.23.0.linux-amd64.tar.gz
+	cd /tmp && tar -xzf prometheus.tar.gz --wildcards --no-anchored '*promtool*'
+	cp /tmp/prometheus-2.23.0.linux-amd64/promtool ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/promtool
+
 # /CONSOLE TOOLS
 
 # WORKSPACE TOOLS
