@@ -23,7 +23,7 @@ prompt_dot_dir() {
 
 prompt_dot_ssh() {
    if [[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]]; then
-  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%}⇕%{$reset_color%}" ''
+  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%}⇕ ${USER}%{$reset_color%}" ''
    fi
 }
 
