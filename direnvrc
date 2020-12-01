@@ -5,7 +5,7 @@ export_function() {
   PATH_add "$alias_dir"
   local target="$alias_dir/$name"
   if declare -f "$name" >/dev/null; then
-    echo "#!/usr/bin/env bash" > "$target"
+    echo "#!$SHELL" > "$target"
     declare -f "$name" >> "$target" 2>/dev/null
     # Notice that we add shell variables to the function trigger.
     echo "$name \$*" >> "$target"
@@ -13,19 +13,19 @@ export_function() {
   fi
 }
 
+alias_dir=$PWD/.direnv/aliases
+rm -rf "$alias_dir"
 
 export_alias() {
   local name=$1
   shift
-  local alias_dir=$PWD/.direnv/aliases
   local target="$alias_dir/$name"
   mkdir -p "$alias_dir"
   PATH_add "$alias_dir"
-  echo "#!/usr/bin/env bash -e" > "$target"
-  echo "$@" >> "$target"
+  echo "#!/usr/bin/env bash" > "$target"
+  echo "$@ \"\$@\"" >> "$target"
   chmod +x "$target"
 }
-
 
 # envrc
 
