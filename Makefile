@@ -428,6 +428,7 @@ install-helm-common-repos:
 	helm repo add eks https://aws.github.io/eks-charts
 	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo add loki https://grafana.github.io/loki/charts
+	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
