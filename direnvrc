@@ -36,4 +36,4 @@ export_alias() {
 #export_function some-command
 
 
-#export_alias somealias="some shell command"
+#export_alias somealias "some shell command"
