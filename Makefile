@@ -96,10 +96,13 @@ install-console-lazygit:
 
 # http://lnav.org/
 install-console-logreader-lnav:
-	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.8.5/lnav-0.8.5-linux-64bit.zip
+	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.9.0/lnav-0.9.0-linux-64bit.zip
 	cd /tmp && unzip lnav.zip
-	mv /tmp/lnav-0.8.5/lnav ~/dotfiles/bin
+	mv /tmp/lnav-0.9.0/lnav ~/dotfiles/bin
 	lnav -i extra
+
+global-console-logreader-lnav:
+	sudo cp $(PWD)/bin/lnav /usr/local/bin
 
 # https://github.com/rcoh/angle-grinder#query-syntax
 install-console-logreader-agrind:
