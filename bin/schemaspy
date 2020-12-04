@@ -18,11 +18,24 @@ else
     exit 1
 fi
 
+if [ ! -f $SCHEMASPYJAR ]; then
+    curl -sLo $SCHEMASPYJAR https://github.com/schemaspy/schemaspy/releases/download/v6.1.0/schemaspy-6.1.0.jar
+fi
+
+if [ ! -f $ODBCDRIVER ]; then
+    curl -sLo $ODBCDRIVER https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar
+fi
 
 if [ ! -f $SCHEMASPYJAR ]; then
     echo "Install schemaspy tool into $SCHEMASPYJAR from https://github.com/schemaspy/schemaspy/releases" >&2
     exit 1
 fi
+
+if [ ! -f $ODBCDRIVER ]; then
+    echo "Install mysql odbc driver into $ODBCDRIVER from https://mvnrepository.com/artifact/mysql/mysql-connector-java/" >&2
+    exit 1
+fi
+
 
 echo $JAVA -jar ${SCHEMASPYJAR} -dp $ODBCDRIVER ${@}
 $JAVA -jar ${SCHEMASPYJAR} -dp $ODBCDRIVER ${@}

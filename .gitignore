@@ -66,6 +66,8 @@ bin/awless
 bin/tflint
 bin/fd*
 bin/borg
+bin/bfg
+bin/bfg.jar
 oh-my-zsh
 startup.log
 zshrc.local
