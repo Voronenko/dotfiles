@@ -170,6 +170,10 @@ install-console-yq:
 	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
 
+install-console-jq:
+	curl -sLo ~/dotfiles/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+	chmod +x ~/dotfiles/bin/jq
+
 install-ngrok:
 	curl -sLo ~/dotfiles/bin/ngrok.zip https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
 	cd ~/dotfiles/bin/ && unzip ngrok.zip
