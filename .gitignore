@@ -78,6 +78,8 @@ bin/terraform012
 bin/mark
 bin/s5cmd
 bin/k9s
+bin/jb
+bin/ssm
 bin/terra.jar
 bin/schemaspy.jar
 # esxi toolset

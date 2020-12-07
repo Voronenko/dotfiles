@@ -73,6 +73,11 @@ install-console-jsonnet: install-console-yq
 	cp /tmp/jsonnetfmt ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/jsonnet ~/dotfiles/bin/jsonnetfmt
 
+# jsonnet bundler
+install-console-jsonnet-jb:
+	curl -sLo ~/dotfiles/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64
+	chmod +x ~/dotfiles/bin/jb
+
 install-mysql-skeema:
 	curl -sLo /tmp/skeema.tar.gz https://github.com/skeema/skeema/releases/download/v1.4.2/skeema_1.4.2_linux_amd64.tar.gz
 	tar -xvzf /tmp/skeema.tar.gz -C /tmp
@@ -654,6 +659,13 @@ install-aws-key-importer:
 install-aws-myaws:
 	curl -sLo /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.10/myaws_v0.3.10_linux_amd64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
+
+# utility to speedup working with aws nodes via ssm
+install-aws-ssm:
+	curl -sLo /tmp/ssm.tar.gz https://github.com/disneystreaming/ssm-helpers/releases/download/v1.0.0/ssm-helpers_1.0.0_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/ssm.tar.gz -C /tmp
+	mv /tmp/ssm ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/ssm
 
 # https://github.com/peak/s5cmd/
 install-aws-s5cmd:
