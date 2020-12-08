@@ -67,14 +67,14 @@ install-tmuxinator:
 
 # jsonnet processing tool
 install-console-jsonnet: install-console-yq
-	curl -sLo /tmp/jsonnet.tar.gz https://github.com/google/jsonnet/releases/download/v0.14.0/jsonnet-bin-v0.14.0-linux.tar.gz
+	curl -sLo /tmp/jsonnet.tar.gz https://github.com/google/jsonnet/releases/download/v0.17.0/jsonnet-bin-v0.17.0-linux.tar.gz
 	tar -xvzf /tmp/jsonnet.tar.gz -C /tmp
 	cp /tmp/jsonnet ~/dotfiles/bin
 	cp /tmp/jsonnetfmt ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/jsonnet ~/dotfiles/bin/jsonnetfmt
 
 # jsonnet bundler
-install-console-jsonnet-jb:
+install-console-jb:
 	curl -sLo ~/dotfiles/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64
 	chmod +x ~/dotfiles/bin/jb
 
@@ -172,7 +172,7 @@ install-console-ncdu:
 
 # jql for yml
 install-console-yq:
-	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
+	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
 
 install-console-jq:
