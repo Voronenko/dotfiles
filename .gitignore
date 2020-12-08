@@ -80,6 +80,7 @@ bin/s5cmd
 bin/k9s
 bin/jb
 bin/ssm
+bin/kapitan
 bin/terra.jar
 bin/schemaspy.jar
 # esxi toolset

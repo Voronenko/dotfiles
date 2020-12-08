@@ -292,15 +292,19 @@ install-k8s-helm-latest:
 	rm -rf /tmp/helm
 
 install-k8s-deepmind-kapitan:
-	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
+#	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
+	curl -sLo ~/dotfiles/bin/kapitan https://github.com/deepmind/kapitan/releases/download/v0.29.4/kapitan-linux-amd64
+	chmod +x ~/dotfiles/bin/kapitan
+	echo "You can alternatively install with pip, if you have python 3.6"
+	echo "pip3 install --user --upgrade kapitan"
 
 install-k8s-heptio-authenticator-aws:
-	curl -o ~/dotfiles/bin/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
-	curl -o ~/dotfiles/bin/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
+	curl -sLo ~/dotfiles/bin/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
+	curl -sLo ~/dotfiles/bin/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
 	chmod +x ~/dotfiles/bin/heptio-authenticator-aws
 
 install-k8s-aws-iam-authenticator:
-	curl -o ~/dotfiles/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/aws-iam-authenticator
+	curl -sLo ~/dotfiles/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/aws-iam-authenticator
 	chmod +x ~/dotfiles/bin/aws-iam-authenticator
 
 install-k8s-weaveworks-eksctl:
@@ -326,7 +330,7 @@ install-k8s-k9s:
 # in a way that makes each shell independent from others. It also has support for split configuration files, meaning it can load Kubernetes contexts from
 # multiple files. You can configure the paths where kubie will look for context
 install-k8s-kubie:
-	curl -J -L -o ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.9.1/kubie-linux-amd64
+	curl -sLo ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.9.1/kubie-linux-amd64
 	chmod +x ~/dotfiles/bin/kubie
 
 # https://github.com/txn2/kubefwd/
