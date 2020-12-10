@@ -870,3 +870,12 @@ install-borg:
 	# pip3 install --upgrade ntfy[pid,emoji,xmpp,telegram,instapush,slack,rocketchat]
 	# https://github.com/witten/borgmatic
 	# pip3 install --upgrade borgmatic
+
+# security
+
+install-rengine:
+	mkdir -p ~/apps
+	git clone git@github.com:yogeshojha/rengine.git ~/apps/rengine
+	cd ~/apps/rengine && make build
+
+# /security
