@@ -1,3 +1,4 @@
+bin/jiq
 bin/dry
 bin/promtool
 bin/circleci

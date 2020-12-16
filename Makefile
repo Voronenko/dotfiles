@@ -175,6 +175,10 @@ install-console-yq:
 	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
 
+install-console-jiq:
+	curl -sLo ~/dotfiles/bin/jiq https://github.com/fiatjaf/jiq/releases/download/0.7.1/jiq_linux_amd64
+	chmod +x ~/dotfiles/bin/jiq
+
 install-console-jq:
 	curl -sLo ~/dotfiles/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 	chmod +x ~/dotfiles/bin/jq

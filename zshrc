@@ -643,6 +643,7 @@ export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source ~/dotfiles/helpers/forgit.plugin.zsh
 source ~/dotfiles/helpers/fzf-docker.zsh
+source ~/dotfiles/helpers/jq.plugin.zsh
 
 # fco - checkout git branch/tag
 gco() {

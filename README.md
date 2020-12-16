@@ -1391,3 +1391,7 @@ https://github.com/Powerlevel9k/powerlevel9k
 
 This code is released under MIT license , as can be found on
 https://github.com/Powerlevel9k/powerlevel9k/blob/master/LICENSE
+
+Bash completions
+
+https://github.com/scop/bash-completion
