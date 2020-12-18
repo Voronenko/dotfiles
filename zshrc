@@ -1,5 +1,3 @@
-
-
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -630,17 +628,19 @@ alias ccat='bat'
 if type "fzf" > /dev/null; then
 
 alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias fz="fzf --preview 'bat --color \"always\" {}'"
 
 fi
 fi
 
 if type "fzf" > /dev/null; then
 # add support for ctrl+o to open selected file in VS Code
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort,f3:execute(less -f {}),f5:execute-silent(echo {} | xclip -selection clipboard)+abort,f2:toggle-preview,enter:replace-query+print-query'"
+export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
+# FZF_CTRL_T_OPTS
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source ~/dotfiles/completions/fzf-completion.zsh
 source ~/dotfiles/completions/fzf-key-binding.zsh
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
-export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source ~/dotfiles/helpers/forgit.plugin.zsh
 source ~/dotfiles/helpers/fzf-docker.zsh
 source ~/dotfiles/helpers/jq.plugin.zsh
@@ -695,6 +695,8 @@ fi
 
 # cmd aliases
 
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
 alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] && rsync --progress -azh $PWD $1:$PARENTDIR };dsfdscfdsfdsf'
 alias gpu_on='sudo prime-select nvidia'
 alias gpu_off='sudo prime-select intel'
