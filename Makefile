@@ -875,6 +875,13 @@ install-borg:
 	# https://github.com/witten/borgmatic
 	# pip3 install --upgrade borgmatic
 
+# https://vorta.borgbase.com/
+install-borg-ui-vorta:
+	sudo pip3 install vorta
+
+install-borg-borgmatic:
+	pip3 install --upgrade ntfy[pid,emoji,xmpp,telegram,instapush,slack,rocketchat]
+
 # security
 
 install-rengine:

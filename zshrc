@@ -635,7 +635,7 @@ fi
 
 if type "fzf" > /dev/null; then
 # add support for ctrl+o to open selected file in VS Code
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort,f3:execute(less -f {}),f5:execute-silent(echo {} | xclip -selection clipboard)+abort,f2:toggle-preview,enter:replace-query+print-query'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort,f3:execute(less -f {}),f4:execute(nano {}),ctrl-l:execute-silent(echo {} | xclip -selection clipboard)+abort,f2:toggle-preview,enter:replace-query+print-query,ctrl-n:execute(bat {})'"
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
 # FZF_CTRL_T_OPTS
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
