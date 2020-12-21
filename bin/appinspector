@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# get one from https://zimmergren.net/use-microsoft-application-inspector-to-analyze-source-code/
+
+dotnet ~/apps/ApplicationInspector_linux_1.2.89/ApplicationInspector.CLI.dll $@
