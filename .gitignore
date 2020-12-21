@@ -84,6 +84,7 @@ bin/ssm
 bin/kapitan
 bin/terra.jar
 bin/schemaspy.jar
+bin/rider
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
