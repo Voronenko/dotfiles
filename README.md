@@ -1376,6 +1376,51 @@ while manual hooks run can be applied using
 pre-commit run -a
 ```
 
+## Running emails from the system using gmail smtp
+
+On ubuntu system is possible using s-mail utility.
+
+Dirty way
+
+```sh
+s-mail -v -s "$EMAIL_SUBJECT" \
+-S smtp-use-starttls \
+-S ssl-verify=ignore \
+-S smtp-auth=login \
+-S smtp=smtp://smtp.gmail.com:587 \
+-S from="$FROM_EMAIL_ADDRESS($FRIENDLY_NAME)" \
+-S smtp-auth-user=$FROM_EMAIL_ADDRESS \
+-S smtp-auth-password=$EMAIL_ACCOUNT_PASSWORD \
+-S ssl-verify=ignore \
+$TO_EMAIL_ADDRESS
+```
+
+i.e.   `echo "The mail content" | s-mail -v -s ...`
+
+You would need to use app password  https://myaccount.google.com/apppasswords, rather than real gmail account password.
+
+More compact way is to  use s-mail configuration file '~/.mailrc'
+
+```
+set smtp-use-starttls
+set ssl-verify=ignore
+set smtp=smtp://smtp.gmail.com:587
+set smtp-auth=login
+set smtp-auth-user=$FROM_EMAIL_ADDRESS
+set smtp-auth-password=$EMAIL_ACCOUNT_PASSWORD
+set from="$FROM_EMAIL_ADDRESS($FRIENDLY_NAME)"
+```
+
+`chmod 600 ~/.mailrc.`
+
+The variables set are the same as those used in the "all in one command".
+
+When sending mails, use this command:
+
+$ s-mail -v -s "$EMAIL_SUBJECT" $TO_EMAIL_ADDRESS
+Or
+
+$ echo "The mail content" | s-mail -v -s "$EMAIL_SUBJECT" $TO_EMAIL_ADDRESS
 
 ## 3rd party work
 
