@@ -221,6 +221,10 @@ install-git-machete:
 	curl -L https://raw.githubusercontent.com/VirtusLab/git-machete/master/completion/git-machete.completion.zsh -o ~/dotfiles/completions/git-machete.completion.zsh
 	sudo snap install --classic git-machete
 
+install-git-changelog:
+	curl -sLo ~/dotfiles/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64
+	chmod +x ~/dotfiles/bin/git-chglog
+
 # https://pre-commit.com/
 install-git-precommit:
 	pip3 install pre-commit
@@ -888,5 +892,11 @@ install-rengine:
 	mkdir -p ~/apps
 	git clone git@github.com:yogeshojha/rengine.git ~/apps/rengine
 	cd ~/apps/rengine && make build
+
+# https://ostechnix.com/debian-goodies-a-set-of-useful-utilities-for-debian-and-ubuntu-users/
+# https://blog.sleeplessbeastie.eu/2015/03/02/how-to-verify-installed-packages/
+# https://www.tecmint.com/install-rootkit-hunter-scan-for-rootkits-backdoors-in-linux/
+install-base-security:
+	sudo apt-get install lynis debian-goodies needrestart debsums debsecan rkhunter
 
 # /security
