@@ -777,6 +777,9 @@ install-mitmproxy-org:
 	curl -sLo /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/4.0.4/mitmproxy-4.0.4-linux.tar.gz
 	tar -xvzf /tmp/mitmproxy.tar.gz -C ~/dotfiles/bin
 
+install-screenshot-tool:
+	curl -sLo /tmp/ksnip.deb https://github.com/ksnip/ksnip/releases/download/v1.8.0/ksnip-1.8.0.deb
+	sudo apt install /tmp/ksnip.deb
 
 # /LAPTOP
 
