@@ -93,4 +93,7 @@
     "**/bower_components/**",
     "**/vendor/**/{Test,test,Tests,tests}/**/*Test.php"
   ],
+  "projectTemplates.placeholders": {},
+  "projectTemplates.placeholderRegExp": "#{(\\w+)?}",
+  "projectTemplates.usePlaceholders": true,
 }
