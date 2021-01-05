@@ -3,6 +3,7 @@ code --install-extension alefragnani.numbered-bookmarks
 code --install-extension amazonwebservices.aws-toolkit-vscode
 code --install-extension arcsine.chronicler
 code --install-extension bpmn-io.vs-code-bpmn-io
+code --install-extension cantonios.project-templates
 code --install-extension chef-software.chef
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
@@ -32,6 +33,7 @@ code --install-extension lextudio.restructuredtext
 code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-python.anaconda-extension-pack
 code --install-extension ms-python.python
+code --install-extension ms-toolsai.jupyter
 code --install-extension ms-vscode-remote.remote-containers
 code --install-extension ms-vscode-remote.remote-ssh
 code --install-extension ms-vscode-remote.remote-ssh-edit
