@@ -9,6 +9,7 @@ and traffic including DNS through the tor network.
 https://github.com/ruped24/toriptables3
 
 ON  sudo toriptables3.py -l
+OFF sudo toriptables3.py -l
 Change ip toriptables3.py -r
 """
 
