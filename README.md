@@ -1422,6 +1422,22 @@ Or
 
 $ echo "The mail content" | s-mail -v -s "$EMAIL_SUBJECT" $TO_EMAIL_ADDRESS
 
+
+#### To test your anonymity:
+<details><summary>Expand for anonymity test</summary>
+<br>
+
+* [Check My IPx](https://ipx.ac/)
+* [Check Tor Project](https://check.torproject.org)
+* [Do I leak](http://www.doileak.com/)
+* [DNS leak test](http://dnsleaktest.com)
+* [Test IPv6](http://ipv6-test.com/)
+* [What is my proxy](http://whatismyproxy.com)
+* [What every Browser knows about you](http://webkay.robinlinus.com/)
+* [Proxy check on proxydb](http://proxydb.net/anon)
+
+</details>
+
 ## 3rd party work
 
 Contains portions of bash library modules released under
