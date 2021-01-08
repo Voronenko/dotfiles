@@ -67,8 +67,8 @@ bin/awless
 bin/tflint
 bin/fd*
 bin/borg
-bin/bfg
 bin/bfg.jar
+bin/openapi-generator-cli.jar
 oh-my-zsh
 startup.log
 zshrc.local

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# BFG Repo-Cleaner
+# Removes large or troublesome blobs like git-filter-branch does, but faster. And written in Scala
+
+WORKSPACE=$(
+  cd $(dirname "$0")
+  pwd
+)
+
+
+BFGJAR=$WORKSPACE/bfg.jar
+
+if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
+    JAVA="${JAVA_HOME}/bin/java"
+elif [ -x /usr/bin/java ] ; then
+    JAVA=/usr/bin/java
+else
+    echo Cannot find JVM
+    exit 1
+fi
+
+if [ ! -f $BFGJAR ]; then
+    curl -sLo $BFGJAR https://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar
+fi
+
+
+if [ ! -f $BFGJAR ]; then
+    echo "Install bfg tool into $BFGAR from https://rtyley.github.io/bfg-repo-cleaner/" >&2
+    echo "Read usage"  >&2
+    exit 1
+fi
+
+$JAVA -jar ${BFGJAR} ${@}

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# OpenAPI Generator allows generation of API client libraries (SDK generation), server stubs, documentation and configuration
+# automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported)
+
+WORKSPACE=$(
+  cd $(dirname "$0")
+  pwd
+)
+
+
+OPENAPIJAR=$WORKSPACE/openapi-generator-cli.jar
+
+if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
+    JAVA="${JAVA_HOME}/bin/java"
+elif [ -x /usr/bin/java ] ; then
+    JAVA=/usr/bin/java
+else
+    echo Cannot find JVM
+    exit 1
+fi
+
+if [ ! -f $OPENAPIJAR ]; then
+    curl -sLo $OPENAPIJAR https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar
+fi
+
+
+if [ ! -f $OPENAPIJAR ]; then
+    echo "Install openapi-generator-cli tool into $OPENAPIJAR from https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli" >&2
+    echo "Read usage"  >&2
+    exit 1
+fi
+
+$JAVA -Xms512M -Xmx1024M -server -jar ${OPENAPIJAR} ${@}
