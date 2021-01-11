@@ -599,10 +599,22 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
   }
 
   set-aws-region() {
-    export AWS_DEFAULT_REGION=${1}
-    export AWS_REGION=${1}
-    export TF_AWS_DEFAULT_REGION=${1}
-    export TF_AWS_REGION=${1}
+    local aws_region=$1
+    if [[ ! -z "$aws_profile" ]]; then
+      export AWS_DEFAULT_REGION=${aws_region}
+      export AWS_REGION=${aws_region}
+      export TF_AWS_DEFAULT_REGION=${aws_region}
+      export TF_AWS_REGION=${aws_region}
+    else
+      local declare selected_region=($(aws ec2 describe-regions | jq -r '.Regions[].RegionName' | fzf))
+      if [[ -n "$selected_region" ]]; then
+       if zle; then
+            zle accept-line
+        else
+            print -z "set-aws-region $selected_region"
+        fi
+      fi
+    fi
   }
 
 fi

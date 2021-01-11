@@ -13,7 +13,9 @@ export_function() {
   fi
 }
 
-alias_dir=$PWD/.direnv/aliases
+export CURRENTENVRC=$(find_up .envrc)
+export CURRENTENVRCDIR=$(dirname $CURRENTENVRC)
+alias_dir=${CURRENTENVRCDIR:-$PWD}/.direnv/aliases
 rm -rf "$alias_dir"
 
 export_alias() {
