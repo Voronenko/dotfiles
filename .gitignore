@@ -69,6 +69,7 @@ bin/fd*
 bin/borg
 bin/bfg.jar
 bin/openapi-generator-cli.jar
+bin/docker-credential-ecr-login
 oh-my-zsh
 startup.log
 zshrc.local

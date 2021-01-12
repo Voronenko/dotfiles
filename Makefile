@@ -242,6 +242,10 @@ install-docker-machine:
 	curl -sLo ~/dotfiles/bin/docker-machine https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-Linux-x86_64
 	chmod +x ~/dotfiles/bin/docker-machine
 
+install-docker-credential-ecr-login:
+	curl -sLo ~/dotfiles/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.4.0/linux-amd64/docker-credential-ecr-login
+	chmod +x ~/dotfiles/bin/docker-credential-ecr-login
+
 # docker console manager
 install-docker-dry:
 	curl -sLo ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
