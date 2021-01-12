@@ -70,6 +70,7 @@ bin/borg
 bin/bfg.jar
 bin/openapi-generator-cli.jar
 bin/docker-credential-ecr-login
+bin/docker-credential-pass
 oh-my-zsh
 startup.log
 zshrc.local
@@ -87,6 +88,7 @@ bin/terra.jar
 bin/schemaspy.jar
 bin/rider
 bin/git-chglog
+
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create

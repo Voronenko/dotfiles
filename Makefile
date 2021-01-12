@@ -246,6 +246,12 @@ install-docker-credential-ecr-login:
 	curl -sLo ~/dotfiles/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.4.0/linux-amd64/docker-credential-ecr-login
 	chmod +x ~/dotfiles/bin/docker-credential-ecr-login
 
+install-docker-credential-pass:
+	curl -sLo /tmp/docker-credential-pass.tar.gz https://github.com/docker/docker-credential-helpers/releases/download/v0.6.3/docker-credential-pass-v0.6.3-amd64.tar.gz
+	tar -xvzf /tmp/docker-credential-pass.tar.gz -C /tmp
+	mv /tmp/docker-credential-pass ~/dotfiles/bin/
+	chmod +x ~/dotfiles/bin/docker-credential-pass
+
 # docker console manager
 install-docker-dry:
 	curl -sLo ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
