@@ -913,3 +913,11 @@ install-base-security:
 	sudo apt-get install lynis debian-goodies needrestart debsums debsecan rkhunter
 
 # /security
+
+# swagger
+
+install-swagen:
+	rm -rf /tmp/swagen || true
+	mkdir -p /tmp/swagen
+	git clone git@github.com:minitauros/swagen.git /tmp/swagen
+	cd /tmp/swagen && go build -o ~/dotfiles/bin/swagen main.go
