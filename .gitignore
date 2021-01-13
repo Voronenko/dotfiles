@@ -71,6 +71,7 @@ bin/bfg.jar
 bin/openapi-generator-cli.jar
 bin/docker-credential-ecr-login
 bin/docker-credential-pass
+bin/mkp224o
 oh-my-zsh
 startup.log
 zshrc.local

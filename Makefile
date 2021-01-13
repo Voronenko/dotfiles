@@ -85,7 +85,7 @@ install-mysql-skeema:
 	chmod +x ~/dotfiles/bin/skeema
 
 install-mysql-dbmate:
-	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-amd64
+	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.11.0/dbmate-linux-amd64
 	chmod +x ~/dotfiles/bin/dbmate
 
 # cat with syntax highlight https://github.com/sharkdp/bat
