@@ -464,10 +464,15 @@ function start_agent {
 #    echo "Initialising new SSH agent..."
     mkdir -p $HOME/.ssh
     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    echo succeeded
     chmod 600 "${SSH_ENV}"
     . "${SSH_ENV}" > /dev/null
-    /usr/bin/ssh-add > /dev/null;
+    if [[ -f ~/.ssh/id_rsa ]]; then
+    /usr/bin/ssh-add 2>/dev/null
+    fi
+    if [[ -f ~/.ssh/id_ed25519 ]]; then
+      /usr/bin/ssh-add ~/.ssh/id_ed25519 2>/dev/null
+    fi
+
 }
 
 # Source SSH settings, if applicable
