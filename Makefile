@@ -272,6 +272,9 @@ install-docker-slim:
 install-docker-envplate:
 	curl -sLo ~/dotfiles/bin/ep https://github.com/kreuzwerker/envplate/releases/download/v0.0.8/ep-linux && chmod +x ~/dotfiles/bin/ep
 
+install-docker-lint:
+	curl -sLo ~/dotfiles/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.19.0/hadolint-Linux-x86_64
+	ln -s ~/dotfiles/bin/hadolint  ~/dotfiles/bin/docker-lint
 # /DOCKER TOOLS
 
 
@@ -921,3 +924,12 @@ install-swagen:
 	mkdir -p /tmp/swagen
 	git clone git@github.com:minitauros/swagen.git /tmp/swagen
 	cd /tmp/swagen && go build -o ~/dotfiles/bin/swagen main.go
+
+install-albert:
+	rm -rf $(HOME)/albert
+	cd $(HOME) && git clone --recursive https://github.com/albertlauncher/albert.git
+	cd $(HOME)/albert
+	mkdir -p albert-build
+	cd albert-build
+	cmake ../albert -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
+	make

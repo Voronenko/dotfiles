@@ -90,6 +90,9 @@ bin/terra.jar
 bin/schemaspy.jar
 bin/rider
 bin/git-chglog
+bin/docker-lint
+bin/hadolint
+
 
 # esxi toolset
 esxcli.logesxcli.log
