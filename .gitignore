@@ -92,7 +92,8 @@ bin/rider
 bin/git-chglog
 bin/docker-lint
 bin/hadolint
-
+bin/cadvisor
+bin/youtube-dl
 
 # esxi toolset
 esxcli.logesxcli.log

@@ -919,13 +919,13 @@ install-base-security:
 
 # swagger
 
-install-swagen:
+install-misc-swagen:
 	rm -rf /tmp/swagen || true
 	mkdir -p /tmp/swagen
 	git clone git@github.com:minitauros/swagen.git /tmp/swagen
 	cd /tmp/swagen && go build -o ~/dotfiles/bin/swagen main.go
 
-install-albert:
+install-misc-albert:
 	rm -rf $(HOME)/albert
 	cd $(HOME) && git clone --recursive https://github.com/albertlauncher/albert.git
 	cd $(HOME)/albert
@@ -933,3 +933,11 @@ install-albert:
 	cd albert-build
 	cmake ../albert -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
 	make
+install-misc-youtube-dl:
+	curl -sLo ~/dotfiles/bin/youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/2021.01.16/youtube-dl
+	chmod +x ~/dotfiles/bin/youtube-dl
+	echo youtube-dl -i ..playlist..
+
+install-misc-cadvisor:
+	curl -sLo ~/dotfiles/bin/cadvisor https://github.com/google/cadvisor/releases/download/v0.38.7/cadvisor
+	chmod +x ~/dotfiles/bin/cadvisor
