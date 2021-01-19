@@ -605,7 +605,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
 
   set-aws-region() {
     local aws_region=$1
-    if [[ ! -z "$aws_profile" ]]; then
+    if [[ ! -z "$aws_region" ]]; then
       export AWS_DEFAULT_REGION=${aws_region}
       export AWS_REGION=${aws_region}
       export TF_AWS_DEFAULT_REGION=${aws_region}

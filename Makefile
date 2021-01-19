@@ -419,7 +419,7 @@ install-k8s-skaffold:
 	chmod +x ~/dotfiles/bin/skaffold
 
 install-k8s-kubebox:
-	curl -Lo ~/dotfiles/bin/kubebox https://github.com/astefanutti/kubebox/releases/download/v0.8.0/kubebox-linux
+	curl -Lo ~/dotfiles/bin/kubebox https://github.com/astefanutti/kubebox/releases/download/v0.9.0/kubebox-linux
 	chmod +x ~/dotfiles/bin/kubebox
 	echo Do not forget to install cadvisor, for example kubectl apply -f https://raw.github.com/astefanutti/kubebox/master/cadvisor.yaml
 
@@ -472,6 +472,7 @@ install-helm-common-repos:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo add loki https://grafana.github.io/loki/charts
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	helm repo add stakater https://stakater.github.io/stakater-charts
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
