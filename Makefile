@@ -933,6 +933,10 @@ install-misc-albert-source:
 	cd albert-build
 	cmake ../albert -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
 	make
+	echo "Consider installing plugins from  https://github.com/bergercookie/awesome-albert-plugins"
+
+install-misc-albert-plugins:
+	git clone https://github.com/bergercookie/awesome-albert-plugins.git ~/.local/share/albert/org.albert.extension.python/modules
 
 # https://software.opensuse.org/download.html?project=home:manuelschneid3r&package=albert
 install-misc-albert-deb:
@@ -940,6 +944,7 @@ install-misc-albert-deb:
 	curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_18.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg > /dev/null
 	sudo apt update
 	sudo apt install albert
+	echo "Consider installing plugins from  https://github.com/bergercookie/awesome-albert-plugins"
 
 install-misc-youtube-dl:
 	curl -sLo ~/dotfiles/bin/youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/2021.01.16/youtube-dl
