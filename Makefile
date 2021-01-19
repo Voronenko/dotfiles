@@ -925,7 +925,7 @@ install-misc-swagen:
 	git clone git@github.com:minitauros/swagen.git /tmp/swagen
 	cd /tmp/swagen && go build -o ~/dotfiles/bin/swagen main.go
 
-install-misc-albert:
+install-misc-albert-source:
 	rm -rf $(HOME)/albert
 	cd $(HOME) && git clone --recursive https://github.com/albertlauncher/albert.git
 	cd $(HOME)/albert
@@ -933,6 +933,14 @@ install-misc-albert:
 	cd albert-build
 	cmake ../albert -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
 	make
+
+# https://software.opensuse.org/download.html?project=home:manuelschneid3r&package=albert
+install-misc-albert-deb:
+	echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_18.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+	curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_18.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg > /dev/null
+	sudo apt update
+	sudo apt install albert
+
 install-misc-youtube-dl:
 	curl -sLo ~/dotfiles/bin/youtube-dl https://github.com/ytdl-org/youtube-dl/releases/download/2021.01.16/youtube-dl
 	chmod +x ~/dotfiles/bin/youtube-dl
