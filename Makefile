@@ -371,7 +371,7 @@ install-k8s-kubeval:
 # https://github.com/vmware-tanzu/octant/
 # Kubernetes dashboard by VMWare
 install-k8s-vmware-octant:
-	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.10.2/octant_0.10.2_Linux-64bit.deb
+	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.16.3/octant_0.16.3_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
 	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely
 

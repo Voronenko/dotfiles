@@ -23,6 +23,9 @@
         clean-hard-dfx-windows = "clean -dxf -e *.user -e *.bat -e *.cmd -e packages/ -e .vs/ -e .vscode/ -e .idea/"
         fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
         pam = checkout $(git recent | fzf)
+        open  = "!f() { URL=$(git config remote.${1-origin}.url | sed -e 's#^.*@#https://#' -e 's#.git$##' -e 's#:#/#2'); git web--browse -b xdg-open $URL; }; f"
+        browse = !git open
+
 [push]
 	default = current
 [commit]
