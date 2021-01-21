@@ -528,6 +528,14 @@ gnome-unite-shell:
 	git clone https://github.com/hardpixel/unite-shell.git /tmp/gnome-unite-shell
 	mv /tmp/gnome-unite-shell/unite@hardpixel.eu ~/.local/share/gnome-shell/extensions/unite@hardpixel.eu
 
+# apt-cache show gnome-shell | grep Version
+gnome-status-area-horizontal-spacing:
+	rm -rf /tmp/status-area-horizontal-spacing-gnome-shell-extension
+	git clone git@gitlab.com:p91paul/status-area-horizontal-spacing-gnome-shell-extension.git /tmp/status-area-horizontal-spacing-gnome-shell-extension
+	cd /tmp/status-area-horizontal-spacing-gnome-shell-extension && git checkout gnome3.2
+	rm -rf ~/.local/share/gnome-shell/extensions/status-area-horizontal-spacing@mathematical.coffee.gmail.com
+	mv /tmp/status-area-horizontal-spacing-gnome-shell-extension/status-area-horizontal-spacing@mathematical.coffee.gmail.com   ~/.local/share/gnome-shell/extensions/status-area-horizontal-spacing@mathematical.coffee.gmail.com
+
 gnome-shell-system-monitor:
 	sudo apt-get install gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
 	rm -rf /tmp/gnome-shell-system-monitor-applet
