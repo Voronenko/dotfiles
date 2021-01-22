@@ -837,7 +837,7 @@ install-mkdocs:
 
 # Small markdown to confluence
 install-confluence-mark:
-	curl -sLo /tmp/confluencemark.tar.gz https://github.com/kovetskiy/mark/releases/download/3.1/mark_3.1_Linux_x86_64.tar.gz
+	curl -sLo /tmp/confluencemark.tar.gz https://github.com/kovetskiy/mark/releases/download/4.1/mark_4.1_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/confluencemark.tar.gz -C /tmp
 	cp /tmp/mark ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/mark
