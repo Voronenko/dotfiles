@@ -714,10 +714,10 @@ install-aws-awless:
 	chmod +x ~/dotfiles/bin/awless
 
 # https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
-install-aws-cli2:
+install-aws-cli:
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
 	cd /tmp && unzip awscliv2.zip
-	cd /tmp && sudo ./aws/install
+	cd /tmp && sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 
 install-ovh-nova:
 	sudo pip install python-openstackclient
