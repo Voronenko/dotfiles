@@ -80,6 +80,8 @@ bin/jsonnet
 bin/jsonnetfmt
 bin/terraform011
 bin/terraform012
+bin/terraform013
+bin/terraform014
 bin/mark
 bin/s5cmd
 bin/k9s

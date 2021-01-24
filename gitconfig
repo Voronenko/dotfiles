@@ -50,8 +50,8 @@
 	new = green bold
 	whitespace = red reverse
 [merge]
-        tool = intellij
-#	tool = bc3
+#        tool = intellij
+	tool = bc3
 [mergetool "intellij"]
     cmd = /usr/local/bin/idea merge $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") $(cd $(dirname "$BASE") && pwd)/$(basename "$BASE") $(cd $(dirname "$MERGED") && pwd)/$(basename "$MERGED")
     trustExitCode = true

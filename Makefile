@@ -638,12 +638,20 @@ install-hashicorp-terraform011:
 
 
 install-hashicorp-terraform012:
-	curl -sLo ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip"
-	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip"
+	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform012 && chmod +x terraform012 && rm terraform.zip && mv terraform012 ~/dotfiles/bin/
+
+install-hashicorp-terraform013:
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip"
+	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform013 && chmod +x terraform013 && rm terraform.zip && mv terraform013 ~/dotfiles/bin/
+
+install-hashicorp-terraform014:
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.14.5/terraform_0.14.5_linux_amd64.zip"
+	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform014 && chmod +x terraform014 && rm terraform.zip && mv terraform013 ~/dotfiles/bin/
 
 install-hashicorp-terraform:
-	curl -sLo ~/dotfiles/bin/terraform.zip "https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip"
-	cd ~/dotfiles/bin/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.14.5/terraform_0.14.5_linux_amd64.zip"
+	cd ~/tmp/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip && mv terraform ~/dotfiles/bin/
 
 install-hashicorp-packer:
 	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.6.6/packer_1.6.6_linux_amd64.zip"
@@ -963,3 +971,9 @@ install-misc-youtube-dl:
 install-misc-cadvisor:
 	curl -sLo ~/dotfiles/bin/cadvisor https://github.com/google/cadvisor/releases/download/v0.38.7/cadvisor
 	chmod +x ~/dotfiles/bin/cadvisor
+
+
+# replace system python with custom
+#add-apt-repository ppa:deadsnakes/ppa
+#apt install python3.8
+# update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
