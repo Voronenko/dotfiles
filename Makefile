@@ -305,6 +305,9 @@ install-k8s-helm3-fixed:
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
+install-k8s-helm-plugin-s3:
+	helm plugin install https://github.com/hypnoglow/helm-s3.git
+
 # latest released helm
 install-k8s-helm-latest:
 	mkdir -p /tmp/helm
