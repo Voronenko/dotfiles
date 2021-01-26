@@ -342,6 +342,12 @@ install-k8s-kubectl-ubuntu:
 	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 	sudo apt-get update
 	sudo apt-get install -y kubectl
+
+install-k8s-kubectl-color:
+	mkdir -p /tmp/kubecolor
+	curl -sLo /tmp/kubecolor/kubecolor.tar.gz https://github.com/dty1er/kubecolor/releases/download/v0.0.9/kubecolor_0.0.9_Linux_x86_64.tar.gz
+	cd /tmp/kubecolor && tar -xzf kubecolor.tar.gz && mv /tmp/kubecolor/kubecolor ~/dotfiles/bin/
+	ln -s ~/dotfiles/bin/kubecolor  ~/dotfiles/bin/kc
 # terminal UI to interact with your Kubernetes
 install-k8s-k9s:
 	mkdir -p /tmp/k9s

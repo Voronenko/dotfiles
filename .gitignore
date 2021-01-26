@@ -73,6 +73,8 @@ bin/docker-credential-ecr-login
 bin/docker-credential-pass
 bin/mkp224o
 bin/swagen
+bin/kc
+bin/kubecolor
 oh-my-zsh
 startup.log
 zshrc.local
