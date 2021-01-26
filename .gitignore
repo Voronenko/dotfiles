@@ -75,6 +75,8 @@ bin/mkp224o
 bin/swagen
 bin/kc
 bin/kubecolor
+bin/chartmuseum
+bin/chartmuseum-aws
 oh-my-zsh
 startup.log
 zshrc.local

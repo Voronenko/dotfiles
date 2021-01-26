@@ -308,6 +308,10 @@ install-k8s-helm3-fixed:
 install-k8s-helm-plugin-s3:
 	helm plugin install https://github.com/hypnoglow/helm-s3.git
 
+install-k8s-helm-chartmuseum:
+	curl -sLo ~/dotfiles/bin/chartmuseum https://s3.amazonaws.com/chartmuseum/release/latest/bin/linux/amd64/chartmuseum
+	chmod +x ~/dotfiles/bin/chartmuseum
+
 # latest released helm
 install-k8s-helm-latest:
 	mkdir -p /tmp/helm
