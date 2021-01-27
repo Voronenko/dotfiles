@@ -25,6 +25,8 @@
         pam = checkout $(git recent | fzf)
         open  = "!f() { URL=$(git config remote.${1-origin}.url | sed -e 's#^.*@#https://#' -e 's#.git$##' -e 's#:#/#2'); git web--browse -b xdg-open $URL; }; f"
         browse = !git open
+        gl-pr-master = "push -o merge_request.create -o merge_request.target=master"
+        gl-pr-develop = "push -o merge_request.create -o merge_request.target=develop"
 
 [push]
 	default = current
