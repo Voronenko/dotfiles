@@ -194,6 +194,10 @@ install-promtool:
 	cp /tmp/prometheus-2.23.0.linux-amd64/promtool ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/promtool
 
+install-console-shellharden:
+	curl -sLo ~/dotfiles/bin/shellharden https://github.com/anordal/shellharden/releases/download/v4.1.1/shellharden-4.1.1-x86_64-linux-gnu
+	chmod +x ~/dotfiles/bin/shellharden
+
 # /CONSOLE TOOLS
 
 # WORKSPACE TOOLS
@@ -990,3 +994,6 @@ install-misc-cadvisor:
 #add-apt-repository ppa:deadsnakes/ppa
 #apt install python3.8
 # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+
+
+# https://github.com/CoatiSoftware/Sourcetrail

@@ -28,7 +28,7 @@ fi
 if [ -e /usr/bin/apt ]
 then
     pkgmanager=apt-get
-    $SUDO apt-get update
+    "$SUDO" apt-get update
 elif [ -e /usr/bin/yum ]
 then
     pkgmanager=yum
@@ -40,20 +40,20 @@ else
     exit 1
 fi
 
-$SUDO $pkgmanager -y install git curl nano make $EXTRA_PACKAGES
+"$SUDO" "$pkgmanager" -y install git curl nano make "$EXTRA_PACKAGES"
 
 if [ "$1" == "full" ]; then
 
   SUDOERUSER="$(whoami)"
   SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
 
-  $SUDO bash -c "touch $SUDOERFILE"
-  $SUDO bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
-  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /usr/bin/truecrypt >> $SUDOERFILE"
-  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /bin/systemctl >> $SUDOERFILE"
-  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown >> $SUDOERFILE"
-  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /etc/init.d/nginx, /etc/init.d/mysql, /etc/init.d/mongod, /etc/init.d/redis, /etc/init.d/php-fpm >> $SUDOERFILE"
-  $SUDO bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD:SETENV: /usr/bin/docker, /usr/sbin/docker-gc >> $SUDOERFILE"
+  "$SUDO" bash -c "touch $SUDOERFILE"
+  "$SUDO" bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
+  "$SUDO" bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /usr/bin/truecrypt >> $SUDOERFILE"
+  "$SUDO" bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /bin/systemctl >> $SUDOERFILE"
+  "$SUDO" bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /sbin/poweroff, /sbin/reboot, /sbin/shutdown >> $SUDOERFILE"
+  "$SUDO" bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD: /etc/init.d/nginx, /etc/init.d/mysql, /etc/init.d/mongod, /etc/init.d/redis, /etc/init.d/php-fpm >> $SUDOERFILE"
+  "$SUDO" bash -c "echo # $SUDOERUSER ALL=\(ALL\) NOPASSWD:SETENV: /usr/bin/docker, /usr/sbin/docker-gc >> $SUDOERFILE"
 
   echo "===================================================================="
   echo "current user was added to SUDOERS w/o password"
@@ -65,32 +65,32 @@ if [ "$1" == "full" ]; then
   if [ -e /usr/bin/yum ]
   then
       if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
-      $SUDO yum install -y epel-release
-      $SUDO yum groupinstall -y "Development Tools"
-      $SUDO yum install -y $PREFFERED_PYTHON-devel
-      $SUDO yum install -y $PREFFERED_PYTHON-cffi
-      $SUDO yum install -y openssl-devel
+      "$SUDO" yum install -y epel-release
+      "$SUDO" yum groupinstall -y "Development Tools"
+      "$SUDO" yum install -y "$PREFFERED_PYTHON"-devel
+      "$SUDO" yum install -y "$PREFFERED_PYTHON"-cffi
+      "$SUDO" yum install -y openssl-devel
       fi
-      $SUDO yum install -y nano
+      "$SUDO" yum install -y nano
   elif [ -e /usr/bin/dnf ]
   then
-      $SUDO dnf install -y epel-release
-      $SUDO dnf groupinstall -y "Development Tools"
-      $SUDO dnf install -y $PREFFERED_PYTHON-devel
-      $SUDO dnf install -y $PREFFERED_PYTHON-cffi
-      $SUDO dnf install -y openssl-devel
+      "$SUDO" dnf install -y epel-release
+      "$SUDO" dnf groupinstall -y "Development Tools"
+      "$SUDO" dnf install -y "$PREFFERED_PYTHON"-devel
+      "$SUDO" dnf install -y "$PREFFERED_PYTHON"-cffi
+      "$SUDO" dnf install -y openssl-devel
   elif [ -e /usr/bin/apt ]
   then
       if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
-      $SUDO apt-get install -y software-properties-common $PREFFERED_PYTHON-dev apt-transport-https libffi-dev libssl-dev
+      "$SUDO" apt-get install -y software-properties-common "$PREFFERED_PYTHON"-dev apt-transport-https libffi-dev libssl-dev
       fi
-      $SUDO apt-get install -y wget
+      "$SUDO" apt-get install -y wget
   fi
 
   if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
-  $SUDO $pkgmanager install -y $PREFFERED_PYTHON-pip
-  $SUDO $PREFFERED_PIP install -U $PREFFERED_PIP
-  $SUDO $PREFFERED_PIP install ansible
+  "$SUDO" "$pkgmanager" install -y "$PREFFERED_PYTHON"-pip
+  "$SUDO" "$PREFFERED_PIP" install -U "$PREFFERED_PIP"
+  "$SUDO" "$PREFFERED_PIP" install ansible
   fi
 fi
 
@@ -117,7 +117,7 @@ fi
 cd dotfiles
 
 if [ "$1" == "simple" ] || [ "$1" == "docker" ] ; then
-  ./init_simple.sh $PREFERRED_SHELL
+  ./init_simple.sh "$PREFERRED_SHELL"
 else
   ./init.sh
   cd ~/dotfiles && make zsh-fzf zsh-kubetail
