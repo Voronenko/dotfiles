@@ -79,7 +79,7 @@ install-console-jb:
 	chmod +x ~/dotfiles/bin/jb
 
 install-mysql-skeema:
-	curl -sLo /tmp/skeema.tar.gz https://github.com/skeema/skeema/releases/download/v1.4.2/skeema_1.4.2_linux_amd64.tar.gz
+	curl -sLo /tmp/skeema.tar.gz https://github.com/skeema/skeema/releases/download/v1.4.7/skeema_1.4.7_linux_amd64.tar.gz
 	tar -xvzf /tmp/skeema.tar.gz -C /tmp
 	cp /tmp/skeema ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/skeema
