@@ -48,6 +48,12 @@ EXAMPLE
 
 cat <<<EXAMPLE
 
-PGPASSWORD=YOUR_PASSRORD psql -h YOUR_PG_HOST -U YOUR_USER_NAME ...
+#!/bin/bash
+
+PGPASSWORD=devroot psql -h localhost -p 5433 -U postgres
 
 EXAMPLE
+
+# Like importing dump of the database
+
+psql -h localhost -p 5433 -U root blueprint < database.sql
