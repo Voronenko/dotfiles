@@ -13,3 +13,41 @@ sudo apt-get update
 
 # echo install client tools:
 sudo apt-get install postgresql-client-${CLIENT_TOOLS_VERSION}
+
+exit $?
+
+# If you are considering branch deploy box with blueprint db
+
+echo <<<EXAMPLE
+
+set -e
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
+    CREATE ROLE apiuser PASSWORD 'apiuser' NOSUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;
+    GRANT ALL PRIVILEGES ON DATABASE blueprint TO apiuser;
+    CREATE ROLE portal PASSWORD 'portal' NOSUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;
+    GRANT ALL PRIVILEGES ON DATABASE blueprint TO portal;
+EOSQL
+
+
+EXAMPLE
+
+
+# for automatic psql login, consider creating
+
+cat <<<EXAMPLE
+
+touch ~/.pgpass
+chmod 0600 ~/.pgpass
+echo "hostname:port:database:username:password" > ~/.pgpass
+
+EXAMPLE
+
+
+# as a simple option you could also use
+
+cat <<<EXAMPLE
+
+PGPASSWORD=YOUR_PASSRORD psql -h YOUR_PG_HOST -U YOUR_USER_NAME ...
+
+EXAMPLE
