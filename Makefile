@@ -997,3 +997,7 @@ install-misc-cadvisor:
 
 
 # https://github.com/CoatiSoftware/Sourcetrail
+
+
+# https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
+# https://github.com/iann0036/iamlive
