@@ -309,6 +309,14 @@ install-k8s-helm3-fixed:
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
+install-k8s-istio:
+	mkdir -p /tmp/istio
+	curl -sLo /tmp/istio/istio.tar.gz "https://github.com/istio/istio/releases/download/1.9.1/istioctl-1.9.1-linux-amd64.tar.gz"
+	cd /tmp/istio && tar -xzf istio.tar.gz && mv /tmp/istio/istioctl ~/dotfiles/bin/istioctl
+	rm -rf /tmp/istio
+
+https://github.com/istio/istio/releases/download/1.9.1/istioctl-1.9.1-linux-amd64.tar.gz
+
 install-k8s-helm-plugin-s3:
 	helm plugin install https://github.com/hypnoglow/helm-s3.git
 

@@ -553,11 +553,14 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
       unset AWS_ACCESS_KEY_ID
       unset AWS_SECRET_ACCESS_KEY
       export AWS_PROFILE=${aws_profile}
-      export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-      export AWS_DEFAULT_PROFILE=${aws_profile}
+#      export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      export AWS_REGION=${AWS_DEFAULT_REGION}
+#      export AWS_DEFAULT_PROFILE=${aws_profile}
+      export AWS_PROFILE=${aws_profile}
       set +x
       export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
-      export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+#      export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      export TF_VAR_AWS_REGION=${AWS_DEFAULT_REGION}
       export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
     else
       local declare selected_profile=($(aws-profiles | fzf))
@@ -583,11 +586,13 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
         # set -x
         export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
         export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-        export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+#        export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+        export AWS_REGION=${AWS_DEFAULT_REGION}
         # set +x
         export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
         export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-        export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+#        export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+        export TF_VAR_AWS_REGION=${AWS_DEFAULT_REGION}
         export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
         echo AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY were set for $1
     else

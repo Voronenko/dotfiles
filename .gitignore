@@ -101,7 +101,7 @@ bin/hadolint
 bin/cadvisor
 bin/youtube-dl
 bin/shellharden
-
+bin/istioctl
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
