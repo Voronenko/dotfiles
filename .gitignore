@@ -102,6 +102,7 @@ bin/cadvisor
 bin/youtube-dl
 bin/shellharden
 bin/istioctl
+bin/istioctl183
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create

@@ -3,7 +3,7 @@
 function _load_aws_profile() {
     local aws_profile=$1
     if [ -z "${aws_profile}" ]; then
-        aws_profile=$AWS_DEFAULT_PROFILE
+        aws_profile=${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}
     fi
     echo $aws_profile
     return
@@ -12,7 +12,7 @@ function _load_aws_profile() {
 function _load_aws_region() {
     local aws_region=$1
     if [ -z "${aws_region}" ]; then
-        aws_region=$AWS_DEFAULT_REGION
+        aws_region=${AWS_REGION:-$AWS_DEFAULT_REGION}
     fi
     echo $aws_region
     return

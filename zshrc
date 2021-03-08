@@ -561,6 +561,8 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
       export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
 #      export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       export TF_VAR_AWS_REGION=${AWS_DEFAULT_REGION}
+      export AWS_SDK_LOAD_CONFIG=1
+      export TF_AWS_SDK_LOAD_CONFIG=1
       export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
     else
       local declare selected_profile=($(aws-profiles | fzf))

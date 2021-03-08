@@ -315,6 +315,13 @@ install-k8s-istio:
 	cd /tmp/istio && tar -xzf istio.tar.gz && mv /tmp/istio/istioctl ~/dotfiles/bin/istioctl
 	rm -rf /tmp/istio
 
+install-k8s-istio-183:
+	mkdir -p /tmp/istio
+	curl -sLo /tmp/istio/istio.tar.gz "https://github.com/istio/istio/releases/download/1.8.3/istioctl-1.8.3-linux-amd64.tar.gz"
+	cd /tmp/istio && tar -xzf istio.tar.gz && mv /tmp/istio/istioctl ~/dotfiles/bin/istioctl183
+	rm -rf /tmp/istio
+
+
 https://github.com/istio/istio/releases/download/1.9.1/istioctl-1.9.1-linux-amd64.tar.gz
 
 install-k8s-helm-plugin-s3:
