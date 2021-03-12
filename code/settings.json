@@ -96,4 +96,10 @@
   "projectTemplates.placeholders": {},
   "projectTemplates.placeholderRegExp": "#{(\\w+)?}",
   "projectTemplates.usePlaceholders": true,
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
+    }
+  ],
 }

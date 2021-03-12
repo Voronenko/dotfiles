@@ -172,7 +172,7 @@ install-console-ncdu:
 
 # jql for yml
 install-console-yq:
-	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/v4.4.1/yq_linux_amd64
+	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
 
 install-console-jiq:
