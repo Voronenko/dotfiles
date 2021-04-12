@@ -602,6 +602,11 @@ zsh-fzf:
 zsh-alias-tips:
 	git clone https://github.com/djui/alias-tips.git ~/.oh-my-zsh/custom/plugins/alias-tips
 
+# +plugins=( ... git-extra-commands )
+# https://github.com/unixorn/git-extra-commands
+zsh-git-extra-commands:
+	rm -rf ~/.oh-my-zsh/custom/plugins/git-extra-command || true
+	git clone https://github.com/unixorn/git-extra-commands.git ~/.oh-my-zsh/custom/plugins/git-extra-command
 
 # TERRAFORM
 
