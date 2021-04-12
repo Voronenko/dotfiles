@@ -505,6 +505,7 @@ install-helm-common-repos:
 	helm repo add loki https://grafana.github.io/loki/charts
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 	helm repo add stakater https://stakater.github.io/stakater-charts
+	helm repo add grafana https://grafana.github.io/helm-charts
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true

@@ -8,7 +8,6 @@
   "editor.renderLineHighlight": "all",
 
   "python.venvPath": "./p-env, ~/.virtualenvs, ./venv",
-  "window.zoomLevel": 0,
 
 // https://github.com/plantuml/plantuml-stdlib
   "plantuml.includepaths": [
@@ -45,12 +44,10 @@
   ],
 
   "jsonnet.outputFormat": "json",
-  "jsonnet.libPaths": ["~/.local/lib/python3.6/site-packages/kapitan", "./"],
+  "jsonnet.libPaths": [
+  "~/.local/lib/python3.6/site-packages/kapitan", "./", "${workspaceRoot}/vendor/github.com/grafana"],
 
   "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
-  "[jsonnet]": {
-
-    },
   "editor.mouseWheelZoom": true,
   "terminal.integrated.rendererType": "dom",
   "plantuml.jar": "/opt/plantuml/plantuml.jar",
@@ -102,4 +99,5 @@
       "filenamePattern": "*.ipynb"
     }
   ],
+  "jsonnet.executablePath": "~/dotfiles/bin/jsonnet",
 }
