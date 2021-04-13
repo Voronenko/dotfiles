@@ -1303,6 +1303,21 @@ gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
 set to false if it does not suite your work habits
 
+# Fingerprints
+
+```
+sudo apt remove fprintd
+#Add the python-validity PPA
+sudo add-apt-repository ppa:uunicorn/open-fprintd
+sudo apt-get update
+#Install python-validity and dependencies
+sudo apt install open-fprintd fprintd-clients python3-validity
+#Enroll a fingerprint
+fprintd-enroll -f fprintd-enroll -f right-index-finger
+#Enable fingerprint login
+sudo pam-auth-update
+```
+
 
 # Notifications
 

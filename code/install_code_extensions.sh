@@ -3,6 +3,7 @@ code --install-extension ahmadalli.vscode-nginx-conf
 code --install-extension alefragnani.numbered-bookmarks
 code --install-extension amazonwebservices.aws-toolkit-vscode
 code --install-extension arcsine.chronicler
+code --install-extension astallinger.sourcetrail
 code --install-extension bbenoist.vagrant
 code --install-extension bpmn-io.vs-code-bpmn-io
 code --install-extension cantonios.project-templates
