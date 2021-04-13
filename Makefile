@@ -1018,7 +1018,11 @@ install-misc-cadvisor:
 
 
 # https://github.com/CoatiSoftware/Sourcetrail
-
+install-sourcetrail:
+	curl -sLo /tmp/sourcetrail.tar.gz https://github.com/CoatiSoftware/Sourcetrail/releases/download/2021.1.30/Sourcetrail_2021_1_30_Linux_64bit.tar.gz
+	tar -xvzf /tmp/sourcetrail.tar.gz -C /tmp
+	mv /tmp/Sourcetrail $(HOME)/apps
+	ln -f -s $(HOME)/apps/Sourcetrail/Sourcetrail.sh $(HOME)/dotfiles/bin/sourcetrail
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
