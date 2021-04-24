@@ -289,7 +289,7 @@ install-k3s-local:
 	sudo systemctl disable k3s
 # https://github.com/alexellis/k3sup/
 install-k3s-up:
-	curl -sLo ~/dotfiles/bin/k3sup https://github.com/alexellis/k3sup/releases/download/0.9.2/k3sup
+	curl -sLo ~/dotfiles/bin/k3sup https://github.com/alexellis/k3sup/releases/download/0.10.2/k3sup
 	chmod +x ~/dotfiles/bin/k3sup
 
 install-k8s-ksonnet:
@@ -465,6 +465,10 @@ install-k8s-ksync:
 
 install-k8s-kubectl-krew:
 	~/dotfiles/bin/get_kubectl_krew.sh
+
+install-k8s-critctl:
+	curl --output /tmp/crictl.tar.gz -L https://github.com/kubernetes-sigs/cri-tools/releases/download/$(shell curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | grep tag_name | cut -d '"' -f 4)/crictl-$(shell curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz
+	tar zxvf /tmp/crictl.tar.gz -C ~/dotfiles/bin/
 
 install-k8s-kubectl-krew-plugins:
 	# https://github.com/rajatjindal/kubectl-whoami
