@@ -104,6 +104,7 @@ bin/youtube-dl
 bin/shellharden
 bin/istioctl
 bin/istioctl183
+bin/ctop
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
@@ -118,3 +119,5 @@ terraformer-all-linux-amd64
 terraformer-google-linux-amd64
 bin/mysql-connector-java*
 bin/sourcetrail
+bin/linux-exploit-suggester.sh
+bin/gdu

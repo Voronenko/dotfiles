@@ -170,6 +170,12 @@ install-console-tldr:
 install-console-ncdu:
 	sudo apt-get install ncdu
 
+install-console-gdu:
+	curl -sLo /tmp/gdu.tar.gz https://github.com/dundee/gdu/releases/download/v4.11.0/gdu_linux_amd64.tgz
+	tar -xvzf /tmp/gdu.tar.gz -C /tmp
+	mv /tmp/gdu_linux_amd64 ~/dotfiles/bin/gdu
+	chmod +x ~/dotfiles/bin/gdu
+
 # jql for yml
 install-console-yq:
 	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
@@ -286,6 +292,10 @@ install-docker-envplate:
 install-docker-lint:
 	curl -sLo ~/dotfiles/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.19.0/hadolint-Linux-x86_64
 	ln -s ~/dotfiles/bin/hadolint  ~/dotfiles/bin/docker-lint
+
+install-docker-ctop:
+	curl -sLo ~/dotfiles/bin/ctop https://github.com/bcicen/ctop/releases/download/v0.7.5/ctop-0.7.5-linux-amd64
+	chmod +x ~/dotfiles/bin/ctop
 # /DOCKER TOOLS
 
 
@@ -883,6 +893,11 @@ sec-nmap-sandmap:
 	rm -rf /tmp/sandmap && cd /tmp && git clone --recursive https://github.com/trimstray/sandmap
 	cd /tmp/sandmap && sudo ./setup.sh install
 	echo use sandmap
+
+sec-expoit-suggest:
+	curl -sLo ~/dotfiles/bin/linux-exploit-suggester.sh https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh
+	chmod +x ~/dotfiles/bin/linux-exploit-suggester.sh
+
 # /SECURITY
 
 
@@ -1037,3 +1052,6 @@ install-sourcetrail:
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
+
+# https://gitlab.com/nowayout/prochunter
+# https://github.com/fatedier/frp
