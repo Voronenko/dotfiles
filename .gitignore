@@ -11,6 +11,7 @@ bin/ks
 bin/stern
 bin/terraform-docs
 bin/fzf
+bin/exa
 bin/toggl
 bin/vault
 bin/terraform

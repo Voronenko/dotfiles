@@ -198,6 +198,13 @@ install-console-shellharden:
 	curl -sLo ~/dotfiles/bin/shellharden https://github.com/anordal/shellharden/releases/download/v4.1.1/shellharden-4.1.1-x86_64-linux-gnu
 	chmod +x ~/dotfiles/bin/shellharden
 
+install-console-exa:
+	mkdir -p /tmp/exa
+	curl -sLo /tmp/exa/exa.zip https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
+	cd /tmp/exa/ && unzip exa.zip
+	mv /tmp/exa/bin/exa ~/dotfiles/bin
+	rm -rf /tmp/exa
+
 # /CONSOLE TOOLS
 
 # WORKSPACE TOOLS
