@@ -121,3 +121,4 @@ bin/mysql-connector-java*
 bin/sourcetrail
 bin/linux-exploit-suggester.sh
 bin/gdu
+bin/procs

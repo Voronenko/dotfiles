@@ -176,6 +176,12 @@ install-console-gdu:
 	mv /tmp/gdu_linux_amd64 ~/dotfiles/bin/gdu
 	chmod +x ~/dotfiles/bin/gdu
 
+install-console-procs:
+	curl -sLo /tmp/procs.zip https://github.com/dalance/procs/releases/download/v0.11.4/procs-v0.11.4-x86_64-lnx.zip
+	cd /tmp && unzip procs.zip
+	mv /tmp/procs ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/procs
+
 # jql for yml
 install-console-yq:
 	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
@@ -527,6 +533,7 @@ install-helm-common-repos:
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 	helm repo add stakater https://stakater.github.io/stakater-charts
 	helm repo add grafana https://grafana.github.io/helm-charts
+	helm repo add sentry https://sentry-kubernetes.github.io/charts
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
