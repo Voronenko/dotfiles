@@ -45,8 +45,13 @@
 
   "jsonnet.outputFormat": "json",
   "jsonnet.libPaths": [
-  "~/.local/lib/python3.6/site-packages/kapitan", "./", "${workspaceRoot}/vendor/github.com/grafana"],
-
+  "./vendor",
+  "${workspaceFolder}/vendor",
+  "${workspaceFolder}/jsonnet-libs",
+  "${workspaceFolder}/vendor/github.com/grafana",
+  "${workspaceFolder}/tf/monitoring-box/grafana/vendor/github.com/grafana",
+  "/home/slavko/apps/jsonnet",
+  ],
   "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
   "editor.mouseWheelZoom": true,
   "terminal.integrated.rendererType": "dom",
@@ -100,4 +105,7 @@
     }
   ],
   "jsonnet.executablePath": "~/dotfiles/bin/jsonnet",
+  "jsonnet.extStrs": n
+
+  ull,
 }
