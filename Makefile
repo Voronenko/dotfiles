@@ -667,7 +667,9 @@ install-terraformer:
 	chmod +x ~/dotfiles/bin/terraformer_kubernetes
 
 install-terraform-docs:
-	curl -sLo ~/dotfiles/bin/terraform-docs https://github.com/terraform-docs/terraform-docs/releases/download/$(shell curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep tag_name | cut -d '"' -f 4)/terraform-docs-$(shell curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64
+	curl -sLo /tmp/terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$(shell curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep tag_name | cut -d '"' -f 4)/terraform-docs-$(shell curl -s https://api.github.com/repos/terraform-docs/terraform-docs/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz
+	tar -xvzf /tmp/terraform-docs.tar.gz -C /tmp
+	cp /tmp/terraform-docs ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/terraform-docs
 
 install-terraform-virtualbox-bridge:
@@ -1062,3 +1064,11 @@ install-sourcetrail:
 
 # https://gitlab.com/nowayout/prochunter
 # https://github.com/fatedier/frp
+
+# https://github.com/grafana/grizzly
+# https://github.com/cznewt/jsonnet-utils
+# python -m pip install git+https://github.com/cznewt/jsonnet-utils.git
+
+# https://github.com/satyanash/promql-jsonnet
+
+#https://github.com/gruntwork-io/git-xargs/releases
