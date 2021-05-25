@@ -106,6 +106,12 @@ install-console-logreader-lnav:
 	mv /tmp/lnav-0.9.0/lnav ~/dotfiles/bin
 	lnav -i extra
 
+install-console-logreader-logcli:
+	curl -sLo /tmp/logcli.zip https://github.com/grafana/loki/releases/download/v2.2.1/logcli-linux-amd64.zip
+	cd /tmp && unzip logcli.zip
+	mv /tmp/logcli-linux-amd64 ~/dotfiles/bin/logcli
+	chmod +x ~/dotfiles/bin/logcli
+
 global-console-logreader-lnav:
 	sudo cp $(PWD)/bin/lnav /usr/local/bin
 
@@ -397,7 +403,7 @@ install-k8s-kubectl-color:
 # terminal UI to interact with your Kubernetes
 install-k8s-k9s:
 	mkdir -p /tmp/k9s
-	curl -sLo /tmp/k9s/k9s.tar.gz https://github.com/derailed/k9s/releases/download/$(shell curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d '"' -f 4)/k9s_Linux_x86_64.tar.gz
+	curl -sLo /tmp/k9s/k9s.tar.gz https://github.com/derailed/k9s/releases/download/$(shell curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d '"' -f 4)/k9s_$(shell curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d '"' -f 4)_Linux_x86_64.tar.gz
 	cd /tmp/k9s && tar -xzf k9s.tar.gz && mv /tmp/k9s/k9s ~/dotfiles/bin/
 	chmod +x ~/dotfiles/bin/k9s
 	rm -rf /tmp/k9s
