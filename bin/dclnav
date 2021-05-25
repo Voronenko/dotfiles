@@ -1,2 +1,8 @@
 #!/bin/bash
-docker-compose logs $@ | sed -r -e 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' -e 's_^[^|]+\| __' | lnav
+
+if [ -z "$1" ]
+then
+    docker-compose logs | sed -r -e 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' -e 's/([^|\s:]+)?\s+\|\s(.*)/\2,\1/' | lnav
+else
+    docker-compose logs $@ | sed -r -e 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' -e 's_^[^|]+\| __' | lnav
+fi
