@@ -1,11 +1,8 @@
-#!/bin/bash
-
 getopt() {
   # pure-getopt, a drop-in replacement for GNU getopt in pure Bash.
-  # version 1.4.4
+  # version 1.4.5
   #
-  # Copyright 2012-2020 Aron Griffis <aron@scampersand.com>
-  # https://github.com/agriffis/pure-getopt
+  # Copyright 2012-2021 Aron Griffis <aron@scampersand.com>
   #
   # Permission is hereby granted, free of charge, to any person obtaining
   # a copy of this software and associated documentation files (the
@@ -66,7 +63,7 @@ getopt() {
     status=$?
     if [[ $status != 0 ]]; then
       if [[ $status == 1 ]]; then
-        echo "Try \`getopt --help' for more information." >&2
+        echo "Try 'getopt --help' for more information." >&2
         # Since this is the first parse, convert status 1 to 2
         status=2
       fi
@@ -81,7 +78,7 @@ getopt() {
 
         (-h|--help)
           _getopt_help
-          return 2  # as does GNU getopt
+          return 0
           ;;
 
         (-l|--longoptions)
@@ -111,7 +108,7 @@ getopt() {
               flags=t$flags ;;
             (*)
               echo 'getopt: unknown shell after -s or --shell argument' >&2
-              echo "Try \`getopt --help' for more information." >&2
+              echo "Try 'getopt --help' for more information." >&2
               return 2 ;;
           esac
           shift ;;
@@ -139,7 +136,7 @@ getopt() {
       # This implies the second form in the synopsis.
       if [[ $# == 0 ]]; then
         echo 'getopt: missing optstring argument' >&2
-        echo "Try \`getopt --help' for more information." >&2
+        echo "Try 'getopt --help' for more information." >&2
         return 2
       fi
       short=$1
@@ -441,7 +438,7 @@ getopt() {
   }
 
   _getopt_help() {
-    cat <<-EOT >&2
+    cat <<-EOT
 
 	Usage:
 	 getopt <optstring> <parameters>
@@ -461,8 +458,8 @@ getopt() {
 	 -T, --test                    test for getopt(1) version
 	 -u, --unquoted                do not quote the output
 
-	 -h, --help     display this help and exit
-	 -V, --version  output version information and exit
+	 -h, --help                    display this help
+	 -V, --version                 display version
 
 	For more details see getopt(1).
 	EOT
@@ -491,5 +488,3 @@ getopt() {
     _getopt_version_check
   return $status
 }
-
-# vim:sw=2
