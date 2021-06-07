@@ -1,3 +1,4 @@
+.vscode
 bin/jiq
 bin/dry
 bin/promtool
@@ -123,3 +124,4 @@ bin/linux-exploit-suggester.sh
 bin/gdu
 bin/procs
 bin/logcli
+bin/lazydocker

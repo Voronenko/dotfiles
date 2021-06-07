@@ -297,6 +297,13 @@ install-docker-slim:
 	tar -xvzf /tmp/docker-slim.tar.gz -C /tmp
 	mv /tmp/dist_linux/* ~/dotfiles/bin
 
+#https://github.com/jesseduffield/lazydocker/
+install-docker-lazydocker:
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.12/lazydocker_0.12_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
+	mv /tmp/lazydocker ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/lazydocker
+
 # templating utility for easy config patching using bash variables syntax
 install-docker-envplate:
 	curl -sLo ~/dotfiles/bin/ep https://github.com/kreuzwerker/envplate/releases/download/v0.0.8/ep-linux && chmod +x ~/dotfiles/bin/ep
@@ -1092,3 +1099,4 @@ install-sourcetrail:
 
 #sudo service clickhouse-server start
 #clickhouse-client
+# https://github.com/dbcli/pgcli
