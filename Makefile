@@ -106,11 +106,17 @@ install-console-logreader-lnav:
 	mv /tmp/lnav-0.9.0/lnav ~/dotfiles/bin
 	lnav -i extra
 
-install-console-logreader-logcli:
+install-console-loki-logcli:
 	curl -sLo /tmp/logcli.zip https://github.com/grafana/loki/releases/download/v2.2.1/logcli-linux-amd64.zip
 	cd /tmp && unzip logcli.zip
 	mv /tmp/logcli-linux-amd64 ~/dotfiles/bin/logcli
 	chmod +x ~/dotfiles/bin/logcli
+
+install-console-loki-cortextool:
+	curl -sLo /tmp/cortextool.tar.gz https://github.com/grafana/cortex-tools/releases/download/$(shell curl -s https://api.github.com/repos/grafana/cortex-tools/releases/latest | grep tag_name | cut -d '"' -f 4)/cortextool_$(shell curl -s https://api.github.com/repos/grafana/cortex-tools/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2- )_linux_amd64.tar.gz
+	tar -xvzf /tmp/cortextool.tar.gz -C /tmp
+	cp /tmp/cortextool ~/dotfiles/bin/cortextool
+	chmod +x ~/dotfiles/bin/cortextool
 
 global-console-logreader-lnav:
 	sudo cp $(PWD)/bin/lnav /usr/local/bin

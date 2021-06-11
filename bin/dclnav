@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose logs --no-color $@ | sed -r -e 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' -e 's/(([^|]+)?\s+\|)\s(.*)/\3, [\2]/' | lnav
+docker-compose logs --no-color $@ | sed -r -e 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' -e 's/(([^|]+)?\s+\|)\s(.*)/\3, #\2/' | lnav

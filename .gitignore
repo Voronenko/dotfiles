@@ -125,3 +125,4 @@ bin/gdu
 bin/procs
 bin/logcli
 bin/lazydocker
+bin/cortextool
