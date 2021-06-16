@@ -736,12 +736,17 @@ install-hashicorp-terraform014:
 	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.14.5/terraform_0.14.5_linux_amd64.zip"
 	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform014 && chmod +x terraform014 && rm terraform.zip && mv terraform013 ~/dotfiles/bin/
 
+install-hashicorp-terraform100:
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip"
+	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform100 && chmod +x terraform100 && rm terraform.zip && mv terraform100 ~/dotfiles/bin/
+
+
 install-hashicorp-terraform:
-	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/0.14.5/terraform_0.14.5_linux_amd64.zip"
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip"
 	cd ~/tmp/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip && mv terraform ~/dotfiles/bin/
 
 install-hashicorp-packer:
-	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.6.6/packer_1.6.6_linux_amd64.zip"
+	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.7.2/packer_1.7.2_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
 
 

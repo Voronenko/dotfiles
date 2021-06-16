@@ -126,3 +126,4 @@ bin/procs
 bin/logcli
 bin/lazydocker
 bin/cortextool
+bin/terraform100

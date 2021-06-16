@@ -33,7 +33,6 @@ code --install-extension GitHub.vscode-pull-request-github
 code --install-extension golang.go
 code --install-extension hashicorp.terraform
 code --install-extension hediet.vscode-drawio
-code --install-extension heptio.jsonnet
 code --install-extension HookyQR.beautify
 code --install-extension humao.rest-client
 code --install-extension IBM.output-colorizer
@@ -50,6 +49,7 @@ code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
 code --install-extension ms-python.anaconda-extension-pack
 code --install-extension ms-python.python
+code --install-extension ms-python.vscode-pylance
 code --install-extension ms-toolsai.jupyter
 code --install-extension ms-vscode-remote.remote-containers
 code --install-extension ms-vscode-remote.remote-ssh
@@ -59,6 +59,7 @@ code --install-extension ms-vscode-remote.vscode-remote-extensionpack
 code --install-extension ms-vscode.atom-keybindings
 code --install-extension ms-vscode.azure-account
 code --install-extension ms-vscode.cpptools
+code --install-extension ms-vscode.makefile-tools
 code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension naco-siren.gradle-language
@@ -71,8 +72,10 @@ code --install-extension RandomChance.logstash
 code --install-extension raynigon.nginx-formatter
 code --install-extension rebornix.ruby
 code --install-extension redhat.java
+code --install-extension redhat.vscode-commons
 code --install-extension redhat.vscode-yaml
 code --install-extension searKing.preview-vscode
+code --install-extension Sebbia.jsonnetng
 code --install-extension shardulm94.trailing-spaces
 code --install-extension voronenko.vscode-plantuml-stdlib-snippets
 code --install-extension vscoss.vscode-ansible
