@@ -1,3 +1,4 @@
+*.swp
 .vscode
 bin/jiq
 bin/dry
@@ -127,3 +128,7 @@ bin/logcli
 bin/lazydocker
 bin/cortextool
 bin/terraform100
+bin/xh
+bin/xhs
+completions/_xh.ps1
+completions/xh.fish

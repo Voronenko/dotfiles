@@ -229,6 +229,15 @@ install-console-exa:
 	mv /tmp/exa/bin/exa ~/dotfiles/bin
 	rm -rf /tmp/exa
 
+install-console-httpie-xh:
+	curl -sLo /tmp/xh.tar.gz https://github.com/ducaale/xh/releases/download/v0.10.0/xh-v0.10.0-x86_64-unknown-linux-musl.tar.gz
+	tar -xvzf /tmp/xh.tar.gz -C /tmp
+	mv /tmp/xh-v0.10.0-x86_64-unknown-linux-musl/xh ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin
+	ln -s ~/dotfiles/bin/xh ~/dotfiles/bin/xhs
+	cp /tmp/xh-v0.10.0-x86_64-unknown-linux-musl/completions/* ~/dotfiles/completions
+
+
 # /CONSOLE TOOLS
 
 # WORKSPACE TOOLS
