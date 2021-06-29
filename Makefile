@@ -301,7 +301,22 @@ install-docker-dry:
 	curl -sLo ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
 
-# inspection of the docker containers
+# A CLI tool and go library for generating a Software Bill of Materials (SBOM) from container images and filesystems.
+# Exceptional for vulnerability detection when used with a scanner tool like Grype.
+#https://github.com/anchore/syft
+install-docker-scanner-syft:
+	curl -sLo /tmp/syft.tar.gz https://github.com/anchore/syft/releases/download/v0.17.1/syft_0.17.1_linux_amd64.tar.gz
+	tar -xvzf /tmp/syft.tar.gz -C /tmp
+	mv /tmp/syft ~/dotfiles/bin/
+	chmod +x ~/dotfiles/bin/syft
+
+install-docker-scanner-grype:
+	curl -sLo /tmp/grype.tar.gz https://github.com/anchore/grype/releases/download/v0.13.0/grype_0.13.0_linux_amd64.tar.gz
+	tar -xvzf /tmp/grype.tar.gz -C /tmp
+	mv /tmp/grype ~/dotfiles/bin/
+	chmod +x ~/dotfiles/bin/grype
+
+#
 install-docker-dive:
 	curl -sLo /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
 	sudo apt install /tmp/dive.deb
