@@ -305,13 +305,13 @@ install-docker-dry:
 # Exceptional for vulnerability detection when used with a scanner tool like Grype.
 #https://github.com/anchore/syft
 install-docker-scanner-syft:
-	curl -sLo /tmp/syft.tar.gz https://github.com/anchore/syft/releases/download/v0.17.1/syft_0.17.1_linux_amd64.tar.gz
+	curl -sLo /tmp/syft.tar.gz https://github.com/anchore/syft/releases/download/v0.19.1/syft_0.19.1_linux_amd64.tar.gz
 	tar -xvzf /tmp/syft.tar.gz -C /tmp
 	mv /tmp/syft ~/dotfiles/bin/
 	chmod +x ~/dotfiles/bin/syft
 
 install-docker-scanner-grype:
-	curl -sLo /tmp/grype.tar.gz https://github.com/anchore/grype/releases/download/v0.13.0/grype_0.13.0_linux_amd64.tar.gz
+	curl -sLo /tmp/grype.tar.gz https://github.com/anchore/grype/releases/download/v0.15.0/grype_0.15.0_linux_amd64.tar.gz
 	tar -xvzf /tmp/grype.tar.gz -C /tmp
 	mv /tmp/grype ~/dotfiles/bin/
 	chmod +x ~/dotfiles/bin/grype
