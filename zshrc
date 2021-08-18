@@ -734,6 +734,7 @@ alias gitinfo='git describe --exact-match --tags $(git log -n1 --pretty='%h') 2>
 alias targz='tar -zcvf '
 alias untargz='tar -zxvf'
 alias inventory='ansible-inventory --list'
+alias borgui='vorta &'
 
 # terminal shortcuts
 
