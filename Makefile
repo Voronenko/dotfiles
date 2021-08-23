@@ -550,6 +550,12 @@ install-k8s-kubectl-krew-plugins:
 	# installed separately via Makefile install-k8s-rakkess
 #	kubectl krew install access-matrix
 
+install-k8s-kubescape:
+	curl -Lo ~/dotfiles/bin/kubescape https://github.com/armosec/kubescape/releases/download/betav1.0.43/kubescape-ubuntu-latest
+	chmod +x ~/dotfiles/bin/kubescape
+	echo try
+	echo kubescape scan framework nsa --exclude-namespaces kube-system,kube-public
+
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
@@ -1026,8 +1032,10 @@ install-dbtools-dbml-cli-npm:
 
 # Backup tools
 install-borg:
-	curl -sLo ~/dotfiles/bin/borg https://github.com/borgbackup/borg/releases/download/1.1.15/borg-linux64
+	curl -sLo ~/dotfiles/bin/borg https://github.com/borgbackup/borg/releases/download/1.1.17/borg-linux64
 	chmod +x ~/dotfiles/bin/borg
+	@echo "To link globally,"
+	@echo sudo ln -s $(HOME)/dotfiles/bin/borg  /usr/local/bin/borg
 	# https://github.com/dschep/ntfy
 	# pip3 install --upgrade ntfy[pid,emoji,xmpp,telegram,instapush,slack,rocketchat]
 	# https://github.com/witten/borgmatic

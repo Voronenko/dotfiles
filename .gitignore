@@ -134,3 +134,4 @@ completions/_xh.ps1
 completions/xh.fish
 bin/grype
 bin/syft
+bin/kubescape
