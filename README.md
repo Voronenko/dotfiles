@@ -129,7 +129,7 @@ fi
 If detected, `onproject <name>` , `offproject` shortcuts to launch project specific setup
 
 ```sh
-if [[ -f /usr/bin/tmux ]]; then
+if [[ -f /usr/bin/tmux || -f /usr/local/bin/tmux ]]; then
 
 if [[ -d /mnt/c/Windows/ ]]; then
 # Holy shit, I am on windows linux subsystem
