@@ -1143,3 +1143,5 @@ install-sourcetrail:
 #sudo service clickhouse-server start
 #clickhouse-client
 # https://github.com/dbcli/pgcli
+
+#https://github.com/DominicBreuker/pspy
