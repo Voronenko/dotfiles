@@ -519,6 +519,11 @@ source ${HOME}/dotfiles/helpers/dotfiles_prompt.zsh
 # Load cd helper
 if [[ -f ~/dotfiles/helpers/z.sh ]]; then source ~/dotfiles/helpers/z.sh; fi
 
+# Digital ocean simplification
+if [[ -d $HOME/.config/doctl ]]; then
+source $HOME/dotfiles/helpers/dossh.zsh
+fi
+
 # AWS simplification
 if [[ -d $HOME/.aws ]]; then
 
