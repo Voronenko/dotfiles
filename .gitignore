@@ -1,5 +1,6 @@
 *.swp
 .vscode
+.idea
 bin/jiq
 bin/dry
 bin/promtool
@@ -135,3 +136,5 @@ completions/xh.fish
 bin/grype
 bin/syft
 bin/kubescape
+bin/doctl
+bin/lpass

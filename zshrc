@@ -202,7 +202,7 @@ local universalsh='sh -c  zsh; if [ "$?" -eq "127" ]; then bash; if [ "$?" -eq "
 
 case "$1" in
     list)
-        sudo docker ps -a
+        docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}} {{ .Config.Hostname }} {{ .Config.Image }}' | sed 's#^/##';
         ;;
     manage)
         docker volume create portainer_data &&  docker run -d -p 9999:9000  -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer

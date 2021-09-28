@@ -857,6 +857,12 @@ install-ovh-nova:
 install-aws-cfn-template-flip:
 	sudo pip3 install cfn-flip
 
+
+install-digitalocean-cli:
+	curl -sLo /tmp/doctl.tar.gz https://github.com/digitalocean/doctl/releases/download/v1.64.0/doctl-1.64.0-linux-amd64.tar.gz
+	tar -xvzf /tmp/doctl.tar.gz -C ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/doctl
+
 # / CLOUDS
 
 # ESXI
@@ -1155,3 +1161,5 @@ install-db-cli-clickhouse-native:
 #https://github.com/gruntwork-io/git-xargs/releases
 
 #https://github.com/DominicBreuker/pspy
+
+#https://github.com/go-acme/lego
