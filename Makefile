@@ -1143,6 +1143,8 @@ install-db-cli-clickhouse-native:
 	which clickhouse-client
 	echo "To install server:  clickhouse-server followed by  sudo service clickhouse-server start"
 
+testssl:
+	git clone --depth 1 git@github.com:drwetter/testssl.sh.git $(HOME)/dotfiles/bin/testssl
 
 #
 

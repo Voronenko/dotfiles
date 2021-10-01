@@ -138,3 +138,4 @@ bin/syft
 bin/kubescape
 bin/doctl
 bin/lpass
+bin/testssl/
