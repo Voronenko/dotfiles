@@ -97,15 +97,5 @@
   ],
   "projectTemplates.placeholders": {},
   "projectTemplates.placeholderRegExp": "#{(\\w+)?}",
-  "projectTemplates.usePlaceholders": true,
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
-  "jsonnet.executablePath": "~/dotfiles/bin/jsonnet",
-  "jsonnet.extStrs": n
-
-  ull,
+  "projectTemplates.usePlaceholders": true
 }
