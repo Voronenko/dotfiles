@@ -549,12 +549,20 @@ install-k8s-kubectl-krew-plugins:
 #	kubectl krew install popeye
 	# installed separately via Makefile install-k8s-rakkess
 #	kubectl krew install access-matrix
+	# https://github.com/jordanwilson230/kubectl-plugins/blob/krew/kubectl-exec-as
+	kubectl krew install exec-as
 
 install-k8s-kubescape:
 	curl -Lo ~/dotfiles/bin/kubescape https://github.com/armosec/kubescape/releases/download/betav1.0.43/kubescape-ubuntu-latest
 	chmod +x ~/dotfiles/bin/kubescape
 	echo try
 	echo kubescape scan framework nsa --exclude-namespaces kube-system,kube-public
+
+install-k8s-kustomize:
+	curl -sLo /tmp/kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.4.0/kustomize_v4.4.0_linux_amd64.tar.gz
+	tar -xvzf /tmp/kustomize.tar.gz -C /tmp
+	mv /tmp/kustomize ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/kustomize
 
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
@@ -767,12 +775,11 @@ install-hashicorp-terraform014:
 	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform014 && chmod +x terraform014 && rm terraform.zip && mv terraform013 ~/dotfiles/bin/
 
 install-hashicorp-terraform100:
-	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip"
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.8_linux_amd64.zip"
 	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform100 && chmod +x terraform100 && rm terraform.zip && mv terraform100 ~/dotfiles/bin/
 
-
 install-hashicorp-terraform:
-	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip"
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.8_linux_amd64.zip"
 	cd ~/tmp/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip && mv terraform ~/dotfiles/bin/
 
 install-hashicorp-packer:
@@ -1165,3 +1172,5 @@ testssl:
 #https://github.com/DominicBreuker/pspy
 
 #https://github.com/go-acme/lego
+
+# https://github.com/quarkslab/kdigger

@@ -139,3 +139,4 @@ bin/kubescape
 bin/doctl
 bin/lpass
 bin/testssl/
+bin/kustomize

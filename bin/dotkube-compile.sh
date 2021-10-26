@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KUBE_CONFIG_DIR=${1:-~/.kube}
+KUBE_CONFIG_DIR=${1:-$PWD}
 
 mkdir -p ${KUBE_CONFIG_DIR}
 export KUBECONFIG=$(find ${KUBE_CONFIG_DIR} -maxdepth 1 -type f,l | grep -v '/config' | grep -v '/kubectx' | tr '\n' ':')
