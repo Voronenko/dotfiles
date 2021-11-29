@@ -2,6 +2,8 @@
 
 whoami = sts get-caller-identity
 
+account = ec2 describe-security-groups --group-names 'Default' --query 'SecurityGroups[0].OwnerId' --output text
+
 running-instances = ec2 describe-instances \
     --filter Name=instance-state-name,Values=running \
     --output table \

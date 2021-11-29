@@ -201,6 +201,9 @@ function dck() {
 local universalsh='sh -c  zsh; if [ "$?" -eq "127" ]; then bash; if [ "$?" -eq "127" ]; then  ash; if [ "$?" -eq "127" ]; then sh; fi; fi; fi'
 
 case "$1" in
+    whoami)
+        docker info 2>/dev/null  | grep -E 'Username|Registry'
+        ;;
     list)
         docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}} {{ .Config.Hostname }} {{ .Config.Image }}' | sed 's#^/##';
         ;;
@@ -247,10 +250,10 @@ case "$1" in
         docker start registry || docker run -d -p 5000:5000 --restart=always --name registry registry:2
         ;;
     *)
-        echo "Usage: $0 {dck sh | bash | list |stopall |cleanimages |cleancontainers | ui | manage | registry | inspect <container name> <jq filter>}"
+        echo "Usage: $0 {dck sh | bash | list |stopall |cleanimages |cleancontainers | ui | manage | registry | whoami inspect <container name> <jq filter>}"
         echo "manage launches portrainer, ui - now obsolete ui for docker (retiring...)"
         echo "You are logged to following registries, if any"
-        docker system info | grep -E 'Username|Registry'
+        docker system info 2>/dev/null | grep -E 'Username|Registry'
         ;;
 esac
 
@@ -552,8 +555,9 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     local aws_profile=$1
 
     if [[ ! -z "$aws_profile" ]]; then
-      region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
+      region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A2 | grep -B 2 "")
       AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
+      echo "Detected region AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
       set -x
       unset AWS_ACCESS_KEY_ID
       unset AWS_SECRET_ACCESS_KEY
@@ -562,6 +566,8 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
       export AWS_REGION=${AWS_DEFAULT_REGION}
 #      export AWS_DEFAULT_PROFILE=${aws_profile}
       export AWS_PROFILE=${aws_profile}
+#     supress default less pager
+      export AWS_PAGER=""
       set +x
       export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
 #      export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
@@ -595,6 +601,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
         export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 #        export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
         export AWS_REGION=${AWS_DEFAULT_REGION}
+        export AWS_PAGER=""
         # set +x
         export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
         export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY

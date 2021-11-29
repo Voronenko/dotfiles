@@ -140,3 +140,5 @@ bin/doctl
 bin/lpass
 bin/testssl/
 bin/kustomize
+bin/step1.xml
+bin/step2.xml
