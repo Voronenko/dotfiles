@@ -779,7 +779,7 @@ install-hashicorp-terraform100:
 	cd ~/tmp/ && unzip terraform.zip && mv terraform terraform100 && chmod +x terraform100 && rm terraform.zip && mv terraform100 ~/dotfiles/bin/
 
 install-hashicorp-terraform:
-	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.8_linux_amd64.zip"
+	curl -sLo ~/tmp/terraform.zip "https://releases.hashicorp.com/terraform/1.0.8/terraform_1.0.11_linux_amd64.zip"
 	cd ~/tmp/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip && mv terraform ~/dotfiles/bin/
 
 install-hashicorp-packer:

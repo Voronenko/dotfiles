@@ -1196,6 +1196,19 @@ install-dbtools-dbml-cli-npm:
 
 ```
 
+# Terraform versions
+
+As your projects are based on different terraform versions, makes sense to isolate your terraform
+version exactly as you isolate python, nodejs, go versions.
+
+Thus if .terraform-version is detected in $HOME, it is assumed that this host has preference of using
+terraform versions via tfenv, rather than using binary from ~/dotfiles/bin.
+
+Terraform version is detected using following logic: if no parameter is passed, the version to use is
+resolved automatically via .terraform-version files or TFENV_TERRAFORM_VERSION environment variable
+(TFENV_TERRAFORM_VERSION takes precedence), defaulting to 'latest' if none are found.
+
+Thus good idea is to set default version of the terraform.
 
 # Time to sleep
 
