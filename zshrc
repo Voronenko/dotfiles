@@ -680,7 +680,7 @@ source ~/dotfiles/completions/fzf-key-binding.zsh
 source ~/dotfiles/helpers/forgit.plugin.zsh
 source ~/dotfiles/helpers/fzf-docker.zsh
 source ~/dotfiles/helpers/jq.plugin.zsh
-if type "terraform" > /dev/null; then
+if [ -f $HOME/.terraform-version ]; then
   source ~/dotfiles/helpers/tfenv-zsh.plugin.zsh
 fi
 
