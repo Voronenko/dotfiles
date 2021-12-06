@@ -562,15 +562,17 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
       unset AWS_ACCESS_KEY_ID
       unset AWS_SECRET_ACCESS_KEY
       export AWS_PROFILE=${aws_profile}
-#      export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       export AWS_REGION=${AWS_DEFAULT_REGION}
-#      export AWS_DEFAULT_PROFILE=${aws_profile}
       export AWS_PROFILE=${aws_profile}
 #     supress default less pager
       export AWS_PAGER=""
       set +x
+      PROFILE_ASSUMED_ROLE=$(echo $region_data  | grep role_arn | sed 's:.*/::')
+      if [[ ! -z "$PROFILE_ASSUMED_ROLE" ]]; then
+        export AWS_ASSUME_ROLE_NAME=${PROFILE_ASSUMED_ROLE}
+        export AWS_ASSUME_ACCOUNT_ID=$(echo $region_data | awk -F'arn:aws:iam::|:role' '{print $2}' | grep -v '^ *$')
+      fi
       export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
-#      export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       export TF_VAR_AWS_REGION=${AWS_DEFAULT_REGION}
       export AWS_SDK_LOAD_CONFIG=1
       export TF_AWS_SDK_LOAD_CONFIG=1
