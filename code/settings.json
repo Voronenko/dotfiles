@@ -97,5 +97,8 @@
   ],
   "projectTemplates.placeholders": {},
   "projectTemplates.placeholderRegExp": "#{(\\w+)?}",
-  "projectTemplates.usePlaceholders": true
+  "projectTemplates.usePlaceholders": true,
+
+  "indentRainbow.includedLanguages": ["yaml", "python"] // for example ["nim", "nims", "python"]
+
 }

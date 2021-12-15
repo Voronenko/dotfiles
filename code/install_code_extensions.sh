@@ -1,7 +1,6 @@
 code --install-extension aaron-bond.better-comments
 code --install-extension ahmadalli.vscode-nginx-conf
 code --install-extension alefragnani.numbered-bookmarks
-code --install-extension amazonwebservices.aws-toolkit-vscode
 code --install-extension arcsine.chronicler
 code --install-extension astallinger.sourcetrail
 code --install-extension bbenoist.vagrant
@@ -51,6 +50,8 @@ code --install-extension ms-python.anaconda-extension-pack
 code --install-extension ms-python.python
 code --install-extension ms-python.vscode-pylance
 code --install-extension ms-toolsai.jupyter
+code --install-extension ms-toolsai.jupyter-keymap
+code --install-extension ms-toolsai.jupyter-renderers
 code --install-extension ms-vscode-remote.remote-containers
 code --install-extension ms-vscode-remote.remote-ssh
 code --install-extension ms-vscode-remote.remote-ssh-edit
@@ -64,6 +65,7 @@ code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension naco-siren.gradle-language
 code --install-extension njpwerner.autodocstring
+code --install-extension oderwat.indent-rainbow
 code --install-extension openhab.openhab
 code --install-extension Orta.vscode-jest
 code --install-extension phproberto.vscode-php-getters-setters
@@ -78,10 +80,10 @@ code --install-extension searKing.preview-vscode
 code --install-extension Sebbia.jsonnetng
 code --install-extension shardulm94.trailing-spaces
 code --install-extension voronenko.vscode-plantuml-stdlib-snippets
-code --install-extension vscoss.vscode-ansible
 code --install-extension waderyan.gitblame
 code --install-extension wholroyd.HCL
 code --install-extension wholroyd.jinja
 code --install-extension william-voyek.vscode-nginx
 code --install-extension wingrunr21.vscode-ruby
 code --install-extension xrc-inc.jsonnet-formatter
+code --install-extension yzane.markdown-pdf
