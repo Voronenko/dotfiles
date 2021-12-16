@@ -674,6 +674,11 @@ gnome-shell-gnome-extension-quicktoggler:
 	rm -rf /tmp/gnome-extension-quicktoggler
 	git clone https://github.com/Shihira/gnome-extension-quicktoggler.git /tmp/gnome-extension-quicktoggler
 	mv /tmp/gnome-extension-quicktoggler ~/.local/share/gnome-shell/extensions/quicktoggler@shihira.github.com
+
+gnome-shell-put-windows:
+	rm -rf /tmp/
+	git clone git@github.com:negesti/gnome-shell-extensions-negesti.git /tmp/gnome-shell-extensions-negesti
+	mv /tmp/gnome-shell-extensions-negesti  ~/.local/share/gnome-shell/extensions/putWindow@clemens.lab21.org
 # /GNOME specific extensions
 
 zsh-fzf:
