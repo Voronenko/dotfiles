@@ -142,3 +142,4 @@ bin/testssl/
 bin/kustomize
 bin/step1.xml
 bin/step2.xml
+bin/plumber

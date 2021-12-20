@@ -1158,6 +1158,11 @@ install-db-cli-clickhouse-native:
 testssl:
 	git clone --depth 1 git@github.com:drwetter/testssl.sh.git $(HOME)/dotfiles/bin/testssl
 
+# for mqtt consider http://mqtt-explorer.com/
+install-queue-plumber:
+	curl -sLo ~/dotfiles/bin/plumber https://github.com/batchcorp/plumber/releases/download/v1.0.4/plumber-linux
+	chmod +x ~/dotfiles/bin/plumber
+
 #
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb

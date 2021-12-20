@@ -1,1 +1,3 @@
 termcapinfo xterm*|xs|rxvt|terminal ti@:te@
+blankerprg bash -c "export DISPLAY=:0;sleep 3;xset dpms force off"
+idle 60 blanker
