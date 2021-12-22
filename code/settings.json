@@ -99,6 +99,15 @@
   "projectTemplates.placeholderRegExp": "#{(\\w+)?}",
   "projectTemplates.usePlaceholders": true,
 
-  "indentRainbow.includedLanguages": ["yaml", "python"] // for example ["nim", "nims", "python"]
+  "indentRainbow.includedLanguages": [
+    "yaml",
+    "python"
+  ],
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  } // for example ["nim", "nims", "python"]
 
 }

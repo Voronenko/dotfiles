@@ -1184,3 +1184,10 @@ install-queue-plumber:
 #https://github.com/go-acme/lego
 
 # https://github.com/quarkslab/kdigger
+
+
+# Logi
+
+# sudo add-apt-repository ppa:solaar-unifying/stable
+# sudo apt update
+#  sudo apt install solaar
