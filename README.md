@@ -1466,6 +1466,17 @@ $ echo "The mail content" | s-mail -v -s "$EMAIL_SUBJECT" $TO_EMAIL_ADDRESS
 
 </details>
 
+
+## pdf perks
+
+```sh
+ls -1 ./*jpg | xargs -L1 -I {} img2pdf {} -o {}_raw.pdf
+
+ls -1 ./*_raw.pdf | xargs -L1 -I {} ocrmypdf {} {}_ocr.pdf
+
+```
+
+
 ## 3rd party work
 
 Contains portions of bash library modules released under

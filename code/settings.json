@@ -108,6 +108,7 @@
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true
-  } // for example ["nim", "nims", "python"]
+  },
+  "bracket-pair-colorizer-2.depreciation-notice": false // for example ["nim", "nims", "python"]
 
 }

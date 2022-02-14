@@ -469,7 +469,7 @@ install-k8s-kubeval:
 # https://github.com/vmware-tanzu/octant/
 # Kubernetes dashboard by VMWare
 install-k8s-vmware-octant:
-	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.16.3/octant_0.16.3_Linux-64bit.deb
+	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.25.0/octant_0.25.0_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
 	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely
 
@@ -1162,6 +1162,11 @@ testssl:
 install-queue-plumber:
 	curl -sLo ~/dotfiles/bin/plumber https://github.com/batchcorp/plumber/releases/download/v1.0.4/plumber-linux
 	chmod +x ~/dotfiles/bin/plumber
+
+install-bitwarden-cli:
+	curl -sLo /tmp/bw.zip "https://vault.bitwarden.com/download/?app=cli&platform=linux"
+	unzip /tmp/bw.zip -d ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/bw
 
 #
 

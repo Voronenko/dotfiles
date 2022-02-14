@@ -561,6 +561,8 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
       set -x
       unset AWS_ACCESS_KEY_ID
       unset AWS_SECRET_ACCESS_KEY
+      unset AWS_ASSUME_ROLE_NAME
+      unset AWS_ASSUME_ACCOUNT_ID
       export AWS_PROFILE=${aws_profile}
       export AWS_REGION=${AWS_DEFAULT_REGION}
       export AWS_PROFILE=${aws_profile}

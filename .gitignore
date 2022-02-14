@@ -108,6 +108,7 @@ bin/shellharden
 bin/istioctl
 bin/istioctl183
 bin/ctop
+bin/bw
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create
