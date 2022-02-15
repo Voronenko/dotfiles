@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  [VS] commit dd1d4e7475b6e655c9d049b3baca6b5323ffbb49
+#  [VS] commit 22e018922760d6a9a9235a69d4c15a8abae31d9a
 
 # https://github.com/course-hero/slacktee
 # ------------------------------------------------------------
@@ -19,7 +19,6 @@
 # limitations under the License.
 # ------------------------------------------------------------
 
-
 # ----------
 # Default Configuration
 # ----------
@@ -29,7 +28,7 @@ channel="${SLACKTEE_CHANNEL:-general}"    # Default channel to post messages. '#
 tmp_dir="${SLACKTEE_TMP_DIR:-/tmp}"       # Temporary file is created in this directory.
 username="${SLACKTEE_USERNAME:-slacktee}"  # Default username to post messages.
 icon="${SLACKTEE_ICON:-ghost}"         # Default emoji to post messages. Don't wrap it with ':'. See http://www.emoji-cheat-sheet.com; can be a url too.
-attachment="${SLACKTEE_ATTACHMENT}"        # Default color of the attachments. If an empty string is specified, the attachments are not used.
+attachment="${SLACKTEE_ATTACHMENT:-}"        # Default color of the attachments. If an empty string is specified, the attachments are not used.
 
 # ----------
 # Initialization
@@ -141,6 +140,9 @@ function send_message()
 {
 	message="$1"
 
+	# Remove carriage returns
+	message=`echo $message | tr -d '\r'`
+
 	# Its a blank message, ignore
 	if [[ $message == "-- $title --\n" ]]; then
 	    return
@@ -239,14 +241,22 @@ function send_message()
 				fi
 
 				if [[ -z "$streaming_ts" ]]; then
-					json="{\
-						\"channel\": \"$chan\", \
-						\"username\": \"$username\", \
-						$message_attr \"icon_emoji\": \"$icon_emoji\", \
-						\"icon_url\": \"$icon_url\" $parseMode}"
+					if [[ ! -z "$icon_url" ]];then
+						json="{\
+							\"channel\": \"$chan\", \
+							\"username\": \"$username\", \
+							$message_attr \"icon_url\": \"$icon_url\", \
+							$parseMode}"
+					else
+						json="{\
+							\"channel\": \"$chan\", \
+							\"username\": \"$username\", \
+							$message_attr \"icon_emoji\": \"$icon_emoji\", \
+							$parseMode}"
+					fi
 
 					post_result=$(curl -H "Authorization: Bearer $token" -H 'Content-type: application/json; charset=utf-8' -X POST -d "$json" https://slack.com/api/chat.postMessage 2> /dev/null)
-					if [ $(get_ok_in_response $post_result) != "true" ]; then
+					if [ $(get_ok_in_response "$post_result") != "true" ]; then
 						write_to_stderr "$post_result"
 						exit_code=1
 					else
@@ -288,7 +298,7 @@ function send_message()
 								$parseMode}"
 
 							post_result=$(curl -H "Authorization: Bearer $token" -H 'Content-type: application/json; charset=utf-8' -X POST -d "$json" https://slack.com/api/chat.update 2> /dev/null)
-							if [ $(get_ok_in_response $post_result) != "true" ]; then
+							if [ $(get_ok_in_response "$post_result") != "true" ]; then
 								write_to_stderr "$post_result"
 								exit_code=1
 							fi
@@ -296,11 +306,19 @@ function send_message()
 					fi
 				fi
 			else
-				json="{\
+				if [[ ! -z "$icon_url" ]];then
+					json="{\
+					\"channel\": \"$chan\", \
+					\"username\": \"$username\", \
+					$message_attr \"icon_url\": \"$icon_url\", \
+					$parseMode}"
+				else
+					json="{\
 					\"channel\": \"$chan\", \
 					\"username\": \"$username\", \
 					$message_attr \"icon_emoji\": \"$icon_emoji\", \
-					\"icon_url\": \"$icon_url\" $parseMode}"
+					$parseMode}"
+				fi
 				if [[ ! -z $webhook_url ]]; then
 					# Prioritize the webhook_url for the backward compatibility
 					post_result=$(curl -X POST --data-urlencode "payload=$json" "$webhook_url" 2> /dev/null)
@@ -310,7 +328,7 @@ function send_message()
 					fi
 				else
 					post_result=$(curl -H "Authorization: Bearer $token" -H 'Content-type: application/json; charset=utf-8' -X POST -d "$json" https://slack.com/api/chat.postMessage 2> /dev/null)
-					if [ $(get_ok_in_response $post_result) != "true" ]; then
+					if [ $(get_ok_in_response "$post_result") != "true" ]; then
 					write_to_stderr "$post_result"
 					exit_code=1
 					fi
@@ -866,7 +884,7 @@ function main()
 				channels_param="-F channels=$channel"
 			fi
 			upload_result="$(curl -F file=@"$filename" -F token="$token" $channels_param https://slack.com/api/files.upload 2> /dev/null)"
-			if [ $(get_ok_in_response $upload_result) != "true" ]; then
+			if [ $(get_ok_in_response "$upload_result") != "true" ]; then
 			    write_to_stderr "Upload failed. Please make sure slacktee is a member of $channel."
 			    err_exit 1 $upload_result
 			fi
