@@ -371,7 +371,7 @@ install-k8s-stern:
 # helm version considered stable
 install-k8s-helm3-fixed:
 	mkdir -p /tmp/helm
-	curl -sLo /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.1.0-linux-amd64.tar.gz"
+	curl -sLo /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.8.2-linux-amd64.tar.gz"
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
@@ -1168,6 +1168,14 @@ install-bitwarden-cli:
 	unzip /tmp/bw.zip -d ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/bw
 
+# http://www.ddcutil.com/
+# ddcutil capabilities | grep Brightness
+# get bright
+# sudo ddcutil getvcp 10
+# set bright
+# sudo ddcutil setvcp 10 70
+install-ddcutil:
+	sudo apt install ddcutil
 #
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
