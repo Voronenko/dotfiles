@@ -118,6 +118,15 @@ install-console-loki-cortextool:
 	cp /tmp/cortextool ~/dotfiles/bin/cortextool
 	chmod +x ~/dotfiles/bin/cortextool
 
+# run github actions locally
+# # Run a specific job:
+# act -j test
+install-github-actions-act:
+	curl -sLo /tmp/act.tar.gz https://github.com/nektos/act/releases/download/$(shell curl -s https://api.github.com/repos/nektos/act/releases/latest | grep tag_name | cut -d '"' -f 4)/act_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/act.tar.gz -C /tmp
+	cp /tmp/act ~/dotfiles/bin/act
+	chmod +x ~/dotfiles/bin/act
+
 global-console-logreader-lnav:
 	sudo cp $(PWD)/bin/lnav /usr/local/bin
 

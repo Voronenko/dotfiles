@@ -289,6 +289,10 @@ if type "kubectl" > /dev/null; then
 #    RPROMPT='$(gcloud_ps1)'
   }
 
+  if [[ ! -z "$KUBECONFIG" ]]; then
+    onkube
+  fi
+
 fi
 
 

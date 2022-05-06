@@ -1,6 +1,7 @@
 *.swp
 .vscode
 .idea
+bin/act
 bin/jiq
 bin/dry
 bin/promtool
