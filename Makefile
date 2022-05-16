@@ -402,6 +402,9 @@ https://github.com/istio/istio/releases/download/1.9.1/istioctl-1.9.1-linux-amd6
 install-k8s-helm-plugin-s3:
 	helm plugin install https://github.com/hypnoglow/helm-s3.git
 
+install-k8-helm-plugin-starter:
+	helm plugin install https://github.com/salesforce/helm-starter.git
+
 install-k8s-helm-chartmuseum:
 	curl -sLo ~/dotfiles/bin/chartmuseum https://s3.amazonaws.com/chartmuseum/release/latest/bin/linux/amd64/chartmuseum
 	chmod +x ~/dotfiles/bin/chartmuseum
@@ -646,9 +649,14 @@ gnome-dropdown-terminal:
 	mv /tmp/gnome-dropdown-terminal/drop-down-terminal@gs-extensions.zzrough.org ~/.local/share/gnome-shell/extensions/drop-down-terminal@gs-extensions.zzrough.org
 
 gnome-dash-to-dock:
-	rm -rf /tmp/dash-to-dock
-	git clone https://github.com/micheleg/dash-to-dock.git /tmp/dash-to-dock
-	cd /tmp/dash-to-dock && make && make install
+	rm -rf /tmp/dash-to-dock ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com
+	mkdir -p /tmp/dash-to-dock
+	curl -sLo /tmp/dash-to-dock/dashtodock.zip https://extensions.gnome.org/extension-data/dash-to-dockmicxgx.gmail.com.v68.shell-extension.zip
+	mkdir -p ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com
+	unzip /tmp/dash-to-dock/dashtodock.zip -d ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/
+	echo "Shell reload is required Alt+F2 r Enter"
+#	git clone https://github.com/micheleg/dash-to-dock.git /tmp/dash-to-dock
+#	cd /tmp/dash-to-dock && git checkout origin/tmp/gnome-3.36 && make && make install
 
 gnome-unite-shell:
 	rm -rf /tmp/gnome-unite-shell
@@ -664,7 +672,7 @@ gnome-status-area-horizontal-spacing:
 	mv /tmp/status-area-horizontal-spacing-gnome-shell-extension/status-area-horizontal-spacing@mathematical.coffee.gmail.com   ~/.local/share/gnome-shell/extensions/status-area-horizontal-spacing@mathematical.coffee.gmail.com
 
 gnome-shell-system-monitor:
-	sudo apt-get install gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
+	sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
 	rm -rf /tmp/gnome-shell-system-monitor-applet
 	git clone https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet.git /tmp/gnome-shell-system-monitor-applet
 	mv /tmp/gnome-shell-system-monitor-applet/system-monitor@paradoxxx.zero.gmail.com ~/.local/share/gnome-shell/extensions/system-monitor@paradoxxx.zero.gmail.com
@@ -685,7 +693,7 @@ gnome-shell-gnome-extension-quicktoggler:
 	mv /tmp/gnome-extension-quicktoggler ~/.local/share/gnome-shell/extensions/quicktoggler@shihira.github.com
 
 gnome-shell-put-windows:
-	rm -rf /tmp/
+	rm -rf /tmp/gnome-shell-extensions-negesti
 	git clone git@github.com:negesti/gnome-shell-extensions-negesti.git /tmp/gnome-shell-extensions-negesti
 	mv /tmp/gnome-shell-extensions-negesti  ~/.local/share/gnome-shell/extensions/putWindow@clemens.lab21.org
 # /GNOME specific extensions
