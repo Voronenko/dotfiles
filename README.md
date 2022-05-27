@@ -1476,6 +1476,14 @@ ls -1 ./*_raw.pdf | xargs -L1 -I {} ocrmypdf {} {}_ocr.pdf
 
 ```
 
+## Remapping win key
+
+You can re-map everything to Win key with xcape by re-assigning any other key combination
+
+```
+xcape -e 'Super_L=Shift_L|Escape'
+```
+
 
 ## 3rd party work
 
