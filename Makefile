@@ -886,12 +886,20 @@ install-ovh-nova:
 install-aws-cfn-template-flip:
 	sudo pip3 install cfn-flip
 
+# https://github.com/salesforce/cloudsplaining
+# eval "$(_CLOUDSPLAINING_COMPLETE=source_zsh cloudsplaining)"
+install-aws-salesforce-cloudplaining:
+	pip3 install --user cloudsplaining
+
+# https://github.com/salesforce/policy_sentry
+# eval "$(_POLICY_SENTRY_COMPLETE=source_zsh policy_sentry)"
+install-aws-salesforce-policy-sentry:
+	pip3 install --user policy_sentry
 
 install-digitalocean-cli:
 	curl -sLo /tmp/doctl.tar.gz https://github.com/digitalocean/doctl/releases/download/v1.64.0/doctl-1.64.0-linux-amd64.tar.gz
 	tar -xvzf /tmp/doctl.tar.gz -C ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/doctl
-
 # / CLOUDS
 
 # ESXI
