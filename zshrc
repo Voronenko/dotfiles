@@ -170,9 +170,17 @@ if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
   fi
 fi
 
+if [[ -f $HOME/.asdf/asdf.sh ]] {
+  source $HOME/.asdf/asdf.sh
+}
+
 if [[ -f /usr/bin/direnv ]]; then
 # direnv
-eval "$(direnv hook zsh)"
+  if [[ -f $HOME/.asdf/asdf.sh ]]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" || echo "asdf plugin add direnv && asdf install direnv 2.21.2"
+  else
+    eval "$(direnv hook zsh)"
+  fi
 alias envrc_here='cp ~/dotfiles/direnv/derived.env ./.envrc'
 fi
 
@@ -536,10 +544,11 @@ if [[ -d $HOME/.aws ]]; then
 
 
 #
-declare -a AWS_GLOBALS=(ec2ssh ec2forward ec2ssm)
+declare -a AWS_GLOBALS=(ec2ssh ec2sshi ec2forward ec2ssm)
 
 load_ec2tools() {
 source $HOME/dotfiles/helpers/ec2ssh.zsh
+source $HOME/dotfiles/helpers/ec2sshi.zsh
 source $HOME/dotfiles/helpers/ec2forward.zsh
 source $HOME/dotfiles/helpers/ec2ssm.zsh
 }

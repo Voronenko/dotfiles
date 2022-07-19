@@ -1484,6 +1484,48 @@ You can re-map everything to Win key with xcape by re-assigning any other key co
 xcape -e 'Super_L=Shift_L|Escape'
 ```
 
+## Pinning kubectl, helm, kustomize versions, etc
+
+Install asdf in your environment via Makefile ;
+
+Ensure you've initialized integration with global direnv and you have direnv installed globally
+
+```sh
+asdf plugin add direnv
+```
+
+Consider installing supported plugins
+
+```sh
+asdf plugin add kustomize
+asdf plugin add helmfile
+asdf plugin add kubectl
+asdf plugin add helm
+```
+
+IF you have disabled tfenv integration, you could also add terraform as plugin
+
+```sh
+asdf plugin add terraform
+```
+
+Create two files in your "project" root:
+
+on top of your envrc:
+
+```
+use asdf
+```
+
+and after that you can use .tools-versions file, kind of
+
+```
+terraform 1.0.7
+kustomize 3.5.3
+kubectl 1.20.2
+```
+EOF
+
 
 ## 3rd party work
 

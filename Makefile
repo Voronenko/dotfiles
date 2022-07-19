@@ -895,6 +895,7 @@ install-aws-salesforce-cloudplaining:
 # eval "$(_POLICY_SENTRY_COMPLETE=source_zsh policy_sentry)"
 install-aws-salesforce-policy-sentry:
 	pip3 install --user policy_sentry
+	echo "consider local initialization with 'policy_sentry initialize'"
 
 install-digitalocean-cli:
 	curl -sLo /tmp/doctl.tar.gz https://github.com/digitalocean/doctl/releases/download/v1.64.0/doctl-1.64.0-linux-amd64.tar.gz
@@ -983,7 +984,11 @@ install-screenshot-tool:
 
 #https://aws.amazon.com/serverless/sam/
 install-aws-sam-cli:
-	pip install --user aws-sam-cli
+	mkdir -p /tmp/aws-sam-cli
+	curl -sLo /tmp/aws-sam-cli/aws-sam-cli.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+	mkdir -p ~/apps/aws-sam-cli
+	unzip /tmp/aws-sam-cli/aws-sam-cli.zip -d ~/apps/aws-sam-cli/
+	cd ~/apps/aws-sam-cli/ && sudo ./install
 
 #https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html#install-plugin-linux
 install-aws-session-manager-plugin:
@@ -1201,6 +1206,9 @@ install-bitwarden-cli:
 # sudo ddcutil setvcp 10 70
 install-ddcutil:
 	sudo apt install ddcutil
+
+install-asdf:
+	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
 #
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
