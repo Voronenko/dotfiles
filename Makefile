@@ -529,7 +529,7 @@ install-k8s-skaffold:
 	chmod +x ~/dotfiles/bin/skaffold
 
 install-k8s-kubebox:
-	curl -Lo ~/dotfiles/bin/kubebox https://github.com/astefanutti/kubebox/releases/download/v0.9.0/kubebox-linux
+	curl -Lo ~/dotfiles/bin/kubebox https://github.com/astefanutti/kubebox/releases/download/v0.10.0/kubebox-linux
 	chmod +x ~/dotfiles/bin/kubebox
 	echo Do not forget to install cadvisor, for example kubectl apply -f https://raw.github.com/astefanutti/kubebox/master/cadvisor.yaml
 
