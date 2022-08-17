@@ -449,6 +449,14 @@ install-k8s-kubectl-color:
 	curl -sLo /tmp/kubecolor/kubecolor.tar.gz https://github.com/dty1er/kubecolor/releases/download/v0.0.9/kubecolor_0.0.9_Linux_x86_64.tar.gz
 	cd /tmp/kubecolor && tar -xzf kubecolor.tar.gz && mv /tmp/kubecolor/kubecolor ~/dotfiles/bin/
 	ln -s ~/dotfiles/bin/kubecolor  ~/dotfiles/bin/kc
+
+install-k8s-kubectl-cert_manager:
+	mkdir -p /tmp/kubecertmanager
+	curl -sLo /tmp/kubecertmanager/kubectl-cert-manager.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/kubectl-cert_manager-linux-amd64.tar.gz
+	cd /tmp/kubecertmanager && tar xzf kubectl-cert-manager.tar.gz && mv /tmp/kubecertmanager/kubectl-cert_manager ~/dotfiles/bin/
+	curl -sLo /tmp/kubecertmanager/cmctl.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cmctl-linux-amd64.tar.gz
+	cd /tmp/kubecertmanager && tar xzf cmctl.tar.gz && mv /tmp/kubecertmanager/cmctl ~/dotfiles/bin/
+
 # terminal UI to interact with your Kubernetes
 install-k8s-k9s:
 	mkdir -p /tmp/k9s

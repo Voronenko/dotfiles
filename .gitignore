@@ -145,3 +145,5 @@ bin/kustomize
 bin/step1.xml
 bin/step2.xml
 bin/plumber
+bin/cmctl
+bin/kubectl-cert_manager
