@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+color_red=$'\e[1;31m'
+color_green=$'\e[1;32m'
+color_reset=$'\e[0m'
+
+########################### Usage ##############################################
+#
+# password prompt 'ispwned'
+# or
+# pipe password 'echo $PASSWORD | ispwned'
+#
+################################################################################
+
+if [[ -t 0 ]]; then
+  echo -n 'Password:'
+  read -s password
+  echo -en "\r\033[K"
+else
+  read -s password
+fi
+
+password_sha1="$(echo -n $password | shasum | cut -d' ' -f1 | tr a-z A-Z)"
+if (curl -Ns "https://api.pwnedpasswords.com/range/${password_sha1:0:5}" \
+    | grep -q "${password_sha1:5}"); then
+  echo "${color_red}Oh no — pwned!${color_reset}"
+  echo curl -Ns "https://api.pwnedpasswords.com/range/${password_sha1:0:5}"
+  exit 0
+else
+  echo "${color_green}Good news — no pwnage found!${color_reset}"
+  exit 1
+fi
