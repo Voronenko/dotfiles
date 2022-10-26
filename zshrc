@@ -236,7 +236,7 @@ case "$1" in
         ;;
 
     bash)
-        sudo docker exec -it $(sudo docker ps -lq) ${2:-/bin/sh} $3 $4 $5 $6 $7 $8 $9
+        sudo docker exec -it $(sudo docker ps -lq) ${2:-/bin/bash} $3 $4 $5 $6 $7 $8 $9
         ;;
 
     cleanimages)

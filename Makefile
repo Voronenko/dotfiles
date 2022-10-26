@@ -813,7 +813,7 @@ install-hashicorp-terraform:
 	cd ~/tmp/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip && mv terraform ~/dotfiles/bin/
 
 install-hashicorp-packer:
-	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.7.2/packer_1.7.2_linux_amd64.zip"
+	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
 
 
@@ -1222,6 +1222,19 @@ install-asdf:
 install-lwsm:
 	npm install -g linux-window-session-manager
 #
+
+update-open-ssl:
+	mkdir /tmp/openssl
+	cd /tmp/openssl && \
+	wget https://www.openssl.org/source/openssl-1.1.1q.tar.gz && \
+	wget https://www.openssl.org/source/openssl-1.1.1q.tar.gz.sha256 && \
+	echo "$(cat openssl-1.1.1q.tar.gz.sha256) openssl-1.1.1q.tar.gz" | sha256sum --check && \
+	tar -zxf openssl-1.1.1q.tar.gz && \
+	cd openssl-1.1.1q && \
+	./config && \
+	make && \
+	make test && \
+	sudo make install
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
