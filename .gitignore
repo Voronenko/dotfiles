@@ -110,6 +110,7 @@ bin/istioctl
 bin/istioctl183
 bin/ctop
 bin/bw
+bin/telepresence
 # esxi toolset
 esxcli.logesxcli.log
 bin/esxi-vm-create

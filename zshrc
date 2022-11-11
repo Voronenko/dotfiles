@@ -150,6 +150,10 @@ function onproject() {
   TMUXMODE=$2 gnome-terminal --title="${1}" -x tmuxinator ${1}_env &
 }
 
+function workingon() {
+   gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
+}
+
 fi
 
 function offproject() {

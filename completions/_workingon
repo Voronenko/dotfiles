@@ -1,0 +1,16 @@
+#compdef workingon
+
+_workingon() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments '1: :->csi'
+
+    case $state in
+    csi)
+      _arguments "1: :($(find ~/.config/zellij/layouts/*.kdl  -printf "%f\n" | sed "s/.*\///; s/\.kdl//"))"
+    ;;
+    esac
+}
+
+_workingon "$@"

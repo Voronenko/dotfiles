@@ -34,6 +34,11 @@ zsh-fzf-repo:
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # /ZSH
 
+install-zellij:
+	curl -sLo /tmp/zellij.tar.gz https://github.com/zellij-org/zellij/releases/download/v$(shell curl -s https://api.github.com/repos/zellij-org/zellij/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/zellij-x86_64-unknown-linux-musl.tar.gz
+	tar -xvzf /tmp/zellij.tar.gz -C /tmp
+	sudo mv /tmp/zellij /usr/local/bin
+	sudo chmod +x /usr/local/bin/zellij
 
 # CD CI local runners
 
@@ -583,6 +588,11 @@ install-k8s-kustomize:
 	tar -xvzf /tmp/kustomize.tar.gz -C /tmp
 	mv /tmp/kustomize ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/kustomize
+
+install-k8s-telepresence:
+	sudo apt install sshfs conntrack torsocks
+	curl -sLo ~/dotfiles/bin/telepresence  https://app.getambassador.io/download/tel2/linux/amd64/latest/telepresence
+	chmod a+x ~/dotfiles/bin/telepresence
 
 kube-dashboard-normal-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
