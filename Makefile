@@ -1272,3 +1272,5 @@ update-open-ssl:
 # sudo add-apt-repository ppa:solaar-unifying/stable
 # sudo apt update
 #  sudo apt install solaar
+
+# https://github.com/norwoodj/helm-docs

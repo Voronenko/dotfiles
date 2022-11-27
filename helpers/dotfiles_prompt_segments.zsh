@@ -9,6 +9,18 @@
 
 ######################## DOTFILES SIMPLE PROMPTS
 
+prompt_anaconda() {
+  # Depending on the conda version, either might be set. This
+  # variant works even if both are set.
+  local _path=$CONDA_ENV_PATH$CONDA_PREFIX
+  if ! [ -z "$_path" ]; then
+    # config - can be overwritten in users' zshrc file.
+    set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER ""
+    set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ""
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+  fi
+}
+
 prompt_dot_status() {
   "$1_prompt_segment" "$0" "$2" none none "%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])" ''
 }
