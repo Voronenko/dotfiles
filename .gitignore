@@ -130,6 +130,7 @@ bin/gdu
 bin/procs
 bin/logcli
 bin/lazydocker
+bin/lazycli
 bin/cortextool
 bin/terraform100
 bin/xh

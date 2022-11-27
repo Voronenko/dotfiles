@@ -98,11 +98,24 @@ install-console-bat:
 	curl -sLo /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
 
+install-console-lazysuite: install-console-lazygit install-console-lazydocker install-console-lazycli
+	echo "Done"
+
 # https://github.com/jesseduffield/lazygit
 install-console-lazygit:
-	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.20.4/lazygit_0.20.4_Linux_x86_64.tar.gz
+	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.36.0/lazygit_0.36.0_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/lazygit.tar.gz -C /tmp
 	mv /tmp/lazygit ~/dotfiles/bin
+
+install-console-lazydocker:
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.20.0/lazydocker_0.20.0_Linux_x86.tar.gz
+	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
+	mv /tmp/lazydocker ~/dotfiles/bin
+
+install-console-lazycli:
+	curl -sLo /tmp/lazycli.tar.gz https://github.com/jesseduffield/lazycli/releases/download/v0.1.15/lazycli-linux-x64.tar.gz
+	tar -xvzf /tmp/lazycli.tar.gz -C /tmp
+	mv /tmp/lazycli ~/dotfiles/bin
 
 # http://lnav.org/
 install-console-logreader-lnav:
@@ -340,13 +353,6 @@ install-docker-slim:
 	curl -sLo /tmp/docker-slim.tar.gz https://downloads.dockerslim.com/releases/1.29.0/dist_linux.tar.gz
 	tar -xvzf /tmp/docker-slim.tar.gz -C /tmp
 	mv /tmp/dist_linux/* ~/dotfiles/bin
-
-#https://github.com/jesseduffield/lazydocker/
-install-docker-lazydocker:
-	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.12/lazydocker_0.12_Linux_x86_64.tar.gz
-	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
-	mv /tmp/lazydocker ~/dotfiles/bin
-	chmod +x ~/dotfiles/bin/lazydocker
 
 # templating utility for easy config patching using bash variables syntax
 install-docker-envplate:
