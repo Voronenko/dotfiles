@@ -136,6 +136,11 @@ install-console-loki-cortextool:
 	cp /tmp/cortextool ~/dotfiles/bin/cortextool
 	chmod +x ~/dotfiles/bin/cortextool
 
+install-console-loki-benchtool:
+	curl -sLo ~/dotfiles/bin/benchtool https://github.com/grafana/cortex-tools/releases/download/$(shell curl -s https://api.github.com/repos/grafana/cortex-tools/releases/latest | grep tag_name | cut -d '"' -f 4)/benchtool_$(shell curl -s https://api.github.com/repos/grafana/cortex-tools/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2- )_linux_x86_64
+	chmod +x ~/dotfiles/bin/benchtool
+
+
 # run github actions locally
 # # Run a specific job:
 # act -j test
@@ -840,6 +845,10 @@ install-hashicorp-packer:
 install-go-gimme:
 	curl -sL -o ~/dotfiles/bin/gimme https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
 	chmod +x ~/dotfiles/bin/gimme
+
+install-go-global:
+	curl -sLo /tmp/go1.19.3.tar.gz  https://go.dev/dl/go1.19.3.linux-amd64.tar.gz
+	sudo tar -C /usr/local -xzf /tmp/go1.19.3.tar.gz
 
 go-rename:
 	go get golang.org/x/tools/cmd/gorename
