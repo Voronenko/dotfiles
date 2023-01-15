@@ -119,9 +119,9 @@ install-console-lazycli:
 
 # http://lnav.org/
 install-console-logreader-lnav:
-	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.9.0/lnav-0.9.0-linux-64bit.zip
+	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.11.1/lnav-0.11.1-x86_64-linux-musl.zip
 	cd /tmp && unzip lnav.zip
-	mv /tmp/lnav-0.9.0/lnav ~/dotfiles/bin
+	mv /tmp/lnav-0.11.1/lnav ~/dotfiles/bin
 	lnav -i extra
 
 install-console-loki-logcli:
@@ -1289,3 +1289,5 @@ update-open-ssl:
 #  sudo apt install solaar
 
 # https://github.com/norwoodj/helm-docs
+
+# https://blog.jetbrains.com/idea/2022/12/http-client-cli-run-requests-and-tests-on-ci/
