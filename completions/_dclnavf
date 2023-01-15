@@ -1,0 +1,6 @@
+#compdef dclnavf
+
+_arguments \
+  '(-f --follow)'{-f,--follow}'[Follow log output]' \
+  '--tail=[Number of lines to show from the end of the logs for each container.]:number of lines: ' \
+  "*:services:($(docker-compose ps --services 2>/dev/null))"
