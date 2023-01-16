@@ -572,6 +572,12 @@ install-k8s-critctl:
 	curl --output /tmp/crictl.tar.gz -L https://github.com/kubernetes-sigs/cri-tools/releases/download/$(shell curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | grep tag_name | cut -d '"' -f 4)/crictl-$(shell curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | grep tag_name | cut -d '"' -f 4)-linux-amd64.tar.gz
 	tar zxvf /tmp/crictl.tar.gz -C ~/dotfiles/bin/
 
+install-k8s-datree:
+	curl -sLo /tmp/datree.zip https://github.com/datreeio/datree/releases/download/1.8.14/datree-cli_1.8.14_Linux_x86_64.zip
+	cd /tmp && unzip datree.zip
+	mv /tmp/datree ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/datree
+
 install-k8s-kubectl-krew-plugins:
 	# https://github.com/rajatjindal/kubectl-whoami
 	kubectl krew install whoami
@@ -587,6 +593,7 @@ install-k8s-kubectl-krew-plugins:
 #	kubectl krew install access-matrix
 	# https://github.com/jordanwilson230/kubectl-plugins/blob/krew/kubectl-exec-as
 	kubectl krew install exec-as
+	kubectl krew install datree
 
 install-k8s-kubescape:
 	curl -Lo ~/dotfiles/bin/kubescape https://github.com/armosec/kubescape/releases/download/betav1.0.43/kubescape-ubuntu-latest

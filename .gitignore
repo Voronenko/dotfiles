@@ -4,6 +4,7 @@
 bin/act
 bin/jiq
 bin/dry
+bin/datree
 bin/promtool
 bin/circleci
 bin/eksctl
