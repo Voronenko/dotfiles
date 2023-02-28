@@ -93,6 +93,10 @@ install-mysql-dbmate:
 	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.11.0/dbmate-linux-amd64
 	chmod +x ~/dotfiles/bin/dbmate
 
+install-snyk:
+	curl -sLo ~/dotfiles/bin/snyk https://github.com/snyk/cli/releases/download/v1.1109.0/snyk-linux
+	chmod +x  ~/dotfiles/bin/snyk
+
 # cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
 	curl -sLo /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
@@ -639,6 +643,7 @@ install-helm-common-repos:
 	helm repo add stakater https://stakater.github.io/stakater-charts
 	helm repo add grafana https://grafana.github.io/helm-charts
 	helm repo add sentry https://sentry-kubernetes.github.io/charts
+	helm repo add autoscaler https://kubernetes.github.io/autoscaler
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
@@ -1298,3 +1303,6 @@ update-open-ssl:
 # https://github.com/norwoodj/helm-docs
 
 # https://blog.jetbrains.com/idea/2022/12/http-client-cli-run-requests-and-tests-on-ci/
+
+# csv processing
+# sudo pip install csvkit

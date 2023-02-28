@@ -1,0 +1,27 @@
+#compdef set-aws-region
+
+_aws-regions() {
+cat << EOF
+us-east-1
+us-east-2
+us-west-1
+us-west-2
+eu-west-1
+eu-west-2
+ap-southeast-1
+}
+
+_set-aws-region() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments '1: :->csi'
+
+    case $state in
+    csi)
+      _arguments "1: :($(_aws-regions))"
+    ;;
+    esac
+}
+
+_set-aws-region "$@"

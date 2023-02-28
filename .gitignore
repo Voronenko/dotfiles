@@ -150,3 +150,5 @@ bin/step2.xml
 bin/plumber
 bin/cmctl
 bin/kubectl-cert_manager
+bin/benchtool
+bin/snyk
