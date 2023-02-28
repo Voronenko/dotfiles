@@ -1260,6 +1260,10 @@ install-lwsm:
 	npm install -g linux-window-session-manager
 #
 
+install-docker-compose:
+	sudo curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m)"
+	chmod +x ~/dotfiles/bin/docker-compose
+
 update-open-ssl:
 	mkdir /tmp/openssl
 	cd /tmp/openssl && \
