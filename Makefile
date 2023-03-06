@@ -472,9 +472,9 @@ install-k8s-kubectl-color:
 
 install-k8s-kubectl-cert_manager:
 	mkdir -p /tmp/kubecertmanager
-	curl -sLo /tmp/kubecertmanager/kubectl-cert-manager.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/kubectl-cert_manager-linux-amd64.tar.gz
+	curl -sLo /tmp/kubecertmanager/kubectl-cert-manager.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/kubectl-cert_manager-linux-amd64.tar.gz
 	cd /tmp/kubecertmanager && tar xzf kubectl-cert-manager.tar.gz && mv /tmp/kubecertmanager/kubectl-cert_manager ~/dotfiles/bin/
-	curl -sLo /tmp/kubecertmanager/cmctl.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cmctl-linux-amd64.tar.gz
+	curl -sLo /tmp/kubecertmanager/cmctl.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cmctl-linux-amd64.tar.gz
 	cd /tmp/kubecertmanager && tar xzf cmctl.tar.gz && mv /tmp/kubecertmanager/cmctl ~/dotfiles/bin/
 
 # terminal UI to interact with your Kubernetes
