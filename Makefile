@@ -400,7 +400,7 @@ install-k8s-stern:
 # helm version considered stable
 install-k8s-helm3-fixed:
 	mkdir -p /tmp/helm
-	curl -sLo /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz"
+	curl -sLo /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.11.1-linux-amd64.tar.gz"
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
