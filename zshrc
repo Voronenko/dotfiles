@@ -133,6 +133,8 @@ fi
 
 alias pps='ps -eo uname:20,pid,pcpu,pmem,sz,tty,stat,time,cmd'
 
+alias onpy="source $HOME/dotfiles/bin/onpy"
+
 if [[ -f /usr/bin/tmux || -f /usr/local/bin/tmux ]]; then
 
 if [[ -d /mnt/c/Windows/ ]]; then

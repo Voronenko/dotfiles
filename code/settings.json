@@ -9,6 +9,9 @@
 
   "python.venvPath": "./p-env, ~/.virtualenvs, ./venv",
 
+  "kogito.bpmn.runOnSave": "extension.kogito.silentlyGenerateSvgBpmn",
+  "kogito.dmn.runOnSave": "extension.kogito.silentlyGenerateSvgDmn",
+
 // https://github.com/plantuml/plantuml-stdlib
   "plantuml.includepaths": [
     "/home/slavko/apps/plantuml/plantuml-stdlib/"
@@ -110,6 +113,13 @@
     "**/.factorypath": true
   },
   "bracket-pair-colorizer-2.depreciation-notice": false,
-  "explorer.confirmDelete": false // for example ["nim", "nims", "python"]
+  "explorer.confirmDelete": false,
+  "bracket-pair-colorizer-2.activeScopeCSS": [
+
+    "borderStyle : solid",
+    "borderWidth : 1px",
+    "borderColor : {color}",
+    "opacity: 0.5"
+  ] // for example ["nim", "nims", "python"]
 
 }

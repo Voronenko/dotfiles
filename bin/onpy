@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -f "$HOME/.virtualenvs/$1/bin/activate" ]; then
+    export WORKON_HOME=$HOME/.virtualenvs
+    VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3'
+    source /usr/local/bin/virtualenvwrapper.sh
+    workon $1
+else
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    conda activate $1
+fi
