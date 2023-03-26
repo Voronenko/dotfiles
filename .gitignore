@@ -152,3 +152,4 @@ bin/cmctl
 bin/kubectl-cert_manager
 bin/benchtool
 bin/snyk
+bin/bito

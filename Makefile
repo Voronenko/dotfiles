@@ -1277,6 +1277,10 @@ update-open-ssl:
 	make test && \
 	sudo make install
 
+install-bito:
+	curl -sLo ~/dotfiles/bin/bito https://github.com/gitbito/CLI/raw/main/version-2.0/bito-macos-x86
+	chmod +x ~/dotfiles/bin/bito
+
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
 
