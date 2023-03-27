@@ -1281,6 +1281,11 @@ install-bito:
 	curl -sLo ~/dotfiles/bin/bito https://github.com/gitbito/CLI/raw/main/version-2.0/bito-macos-x86
 	chmod +x ~/dotfiles/bin/bito
 
+# https://github.com/prometheus-community/vscode-promql
+install-vscode-promql:
+	curl -sLo /tmp/vscode-promql-0.3.1.vsix https://github.com/prometheus-community/vscode-promql/releases/download/v0.3.1/vscode-promql-0.3.1.vsix
+	code --install-extension /tmp/vscode-promql-0.3.1.vsix
+
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
 
