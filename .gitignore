@@ -153,3 +153,4 @@ bin/kubectl-cert_manager
 bin/benchtool
 bin/snyk
 bin/bito
+bin/promlens

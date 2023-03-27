@@ -254,6 +254,13 @@ install-promtool:
 	cp /tmp/prometheus-2.23.0.linux-amd64/promtool ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/promtool
 
+# https://github.com/prometheus/promlens
+install-promlens:
+	curl -sLo /tmp/promlens.tar.gz https://github.com/prometheus/promlens/releases/download/v0.3.0/promlens-0.3.0.linux-amd64.tar.gz
+	cd /tmp && tar -xzf promlens.tar.gz --wildcards --no-anchored '*promlens*'
+	cp /tmp/promlens-0.3.0.linux-amd64/promlens ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/promlens
+
 install-console-shellharden:
 	curl -sLo ~/dotfiles/bin/shellharden https://github.com/anordal/shellharden/releases/download/v4.1.1/shellharden-4.1.1-x86_64-linux-gnu
 	chmod +x ~/dotfiles/bin/shellharden
