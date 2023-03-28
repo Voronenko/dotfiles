@@ -8,7 +8,7 @@ _onproject() {
 
     case $state in
     csi)
-      _arguments "1: :($(find ~/.tmuxinator/*.yml  -printf "%f\n" | sed -e 's/\_env..*$//'))"
+      _arguments "1: :($(find ~/.config/zellij/layouts/*.kdl  -printf "%f\n" | sed "s/.*\///; s/\.kdl//"))"
     ;;
     esac
 }

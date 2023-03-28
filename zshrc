@@ -142,30 +142,30 @@ if [[ -d /mnt/c/Windows/ ]]; then
 
 unsetopt BG_NICE
 
-function onproject() {
+function ontmux() {
   TMUXMODE=$2 tmuxinator ${1}_env
 }
 
 else
 
-function onproject() {
+function ontmux() {
   TMUXMODE=$2 gnome-terminal --title="${1}" -x tmuxinator ${1}_env &
 }
 
-function workingon() {
+function onproject() {
    gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
 }
 
 fi
 
-function offproject() {
+function offtmux() {
   tmux kill-session -t ${1} &
 }
 
 autoload -Uz onproject
 autoload -Uz offproject
 
-alias killproject='tmux kill-server'
+alias killtmux='tmux kill-server'
 
 fi
 
