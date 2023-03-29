@@ -484,6 +484,10 @@ install-k8s-kubectl-cert_manager:
 	curl -sLo /tmp/kubecertmanager/cmctl.tar.gz https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cmctl-linux-amd64.tar.gz
 	cd /tmp/kubecertmanager && tar xzf cmctl.tar.gz && mv /tmp/kubecertmanager/cmctl ~/dotfiles/bin/
 
+install-k8s-kubectl-convert:
+	curl -sLo ~/dotfiles/bin/kubectl-convert  "https://dl.k8s.io/release/$(shell curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert"
+	chmod +x ~/dotfiles/bin/kubectl-convert
+
 # terminal UI to interact with your Kubernetes
 install-k8s-k9s:
 	mkdir -p /tmp/k9s

@@ -783,6 +783,13 @@ alias borgui='vorta &'
 alias kgpi="kubectl get pods -o jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
 alias kgpia="kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
 
+if type "exa" > /dev/null; then
+  alias l='exa -lah --git --icons'
+  alias ll='exa -lah --git --extended --icons'
+  alias lt='exa -lah --git --tree --icons'
+fi
+
+
 # terminal shortcuts
 
 if type "toggl" > /dev/null; then
