@@ -1330,3 +1330,6 @@ install-vscode-promql:
 
 # csv processing
 # sudo pip install csvkit
+
+# terminal command in browser
+# https://github.com/sorenisanerd/gotty

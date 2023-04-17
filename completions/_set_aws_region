@@ -1,5 +1,10 @@
 #compdef set-aws-region
 
+#aws ec2 describe-regions \
+#    --all-regions \
+#    --query "Regions[].{Name:RegionName}" \
+#    --output text
+
 _aws-regions() {
 cat << EOF
 us-east-1

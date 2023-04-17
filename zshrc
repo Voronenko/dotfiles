@@ -153,7 +153,18 @@ function ontmux() {
 }
 
 function onproject() {
-   gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    SESSION_TYPE="remote/ssh"
+  else
+    case $(ps -o comm= -p "$PPID") in
+      sshd|*/sshd) SESSION_TYPE="remote/ssh";;
+    esac
+  fi
+  if [ "$SESSION_TYPE" = "remote/ssh" ]; then
+     zellij --layout ${1} -s ${1}
+  else
+     gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
+  fi
 }
 
 fi
@@ -788,6 +799,8 @@ if type "exa" > /dev/null; then
   alias ll='exa -lah --git --extended --icons'
   alias lt='exa -lah --git --tree --icons'
 fi
+
+alias timestamp="date +%s%3N|pbcopy && pbpaste"
 
 
 # terminal shortcuts

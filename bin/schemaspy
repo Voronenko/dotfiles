@@ -19,7 +19,7 @@ else
 fi
 
 if [ ! -f $SCHEMASPYJAR ]; then
-    curl -sLo $SCHEMASPYJAR https://github.com/schemaspy/schemaspy/releases/download/v6.1.0/schemaspy-6.1.0.jar
+    curl -sLo $SCHEMASPYJAR https://github.com/schemaspy/schemaspy/releases/download/v6.2.2/schemaspy-6.2.2.jar
 fi
 
 if [ ! -f $ODBCDRIVER ]; then
