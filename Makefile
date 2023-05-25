@@ -909,6 +909,12 @@ install-aws-myaws:
 	curl -sLo /tmp/myaws.tar.gz https://github.com/minamijoyo/myaws/releases/download/v0.3.10/myaws_v0.3.10_linux_amd64.tar.gz
 	tar -xvzf /tmp/myaws.tar.gz -C ~/dotfiles/bin
 
+install-aws-cw:
+	curl -sLo /tmp/cw.tar.gz https://github.com/lucagrulla/cw/releases/download/v4.1.3/cw_4.1.3_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/cw.tar.gz -C /tmp
+	mv /tmp/cw ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/cw
+
 # utility to speedup working with aws nodes via ssm
 install-aws-ssm:
 	curl -sLo /tmp/ssm.tar.gz https://github.com/disneystreaming/ssm-helpers/releases/download/v1.0.0/ssm-helpers_1.0.0_Linux_x86_64.tar.gz

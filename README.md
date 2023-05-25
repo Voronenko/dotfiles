@@ -1550,6 +1550,23 @@ user-theme@gnome-shell-extensions.gcampax.github.com
 windowsNavigator@gnome-shell-extensions.gcampax.github.com
 ```
 
+## Disallow ubuntu to switch audio sources
+
+File: /etc/pulse/default.pa
+
+```
+### Should be after module-*-restore but before module-*-detect
+#[VS] 1 below
+# load-module module-switch-on-port-available
+
+### Use hot-plugged devices like Bluetooth or USB automatically (LP: #1702794)
+#[VS] 3 below
+#.ifexists module-switch-on-connect.so
+#load-module module-switch-on-connect
+#.endif
+```
+
+
 
 ## 3rd party work
 

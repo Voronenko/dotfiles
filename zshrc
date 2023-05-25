@@ -251,7 +251,11 @@ case "$1" in
     sh)
         sudo docker exec -it $(sudo docker ps -lq) ${2:-/bin/sh} $3 $4 $5 $6 $7 $8 $9
         ;;
+    nodes)
+        echo "ID                              HOSTNAME       \tSTATUS    AVAILABILITY   ENGINE VERSION    \tLABELS"
+        docker node ls -q | xargs docker node inspect  -f '{{ .ID }}{{"\t"}}{{ .Description.Hostname }}{{"\t"}}  {{ .Status.State }}{{"\t"}}{{.Spec.Availability}}{{"\t"}}{{.Description.Engine.EngineVersion}} [{{ range $k, $v := .Spec.Labels }}{{ $k }}={{ $v }} {{end}}]'
 
+        ;;
     bash)
         sudo docker exec -it $(sudo docker ps -lq) ${2:-/bin/bash} $3 $4 $5 $6 $7 $8 $9
         ;;
