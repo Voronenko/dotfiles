@@ -431,6 +431,12 @@ done
 
 fi
 
+if [[ -d ~/.pyenv ]]; then
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+fi
+
 if [[ -d ~/.virtualenvs/project_notes ]]; then
 
 alias znotes='workon project_notes && cd ${ZNOTES_PATH-~/z_personal_notes} && jupyter lab'
