@@ -2,6 +2,7 @@
 .vscode
 .idea
 bin/act
+bin/cw
 bin/jiq
 bin/dry
 bin/datree
@@ -154,3 +155,5 @@ bin/benchtool
 bin/snyk
 bin/bito
 bin/promlens
+bin/kubectl-convert
+bin/nitrokey-app

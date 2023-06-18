@@ -790,7 +790,7 @@ alias gpu_on='sudo prime-select nvidia'
 alias gpu_off='sudo prime-select intel'
 alias gpu='sudo prime-select query'
 # turn displays off
-alias doff='export DISPLAY=:1;sleep 3;xset dpms force off'
+alias doff='export DISPLAY=:0;sleep 3;xset dpms force off'
 # eliminate snaps from df output
 alias df='df -x"squashfs"'
 # shows tag matched to checked-out commit or branch otherwise

@@ -121,6 +121,7 @@
     "borderColor : {color}",
     "opacity: 0.5"
   ],
-  "hediet.vscode-drawio.resizeImages": null // for example ["nim", "nims", "python"]
+  "hediet.vscode-drawio.resizeImages": null,
+  "editor.insertSpaces": false // for example ["nim", "nims", "python"]
 
 }
