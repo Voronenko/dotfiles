@@ -593,7 +593,8 @@ done
 if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_zsh_completer.sh; fi
 
   aws-profiles() {
-    cat ~/.aws/credentials | grep '\[' | grep -v '#' | tr -d '[' | tr -d ']'
+    #cat ~/.aws/credentials | grep '\[' | grep -v '#' | tr -d '[' | tr -d ']'
+    aws configure list-profiles
   }
 
   set-aws-profile() {
@@ -639,7 +640,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
   set-aws-keys() {
     local aws_profile=$1
     if [[ ! -z "$aws_profile" ]]; then
-        profile_data=$(cat ~/.aws/credentials | grep "\[$aws_profile\]" -A4 | grep -B 15 "^$")
+        profile_data=$(aws configure list-profiles | grep "\[$aws_profile\]" -A4 | grep -B 15 "^$")
         AWS_ACCESS_KEY_ID="$(echo $profile_data | grep aws_access_key_id | cut -f2 -d'=' | tr -d ' ')"
         AWS_SECRET_ACCESS_KEY="$(echo $profile_data | grep aws_secret_access_key | cut -f2 -d'=' | tr -d ' ')"
         region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A4 | grep -B 15 "^$")
