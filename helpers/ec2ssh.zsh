@@ -81,7 +81,7 @@ function ec2ssh() {
     fi
 
     echo "Fetching ec2 host..."
-    local selected_host=$(myaws ec2 ls --profile=${aws_profile_name} --region=${aws_region} --fields='InstanceId PublicIpAddress PrivateIpAddress LaunchTime Tag:Name Tag:attached_asg' | sort -k4 | fzf | cut -f2)
+    local selected_host=$(aws --profile=${aws_profile_name} --region=${aws_region} ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' --output text | sort -k4 | fzf | cut -f2)
     if [ -n "${selected_host}" ]; then
         if [ -z "${proxy_host}" ]; then
             BUFFER="ssh -i ${target_private_key_path} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${target_port} ${target_user}@${selected_host}"

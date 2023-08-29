@@ -64,7 +64,7 @@ function ec2ssm() {
     fi
 
     echo "Fetching ec2 host..."
-    local selected_host=$(myaws ec2 ls  ${aws_profile_name} --region=${aws_region} --fields='InstanceId PublicIpAddress PrivateIpAddress LaunchTime Tag:Name Tag:attached_asg' | sort -k4 | fzf | cut -f1)
+    local selected_host=$(aws  ${aws_profile_name} --region=${aws_region} ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' --output text | sort -k4 | fzf | cut -f1)
     if [ -n "${selected_host}" ]; then
         BUFFER="aws --region=${aws_region} --profile=${aws_profile_name} ssm start-session --target ${selected_host}"
         if zle; then
