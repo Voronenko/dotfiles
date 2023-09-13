@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # vim: tabstop=2 shiftwidth=2 expandtab
 """Start and use ssh-agent and load identities as necessary.
 

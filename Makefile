@@ -695,15 +695,27 @@ init_simple:
 
 # GNOME specific extensions
 
+# prior gnome 40
 gnome-dropdown-terminal:
 	rm -rf /tmp/gnome-dropdown-terminal
 	git clone https://github.com/zzrough/gs-extensions-drop-down-terminal /tmp/gnome-dropdown-terminal
+	rm -rf ~/.local/share/gnome-shell/extensions/drop-down-terminal@gs-extensions.zzrough.org
 	mv /tmp/gnome-dropdown-terminal/drop-down-terminal@gs-extensions.zzrough.org ~/.local/share/gnome-shell/extensions/drop-down-terminal@gs-extensions.zzrough.org
+
+# after gnome 40
+gnome-dropdown-terminal-quake:
+	rm -rf /tmp/gnome-shell-extension-quake-mode
+	git clone https://github.com/repsac-by/gnome-shell-extension-quake-mode.git /tmp/gnome-shell-extension-quake-mode
+#	rm -rf ~/.local/share/gnome-shell/extensions/quake-mode@repsac-by.github.com
+#	mv /tmp/gnome-shell-extension-quake-mode/quake-mode@repsac-by.github.com ~/.local/share/gnome-shell/extensions/quake-mode@repsac-by.github.com
+	cd /tmp/gnome-shell-extension-quake-mode && gnome-extensions pack quake-mode@repsac-by.github.com --extra-source={quakemodeapp,indicator,util}.js
+	cd /tmp/gnome-shell-extension-quake-mode && gnome-extensions install quake-mode@repsac-by.github.com.shell-extension.zip
 
 gnome-dash-to-dock:
 	rm -rf /tmp/dash-to-dock ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com
 	mkdir -p /tmp/dash-to-dock
 	curl -sLo /tmp/dash-to-dock/dashtodock.zip https://extensions.gnome.org/extension-data/dash-to-dockmicxgx.gmail.com.v68.shell-extension.zip
+	rm -rf  ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com
 	mkdir -p ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com
 	unzip /tmp/dash-to-dock/dashtodock.zip -d ~/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/
 	echo "Shell reload is required Alt+F2 r Enter"
@@ -724,9 +736,10 @@ gnome-status-area-horizontal-spacing:
 	mv /tmp/status-area-horizontal-spacing-gnome-shell-extension/status-area-horizontal-spacing@mathematical.coffee.gmail.com   ~/.local/share/gnome-shell/extensions/status-area-horizontal-spacing@mathematical.coffee.gmail.com
 
 gnome-shell-system-monitor:
-	sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
+#	sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
 	rm -rf /tmp/gnome-shell-system-monitor-applet
 	git clone https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet.git /tmp/gnome-shell-system-monitor-applet
+	rm -rf ~/.local/share/gnome-shell/extensions/system-monitor@paradoxxx.zero.gmail.com
 	mv /tmp/gnome-shell-system-monitor-applet/system-monitor@paradoxxx.zero.gmail.com ~/.local/share/gnome-shell/extensions/system-monitor@paradoxxx.zero.gmail.com
 
 # Check issue  https://github.com/jwendell/gnome-shell-extension-timezone/issues/41
@@ -747,6 +760,7 @@ gnome-shell-gnome-extension-quicktoggler:
 gnome-shell-put-windows:
 	rm -rf /tmp/gnome-shell-extensions-negesti
 	git clone git@github.com:negesti/gnome-shell-extensions-negesti.git /tmp/gnome-shell-extensions-negesti
+	rm -rf ~/.local/share/gnome-shell/extensions/putWindow@clemens.lab21.org
 	mv /tmp/gnome-shell-extensions-negesti  ~/.local/share/gnome-shell/extensions/putWindow@clemens.lab21.org
 # /GNOME specific extensions
 

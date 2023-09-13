@@ -181,7 +181,7 @@ alias killtmux='tmux kill-server'
 fi
 
 if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
-  if type "python" > /dev/null; then
+  if type "python3" > /dev/null; then
     # aliases
     alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
   fi
@@ -434,6 +434,7 @@ fi
 if [[ -d ~/.pyenv ]]; then
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 fi
 
