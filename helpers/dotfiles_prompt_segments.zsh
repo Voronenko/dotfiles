@@ -21,6 +21,16 @@ prompt_anaconda() {
   fi
 }
 
+prompt_pyenv() {
+  # If VIRTUAL_ENV is set, it will be shown by virtualenv prompt
+  if ! [[ -z "$PYENV_ROOT" ]] && [[ -z $VIRTUAL_ENV ]]; then
+    # config - can be overwritten in users' zshrc file.
+    set_default POWERLEVEL9K_PYENV_LEFT_DELIMITER ""
+    set_default POWERLEVEL9K_PYENV_RIGHT_DELIMITER ""
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_PYENV_LEFT_DELIMITER$(pyenv version-name)$POWERLEVEL9K_PYENV_RIGHT_DELIMITER" 'PYTHON_ICON'
+  fi
+}
+
 prompt_dot_status() {
   "$1_prompt_segment" "$0" "$2" none none "%(?,,%{$fg[yellow]%}[%{$fg_bold[white]%}%?%{$reset_color%}%{$fg[yellow]%}])" ''
 }

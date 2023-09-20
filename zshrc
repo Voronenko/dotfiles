@@ -29,7 +29,7 @@ KUBE_PS1_DIVIDER='/'
 POWERLEVEL9K_MODE='awesome-fontconfig' # compatible | awesome-fontconfig | nerdfont-complete
 POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv anaconda go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv custom_kube_ps1)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv anaconda pyenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv custom_kube_ps1)
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
@@ -431,11 +431,13 @@ done
 
 fi
 
+#TODO: consider moving to pyenv plugin
 if [[ -d ~/.pyenv ]]; then
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 fi
 
 if [[ -d ~/.virtualenvs/project_notes ]]; then

@@ -1321,6 +1321,8 @@ install-vscode-promql:
 
 install-pyenv:
 	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+        echo "Installing virtualenv plugin"
+	git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
