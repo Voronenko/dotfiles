@@ -1314,6 +1314,10 @@ install-bito:
 	curl -sLo ~/dotfiles/bin/bito https://github.com/gitbito/CLI/raw/main/version-2.0/bito-macos-x86
 	chmod +x ~/dotfiles/bin/bito
 
+install-komiser:
+	curl -sLo ~/dotfiles/bin/komiser https://cli.komiser.io/latest/komiser_Linux_x86_64
+	chmod +x ~/dotfiles/bin/komiser
+
 # https://github.com/prometheus-community/vscode-promql
 install-vscode-promql:
 	curl -sLo /tmp/vscode-promql-0.3.1.vsix https://github.com/prometheus-community/vscode-promql/releases/download/v0.3.1/vscode-promql-0.3.1.vsix
@@ -1321,7 +1325,7 @@ install-vscode-promql:
 
 install-pyenv:
 	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-        echo "Installing virtualenv plugin"
+	echo "Installing virtualenv plugin"
 	git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb

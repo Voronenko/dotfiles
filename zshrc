@@ -46,6 +46,8 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 setopt HIST_BEEP
 
+LS_COLORS=$LS_COLORS:'di=1;097' ; export LS_COLORS
+
 ##
 
 # async prompt helpers

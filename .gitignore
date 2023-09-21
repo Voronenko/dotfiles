@@ -157,3 +157,4 @@ bin/bito
 bin/promlens
 bin/kubectl-convert
 bin/nitrokey-app
+bin/komiser
