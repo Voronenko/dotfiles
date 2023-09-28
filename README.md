@@ -1530,24 +1530,22 @@ EOF
 
 ```
 gnome-extensions list --enabled
-timezone@jwendell
+
+ddterm@amezin.github.com
 dynamic-panel-transparency@rockon999.github.io
-drop-down-terminal@gs-extensions.zzrough.org
+putWindow@clemens.lab21.org
+workspace-switch-wraparound@theychx.org
 dash-to-dock@micxgx.gmail.com
 system-monitor@paradoxxx.zero.gmail.com
-workspace-switch-wraparound@theychx.org
-putWindow@clemens.lab21.org
 gnome-fuzzy-app-search@gnome-shell-extensions.Czarlie.gitlab.com
-start-overlay-in-application-view@cis.net
-toggle-applications@human.experience
-horizontal-workspaces@gnome-shell-extensions.gcampax.github.com
+status-area-horizontal-spacing@mathematical.coffee.gmail.com
 ubuntu-appindicators@ubuntu.com
 apps-menu@gnome-shell-extensions.gcampax.github.com
 auto-move-windows@gnome-shell-extensions.gcampax.github.com
-launch-new-instance@gnome-shell-extensions.gcampax.github.com
-places-menu@gnome-shell-extensions.gcampax.github.com
 user-theme@gnome-shell-extensions.gcampax.github.com
-windowsNavigator@gnome-shell-extensions.gcampax.github.com
+workspace-indicator@gnome-shell-extensions.gcampax.github.com
+
+
 ```
 
 ## Disallow ubuntu to switch audio sources
