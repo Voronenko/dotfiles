@@ -1702,3 +1702,82 @@ su = (SETUID)   File that is setuid (u+s)
 tw = (STICKY_OTHER_WRITABLE)    Directory that is sticky and other-writable (+t,o+w)
 *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
 ```
+
+
+## Hardware case thingy
+
+Always have active pair of keys registered on services, and perhaps 3rd in unpacked form for quickly replacement
+Try not forget your PINs, consider applying same pins on both pairs.
+
+Perhaps have registry of portals where you have registered your keys, to speedup future key rotation
+
+### Necessary packets and hacks
+
+You might need:
+```sh
+sudo apt-get -y install swig
+sudo apt install libpcsclite-dev
+sudo apt install pcscd
+```
+
+### Resetting openpgp fault pin count
+
+```sh
+# you might be forced to change config mode for ykman
+ykman config mode ccid
+ykman openpgp access set-retries 3 3 3
+```
+
+As a result of operation both pins will be reset to defaults, so do not forget to change back
+
+
+### Generating ssh keys requiring smart card physical presence
+
+#### Undiscoverable key
+
+Such key would require presence of the device and physical authorising, but if you would lost private key of file (saying, moved to new PC)
+you would need to copy it separately or generate new
+
+```sh
+ssh-keygen -t ed25519-sk -C "hardware_smart_card_black2_verify_required" -O verify-required
+```
+
+#### Discoverable key
+
+```sh
+ssh-keygen -t ed25519-sk -O resident -O verify-required -O application=ssh:hardware_resident_key
+```
+
+This works the same as before, except a resident key is easier to import to a new computer because it can be loaded directly from the security key.
+To use the SSH key on a new computer, make sure you have ssh-agent running and simply run:
+
+```sh
+ssh-add -K
+```
+
+This will load a “key handle” into the SSH agent and make the key available for use on the new computer. This works great for short visits, but it won’t last forever – you’ll
+need to run ssh-add again if you reboot the computer, for example. To import the key permanently, instead run:
+
+```sh
+ssh-keygen -K
+```
+
+This will write two files into the current directory: id_ed25519_sk_rk_hardware_resident_key   id_ed25519_sk_rk_hardware_resident_key.pub. Naming comes from -O application=ssh:KEYNAME,
+so good idea to provide short clear name when you generate the key.
+
+Now you just need to it into your SSH directory.
+
+
+Additional bonuses:
+
+Both options guarantee that even if that private file (reference to smartcard) is stolen from your PC, intruder still won't be able to use ssh key to login to external machine
+without physical smart card.  Non-discoverable option would ensure, that if your smart card is stolen, intruder also won't be able to generate original private key reference to smartcard, even if he would guess your pin before lock on 8th try. (edited)
+
+additional pro - you can add same key as a MFA device on aws login (so not a phone, some app on your laptop - but physical thingy you need to have)
+
+and final pro - as most of the people have aws credentials in ~/.aws/credentials|config files  - it is also possible to ensure, that when one tries to use aws credentials
+(which are supposed to be rotated +- regular anyway) - that person has access to physical smart card - thus mitigate risk of stolen aws credentials too.
+
+
+CONS: this is hardware device - capacity sensor might stop working, your could have some static electricity inserting into port, and so on.
+Thus you always need to have two pre-configured in a similar manner keys , and perhaps third for easy replacement.
