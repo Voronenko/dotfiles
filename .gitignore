@@ -157,4 +157,7 @@ bin/bito
 bin/promlens
 bin/kubectl-convert
 bin/nitrokey-app
+# costs tools
 bin/komiser
+bin/infracost
+bin/pluralith
