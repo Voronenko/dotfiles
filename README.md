@@ -1779,3 +1779,64 @@ and final pro - as most of the people have aws credentials in ~/.aws/credentials
 
 CONS: this is hardware device - capacity sensor might stop working, your could have some static electricity inserting into port, and so on.
 Thus you always need to have two pre-configured in a similar manner keys , and perhaps third for easy replacement.
+
+
+## dot-version thingies
+### .python-version
+
+That's the file handled by pyenv.
+First step - you can choose specific python version
+```sh
+pyenv install --list | grep " 3\.[678]"
+pyenv install -v 3.7.2
+```
+
+If you are lucky enough, and can share environment between projects - you can just put v3.7.2 into this file.
+```
+v3.7.2
+```
+
+Otherwise you are about to proceed with virtualenv
+
+```sh
+pyenv virtualenv <python_version> <environment_name>
+```
+
+and put the name of virtual environment into same file
+```
+my-project-virtualenv
+```
+
+### .nvmrc
+
+That's file handled by nvm. Just put node version in it
+```
+v18.15.0
+```
+
+You might want to install node version first
+```sh
+nvm install v18.15.0
+```
+
+### .terraform-version
+
+Thats file is handled by tfenv and specifies version of the terraform that is in use in the current project
+
+```
+1.0.2
+```
+
+### .java-version
+
+That is file handled by jenv
+
+```
+17.0.8.1
+```
+
+You might want to install javasdk, and register it with jenv first.
+
+```sh
+jenv add /usr/lib/jvm/java-17-amazon-corretto/
+```
