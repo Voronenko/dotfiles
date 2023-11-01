@@ -102,17 +102,17 @@ install-console-bat:
 	curl -sLo /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
 	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
 
-install-console-lazysuite: install-console-lazygit install-console-lazydocker install-console-lazycli
+install-console-lazysuite: install-console-lazygit install-console-lazydocker install-console-lazycli install-console-lazynpm
 	echo "Done"
 
 # https://github.com/jesseduffield/lazygit
 install-console-lazygit:
-	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.36.0/lazygit_0.36.0_Linux_x86_64.tar.gz
+	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.40.2/lazygit_0.40.2_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/lazygit.tar.gz -C /tmp
 	mv /tmp/lazygit ~/dotfiles/bin
 
 install-console-lazydocker:
-	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.21.1/lazydocker_0.21.1_Linux_x86.tar.gz
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.23.1/lazydocker_0.23.1_Linux_x86.tar.gz
 	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
 	mv /tmp/lazydocker ~/dotfiles/bin
 
@@ -120,6 +120,11 @@ install-console-lazycli:
 	curl -sLo /tmp/lazycli.tar.gz https://github.com/jesseduffield/lazycli/releases/download/v0.1.15/lazycli-linux-x64.tar.gz
 	tar -xvzf /tmp/lazycli.tar.gz -C /tmp
 	mv /tmp/lazycli ~/dotfiles/bin
+
+install-console-lazynpm:
+	curl -sLo /tmp/lazynpm.tar.gz https://github.com/jesseduffield/lazynpm/releases/download/v0.1.4/lazynpm_0.1.4_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/lazynpm.tar.gz -C /tmp
+	mv /tmp/lazynpm ~/dotfiles/bin
 
 # http://lnav.org/
 install-console-logreader-lnav:
@@ -463,6 +468,7 @@ install-k8s-weaveworks-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
 	mv /tmp/eksctl ~/dotfiles/bin
 
+# Get latest released kubectl version at https://storage.googleapis.com/kubernetes-release/release/stable.txt
 install-k8s-kubectl-ubuntu:
 	sudo apt-get update && sudo apt-get install -y apt-transport-https
 	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -

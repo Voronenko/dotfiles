@@ -122,6 +122,12 @@
     "opacity: 0.5"
   ],
   "hediet.vscode-drawio.resizeImages": null,
-  "editor.insertSpaces": false // for example ["nim", "nims", "python"]
+  "editor.insertSpaces": false,
+  "python.analysis.extraPaths": [
+    "/home/slavko/.vscode/extensions/continue.continue-0.0.413-linux-x64"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/home/slavko/.vscode/extensions/continue.continue-0.0.413-linux-x64"
+  ] // for example ["nim", "nims", "python"]
 
 }
