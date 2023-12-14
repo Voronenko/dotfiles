@@ -81,3 +81,11 @@ profiles:
       - key: d
         command: kill -9 $1
         confirm: true
+  - name: cw ls groups
+    registered_commands:
+      - cw ls groups
+    key_bindings:
+      - key: d
+        command: cw tail -f $0 -b$(date -u +"%Y-%m-%dT00:00:00")
+      - key: y
+        command: cw tail -f $0  -b$(date -u -d 'yesterday' +"%Y-%m-%dT00:00:00") -e $(date -u +"%Y-%m-%dT00:00:00")

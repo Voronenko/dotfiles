@@ -163,8 +163,10 @@ function onproject() {
     esac
   fi
   if [ "$SESSION_TYPE" = "remote/ssh" ]; then
+     zellij delete-session ${1} --force || true
      zellij --layout ${1} -s ${1}
   else
+     zellij delete-session ${1} --force || true
      gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
   fi
 }
@@ -581,13 +583,14 @@ if [[ -d $HOME/.aws ]]; then
 
 
 #
-declare -a AWS_GLOBALS=(ec2ssh ec2sshi ec2forward ec2ssm)
+declare -a AWS_GLOBALS=(ec2ssh ec2sshi ec2forward ec2ssm cwg)
 
 load_ec2tools() {
 source $HOME/dotfiles/helpers/ec2ssh.zsh
 source $HOME/dotfiles/helpers/ec2sshi.zsh
 source $HOME/dotfiles/helpers/ec2forward.zsh
 source $HOME/dotfiles/helpers/ec2ssm.zsh
+source $HOME/dotfiles/helpers/cwg.zsh
 }
 
 for cmd in "${AWS_GLOBALS[@]}"; do
