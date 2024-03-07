@@ -163,10 +163,14 @@ function onproject() {
     esac
   fi
   if [ "$SESSION_TYPE" = "remote/ssh" ]; then
-     zellij delete-session ${1} --force || true
+     if [ "$2" = "clear" ]; then
+         zellij delete-session ${1} --force || true
+     fi
      zellij --layout ${1} -s ${1}
   else
-     zellij delete-session ${1} --force || true
+     if [ "$2" = "clear" ]; then
+         zellij delete-session ${1} --force || true
+     fi
      gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
   fi
 }

@@ -1298,7 +1298,7 @@ install-lwsm:
 #
 
 install-docker-compose:
-	curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-$(shell uname -s)-$(shell uname -m)"
+	curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-$(shell uname -s)-$(shell uname -m)"
 	chmod +x ~/dotfiles/bin/docker-compose
 	echo to make it available globally, use
 	echo sudo cp ~/dotfiles/bin/docker-compose /usr/bin/
@@ -1317,7 +1317,9 @@ update-open-ssl:
 	sudo make install
 
 install-bito:
-	curl -sLo ~/dotfiles/bin/bito https://github.com/gitbito/CLI/raw/main/version-2.0/bito-macos-x86
+	curl -sLo /tmp/bito.tar.gz https://github.com/gitbito/CLI/releases/download/v3.9.0/bito-linux-x86.tar.gz
+	tar -xvzf /tmp/bito.tar.gz -C /tmp
+	mv /tmp/bito-linux-x86 ~/dotfiles/bin/bito
 	chmod +x ~/dotfiles/bin/bito
 
 install-komiser:
