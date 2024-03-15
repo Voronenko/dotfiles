@@ -1,0 +1,16 @@
+#!/bin/bash
+
+export instance_id=$1
+export username=${2:-"ec2-user"}
+
+id_ed25519_pub=$(cat ~/.ssh/id_ed25519.pub)
+export ssm_command="echo '$id_ed25519_pub' >> /home/'"$username"'/.ssh/authorized_keys"
+echo injecting key using $ssn_command
+export command_id=$(aws ssm send-command --instance-ids "$instance_id" --document-name "AWS-RunShellScript" --parameters "commands=[\"${ssm_command}\"]" --output json --query "Command.CommandId")
+
+echo command sent for execution $command_id
+export raw_command_id=${command_id//\"/}
+
+aws ssm wait command-executed --instance-id "$instance_id" --command-id "${raw_command_id}"
+
+echo added.

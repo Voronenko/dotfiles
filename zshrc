@@ -340,7 +340,7 @@ fi
 
 # ssh - add's github public ssh keys to authorized_keys of the current host
 alias authorize_me='curl -L http://bit.ly/voronenko | bash -s'
-alias mykey='xclip -selection c -i ~/.ssh/id_rsa.pub'
+alias mykey='xclip -selection c -i ~/.ssh/id_ed25519.pub'
 
 if [[ -f ~/dotfiles/gitflow/release_start.sh ]]; then
 
