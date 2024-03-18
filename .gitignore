@@ -25,6 +25,7 @@ bin/packer
 bin/gimme
 bin/aws-key-importer
 bin/docker-machine
+bin/docker-compose
 bin/postman
 bin/myaws
 bin/slack-term
