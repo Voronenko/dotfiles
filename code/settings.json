@@ -130,6 +130,7 @@
     "/home/slavko/.vscode/extensions/continue.continue-0.8.1-linux-x64"
   ],
   "bitoAI.codeCompletion.setAutoCompletionTriggerLogic": 250,
-  "python.experiments.optInto": [] // for example ["nim", "nims", "python"]
+  "python.experiments.optInto": [],
+  "telemetry.telemetryLevel": "error" // for example ["nim", "nims", "python"]
 
 }

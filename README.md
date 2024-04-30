@@ -280,6 +280,14 @@ RPROMPT="$_OLD_RPROMPT"
 
 ```
 
+# Jupyter notebook git diff integration?
+
+https://nbdime.readthedocs.io/en/latest/vcs.html
+
+```sh
+nbdime config-git (--enable | --disable) [--global | --system]
+```
+
 
 
 # Project notes

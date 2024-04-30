@@ -128,9 +128,9 @@ install-console-lazynpm:
 
 # http://lnav.org/
 install-console-logreader-lnav:
-	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.11.1/lnav-0.11.1-x86_64-linux-musl.zip
+	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.12.0/lnav-0.12.0-linux-musl-x86_64.zip
 	cd /tmp && unzip lnav.zip
-	mv /tmp/lnav-0.11.1/lnav ~/dotfiles/bin
+	mv /tmp/lnav-0.12.0/lnav ~/dotfiles/bin
 	lnav -i extra
 
 install-console-loki-logcli:
@@ -834,6 +834,12 @@ install-terraform-tfschema:
 	cp /tmp/tfschema ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/tfschema
 
+install-terraform-infracost:
+	curl -sLo /tmp/infracost.tar.gz https://github.com/infracost/infracost/releases/download/v0.10.35/infracost-linux-amd64.tar.gz
+	tar -xvzf /tmp/infracost.tar.gz -C /tmp
+	cp /tmp/infracost-linux-amd64 ~/dotfiles/bin/infracost
+	chmod +x ~/dotfiles/bin/infracost
+
 # interactive d3js-graphviz visualization for terraform graph (beta)
 install-terraform-blast:
 	pip install blastradius
@@ -1317,7 +1323,7 @@ update-open-ssl:
 	sudo make install
 
 install-bito:
-	curl -sLo /tmp/bito.tar.gz https://github.com/gitbito/CLI/releases/download/v3.9.0/bito-linux-x86.tar.gz
+	curl -sLo /tmp/bito.tar.gz https://github.com/gitbito/CLI/releases/download/v$(shell curl -s https://api.github.com/repos/gitbito/CLI/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/bito-linux-x86.tar.gz
 	tar -xvzf /tmp/bito.tar.gz -C /tmp
 	mv /tmp/bito-linux-x86 ~/dotfiles/bin/bito
 	chmod +x ~/dotfiles/bin/bito
