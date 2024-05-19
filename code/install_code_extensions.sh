@@ -4,13 +4,13 @@ code --install-extension alefragnani.numbered-bookmarks
 code --install-extension arcsine.chronicler
 code --install-extension astallinger.sourcetrail
 code --install-extension bbenoist.vagrant
-code --install-extension bito.bito
 code --install-extension bpmn-io.vs-code-bpmn-io
 code --install-extension cantonios.project-templates
 code --install-extension castwide.solargraph
 code --install-extension chef-software.chef
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
+code --install-extension codeium.codeium
 code --install-extension compilenix.vscode-zonefile
 code --install-extension continue.continue
 code --install-extension d4nyll.devops-extension-pack
@@ -41,6 +41,7 @@ code --install-extension kevinglasson.cornflakes-linter
 code --install-extension lextudio.restructuredtext
 code --install-extension liamdawson.jsonnet-language
 code --install-extension marcostazi.vs-code-vagrantfile
+code --install-extension ms-azuretools.vscode-azureresourcegroups
 code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
 code --install-extension ms-playwright.playwright
@@ -50,6 +51,7 @@ code --install-extension ms-python.isort
 code --install-extension ms-python.python
 code --install-extension ms-python.vscode-pylance
 code --install-extension ms-sarifvscode.sarif-viewer
+code --install-extension ms-toolsai.datawrangler
 code --install-extension ms-toolsai.jupyter
 code --install-extension ms-toolsai.jupyter-keymap
 code --install-extension ms-toolsai.jupyter-renderers

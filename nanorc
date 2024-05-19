@@ -1,2 +1,1 @@
-set const
-#set linenumbers
+include ~/dotfiles/nanorcs/*.nanorc

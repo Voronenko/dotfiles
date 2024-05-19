@@ -356,8 +356,8 @@ fi
 # sharing
 alias sessionshare='screen -d -m -S shared'
 alias sessionjoin='screen -x shared'
-alias wanip='getent hosts `dig +short myip.opendns.com @resolver1.opendns.com`'
-alias externalip='curl https://checkip.amazonaws.com/'
+alias externalip='getent hosts `dig +short myip.opendns.com @resolver1.opendns.com`'
+alias wanip='curl https://checkip.amazonaws.com/'
 alias intranetip="ifconfig -a | grep inet | grep -v 127.0.0.1 | grep 192.168 | awk '{print \$2}'"
 
 # source management
