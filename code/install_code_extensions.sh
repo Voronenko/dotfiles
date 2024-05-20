@@ -7,7 +7,6 @@ code --install-extension bbenoist.vagrant
 code --install-extension bpmn-io.vs-code-bpmn-io
 code --install-extension cantonios.project-templates
 code --install-extension castwide.solargraph
-code --install-extension chef-software.chef
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
 code --install-extension codeium.codeium
@@ -79,7 +78,6 @@ code --install-extension phproberto.vscode-php-getters-setters
 code --install-extension qezhu.gitlink
 code --install-extension randomchance.logstash
 code --install-extension raynigon.nginx-formatter
-code --install-extension rebornix.ruby
 code --install-extension redhat.java
 code --install-extension redhat.vscode-commons
 code --install-extension redhat.vscode-extension-bpmn-editor
@@ -92,7 +90,6 @@ code --install-extension voronenko.vscode-plantuml-stdlib-snippets
 code --install-extension waderyan.gitblame
 code --install-extension wholroyd.jinja
 code --install-extension william-voyek.vscode-nginx
-code --install-extension wingrunr21.vscode-ruby
 code --install-extension xdebug.php-debug
 code --install-extension xrc-inc.jsonnet-formatter
 code --install-extension yzane.markdown-pdf
