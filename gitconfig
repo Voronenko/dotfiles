@@ -83,15 +83,15 @@
 	templateDir = ~/.git-template
 	defaultBranch = master
 [diff "jupyternotebook"]
-	command = git-nbdiffdriver diff
+	command = ~/.pyenv/versions/3.10.11/bin/git-nbdiffdriver diff
 [merge "jupyternotebook"]
-	driver = git-nbmergedriver merge %O %A %B %L %P
+	driver = ~/.pyenv/versions/3.10.11/bin/git-nbmergedriver merge %O %A %B %L %P
 	name = jupyter notebook merge driver
 [difftool "nbdime"]
-	cmd = git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
+	cmd = ~/.pyenv/versions/3.10.11/bin/git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
 [difftool]
 	prompt = false
 [mergetool "nbdime"]
-	cmd = git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.pyenv/versions/3.10.11/bin/git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [mergetool]
 	prompt = false
