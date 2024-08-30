@@ -191,7 +191,7 @@ install-console-wtfutil:
 
 # https://github.com/so-fancy/diff-so-fancy
 install-console-diffsofancy:
-	curl -sLo ~/dotfiles/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+	curl -sLo ~/dotfiles/bin/diff-so-fancy https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy
 	chmod +x ~/dotfiles/bin/diff-so-fancy
 
 # fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
