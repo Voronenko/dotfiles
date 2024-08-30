@@ -520,29 +520,34 @@ SSH_ENV="$HOME/.ssh/environment"
 
 function start_agent {
 #    echo "Initialising new SSH agent..."
-    mkdir -p $HOME/.ssh
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-    if [[ -f ~/.ssh/id_rsa ]]; then
-    /usr/bin/ssh-add 2>/dev/null
+    if [[ -n "$SSH_AUTH_SOCK" ]]; then
+       echo "Using forwarded SSH keys, ignoring starting agent"
+    else
+      mkdir -p $HOME/.ssh
+      /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+      chmod 600 "${SSH_ENV}"
+      . "${SSH_ENV}" > /dev/null
+      if [[ -f ~/.ssh/id_rsa ]]; then
+      /usr/bin/ssh-add 2>/dev/null
+      fi
+      if [[ -f ~/.ssh/id_ed25519 ]]; then
+        /usr/bin/ssh-add ~/.ssh/id_ed25519 2>/dev/null
+      fi
     fi
-    if [[ -f ~/.ssh/id_ed25519 ]]; then
-      /usr/bin/ssh-add ~/.ssh/id_ed25519 2>/dev/null
-    fi
-
 }
 
 # Source SSH settings, if applicable
 
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
+if [[ ! -n "$SSH_AUTH_SOCK" ]]; then
+  if [ -f "${SSH_ENV}" ]; then
+      . "${SSH_ENV}" > /dev/null
+      #ps ${SSH_AGENT_PID} doesn't work under cywgin
+      ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+          start_agent;
+      }
+  else
+      start_agent;
+  fi
 fi
 
 if [[ -n $SSH_CONNECTION ]]; then

@@ -7,7 +7,7 @@ swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
 swiss-docker: install-docker-dry install-docker-machine
 	@echo docker ok
 
-swiss-console: install-console-bat install-console-prettytyping install-console-diffsofancy install-console-fd install-console-ripgrep install-console-ncdu install-console-yq install-ngrok install-direnv
+swiss-console: install-console-bat install-console-prettytyping install-console-diffsofancy install-console-fd install-console-ripgrep install-console-ncdu install-console-yq install-ngrok install-direnv install-console-lazysuite
 	@echo console ok
 
 swiss-console-python: install-console-glances
@@ -191,7 +191,7 @@ install-console-wtfutil:
 
 # https://github.com/so-fancy/diff-so-fancy
 install-console-diffsofancy:
-	curl -sLo ~/dotfiles/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+	curl -sLo ~/dotfiles/bin/diff-so-fancy https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy
 	chmod +x ~/dotfiles/bin/diff-so-fancy
 
 # fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
@@ -1030,7 +1030,7 @@ fonts-source-code-pro:
 	curl -sLo ~/.fonts/SourceCodeVariable-Roman.otf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Roman.otf"
 	curl -sLo ~/.fonts/SourceCodeVariable-Roman.ttf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Roman.ttf"
 	fc-cache -fv ~/.fonts
-	fc-list | grep "Source Code Pro"
+	fc-list | grep "SourceCodeVariable"
 fonts-source-code-pro-patched:
 	mkdir -p ~/.fonts
 	curl -sLo ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono%20Windows%20Compatible.ttf"
