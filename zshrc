@@ -188,13 +188,6 @@ alias killtmux='tmux kill-server'
 
 fi
 
-if [[ -f ~/dotfiles/ssh/ssh-ident ]]; then
-  if type "python3" > /dev/null; then
-    # aliases
-    alias git='BINARY_SSH=git ~/dotfiles/ssh/ssh-ident'
-  fi
-fi
-
 if [[ -f $HOME/.asdf/asdf.sh ]] {
   source $HOME/.asdf/asdf.sh
 }
@@ -817,6 +810,7 @@ alias gitinfo='git describe --exact-match --tags $(git log -n1 --pretty='%h') 2>
 alias targz='tar -zcvf '
 alias untargz='tar -zxvf'
 alias inventory='ansible-inventory --list'
+alias igit='git -c commit.gpgsign=false'
 alias borgui='vorta &'
 
 alias kgpi="kubectl get pods -o jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
