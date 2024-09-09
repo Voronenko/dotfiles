@@ -381,6 +381,15 @@ You should see the device you just attached and be able to interact with it usin
 usbipd detach --busid <busid>
 ```
 
+## Upgrade nitrokey version, dirty
+
+```sh
+nitropy nk3 reboot --bootloader
+nitropy nk3 list
+# output should include Nitrokey 3 Bootloader followed by the UUID
+nitropy nk3 update
+```
+
 
 # Anything locally specific?
 
