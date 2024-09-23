@@ -1221,9 +1221,11 @@ install-misc-albert-plugins:
 	git clone https://github.com/bergercookie/awesome-albert-plugins.git ~/.local/share/albert/org.albert.extension.python/modules
 
 # https://software.opensuse.org/download.html?project=home:manuelschneid3r&package=albert
+# copy blocks from ^^
+# known hack curl -fsSL https://build.opensuse.org/projects/home:manuelschneid3r/signing_keys/download?kind=gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg
 install-misc-albert-deb:
-	echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_18.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
-	curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_18.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg > /dev/null
+	echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_22.04/ /' | sudo tee /etc/apt/sources.list.d/home:manuelschneid3r.list
+	curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/xUbuntu_22.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg > /dev/null
 	sudo apt update
 	sudo apt install albert
 	echo "Consider installing plugins from  https://github.com/bergercookie/awesome-albert-plugins"
@@ -1341,6 +1343,13 @@ install-pyenv:
 	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 	echo "Installing virtualenv plugin"
 	git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+
+gpg-import-my-keys:
+	curl https://keybase.io/voronenko/pgp_keys.asc | gpg --import
+        # test using
+	# export GPG_TTY=$(tty)
+        # followed by
+        # echo "foobar" | gpg --sign --armor
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

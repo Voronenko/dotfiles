@@ -1,0 +1,28 @@
+#!/bin/bash
+
+FILE=$1
+
+if [ -z "$FILE" ]; then
+  echo "Error: Please provide a key path as a parameter"
+  exit 1
+fi
+
+if [ ! -f "$FILE" ]; then
+  echo "Error: File not found: $FILE"
+  exit 1
+fi
+
+if [ ! -r "$FILE" ]; then
+  echo "Error: File is not readable: $FILE"
+  exit 1
+fi
+
+if [ ! -s "$FILE" ]; then
+  echo "Error: File is empty: $FILE"
+  exit 1
+fi
+
+gpg --output - --decrypt "$FILE" | ssh-add - || {
+  echo "Error: ssh-add failed to add the decrypted key"
+  exit 1
+}

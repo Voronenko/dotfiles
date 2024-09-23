@@ -1840,6 +1840,21 @@ and final pro - as most of the people have aws credentials in ~/.aws/credentials
 CONS: this is hardware device - capacity sensor might stop working, your could have some static electricity inserting into port, and so on.
 Thus you always need to have two pre-configured in a similar manner keys , and perhaps third for easy replacement.
 
+## UI Albert launcher
+
+### Remap windows key hack
+
+install xcape, and add remapper to auto startup programs.
+You can find auto startup programs dialog by launching
+`gnome-session-properties`
+
+```sh
+xcape -e 'Super_L=Control_L|F1'
+```
+
+
+
+###
 
 ## dot-version thingies
 ### .python-version
