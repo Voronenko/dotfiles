@@ -1915,3 +1915,9 @@ You might want to install javasdk, and register it with jenv first.
 ```sh
 jenv add /usr/lib/jvm/java-17-amazon-corretto/
 ```
+
+
+# Additional information
+
+For information out of scope of the readme, but useful for new workplace configuration, 
+refer to [WIKI](https://github.com/Voronenko/dotfiles/wiki)

@@ -26,8 +26,6 @@ swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fon
 swiss-aws:  install-aws-key-importer install-aws-myaws
 	@echo aws tools added
 
-
-
 # ZSH
 zsh-fzf-repo:
 	rm -rf ~/.fzf
