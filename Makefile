@@ -1,4 +1,4 @@
-swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh fonts-swiss-knife
+swiss-knife: swiss-fzf swiss-console swiss-zsh fonts-swiss-knife
 	@echo OK
 
 swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
