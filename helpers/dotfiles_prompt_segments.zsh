@@ -47,8 +47,10 @@ prompt_dot_ssh() {
    if [[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]]; then
      if [[ $(cat /etc/hostname) =~ ^ip- ]]; then
        USER_INSTANCE=$(curl -s -m 0.003  http://169.254.169.254/latest/meta-data/instance-id)
+     else
+       USER_INSTANCE=$(hostname)
      fi
-  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%} ^g^u ${USER} ${USER_INSTANCE}%{$reset_color%}" ''
+  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%} ${USER} 🖥 ${USER_INSTANCE}%{$reset_color%}" ''
    fi
 }
 
