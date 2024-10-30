@@ -137,22 +137,12 @@ alias pps='ps -eo uname:20,pid,pcpu,pmem,sz,tty,stat,time,cmd'
 
 alias onpy="source $HOME/dotfiles/bin/onpy"
 
-if [[ -f /usr/bin/tmux || -f /usr/local/bin/tmux ]]; then
+if [[ -f /usr/bin/zellij || -f /usr/local/bin/zellij || -f ~/bin/zellij ]]; then
 
 if [[ -d /mnt/c/Windows/ ]]; then
 # Holy shit, I am on windows linux subsystem
-
 unsetopt BG_NICE
-
-function ontmux() {
-  TMUXMODE=$2 tmuxinator ${1}_env
-}
-
 else
-
-function ontmux() {
-  TMUXMODE=$2 gnome-terminal --title="${1}" -x tmuxinator ${1}_env &
-}
 
 function onproject() {
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
@@ -177,14 +167,8 @@ function onproject() {
 
 fi
 
-function offtmux() {
-  tmux kill-session -t ${1} &
-}
-
 autoload -Uz onproject
 autoload -Uz offproject
-
-alias killtmux='tmux kill-server'
 
 fi
 

@@ -125,4 +125,7 @@ else
   cd ~/dotfiles && make zsh-fzf zsh-kubetail
   cd ~/dotfiles && make install-console-fd install-console-fzf
   cd ~/dotfiles && make install-console-lazysuite
+  echo "Consider: setup machine with ansible-developer_recipes"
+  echo "Consider: setup machine dependent zshrc.local
+  echo "Consider: checking https://github.com/Voronenko/dotfiles/wiki"
 fi
