@@ -186,8 +186,8 @@ if [[ -f /usr/bin/direnv ]]; then
 alias envrc_here='cp ~/dotfiles/direnv/derived.env ./.envrc'
 fi
 
-# Start built-in LAMP server in current directory
-alias web='python -m SimpleHTTPServer 8000'
+# Start built-in Web server in current directory
+alias web='python3 -m http.server 3000'
 alias webcors='http-server -p 8000 --cors'
 
 # remove locally all branches merged into develop
