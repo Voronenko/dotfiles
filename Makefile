@@ -1349,6 +1349,26 @@ gpg-import-my-keys:
         # followed by
         # echo "foobar" | gpg --sign --armor
 
+restart-gpg:
+	echo "Clearing memory about key"
+	gpg-connect-agent 'scd serialno' 'learn --force' /bye
+	gpgconf --kill gpg-agent || true
+	pkill gpg-agent || true
+	gpg2 -K
+	@echo "-----------------------------------------"
+	gpg2 --card-status || true
+	@echo "-----------------------------------------"
+	gpg2 --list-secret-keys --keyid-format LONG
+	@echo "-----------------------------------------"
+	@echo Test signing with:
+	@echo "echo \"test\" | gpg2 --clearsign"
+	@echo Test encrypting with:
+	@echo gpg --output test.txt.gpg --encrypt --recipient F262FB038EFB3A88 ~/.zshrc
+	@echo Test decrypting with:
+	@echo gpg --decrypt ./test.txt.gpg
+	@echo Test signing with:
+	@echo "echo 'TEST' | gpg --debug 1024 --armor --local-user F262FB038EFB3A88 --sign"
+
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
 
