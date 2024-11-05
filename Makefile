@@ -88,7 +88,7 @@ install-mysql-skeema:
 	chmod +x ~/dotfiles/bin/skeema
 
 install-dbmate:
-	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v2.15.0/dbmate-linux-amd64
+	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v2.21.0/dbmate-linux-amd64
 	chmod +x ~/dotfiles/bin/dbmate
 
 install-snyk:
@@ -191,6 +191,21 @@ install-console-wtfutil:
 install-console-diffsofancy:
 	curl -sLo ~/dotfiles/bin/diff-so-fancy https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy
 	chmod +x ~/dotfiles/bin/diff-so-fancy
+
+install-console-dyff:
+	@LATEST_VERSION=$$(curl -s "https://api.github.com/repos/homeport/dyff/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading dyff version $$LATEST_VERSION... from https://github.com/homeport/dyff/releases/download/$$LATEST_VERSION/dyff_$$LATEST_VERSION_linux_amd64.tar.gz"; \
+	curl -L -o /tmp/dyff.tar.gz "https://github.com/homeport/dyff/releases/download/$$LATEST_VERSION/dyff_$$LATEST_VERSION_linux_amd64.tar.gz"; \
+	echo "Unpacking dyff..."; \
+	tar -xzf /tmp/dyff.tar.gz -C /tmp --strip-components=1 dyff; \
+	echo "Moving dyff to ~/dotfiles/bin..."; \
+	mkdir -p ~/dotfiles/bin; \
+	mv /tmp/dyff ~/dotfiles/bin/; \
+	echo "Setting executable permissions..."; \
+	chmod +x ~/dotfiles/bin/dyff; \
+	echo "dyff installed successfully in ~/dotfiles/bin"; \
+	rm -f /tmp/dyff.tar.gz
+
 
 # fd is a simple, fast and user-friendly alternative to find. https://github.com/sharkdp/fd
 # fd service
@@ -1341,6 +1356,7 @@ install-pyenv:
 	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 	echo "Installing virtualenv plugin"
 	git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+	echo "Usage: pyenv virtualenv 3.9.15 name-of-virtual-env"
 
 gpg-import-my-keys:
 	curl https://keybase.io/voronenko/pgp_keys.asc | gpg --import

@@ -13,8 +13,24 @@ export_function() {
   fi
 }
 
+
+inherit_env() {
+    local dir=$(pwd)
+    dir=$(dirname "$dir")  # Start from the parent directory
+
+    while [ "$dir" != "/" ]; do
+        if [ -f "$dir/.envrc" ]; then
+            echo "Loading .envrc from $dir"
+            source "$dir/.envrc"
+            return
+        fi
+        dir=$(dirname "$dir")
+    done
+}
+
 export CURRENTENVRC=$(find_up .envrc)
 export CURRENTENVRCDIR=$(dirname $CURRENTENVRC)
+
 alias_dir=${CURRENTENVRCDIR:-$PWD}/.direnv/aliases
 rm -rf "$alias_dir"
 
@@ -36,7 +52,8 @@ use_nodejs() {
     nvm use "$NODE_VERSION"
 }
 
-# envrc
+
+# envrc perks usage
 
 #some-func() {
 #    some-command $@
