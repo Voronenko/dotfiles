@@ -121,6 +121,11 @@ if [ "$1" == "simple" ] || [ "$1" == "docker" ] ; then
   ./init_simple.sh "$PREFERRED_SHELL"
 else
   ./init.sh
+  cd ~/dotfiles && make swiss-knife
   cd ~/dotfiles && make zsh-fzf zsh-kubetail
   cd ~/dotfiles && make install-console-fd install-console-fzf
+  cd ~/dotfiles && make install-console-lazysuite
+  echo "Consider: setup machine with ansible-developer_recipes"
+  echo "Consider: setup machine dependent zshrc.local
+  echo "Consider: checking https://github.com/Voronenko/dotfiles/wiki"
 fi

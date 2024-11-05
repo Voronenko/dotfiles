@@ -137,22 +137,12 @@ alias pps='ps -eo uname:20,pid,pcpu,pmem,sz,tty,stat,time,cmd'
 
 alias onpy="source $HOME/dotfiles/bin/onpy"
 
-if [[ -f /usr/bin/tmux || -f /usr/local/bin/tmux ]]; then
+if [[ -f /usr/bin/zellij || -f /usr/local/bin/zellij || -f ~/bin/zellij ]]; then
 
 if [[ -d /mnt/c/Windows/ ]]; then
 # Holy shit, I am on windows linux subsystem
-
 unsetopt BG_NICE
-
-function ontmux() {
-  TMUXMODE=$2 tmuxinator ${1}_env
-}
-
 else
-
-function ontmux() {
-  TMUXMODE=$2 gnome-terminal --title="${1}" -x tmuxinator ${1}_env &
-}
 
 function onproject() {
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
@@ -177,14 +167,8 @@ function onproject() {
 
 fi
 
-function offtmux() {
-  tmux kill-session -t ${1} &
-}
-
 autoload -Uz onproject
 autoload -Uz offproject
-
-alias killtmux='tmux kill-server'
 
 fi
 
@@ -202,8 +186,8 @@ if [[ -f /usr/bin/direnv ]]; then
 alias envrc_here='cp ~/dotfiles/direnv/derived.env ./.envrc'
 fi
 
-# Start built-in LAMP server in current directory
-alias web='python -m SimpleHTTPServer 8000'
+# Start built-in Web server in current directory
+alias web='python3 -m http.server 3000'
 alias webcors='http-server -p 8000 --cors'
 
 # remove locally all branches merged into develop
@@ -460,6 +444,20 @@ else
     export CONDA_ENVS_PATH=$HOME/.virtualenvs
 fi
 unset __conda_setup
+
+__anaconda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__anaconda_setup"
+else
+    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/anaconda3/bin:$PATH"
+    fi
+    export CONDA_ENVS_PATH=$HOME/.virtualenvs
+fi
+unset __conda_setup
+
 # <<< conda initialize <<<
 
 

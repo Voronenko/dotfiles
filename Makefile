@@ -1,4 +1,4 @@
-swiss-knife: swiss-fzf swiss-console swiss-ops swiss-zsh fonts-swiss-knife
+swiss-knife: swiss-fzf swiss-console swiss-zsh fonts-swiss-knife
 	@echo OK
 
 swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
@@ -1046,10 +1046,20 @@ fonts-source-code-pro:
 	fc-list | grep "SourceCodeVariable"
 fonts-source-code-pro-patched:
 	mkdir -p ~/.fonts
-	curl -sLo ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono%20Windows%20Compatible.ttf"
-	curl -sLo ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Mono.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf"
-	curl -sLo ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete_Windows_Compatible.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Windows%20Compatible.ttf"
-	curl -sLo ~/.fonts/Sauce_Code_Pro_Nerd_Font_Complete.ttf "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete.ttf"
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Black.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Black.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-BlackItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-BlackItalic.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Bold.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Bold.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-BoldItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-BoldItalic.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-ExtraLight.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-ExtraLight.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-ExtraLightItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-ExtraLightItalic.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Italic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Italic.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Light.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Light.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-LightItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-LightItalic.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Medium.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Medium.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-MediumItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-MediumItalic.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Regular.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Regular.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-SemiBold.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-SemiBold.ttf
+	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-SemiBoldItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-SemiBoldItalic.ttf
 	fc-cache -fv ~/.fonts
 	fc-list | grep "Source Code"
 
@@ -1364,6 +1374,26 @@ gpg-import-my-keys:
 	# export GPG_TTY=$(tty)
         # followed by
         # echo "foobar" | gpg --sign --armor
+
+restart-gpg:
+	echo "Clearing memory about key"
+	gpg-connect-agent 'scd serialno' 'learn --force' /bye
+	gpgconf --kill gpg-agent || true
+	pkill gpg-agent || true
+	gpg2 -K
+	@echo "-----------------------------------------"
+	gpg2 --card-status || true
+	@echo "-----------------------------------------"
+	gpg2 --list-secret-keys --keyid-format LONG
+	@echo "-----------------------------------------"
+	@echo Test signing with:
+	@echo "echo \"test\" | gpg2 --clearsign"
+	@echo Test encrypting with:
+	@echo gpg --output test.txt.gpg --encrypt --recipient F262FB038EFB3A88 ~/.zshrc
+	@echo Test decrypting with:
+	@echo gpg --decrypt ./test.txt.gpg
+	@echo Test signing with:
+	@echo "echo 'TEST' | gpg --debug 1024 --armor --local-user F262FB038EFB3A88 --sign"
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

@@ -1,7 +1,7 @@
 [user]
 	name = Vyacheslav Voronenko
 	email = git@voronenko.info
-	signingkey = F262FB038EFB3A88
+	signingKey = 0xFD2A8AC95B6EAFAD
 [core]
 	autocrlf = input
 	pager = ~/dotfiles/bin/diff-so-fancy | less --tabs=4 -RFX
