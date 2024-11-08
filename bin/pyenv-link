@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# pyenv-link
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Check if pyenv is installed
+if ! command -v pyenv &> /dev/null; then
+  echo -e "${RED}pyenv not found.${NC} Please install pyenv first: https://github.com/pyenv/pyenv#installation"
+  exit 1
+fi
+
+display_usage() {
+  echo -e "
+${YELLOW}pyenv-link:${NC} creates a symlink between a local virtual environment and a name in pyenv
+
+${YELLOW}Usage:${NC} pyenv-link <local virt> <pyenv name>
+
+${YELLOW}Operations:${NC}
+  -h, --help  Show this dialogue
+
+${YELLOW}Options:${NC}
+  <local virt>  Path to the local virtual environment
+  <pyenv name>  Desired name for the virtual environment in pyenv
+
+${YELLOW}Example:${NC}
+  pyenv-link ./virt my-very-best-project"
+}
+
+while getopts ":h" opt; do
+  case ${opt} in
+    h)
+      display_usage
+      exit 1
+      ;;
+    \?)
+      echo -e "${RED}Invalid option: $OPTARG${NC}" 1>&2
+      display_usage
+      exit 2
+      ;;
+    :)
+      echo -e "${RED}Invalid option: $OPTARG requires an argument${NC}" 1>&2
+      display_usage
+      exit 2
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [ $# -ne 2 ]; then
+  echo -e "${RED}pyenv-link: takes <local virt> <pyenv name>${NC}" 1>&2
+  display_usage
+  exit 1
+fi
+
+target=$(realpath "$1")
+name="$2"
+pyenv_path="$PYENV_ROOT/versions/$name"
+
+if [ -e $pyenv_path ]; then
+  read -p "$(echo -e "${YELLOW}Symlink already exists - do you want to overwrite it? [y/N]${NC} ")" ans
+  if [[ "$ans" =~ ^[yY]$ ]]; then
+      rm "$pyenv_path"
+      ln -s "$target" "$pyenv_path"
+  else
+    echo -e "${GREEN}Skipping.${NC}"
+  fi
+else
+    ln -s "$target" "$pyenv_path"
+fi
+
+read -p "$(echo -e "${YELLOW}Add .python-version file? [y/N]${NC} ")" ans
+if [[ "$ans" =~ ^[yY]$ ]]; then
+  pyenv local "$name"
+else
+  echo -e "${GREEN}Skipping.${NC}"
+fi

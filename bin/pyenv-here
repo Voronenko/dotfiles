@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Set defaults
+PYVER="$(pyenv versions | grep -Po "\s+\K\d\.\d.\d" | uniq | head -1)"
+
+displayUsage() {
+    echo "
+An extension for pyenv virtualenv to instantiate a virtual environment and
+associate the local folder with the same virtual environment
+usage:  pyenv-here [pyver] <name>
+operations:
+    pyenv-here {-h help} shis dialogue
+    pyenv-here {-l list} list available python versions
+    pyenv-here {-p python version} python version to use, defauls: $PYVER
+"
+}
+
+# Go through optional arguments
+while getopts ":hlp:" opt; do
+    case ${opt} in
+        l)
+            echo "Available virtual python versions:"
+            pyenv versions
+            exit 1
+            ;;
+        p)
+            PYVER=${OPTARG}
+            ;;
+        h)
+            displayUsage
+            exit 1
+            ;;
+        \?)
+            echo "Invalid option: $OPTARG" 1>&2
+            displayUsage
+            exit 2
+            ;;
+        :)
+            echo "Invalid option: $OPTARG requires an argument" 1>&2
+            exit 2
+            ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+
+# Check for mandatory arguments
+if [ $# -lt 1 ]
+then
+    echo '
+Not enough args provided. At least provide a name'
+    displayUsage
+fi
+
+ENVNAME=$1
+
+# init and associate pyenv virtualenv
+pyenv virtualenv "$PYVER" "$ENVNAME"
+pyenv local "$ENVNAME"
+
+# upgrade pip
+pip install --upgrade pip
