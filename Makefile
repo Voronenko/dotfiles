@@ -105,12 +105,12 @@ install-console-lazysuite: install-console-lazygit install-console-lazydocker in
 
 # https://github.com/jesseduffield/lazygit
 install-console-lazygit:
-	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.40.2/lazygit_0.40.2_Linux_x86_64.tar.gz
+	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.44.1/lazygit_0.44.1_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/lazygit.tar.gz -C /tmp
 	mv /tmp/lazygit ~/dotfiles/bin
 
 install-console-lazydocker:
-	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.23.1/lazydocker_0.23.1_Linux_x86.tar.gz
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.23.3/lazydocker_0.23.3_Linux_x86.tar.gz
 	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
 	mv /tmp/lazydocker ~/dotfiles/bin
 
@@ -636,7 +636,7 @@ install-k8s-kubescape:
 	echo kubescape scan framework nsa --exclude-namespaces kube-system,kube-public
 
 install-k8s-kustomize:
-	curl -sLo /tmp/kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.4.0/kustomize_v4.4.0_linux_amd64.tar.gz
+	curl -sLo /tmp/kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.5.0/kustomize_v5.5.0_linux_amd64.tar.gz
 	tar -xvzf /tmp/kustomize.tar.gz -C /tmp
 	mv /tmp/kustomize ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/kustomize
@@ -1394,6 +1394,10 @@ restart-gpg:
 	@echo gpg --decrypt ./test.txt.gpg
 	@echo Test signing with:
 	@echo "echo 'TEST' | gpg --debug 1024 --armor --local-user F262FB038EFB3A88 --sign"
+
+install-gitcrypt:
+	curl -sLo ~/dotfiles/bin/git-crypt https://github.com/AGWA/git-crypt/releases/download/0.7.0/git-crypt-0.7.0-linux-x86_64
+	chmod +x ~/dotfiles/bin/git-crypt
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
