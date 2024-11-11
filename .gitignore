@@ -165,3 +165,5 @@ bin/infracost
 bin/pluralith
 bin/prettyping
 bin/git-crypt
+bin/ydotool
+bin/ydotoold

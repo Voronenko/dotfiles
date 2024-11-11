@@ -717,8 +717,19 @@ init_simple:
 # provides way to install gnome extensions programmatically
 # exposes two commands: gext, gnome-extensions-cli
 
+install-console-ydotool:
+	curl -sLo ~/dotfiles/bin/ydotool https://github.com/ReimuNotMoe/ydotool/releases/download/$(shell curl -s https://api.github.com/repos/ReimuNotMoe/ydotool/releases/latest | grep tag_name | cut -d '"' -f 4)/ydotool-release-ubuntu-latest
+	chmod +x ~/dotfiles/bin/ydotool
+	curl -sLo ~/dotfiles/bin/ydotoold https://github.com/ReimuNotMoe/ydotool/releases/download/$(shell curl -s https://api.github.com/repos/ReimuNotMoe/ydotool/releases/latest | grep tag_name | cut -d '"' -f 4)/ydotoold-release-ubuntu-latest
+	chmod +x ~/dotfiles/bin/ydotoold
+
 install-gnome-extensions-manager:
 	pipx install gnome-extensions-cli --system-site-packages
+
+# https://extensions.gnome.org/extension/4709/another-window-session-manager/
+gnome-another-window-session-manager:  install-console-ydotool
+	sudo apt install gir1.2-gtop-2.0 libgtop2-dev
+	gext install 4709
 
 # prior gnome 40
 gnome-dropdown-terminal:
