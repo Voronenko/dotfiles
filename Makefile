@@ -419,7 +419,9 @@ install-k8s-ksonnet:
 
 # tail utility for kubernetes
 install-k8s-stern:
-	curl -sLo ~/dotfiles/bin/stern "https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64"
+	mkdir -p /tmp/stern
+	curl -sLo /tmp/stern/stern.tar.gz "https://github.com/stern/stern/releases/download/v1.31.0/stern_1.31.0_linux_amd64.tar.gz"
+	cd /tmp/stern && tar -xzf stern.tar.gz && mv /tmp/stern/stern ~/dotfiles/bin/stern
 	chmod +x ~/dotfiles/bin/stern
 
 # helm version considered stable
