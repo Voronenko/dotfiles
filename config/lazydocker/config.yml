@@ -4,22 +4,22 @@ customCommands:
   containers:
   - name: All logs to lnav
     attach: true
-    command: bash -c "docker logs {{ .Container.ID }} | lnav"
+    command: bash -c "lnav -e 'docker logs {{ .Container.ID }}'"
     serviceNames: []
   - name: 5 mins logs to lnav
     attach: true
-    command: bash -c "docker logs --since 5m {{ .Container.ID }} | lnav"
+    command: bash -c "lnav -e 'docker logs --since 5m {{ .Container.ID }}'"
     serviceNames: []
   - name: 15 mins logs to lnav
     attach: true
-    command: bash -c "docker logs --since 15m {{ .Container.ID }} | lnav"
+    command: bash -c "lnav -e 'docker logs --since 15m {{ .Container.ID }}'"
     serviceNames: []
   - name: 30 mins logs to lnav
     attach: true
-    command: bash -c "docker logs --since 30m {{ .Container.ID }} | lnav"
+    command: bash -c "lnav -e 'docker logs --since 30m {{ .Container.ID }}'"
     serviceNames: []
   - name: 1h logs to lnav
     attach: true
-    command: bash -c "docker logs --since 60m {{ .Container.ID }} | lnav"
+    command: bash -c "lnav -e 'docker logs --since 60m {{ .Container.ID }}'"
     serviceNames: []
 

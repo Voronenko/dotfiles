@@ -738,6 +738,10 @@ gnome-another-window-session-manager:  install-console-ydotool
 gnome-status-area-horizontal-spacing:
 	gext install 355
 
+# https://extensions.gnome.org/extension/5090/space-bar/
+gnome-spacebar-workflows:
+	gext install 5090
+
 # prior gnome 40
 gnome-dropdown-terminal:
 	rm -rf /tmp/gnome-dropdown-terminal
