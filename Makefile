@@ -726,10 +726,17 @@ install-console-ydotool:
 install-gnome-extensions-manager:
 	pipx install gnome-extensions-cli --system-site-packages
 
+gnome-set-alttab-currentworkspaceonly:
+	gsettings set org.gnome.shell.app-switcher current-workspace-only true
+
 # https://extensions.gnome.org/extension/4709/another-window-session-manager/
 gnome-another-window-session-manager:  install-console-ydotool
 	sudo apt install gir1.2-gtop-2.0 libgtop2-dev
 	gext install 4709
+
+# https://extensions.gnome.org/extension/355/status-area-horizontal-spacing/
+gnome-status-area-horizontal-spacing:
+	gext install 355
 
 # prior gnome 40
 gnome-dropdown-terminal:
