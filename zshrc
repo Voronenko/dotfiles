@@ -282,6 +282,15 @@ autoload -Uz dclnavf
 
 fi
 
+# certificates manager
+if [ -d "$HOME/acme.sh" ]; then
+    if [ -f "$HOME/.acme.sh/acme.sh.env" ]; then
+        source "$HOME/.acme.sh/acme.sh.env"
+    else
+        echo "Environment file not found: $HOME/.acme.sh/acme.sh.env, consider reinstalling"
+    fi
+fi
+
 
 if type "gcloud" > /dev/null; then
 

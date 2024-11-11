@@ -714,6 +714,12 @@ init_simple:
 
 # GNOME specific extensions
 
+# provides way to install gnome extensions programmatically
+# exposes two commands: gext, gnome-extensions-cli
+
+install-gnome-extensions-manager:
+	pipx install gnome-extensions-cli --system-site-packages
+
 # prior gnome 40
 gnome-dropdown-terminal:
 	rm -rf /tmp/gnome-dropdown-terminal
@@ -1418,6 +1424,9 @@ install-gitcrypt:
 #https://github.com/go-acme/lego
 
 # https://github.com/quarkslab/kdigger
+
+# Generic command-line automation tool (no X!)
+# https://github.com/ReimuNotMoe/ydotool
 
 
 # Logi
