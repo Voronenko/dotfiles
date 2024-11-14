@@ -750,7 +750,7 @@ gnome-caffeine:
 
 # https://extensions.gnome.org/extension/3780/ddterm/
 gnome-ddterm:
-	gext install 3780	
+	gext install 3780
 
 # prior gnome 40
 gnome-dropdown-terminal:
