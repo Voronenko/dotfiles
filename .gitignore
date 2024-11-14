@@ -156,6 +156,7 @@ bin/kubectl-cert_manager
 bin/benchtool
 bin/snyk
 bin/bito
+bin/bito-*
 bin/promlens
 bin/kubectl-convert
 bin/nitrokey-app

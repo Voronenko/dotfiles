@@ -744,6 +744,10 @@ gnome-status-area-horizontal-spacing:
 gnome-spacebar-workflows:
 	gext install 5090
 
+# https://extensions.gnome.org/extension/3780/ddterm/
+gnome-ddterm:
+	gext install 3780
+
 # prior gnome 40
 gnome-dropdown-terminal:
 	rm -rf /tmp/gnome-dropdown-terminal
@@ -777,7 +781,7 @@ gnome-unite-shell:
 	mv /tmp/gnome-unite-shell/unite@hardpixel.eu ~/.local/share/gnome-shell/extensions/unite@hardpixel.eu
 
 # apt-cache show gnome-shell | grep Version
-gnome-status-area-horizontal-spacing:
+gnome-status-area-horizontal-spacing-prev:
 	rm -rf /tmp/status-area-horizontal-spacing-gnome-shell-extension
 	git clone git@gitlab.com:p91paul/status-area-horizontal-spacing-gnome-shell-extension.git /tmp/status-area-horizontal-spacing-gnome-shell-extension
 	cd /tmp/status-area-horizontal-spacing-gnome-shell-extension && git checkout gnome3.2
