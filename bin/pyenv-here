@@ -62,3 +62,14 @@ pyenv local "$ENVNAME"
 
 # upgrade pip
 pip install --upgrade pip
+
+read -p "$(echo -e "${YELLOW}Install poetry? [y/N]${NC} ")" ans
+if [[ "$ans" =~ ^[yY]$ ]]; then
+    pyenv exec python -m pip install poetry
+    pyenv rehash
+    # or uncomment and use virtualenvironment way - up to you
+    pyenv exec poetry config virtualenvs.create false --local
+    echo "command to install dependencies: pyenv exec poetry install --no-root"
+else
+  echo -e "${GREEN}Skipping installing poetry .${NC}"
+fi

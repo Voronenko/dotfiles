@@ -1436,6 +1436,15 @@ restart-gpg:
 install-gitcrypt:
 	curl -sLo ~/dotfiles/bin/git-crypt https://github.com/AGWA/git-crypt/releases/download/0.7.0/git-crypt-0.7.0-linux-x86_64
 	chmod +x ~/dotfiles/bin/git-crypt
+	@echo statically linked, if you see error on referring to this library
+	@echo sudo cp ~/dotfiles/bin/libcrypto.so.1.1 /usr/lib/x86_64-linux-gnu
+
+install-hetzner-cli:
+	curl -sLo /tmp/hetzner.tar.gz https://github.com/hetznercloud/cli/releases/download/v$(shell curl -s https://api.github.com/repos/hetznercloud/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/hcloud-linux-amd64.tar.gz
+	tar -xvzf /tmp/hetzner.tar.gz -C /tmp
+	mv /tmp/hcloud ~/dotfiles/bin/
+	chmod +x ~/dotfiles/bin/hcloud
+
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

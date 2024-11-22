@@ -168,3 +168,5 @@ bin/prettyping
 bin/git-crypt
 bin/ydotool
 bin/ydotoold
+bin/hcloud
+bin/libcrypto.so.1.1

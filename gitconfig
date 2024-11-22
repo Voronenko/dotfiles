@@ -82,16 +82,18 @@
 [init]
 	templateDir = ~/.git-template
 	defaultBranch = master
+
+#  pipx install nbdime
 [diff "jupyternotebook"]
-	command = ~/.pyenv/versions/3.10.11/bin/git-nbdiffdriver diff
+	command = git-nbdiffdriver diff
 [merge "jupyternotebook"]
-	driver = ~/.pyenv/versions/3.10.11/bin/git-nbmergedriver merge %O %A %B %L %P
+	driver = git-nbmergedriver merge %O %A %B %L %P
 	name = jupyter notebook merge driver
 [difftool "nbdime"]
-	cmd = ~/.pyenv/versions/3.10.11/bin/git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
+	cmd = git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
 [difftool]
 	prompt = false
 [mergetool "nbdime"]
-	cmd = ~/.pyenv/versions/3.10.11/bin/git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [mergetool]
 	prompt = false

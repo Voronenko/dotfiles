@@ -710,6 +710,23 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
 
 fi
 
+# hetzner
+if [[ -f $HOME/dotfiles/bin/hcloud ]]; then
+
+
+#
+declare -a HETZNER_GLOBALS=(hcloudssh)
+
+load_hetznertools() {
+source $HOME/dotfiles/helpers/hcloudssh.zsh
+}
+
+for cmd in "${HETZNER_GLOBALS[@]}"; do
+    eval "${cmd}(){ unset -f ${AWS_GLOBALS}; load_hetznertools; ${cmd} \$@ }"
+done
+
+fi
+
 # Windows syntethic sugar
 
 alias 'startdot'='xdg-open .'
