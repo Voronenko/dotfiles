@@ -37,8 +37,7 @@ function hcloudssh() {
     target_port=`_load_port $target_port`
 
     echo "Fetching Hetzner Cloud server host..."
-    local selected_host=$(hcloud server list | awk 'NR>1 {OFS=" "; printf "%-10s \033[36m%-20s\033[0m %-20s \033[32m%-20s\033[33m%-20s\033[0m\n", $1, $2, $3, $4, $5}' | fzf --ansi | awk '{print $4}')
-
+    local selected_host=$(hcloud server list | awk 'NR>1 {OFS=" "; printf "%-10s \033[36m%-50s\033[0m %-20s \033[32m%-20s \033[33m%-20s\033[0m %-20s\n", $1, $2, $3, $4, $5, $8}' | fzf --ansi | awk '{print $4}')
     if [ -n "${selected_host}" ]; then
         # -i ${target_private_key_path}
         BUFFER="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${target_port} ${target_user}@${selected_host}"
