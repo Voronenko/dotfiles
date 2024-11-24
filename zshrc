@@ -26,7 +26,7 @@ KUBE_PS1_SYMBOL_USE_IMG=true
 KUBE_PS1_NS_ENABLE=true
 KUBE_PS1_DIVIDER='/'
 
-POWERLEVEL9K_MODE='awesome-fontconfig' # compatible | awesome-fontconfig | nerdfont-complete
+POWERLEVEL9K_MODE='nerdfont-complete' # compatible | awesome-fontconfig | nerdfont-complete
 POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv anaconda pyenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv custom_kube_ps1)

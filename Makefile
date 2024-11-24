@@ -1061,6 +1061,13 @@ fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts fonts-source-code-pro
 fonts-init:
 	sudo apt install fontconfig
 
+fonts-install-powerline:
+	wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf && \
+	wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf && \
+	mkdir -p ~/.fonts/ && \
+	mv PowerlineSymbols.otf ~/.fonts/ && \
+	fc-cache -vf ~/.fonts
+
 fonts-awesome-terminal-fonts:
 	mkdir -p ~/.fonts
 	curl -sLo ~/.fonts/devicons-regular.sh "https://raw.githubusercontent.com/gabrielelana/awesome-terminal-fonts/master/build/devicons-regular.sh"
