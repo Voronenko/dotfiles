@@ -348,7 +348,7 @@ install-docker-machine:
 	chmod +x ~/dotfiles/bin/docker-machine
 
 install-docker-credential-ecr-login:
-	curl -sLo ~/dotfiles/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.4.0/linux-amd64/docker-credential-ecr-login
+	curl -sLo ~/dotfiles/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.9.0/linux-amd64/docker-credential-ecr-login
 	chmod +x ~/dotfiles/bin/docker-credential-ecr-login
 
 install-docker-credential-pass:
@@ -1367,7 +1367,7 @@ install-lwsm:
 #
 
 install-docker-compose:
-	curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-$(shell uname -s)-$(shell uname -m)"
+	curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.30.3/docker-compose-$(shell uname -s)-$(shell uname -m)"
 	chmod +x ~/dotfiles/bin/docker-compose
 	echo to make it available globally, use
 	echo sudo cp ~/dotfiles/bin/docker-compose /usr/bin/
