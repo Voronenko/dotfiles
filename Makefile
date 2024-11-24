@@ -1089,7 +1089,7 @@ fonts-source-code-pro:
 	curl -sLo ~/.fonts/SourceCodeVariable-Roman.ttf "https://github.com/adobe-fonts/source-code-pro/releases/download/variable-fonts/SourceCodeVariable-Roman.ttf"
 	fc-cache -fv ~/.fonts
 	fc-list | grep "SourceCodeVariable"
-fonts-source-code-pro-patched:
+fonts-sourcecodepro-patched-nerd:
 	mkdir -p ~/.fonts
 	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-Black.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Black.ttf
 	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-BlackItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-BlackItalic.ttf
@@ -1107,6 +1107,24 @@ fonts-source-code-pro-patched:
 	curl -sLo ~/.fonts/SauceCodeProNerdFontMono-SemiBoldItalic.ttf https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-SemiBoldItalic.ttf
 	fc-cache -fv ~/.fonts
 	fc-list | grep "Source Code"
+
+fonts-saucecodepro-patched-powerline:
+	mkdir -p ~/.fonts && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Black\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Black%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Black\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Black%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Bold\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Bold%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Bold\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Bold%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ ExtraLight\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20ExtraLight%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20ExtraLight%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Light\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Light%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Light%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Medium\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Medium%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Medium\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Medium%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Semibold\ Italic\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Semibold%20Italic%20Nerd%20Font%20Complete%20Mono.otf && \
+	curl -sLo ~/.fonts/Sauce\ Code\ Pro\ Semibold\ Nerd\ Font\ Complete\ Mono.otf https://github.com/powerline/fonts/raw/master/SourceCodePro/Sauce%20Code%20Pro%20Semibold%20Nerd%20Font%20Complete%20Mono.otf && \
+	fc-cache -vf ~/.fonts/
 
 z-clean-downloads:
 	rm ~/Downloads/*.rdp
