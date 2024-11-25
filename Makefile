@@ -359,7 +359,7 @@ install-docker-credential-pass:
 
 # docker console manager
 install-docker-dry:
-	curl -sLo ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.9-beta.4/dry-linux-amd64
+	curl -sLo ~/dotfiles/bin/dry https://github.com/moncho/dry/releases/download/v0.11.2/dry-linux-amd64
 	chmod +x ~/dotfiles/bin/dry
 
 # A CLI tool and go library for generating a Software Bill of Materials (SBOM) from container images and filesystems.
