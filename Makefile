@@ -1470,6 +1470,12 @@ install-hetzner-cli:
 	mv /tmp/hcloud ~/dotfiles/bin/
 	chmod +x ~/dotfiles/bin/hcloud
 
+install-local-webhook:
+	curl -sLo /tmp/webhook.tar.gz  https://github.com/adnanh/webhook/releases/download/2.8.2/webhook-linux-amd64.tar.gz
+	tar -xzvf /tmp/webhook.tar.gz -C /tmp
+	mv /tmp/webhook-linux-amd64/webhook ~/dotfiles/bin/webhook
+	chmod +x ~/dotfiles/bin/webhook
+
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
