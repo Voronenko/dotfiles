@@ -152,16 +152,26 @@ function onproject() {
       sshd|*/sshd) SESSION_TYPE="remote/ssh";;
     esac
   fi
+
   if [ "$SESSION_TYPE" = "remote/ssh" ]; then
-     if [ "$2" = "clear" ]; then
-         zellij delete-session ${1} --force || true
-     fi
-     zellij --layout ${1} -s ${1}
+      if [ "$2" = "clear" ]; then
+          zellij delete-session ${1} --force || true
+      fi
+      zellij --layout ${1} -s ${1}
   else
-     if [ "$2" = "clear" ]; then
-         zellij delete-session ${1} --force || true
-     fi
-     gnome-terminal -- bash -c "zellij --layout ${1} -s ${1}" &
+      if [ "$2" = "clear" ]; then
+          zellij delete-session ${1} --force || true
+      fi
+
+      sess=${1}
+      output=$(zellij list-sessions --no-formatting | grep "${sess}")
+
+      if echo "$output" | grep -q "$sess" && echo "$output" | grep -q "EXITED - attach to resurrect"; then
+          gnome-terminal -- bash -c "zellij attach ${sess}" &
+      else
+          zellij delete-session ${1} --force || true
+          gnome-terminal -- bash -c "zellij --layout $sess -s $sess" &
+      fi
   fi
 }
 
