@@ -70,6 +70,14 @@ prompt_dot_terraform() {
     fi
 }
 
+prompt_dot_node() {
+if [[ -n "$NVM_BIN" ]]; then
+    # Extract the Node.js version from the NVM_BIN path
+    local node_version=$(echo "$NVM_BIN" | grep -oP 'v\d+\.\d+\.\d+')
+    "$1_prompt_segment" "$0" "$2" "gray" "yellow" "${node_version}" 'NODE_ICON'
+fi
+}
+
 prompt_dot_jenv() {
   local java_version_home=$(echo $JAVA_HOME | grep .jenv | grep -v system  2>/dev/null)
   if [[ ! -z $java_version_home ]]

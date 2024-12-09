@@ -30,6 +30,12 @@ swiss-aws:  install-aws-key-importer install-aws-myaws
 zsh-fzf-repo:
 	rm -rf ~/.fzf
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	
+install-fzf:
+	curl -sLo /tmp/fzf.tar.gz https://github.com/junegunn/fzf/releases/download/v$(shell curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/fzf-$(shell curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)-linux_amd64.tar.gz
+	tar -xvzf /tmp/fzf.tar.gz -C /tmp
+	mv /tmp/fzf $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/fzf
 # /ZSH
 
 install-zellij:
@@ -88,7 +94,7 @@ install-mysql-skeema:
 	chmod +x ~/dotfiles/bin/skeema
 
 install-dbmate:
-	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v2.21.0/dbmate-linux-amd64
+	curl -sLo ~/dotfiles/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v2.23.0/dbmate-linux-amd64
 	chmod +x ~/dotfiles/bin/dbmate
 
 install-snyk:
@@ -97,8 +103,8 @@ install-snyk:
 
 # cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
-	curl -sLo /tmp/bat_0.6.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.6.0/bat_0.6.0_amd64.deb
-	sudo dpkg -i /tmp/bat_0.6.0_amd64.deb
+	curl -sLo /tmp/bat_0.24.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
+	sudo dpkg -i /tmp/bat_0.24.0_amd64.deb
 
 install-console-lazysuite: install-console-lazygit install-console-lazydocker install-console-lazycli install-console-lazynpm
 	echo "Done"
