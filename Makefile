@@ -1150,7 +1150,7 @@ install-vmware-ovftool:
 
 # interactive https proxy https://mitmproxy.org/
 install-mitmproxy-org:
-	curl -sLo /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/4.0.4/mitmproxy-4.0.4-linux.tar.gz
+	curl -sLo /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/11.0.2/mitmproxy-11.0.2-linux-x86_64.tar.gz
 	tar -xvzf /tmp/mitmproxy.tar.gz -C ~/dotfiles/bin
 
 install-screenshot-tool:

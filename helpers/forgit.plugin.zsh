@@ -18,7 +18,11 @@ else
 fi
 
 export FORGIT_INSTALL_DIR
-FORGIT="$FORGIT_INSTALL_DIR/bin/git-forgit"
+if [ -f "$HOME/dotfiles/bin/git-forgit" ]; then
+  FORGIT="$HOME/dotfiles/bin/git-forgit"
+else
+  FORGIT="$FORGIT_INSTALL_DIR/bin/git-forgit"
+fi
 
 # backwards compatibility:
 # export all user-defined FORGIT variables to make them available in git-forgit
