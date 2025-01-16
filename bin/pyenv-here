@@ -80,3 +80,12 @@ if [[ "$ans" =~ ^[yY]$ ]]; then
 else
   echo -e "${GREEN}Skipping installing poetry .${NC}"
 fi
+
+read -p "$(echo -e "${YELLOW}Install uv? [y/N]${NC} ")" ans
+if [[ "$ans" =~ ^[yY]$ ]]; then
+    pyenv exec python -m pip install uv
+    pyenv rehash
+    echo "command to install dependencies: pyenv exec uv sync"
+else
+  echo -e "${GREEN}Skipping installing poetry .${NC}"
+fi
