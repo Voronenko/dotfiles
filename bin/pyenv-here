@@ -78,7 +78,7 @@ if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv exec poetry config virtualenvs.create false --local
     echo "command to install dependencies: pyenv exec poetry install --no-root"
 else
-  echo -e "${GREEN}Skipping installing poetry .${NC}"
+  echo -e "${GREEN}Skipping installing poetry.${NC}"
 fi
 
 read -p "$(echo -e "${YELLOW}Install uv? [y/N]${NC} ")" ans
@@ -87,5 +87,5 @@ if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv rehash
     echo "command to install dependencies: pyenv exec uv sync"
 else
-  echo -e "${GREEN}Skipping installing poetry .${NC}"
+  echo -e "${GREEN}Skipping installing uv.${NC}"
 fi

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+lsof -t -i :${1:-5000} | xargs kill -9
