@@ -450,7 +450,7 @@ install-k8s-istio-183:
 	rm -rf /tmp/istio
 
 
-https://github.com/istio/istio/releases/download/1.9.1/istioctl-1.9.1-linux-amd64.tar.gz
+#https://github.com/istio/istio/releases/download/1.9.1/istioctl-1.9.1-linux-amd64.tar.gz
 
 install-k8s-helm-plugin-s3:
 	helm plugin install https://github.com/hypnoglow/helm-s3.git
@@ -461,6 +461,10 @@ install-k8-helm-plugin-starter:
 install-k8s-helm-chartmuseum:
 	curl -sLo ~/dotfiles/bin/chartmuseum https://s3.amazonaws.com/chartmuseum/release/latest/bin/linux/amd64/chartmuseum
 	chmod +x ~/dotfiles/bin/chartmuseum
+
+install-k0s-ctl:
+	curl -sLo ~/dotfiles/bin/k0sctl https://github.com/k0sproject/k0sctl/releases/download/v0.22.0/k0sctl-linux-amd64
+	chmod +x ~/dotfiles/bin/k0sctl
 
 # latest released helm
 install-k8s-helm-latest:
