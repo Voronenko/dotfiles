@@ -170,7 +170,7 @@ function onproject() {
           gnome-terminal -- bash -c "zellij attach ${sess}" &
       else
           zellij delete-session ${1} --force || true
-          gnome-terminal -- bash -c "zellij --layout $sess -s $sess" &
+          gnome-terminal -- bash -c "zellij --layout $sess -n $sess" &
       fi
   fi
 }

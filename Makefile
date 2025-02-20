@@ -30,7 +30,7 @@ swiss-aws:  install-aws-key-importer install-aws-myaws
 zsh-fzf-repo:
 	rm -rf ~/.fzf
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	
+
 install-fzf:
 	curl -sLo /tmp/fzf.tar.gz https://github.com/junegunn/fzf/releases/download/v$(shell curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/fzf-$(shell curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)-linux_amd64.tar.gz
 	tar -xvzf /tmp/fzf.tar.gz -C /tmp
@@ -433,7 +433,7 @@ install-k8s-stern:
 # helm version considered stable
 install-k8s-helm3-fixed:
 	mkdir -p /tmp/helm
-	curl -sLo /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.11.1-linux-amd64.tar.gz"
+	curl -sLo /tmp/helm/helm.tar.gz "https://get.helm.sh/helm-v3.17.0-linux-amd64.tar.gz"
 	cd /tmp/helm && tar -xzf helm.tar.gz && mv /tmp/helm/linux-amd64/helm ~/dotfiles/bin/helm
 	rm -rf /tmp/helm
 
@@ -458,12 +458,15 @@ install-k8s-helm-plugin-s3:
 install-k8-helm-plugin-starter:
 	helm plugin install https://github.com/salesforce/helm-starter.git
 
+install-k8s-helm-plugin-diff:
+	helm plugin install https://github.com/databus23/helm-diff
+
 install-k8s-helm-chartmuseum:
 	curl -sLo ~/dotfiles/bin/chartmuseum https://s3.amazonaws.com/chartmuseum/release/latest/bin/linux/amd64/chartmuseum
 	chmod +x ~/dotfiles/bin/chartmuseum
 
 install-k0s-ctl:
-	curl -sLo ~/dotfiles/bin/k0sctl https://github.com/k0sproject/k0sctl/releases/download/v0.22.0/k0sctl-linux-amd64
+	curl -sLo ~/dotfiles/bin/k0sctl https://github.com/k0sproject/k0sctl/releases/download/$(shell curl -s https://api.github.com/repos/k0sproject/k0sctl/releases/latest | grep tag_name | cut -d '"' -f 4)/k0sctl-linux-amd64
 	chmod +x ~/dotfiles/bin/k0sctl
 
 # latest released helm
@@ -551,7 +554,7 @@ install-k8s-kubeval:
 # https://github.com/vmware-tanzu/octant/
 # Kubernetes dashboard by VMWare
 install-k8s-vmware-octant:
-	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.25.0/octant_0.25.0_Linux-64bit.deb
+	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.25.1/octant_0.25.1_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
 	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely
 
@@ -686,6 +689,8 @@ install-helm-common-repos:
 	helm repo add grafana https://grafana.github.io/helm-charts
 	helm repo add sentry https://sentry-kubernetes.github.io/charts
 	helm repo add autoscaler https://kubernetes.github.io/autoscaler
+	helm repo add longhorn https://charts.longhorn.io
+	helm repo add traefik https://traefik.github.io/charts
 
 zsh-kubetail:
 	rm -rf ~/.oh-my-zsh/custom/plugins/kubetail || true
@@ -1485,6 +1490,10 @@ install-local-webhook:
 	tar -xzvf /tmp/webhook.tar.gz -C /tmp
 	mv /tmp/webhook-linux-amd64/webhook ~/dotfiles/bin/webhook
 	chmod +x ~/dotfiles/bin/webhook
+
+install-gilt:
+	curl -sLo ~/dotfiles/bin/gilt https://github.com/retr0h/gilt/releases/download/v$(shell curl -s https://api.github.com/repos/retr0h/gilt/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/gilt_2.2.4_linux_amd64
+	chmod +x ~/dotfiles/bin/gilt
 
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
