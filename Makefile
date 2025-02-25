@@ -1407,7 +1407,7 @@ install-lwsm:
 #
 
 install-docker-compose:
-	curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.30.3/docker-compose-$(shell uname -s)-$(shell uname -m)"
+	curl -sLo ~/dotfiles/bin/docker-compose  "https://github.com/docker/compose/releases/download/v2.33.0/docker-compose-$(shell uname -s)-$(shell uname -m)"
 	chmod +x ~/dotfiles/bin/docker-compose
 	echo to make it available globally, use
 	echo sudo cp ~/dotfiles/bin/docker-compose /usr/bin/
