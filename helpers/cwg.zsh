@@ -38,8 +38,9 @@ function cwg() {
     echo "Fetching CloudWatch groups..."
     local selected_group=$(aws --profile=${aws_profile_name} --region=${aws_region} logs describe-log-groups --output text | cut -f4 | fzf)
     if [ -n "${selected_group}" ]; then
-        #BUFFER="aws --profile=${aws_profile_name} --region=${aws_region} logs describe-log-streams --log-group-name ${selected_group}"
-        BUFFER="cw tail -f ${selected_group} --no-color | lnav"
+
+        local trimmed_group=$(echo "${selected_group}" | sed 's/^.*:log-group://')
+        BUFFER="cw tail -f ${trimmed_group} --no-color | lnav"
         if zle; then
             zle accept-line
         else
