@@ -218,9 +218,9 @@ install-console-dyff:
 install-console-fd:
 #	curl -sLo /tmp/fd.deb https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb
 #	sudo dpkg -i /tmp/fd.deb
-	curl -sLo /tmp/fd.tar.gz https://github.com/sharkdp/fd/releases/download/v8.1.1/fd-v8.1.1-x86_64-unknown-linux-gnu.tar.gz
+	curl -sLo /tmp/fd.tar.gz https://github.com/sharkdp/fd/releases/download/v10.2.0/fd-v10.2.0-x86_64-unknown-linux-gnu.tar.gz
 	tar -xvzf /tmp/fd.tar.gz -C /tmp
-	cp /tmp/fd-v8.1.1-x86_64-unknown-linux-gnu/fd* ~/dotfiles/bin
+	cp /tmp/fd-v10.2.0-x86_64-unknown-linux-gnu/fd* ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/fd
 
 # ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep
