@@ -1,0 +1,64 @@
+#!/bin/bash
+
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && {
+    echo "This script should be sourced, not executed directly."
+    echo "Usage: source ${0} [pass_key]"
+    exit 1
+}
+
+_validate_pass_key() {
+    local pass_key="$1"
+    local base_name=$(basename "$pass_key")
+
+    if [[ ! "$base_name" =~ ^dotenv_ ]]; then
+        echo "Error: Invalid pass key format. Key must start with 'dotenv_'" >&2
+        echo "Given key: $pass_key" >&2
+        echo "Base name: $base_name" >&2
+        return 1
+    fi
+    return 0
+}
+
+_load_env_vars() {
+    local pass_key="${1:-usage}"
+    local env_content
+
+    if ! command -v pass &> /dev/null; then
+        echo "Error: pass is not installed." >&2
+        return 1
+    }
+
+    if [ ! -d "$HOME/.password-store" ]; then
+        echo "Error: Password store not initialized. Run 'pass init <gpg-id>' first" >&2
+        return 1
+    }
+
+    echo "Loading secrets from: $pass_key"
+
+    if ! env_content=$(pass show "$pass_key" 2>/dev/null); then
+        echo "Error: Failed to load environment variables from $pass_key" >&2
+        return 1
+    }
+
+    while IFS='=' read -r key value; do
+        if [ -n "$key" ] && [ -n "$value" ]; then
+            export "$key=$value"
+        fi
+    done <<< "$env_content"
+
+    return 0
+}
+
+
+if [ -n "$1" ]; then
+    if _validate_pass_key "$1"; then
+        _load_env_vars "$1"
+    else
+        echo "Example valid keys:"
+        echo "  path/to/dotenv_prod"
+        echo "  path/to/dotenv_staging"
+        echo "  path/to/dotenv_dev"
+    fi
+else
+    echo "No pass key provided. Provide key in first parameter"
+fi
