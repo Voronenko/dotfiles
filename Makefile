@@ -1032,6 +1032,16 @@ install-aws-cli:
 	cd /tmp && unzip awscliv2.zip
 	cd /tmp && sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 
+install-aws-sam:
+	@echo "Installing AWS SAM CLI..."
+	mkdir -p /tmp/sam-installation
+	curl -L https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip -o /tmp/sam-installation/aws-sam-cli.zip
+	unzip /tmp/sam-installation/aws-sam-cli.zip -d /tmp/sam-installation
+	sudo /tmp/sam-installation/install
+	rm -rf /tmp/sam-installation
+	@echo "Verifying installation..."
+	sam --version
+
 install-ovh-nova:
 	sudo pip install python-openstackclient
 
@@ -1495,6 +1505,8 @@ install-gilt:
 	curl -sLo ~/dotfiles/bin/gilt https://github.com/retr0h/gilt/releases/download/v$(shell curl -s https://api.github.com/repos/retr0h/gilt/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/gilt_2.2.4_linux_amd64
 	chmod +x ~/dotfiles/bin/gilt
 
+install-zed:
+	ln -s ~/apps/zed.app/bin/zed ~/dotfiles/bin/zed
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
@@ -1535,3 +1547,5 @@ install-gilt:
 
 # terminal command in browser
 # https://github.com/sorenisanerd/gotty
+
+

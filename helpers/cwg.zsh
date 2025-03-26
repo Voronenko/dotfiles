@@ -19,14 +19,40 @@ function _load_aws_region() {
 }
 
 function cwg() {
-    local aws_profile_name=$1
-    local aws_region=$2
+    local aws_profile_name=""
+    local aws_region=""
+    local extra_args=""
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --profile=*)
+                aws_profile_name="${1#*=}"
+                shift
+                ;;
+            --region=*)
+                aws_region="${1#*=}"
+                shift
+                ;;
+            -b1h|-b3h|-b12h|-b1d|-f|-t|-i|-s|-n|-r|-l|-g|-v|-q|--*)
+                extra_args="$extra_args $1"
+                shift
+                ;;
+            *)
+                if [[ $1 == -* ]] && [[ $# -gt 1 ]]; then
+                    extra_args="$extra_args $1 $2"
+                    shift 2
+                else
+                    shift
+                fi
+                ;;
+        esac
+    done
 
     aws_profile_name=`_load_aws_profile $aws_profile_name`
     aws_region=`_load_aws_region $aws_region`
 
     if [ -z "${aws_profile_name}" ]; then
-        echo "AWS profile name is required. Please call this function with aws profile name or set AWS_DEFAULT_REGION in evironment variables."
+        echo "AWS profile name is required. Please call this function with aws profile name or set AWS_DEFAULT_PROFILE in environment variables."
         return
     fi
 
@@ -38,9 +64,8 @@ function cwg() {
     echo "Fetching CloudWatch groups..."
     local selected_group=$(aws --profile=${aws_profile_name} --region=${aws_region} logs describe-log-groups --output text | cut -f4 | fzf)
     if [ -n "${selected_group}" ]; then
-
         local trimmed_group=$(echo "${selected_group}" | sed 's/^.*:log-group://')
-        BUFFER="cw tail -f ${trimmed_group} --no-color | lnav"
+        BUFFER="cw tail -f ${trimmed_group} --no-color ${extra_args} | lnav"
         if zle; then
             zle accept-line
         else

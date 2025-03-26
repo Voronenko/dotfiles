@@ -1,0 +1,26 @@
+#compdef cwg
+
+_cwg() {
+    _arguments -C \
+        '--profile=[The target AWS profile]:profile' \
+        '--region=[The target AWS region]:region' \
+        '(-f --follow)'{-f,--follow}'[Wait for additional data to be appended]' \
+        '(-t --timestamp)'{-t,--timestamp}'[Print the event timestamp]' \
+        '(-i --event-id)'{-i,--event-id}'[Print the event Id]' \
+        '(-s --stream-name)'{-s,--stream-name}'[Print the log stream name]' \
+        '(-n --group-name)'{-n,--group-name}'[Print the log group name]' \
+        '(-r --retry)'{-r,--retry}'[Keep trying to open if inaccessible]' \
+        '(-b --start)'{-b,--start}'[The UTC start time]:time' \
+        '-b1h[Start time: 1 hour ago]' \
+        '-b3h[Start time: 3 hours ago]' \
+        '-b12h[Start time: 12 hours ago]' \
+        '-b1d[Start time: 1 day ago]' \
+        '(-e --end)'{-e,--end}'[The UTC end time]:time' \
+        '(-l --local)'{-l,--local}'[Treat date and time in Local timezone]' \
+        '(-g --grep)'{-g,--grep}'[Pattern to filter logs by]:pattern' \
+        '(-v --grepv)'{-v,--grepv}'[Invert match pattern to filter logs by]:pattern' \
+        '(-q --query)'{-q,--query}'[JMESPath expression to filter JSON logs]:query' \
+        '*:log group'
+}
+
+_cwg "$@"
