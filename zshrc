@@ -847,6 +847,7 @@ alias untargz='tar -zxvf'
 alias inventory='ansible-inventory --list'
 alias igit='git -c commit.gpgsign=false'
 alias borgui='vorta &'
+alias zen='~/apps/zen/zen'
 
 alias kgpi="kubectl get pods -o jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"
 alias kgpia="kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | sort"

@@ -7,7 +7,7 @@
   // Controls how the editor should render the current line highlight, possibilities are 'none', 'gutter', 'line', and 'all'.
   "editor.renderLineHighlight": "all",
 
-  "python.venvPath": "./p-env, ~/.virtualenvs, ./venv",
+  "python.venvPath": "./p-env, ~/.pyenv/versions/, ./venv",
 
   "kogito.bpmn.runOnSave": "extension.kogito.silentlyGenerateSvgBpmn",
   "kogito.dmn.runOnSave": "extension.kogito.silentlyGenerateSvgDmn",

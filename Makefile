@@ -116,7 +116,7 @@ install-console-lazygit:
 	mv /tmp/lazygit ~/dotfiles/bin
 
 install-console-lazydocker:
-	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.23.3/lazydocker_0.23.3_Linux_x86.tar.gz
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.24.1/lazydocker_0.24.1_Linux_x86.tar.gz
 	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
 	mv /tmp/lazydocker ~/dotfiles/bin
 
@@ -385,7 +385,7 @@ install-docker-scanner-grype:
 
 #
 install-docker-dive:
-	curl -sLo /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb
+	curl -sLo /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_linux_amd64.deb
 	sudo apt install /tmp/dive.deb
 
 # https://dockersl.im
@@ -1507,6 +1507,10 @@ install-gilt:
 
 install-zed:
 	ln -s ~/apps/zed.app/bin/zed ~/dotfiles/bin/zed
+
+install-pipx-poetry:
+	pipx install poetry
+	pipx inject poetry "poetry-plugin-export"
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
