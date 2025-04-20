@@ -19,6 +19,7 @@ code --install-extension davidanson.vscode-markdownlint
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension deerawan.vscode-dash
 code --install-extension dirk-thomas.vscode-lark
+code --install-extension docker.docker
 code --install-extension dotjoshjohnson.xml
 code --install-extension dsznajder.es7-react-js-snippets
 code --install-extension eamodio.gitlens
@@ -73,7 +74,6 @@ code --install-extension ms-vscode.remote-server
 code --install-extension naco-siren.gradle-language
 code --install-extension njpwerner.autodocstring
 code --install-extension oderwat.indent-rainbow
-code --install-extension openhab.openhab
 code --install-extension orta.vscode-jest
 code --install-extension phproberto.vscode-php-getters-setters
 code --install-extension puppet.puppet-vscode
