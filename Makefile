@@ -989,6 +989,9 @@ install-jenv:
 	echo "That should match"
 	echo "run 'jenv doctor' in case of issues"
 
+install-sdkman:
+	curl -s https://get.sdkman.io | bash
+
 # /JAVA
 
 # CLOUDS

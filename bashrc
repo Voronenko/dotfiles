@@ -232,6 +232,9 @@ export PATH=$PATH:/opt/gradle/gradle-3.3/bin
 
 fi
 
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 # /Java development
 
 
@@ -276,3 +279,4 @@ fi
 
 #[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 #complete -C ~/dotfiles/bin/vault vault
+

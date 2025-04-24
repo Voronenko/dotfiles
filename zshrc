@@ -511,6 +511,9 @@ if [[ -d $HOME/.jenv ]]; then
 
 fi
 
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 # /Java development
 
 # GO development
@@ -877,3 +880,4 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
+
