@@ -43,16 +43,21 @@ prompt_dot_dir() {
   "$1_prompt_segment" "$0" "$2" none none "%{$fg[cyan]%}%c%{$reset_color%}$(snpt "DOTFILES_UL_FINISH" "yellow")" ''
 }
 
+
 prompt_dot_ssh() {
    if [[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]]; then
      if [[ $(cat /etc/hostname) =~ ^ip- ]]; then
-       USER_INSTANCE=$(curl -s -m 0.003  http://169.254.169.254/latest/meta-data/instance-id)
+       # Step 1: Get the session token
+       TOKEN=$(curl -m 0.003 -s -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" http://169.254.169.254/latest/api/token)
+       # Step 2: Use the token to get the instance ID
+       USER_INSTANCE=$(curl -m 0.003 -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
      else
        USER_INSTANCE=$(hostname)
      fi
-  "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%} ${USER} 🖥 ${USER_INSTANCE}%{$reset_color%}" ''
+     "$1_prompt_segment" "$0" "$2" none none "%{$fg_bold[yellow]%} ${USER} 🖥 ${USER_INSTANCE}%{$reset_color%}" ''
    fi
 }
+
 
 prompt_dot_dck() {
    if [[ -f /.dockerenv ]]; then
