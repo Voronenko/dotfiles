@@ -1511,6 +1511,10 @@ install-gilt:
 install-zed:
 	ln -s ~/apps/zed.app/bin/zed ~/dotfiles/bin/zed
 
+install-pipx:
+	sudo apt install pipx
+	pipx ensurepath
+
 install-pipx-poetry:
 	pipx install poetry
 	pipx inject poetry "poetry-plugin-export"
