@@ -98,7 +98,7 @@ if [ "$1" == "full" ]; then
   elif [ -e /usr/bin/apt ]
   then
       if [ "$INSTALL_ANSIBLE" == "yes" ] || [ "$INSTALL_ANSIBLE" == "y" ] ; then
-      $SUDO apt-get install -y software-properties-common "$PREFFERED_PYTHON"-dev apt-transport-https libffi-dev libssl-dev
+      $SUDO apt-get install -y software-properties-common "$PREFFERED_PYTHON"-dev apt-transport-https libffi-dev libssl-dev unzip make
       fi
       $SUDO apt-get install -y wget
   fi
@@ -134,6 +134,12 @@ cd dotfiles
 
 if [ "$1" == "simple" ] || [ "$1" == "docker" ] ; then
   ./init_simple.sh "$PREFERRED_SHELL"
+  print_grn consider:
+  echo "cd ~/dotfiles && make swiss-knife"
+  echo "cd ~/dotfiles && make zsh-fzf zsh-kubetail"
+  echo "~/dotfiles && make install-console-fd install-console-fzf"
+  echo "~/dotfiles && make install-console-lazysuite"
+
 else
   ./init.sh
   cd ~/dotfiles && make swiss-knife
