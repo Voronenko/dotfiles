@@ -280,3 +280,4 @@ fi
 #[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 #complete -C ~/dotfiles/bin/vault vault
 
+. "$HOME/.cargo/env"

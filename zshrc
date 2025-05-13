@@ -304,8 +304,13 @@ fi
 
 if type "gcloud" > /dev/null; then
 
-source ${HOME}/dotfiles/completions/gcloud_completion.zsh
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
+    source "$HOME/google-cloud-sdk/completion.zsh.inc"
+else
+    source "${HOME}/dotfiles/completions/gcloud_completion.zsh"
+fi
 
 fi
 
@@ -880,4 +885,3 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     unsetopt xtrace
     exec 2>&3 3>&-
 fi
-
