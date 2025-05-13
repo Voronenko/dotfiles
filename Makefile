@@ -1511,9 +1511,19 @@ install-gilt:
 install-zed:
 	ln -s ~/apps/zed.app/bin/zed ~/dotfiles/bin/zed
 
+install-pipx:
+	sudo apt install pipx
+	pipx ensurepath
+
 install-pipx-poetry:
 	pipx install poetry
 	pipx inject poetry "poetry-plugin-export"
+
+install-pipx-papermill:
+	pipx install papermill
+
+dotfiles-set-git-remote:
+	 git remote set-url origin git@github.com:Voronenko/dotfiles.git
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

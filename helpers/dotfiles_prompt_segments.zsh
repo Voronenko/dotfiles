@@ -51,6 +51,11 @@ prompt_dot_ssh() {
        TOKEN=$(curl -m 0.003 -s -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" http://169.254.169.254/latest/api/token)
        # Step 2: Use the token to get the instance ID
        USER_INSTANCE=$(curl -m 0.003 -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
+       # Check for additional aliases in /etc/hosts
+       ALIASES=$(grep -E "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" /etc/hosts | awk '{for(i=2;i<=NF;i++) if ($i != "localhost") print $i}' | tr '\n' ' ')
+       if [[ -n "$ALIASES" ]]; then
+         USER_INSTANCE+="/$ALIASES"
+       fi
      else
        USER_INSTANCE=$(hostname)
      fi
