@@ -173,4 +173,6 @@ bin/libcrypto.so.1.1
 bin/Telegram
 bin/Updater
 bin/k0sctl
+bin/gilt
+bin/zed
 .aider*
