@@ -1522,8 +1522,35 @@ install-pipx-poetry:
 install-pipx-papermill:
 	pipx install papermill
 
+install-pipx-autorandr:
+	pipx install autorandr
+
+install-pipx-glances:
+	pipx install glances
+
+install-pipx-pre-commit:
+	pipx install pre-commit
+
+install-pipx-nbdime:
+	pipx install nbdime
+
+install-pipx-nbstripout:
+	pipx install nbstripout
+
+install-pipx-nitrokeyapp:
+	pipx install nitrokeyapp
+
+install-pipx-open-webui:
+	pipx install open-webui
+
+install-pipx-pynitrokey:
+	pipx install pynitrokey
+
+install-pipx-uv:
+	pipx install uv
+
 dotfiles-set-git-remote:
-	 git remote set-url origin git@github.com:Voronenko/dotfiles.git
+	git remote set-url origin git@github.com:Voronenko/dotfiles.git
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

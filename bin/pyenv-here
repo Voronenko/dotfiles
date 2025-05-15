@@ -70,17 +70,22 @@ pyenv local "$ENVNAME"
 # upgrade pip
 pip install --upgrade pip
 
-read -p "$(echo -e "${YELLOW}Install poetry? [y/N]${NC} ")" ans
+echo -e "${YELLOW} > Note: good idea to have poetry already installed globally with pipx. ${NC}"
+read -p "$(echo -e "${YELLOW}Install local poetry within project? [y/N]${NC} ")" ans
 if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv exec python -m pip install poetry
     pyenv rehash
     # or uncomment and use virtualenvironment way - up to you
     pyenv exec poetry config virtualenvs.create false --local
-    echo "command to install dependencies: pyenv exec poetry install --no-root"
+    echo "command to install dependencies: poetry install --no-root"
 else
   echo -e "${GREEN}Skipping installing poetry.${NC}"
+  if command -v poetry &> /dev/null; then
+    echo "command to install dependencies: pyenv exec poetry install --no-root"
+  fi
 fi
 
+echo -e "${YELLOW} uv is alternative package manager ${NC}"
 read -p "$(echo -e "${YELLOW}Install uv? [y/N]${NC} ")" ans
 if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv exec python -m pip install uv
@@ -88,4 +93,7 @@ if [[ "$ans" =~ ^[yY]$ ]]; then
     echo "command to install dependencies: pyenv exec uv sync"
 else
   echo -e "${GREEN}Skipping installing uv.${NC}"
+  if command -v uv &> /dev/null; then
+    echo "command to install dependencies: pyenv exec uv sync"
+  fi
 fi
