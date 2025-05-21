@@ -64,6 +64,7 @@ fi
 ENVNAME=$1
 
 # init and associate pyenv virtualenv
+echo pyenv virtualenv "$PYVER" "$ENVNAME"
 pyenv virtualenv "$PYVER" "$ENVNAME"
 pyenv local "$ENVNAME"
 
@@ -77,11 +78,11 @@ if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv rehash
     # or uncomment and use virtualenvironment way - up to you
     pyenv exec poetry config virtualenvs.create false --local
-    echo "command to install dependencies: poetry install --no-root"
+    echo "command to install dependencies: pyenv exec poetry install --no-root"
 else
   echo -e "${GREEN}Skipping installing poetry.${NC}"
   if command -v poetry &> /dev/null; then
-    echo "command to install dependencies: pyenv exec poetry install --no-root"
+    echo "command to install dependencies: poetry install --no-root"
   fi
 fi
 

@@ -29,6 +29,7 @@ code --install-extension evilz.vscode-reveal
 code --install-extension formulahendry.code-runner
 code --install-extension github.copilot
 code --install-extension github.copilot-chat
+code --install-extension github.vscode-github-actions
 code --install-extension github.vscode-pull-request-github
 code --install-extension golang.go
 code --install-extension hashicorp.hcl
@@ -48,6 +49,7 @@ code --install-extension ms-azuretools.vscode-azureresourcegroups
 code --install-extension ms-azuretools.vscode-docker
 code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
 code --install-extension ms-playwright.playwright
+code --install-extension ms-python.black-formatter
 code --install-extension ms-python.debugpy
 code --install-extension ms-python.isort
 code --install-extension ms-python.python
