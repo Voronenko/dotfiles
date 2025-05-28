@@ -97,7 +97,7 @@ source ${HOME}/dotfiles/bin/kube-ps1.sh
 
 # User configuration
 
-export PATH=${HOME}/dotfiles/bin:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:$HOME/config/composer/vendor/bin:$PATH:${KREW_ROOT:-$HOME/.krew}/bin
+export PATH=${HOME}/dotfiles/bin:${HOME}/dotfiles/adr:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:$HOME/config/composer/vendor/bin:$PATH:${KREW_ROOT:-$HOME/.krew}/bin
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 export DISABLE_AUTO_TITLE='true'
 

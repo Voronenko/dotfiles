@@ -388,9 +388,9 @@ install-docker-dive:
 	curl -sLo /tmp/dive.deb https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_linux_amd64.deb
 	sudo apt install /tmp/dive.deb
 
-# https://dockersl.im
+# https://github.com/slimtoolkit/slim
 install-docker-slim:
-	curl -sLo /tmp/docker-slim.tar.gz https://downloads.dockerslim.com/releases/1.29.0/dist_linux.tar.gz
+	curl -sLo /tmp/docker-slim.tar.gz https://github.com/slimtoolkit/slim/releases/download/1.40.11/dist_linux.tar.gz
 	tar -xvzf /tmp/docker-slim.tar.gz -C /tmp
 	mv /tmp/dist_linux/* ~/dotfiles/bin
 
@@ -534,7 +534,7 @@ install-k8s-k9s:
 # in a way that makes each shell independent from others. It also has support for split configuration files, meaning it can load Kubernetes contexts from
 # multiple files. You can configure the paths where kubie will look for context
 install-k8s-kubie:
-	curl -sLo ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.9.1/kubie-linux-amd64
+	curl -sLo ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.25.2/kubie-linux-amd64
 	chmod +x ~/dotfiles/bin/kubie
 
 # https://github.com/txn2/kubefwd/
@@ -1548,6 +1548,9 @@ install-pipx-pynitrokey:
 
 install-pipx-uv:
 	pipx install uv
+
+install-pipx-adr:
+	pipx install adr-tools-python
 
 dotfiles-set-git-remote:
 	git remote set-url origin git@github.com:Voronenko/dotfiles.git

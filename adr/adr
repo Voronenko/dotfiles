@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+eval "$($(dirname $0)/adr-config)"
+
+cmd=$adr_bin_dir/adr-$1
+
+if [ -x $cmd ]
+then
+    $cmd "${@:2}"
+else
+    $adr_bin_dir/adr-help
+    exit 1
+fi

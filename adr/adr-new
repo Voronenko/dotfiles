@@ -1,0 +1,133 @@
+#!/bin/bash
+set -e
+eval "$($(dirname $0)/adr-config)"
+
+## usage: adr new [-s SUPERCEDED] [-l TARGET:LINK:REVERSE-LINK] TITLE_TEXT...
+##
+## Creates a new, numbered ADR.  The TITLE_TEXT arguments are concatenated to
+## form the title of the new ADR.  The ADR is opened for editing in the
+## editor specified by the VISUAL or EDITOR environment variable (VISUAL is
+## preferred; EDITOR is used if VISUAL is not set).  After editing, the
+## file name of the ADR is output to stdout, so the command can be used in
+## scripts.
+##
+## If the ADR directory contains a file `templates/template.md`, this is used as
+## the template for the new ADR.  Otherwise a default template is used that
+## follows the style described by Michael Nygard in this article:
+##
+##   http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions
+##
+## Options:
+##
+## -s SUPERCEDED   A reference (number or partial filename) of a previous
+##                 decision that the new decision supercedes. A Markdown link
+##                 to the superceded ADR is inserted into the Status section.
+##                 The status of the superceded ADR is changed to record that
+##                 it has been superceded by the new ADR.
+##
+## -l TARGET:LINK:REVERSE-LINK
+##                 Links the new ADR to a previous ADR.  
+##                 TARGET is a reference (number or partial filename) of a 
+##                 previous decision. 
+##                 LINK is the description of the link created in the new ADR.
+##                 REVERSE-LINK is the description of the link created in the
+##                 existing ADR that will refer to the new ADR.
+##
+## Multiple -s and -l options can be given, so that the new ADR can supercede 
+## or link to multiple existing ADRs.
+##
+## E.g. to create a new ADR with the title "Use MySQL Database":
+##
+##     adr new Use MySQL Database
+##
+## E.g. to create a new ADR that supercedes ADR 12:
+##
+##     adr new -s 12 Use PostgreSQL Database
+##
+## E.g. to create a new ADR that supercedes ADRs 3 and 4, and amends ADR 5:
+##
+##     adr new -s 3 -s 4 -l "5:Amends:Amended by" Use Riak CRDTs to cope with scale
+##
+
+superceded=()
+links=()
+
+while getopts s:l: arg
+do
+    case "$arg" in
+        s)
+            superceded+=("$OPTARG")
+            ;;
+		l)
+			links+=("$OPTARG")
+			;;
+        --)
+            break
+            ;;
+        *)
+            echo "Not implemented: $arg" >&2
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+dstdir=$("$adr_bin_dir/_adr_dir")
+template="$ADR_TEMPLATE"
+if [ -z $template ]
+then
+    template="$dstdir/templates/template.md"
+    if [ ! -f "$template" ]
+    then
+        template="$adr_template_dir/template.md"
+    fi
+fi
+
+title="$@"
+
+if [ -z "$title" ]
+then
+    echo ERROR: no title given
+    exit 1
+fi
+
+if [ -d $dstdir ]
+then
+    maxid=$(ls $dstdir | grep -Eo '^[0-9]+' | sed -e 's/^0*//' | sort -rn | head -1)
+    newnum=$(($maxid + 1))
+else
+    newnum=1
+fi
+
+newid=$(printf "%04d" $newnum)
+slug=$(echo -n $title | tr -Ccs [:alnum:] - | tr [:upper:] [:lower:] | sed -e 's/[^[:alnum:]]*$//' -e 's/^[^[:alnum:]]*//')
+dstfile=$dstdir/$newid-$slug.md
+date=${ADR_DATE:-$(date +%Y-%m-%d)}
+
+mkdir -p $dstdir
+cat $template | sed \
+    -e "s|NUMBER|$newnum|" \
+    -e "s|TITLE|$title|" \
+    -e "s|DATE|$date|" \
+    -e "s|STATUS|Accepted|" \
+    > $dstfile
+
+for target in "${superceded[@]}"
+do
+	"$adr_bin_dir/_adr_add_link" "$target" "Superceded by" "$dstfile"
+	"$adr_bin_dir/_adr_remove_status" "Accepted" "$target"
+	"$adr_bin_dir/_adr_add_link" "$dstfile" "Supercedes" "$target"
+done
+
+for l in "${links[@]}"
+do
+	target="$(echo $l | cut -d : -f 1)"
+	forward_link="$(echo $l | cut -d : -f 2)"
+	reverse_link="$(echo $l | cut -d : -f 3)"
+	
+	"$adr_bin_dir/_adr_add_link" "$dstfile" "$forward_link" "$target"
+	"$adr_bin_dir/_adr_add_link" "$target" "$reverse_link" "$dstfile"
+done
+
+${VISUAL:-${EDITOR:-true}} $dstfile
+echo $dstfile

@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+eval "$($(dirname $0)/adr-config)"
+
+## usage: adr init [DIRECTORY]
+## 
+## Initialises the directory of architecture decision records:
+## 
+##  * creates a subdirectory of the current working directory
+##  * creates the first ADR in that subdirectory, recording the decision to
+##    record architectural decisions with ADRs.
+##
+## If the DIRECTORY is not given, the ADRs are stored in the directory `doc/adr`.
+
+if [ ! -z $1 ]
+then
+    mkdir -p "$1"
+    echo "$1" > .adr-dir
+fi
+
+VISUAL=true ADR_TEMPLATE="$adr_template_dir/init.md" \
+      "$adr_bin_dir/adr-new" record-architecture-decisions

@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+eval "$($(dirname $0)/adr-config)"
+
+## usage: adr generate [REPORT [OPTION ...]]
+##
+## Generates summary documentation about the architecture decision records
+## that is typically fed into the tool chain for publishing a project's 
+## documentatation.
+##
+## To list the report types that can be generated, run:
+##
+##     adr generate
+##
+## To get help on a specific report generator, run:
+##
+##     adr help generate <report-type>
+##
+## For example, the following command will run the "toc" (table of contents) 
+## generator:
+##
+##     adr generate toc
+##
+## The following command will display help for the "toc" generator:
+##
+##     adr help generate toc
+
+cmd=$1
+
+if [ -z $cmd ]
+then
+    (cd "$adr_bin_dir" && find . -name '_adr_generate_*') | cut -c 17-
+else
+    "$adr_bin_dir/_adr_generate_$cmd" "${@:2}"
+fi

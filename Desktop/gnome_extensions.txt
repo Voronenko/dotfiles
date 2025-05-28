@@ -1,8 +1,8 @@
-['drop-down-terminal@gs-extensions.zzrough.org', 'dash-to-dock@micxgx.gmail.com', 'system-monitor@paradoxxx.zero.gmail.com', 'window-corner-preview@fabiomereu.it', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'timezone@jwendell', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com']
+['ding@rastersoft.com', 'pop-cosmic@system76.com', 'pop-shell@system76.com', 'system76-power@system76.com', 'ubuntu-appindicators@ubuntu.com', 'cosmic-dock@system76.com', 'cosmic-workspaces@system76.com', 'popx11gestures@system76.com', 'system-monitor@paradoxxx.zero.gmail.com', 'status-area-horizontal-spacing@mathematical.coffee.gmail.com', 'space-bar@luchrioh', 'caffeine@patapon.info', 'quake-mode@repsac-by.github.com', 'ddterm@amezin.github.com', 'another-window-session-manager@gmail.com']
 ========================Local:
-dash-to-dock@micxgx.gmail.com
-drop-down-terminal@gs-extensions.zzrough.org
-quicktoggler@shihira.github.com
+another-window-session-manager@gmail.com
+caffeine@patapon.info
+ddterm@amezin.github.com
+space-bar@luchrioh
+status-area-horizontal-spacing@mathematical.coffee.gmail.com
 system-monitor@paradoxxx.zero.gmail.com
-timezone@jwendell
-window-corner-preview@fabiomereu.it

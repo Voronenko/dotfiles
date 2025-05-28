@@ -1,0 +1,80 @@
+#!/bin/bash
+set -e
+eval "$($(dirname $0)/adr-config)"
+
+## usage: adr generate graph [-p LINK_PREFIX] [-e LINK-EXTENSION]
+##
+## Generates a visualisation of the links between decision records in
+## Graphviz format.  This can be piped into the graphviz tools to 
+## generate a an image file.
+## 
+## Each node in the graph represents a decision record and is linked to
+## the decision record document.  
+##
+## Options:
+##
+## -e LINK-EXTENSION 
+##         the file extension of the documents to which generated links refer. 
+##         Defaults to `.html`.
+## 
+## -p LINK_PREFIX 
+##         prefix each decision file link with LINK_PREFIX.
+## 
+## E.g. to generate a graph visualisation of decision records in SVG format:
+##
+##     adr generate graph | dot -Tsvg > graph.svg
+##
+## E.g. to generate a graph visualisation in PDF format, in which all links
+## are to .pdf files:
+##
+##    adr generate graph -e .pdf | dot -Tpdf > graph.pdf
+
+link_prefix=
+link_extension=.html
+
+while getopts e:p: arg
+do
+    case "$arg" in
+        e) 
+			link_extension="$OPTARG"
+          	;;
+		p)
+			link_prefix="$OPTARG"
+			;;
+    	*)
+        	echo "Not implemented: $arg" >&2
+        	exit 1
+        	;;
+	esac
+done
+shift $((OPTIND-1))
+
+
+function index() {
+	basename "$1" | sed -e 's/-.*//' | sed -e 's/^0*//'
+}
+
+echo "digraph {"
+echo "  node [shape=plaintext];"
+
+echo "  subgraph {"
+for f in $("$adr_bin_dir/adr-list")
+do
+	n=$(index "$f")
+	title=$("$adr_bin_dir/_adr_title" $f)
+	
+	echo "    _$n [label=\"$title\"; URL=\"${link_prefix}$(basename $f .md)${link_extension}\"];"
+	if [ $n -gt 1 ]
+	then
+		echo "    _$(($n - 1)) -> _$n [style=\"dotted\", weight=1];"
+	fi
+done
+echo "  }"
+
+for f in $("$adr_bin_dir/adr-list")
+do
+	n=$(index "$f")
+	"$adr_bin_dir/_adr_links" "$f" | grep -Ev " by$" | sed -E -e 's/^([0-9]+)=(.+)$/  _'"$n"' -> _\1 [label="\2", weight=0]/;'
+done
+
+echo "}"

@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+eval "$($(dirname $0)/adr-config)"
+
+## usage: adr list
+##
+## Lists the architecture decision records
+
+adr_dir=$("$adr_bin_dir/_adr_dir")
+
+if [ -d $adr_dir ]
+then
+   find $adr_dir | grep -E "^$adr_dir/[0-9]+-[^/]*\\.md" | sort
+else
+    echo "The $adr_dir directory does not exist"
+    exit 1
+fi
+
