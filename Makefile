@@ -536,6 +536,8 @@ install-k8s-k9s:
 install-k8s-kubie:
 	curl -sLo ~/dotfiles/bin/kubie https://github.com/sbstp/kubie/releases/download/v0.25.2/kubie-linux-amd64
 	chmod +x ~/dotfiles/bin/kubie
+	mkdir -p ~/.kube
+	ln -s ~/dotfiles/config/kubie/kubie.yaml ~/.kube/kubie.yaml
 
 # https://github.com/txn2/kubefwd/
 # Bulk port forwarding Kubernetes services for local development.
