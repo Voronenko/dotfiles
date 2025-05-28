@@ -124,6 +124,10 @@ else
   cd dotfiles && git remote set-url origin git@github.com:Voronenko/dotfiles.git && cd ~
 fi
 
+if [ "$1" == "simple" ]; then
+$SUDO $pkgmanager install -y unzip make
+fi
+
 
 if [ "$1" == "full" ]; then
   git clone https://github.com/Voronenko/ansible-developer_recipes.git
