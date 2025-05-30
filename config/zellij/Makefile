@@ -1,2 +1,2 @@
 update:
-	zellij setup --dump-config > /home/slavko/dotfiles/config/config.kdl
+	zellij setup --dump-config > /home/slavko/dotfiles/config/zellij/config.kdl
