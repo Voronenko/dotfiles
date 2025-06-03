@@ -76,7 +76,7 @@ prompt_dot_terraform() {
     # check if in terraform dir
     if [ -d .terraform ]; then
       local workspace=$(terraform workspace show 2> /dev/null) || return
-      "$1_prompt_segment" "$0" "$2" gray yellow "$(print_icon 'SERVER_ICON') ${workspace}" ''
+      "$1_prompt_segment" "$0" "$2" gray cyan "$(print_icon 'SERVER_ICON') ${workspace}" ''
     fi
 }
 
@@ -735,4 +735,9 @@ prompt_java_version() {
   if [[ -n "$java_version" ]]; then
     "$1_prompt_segment" "$0" "$2" "red" "white" "$java_version" "JAVA_ICON"
   fi
+}
+
+prompt_kubie() {
+  [[ -n ${KUBIE_ACTIVE} ]] || return
+  echo "${ZSH_THEME_KUBIE_PREFIX:=[}%{$fg[red]%}$(kubie info ctx)%{$reset_color%}|%{$fg[green]%}$(kubie info ns)%{$reset_color%}${ZSH_THEME_KUBIE_SUFFIX:=]}"
 }
