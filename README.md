@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-My unix environment
+My unix environment [one day started with almost empty Readme.md](https://github.com/Voronenko/dotfiles/commit/daa706fbbad3e9d27f8bd6edc6053b7c76fefd2c)
 
 So, to recap, the install script will:
 
