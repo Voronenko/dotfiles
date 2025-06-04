@@ -13,3 +13,9 @@ lazy-cli:
 zellij:
 	rm  ~/.config/zellij/config.kdl || true
 	ln -s ~/dotfiles/config/zellij/config.kdl ~/.config/zellij/config.kdl
+zellij-bookmarks:
+	rm ~/.config/zellij/.zellij_bookmarks.yaml || true
+	ln -s ~/dotfiles/config/zellij/zellij_bookmarks.yaml ~/.config/zellij/.zellij_bookmarks.yaml
+zellij-bookmarks-local:
+	rm ~/dotfiles/config/zellij/.zellij_bookmarks.yaml || true
+	cd zellij && ln -s zellij_bookmarks.yaml .zellij_bookmarks.yaml

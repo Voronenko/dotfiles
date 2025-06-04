@@ -1,0 +1,31 @@
+vars:
+  global_var: "Global value"
+  path: "/home/user"
+
+cmds:
+  greet: "echo 'Hello, World!'"
+  list_files: "ls -la {{ path }}"
+  custom_echo: "echo '{{ message }}'"
+
+bookmarks:
+- name: "Bookmark1"
+  desc: "A test bookmark combining plain text and reusable commands."
+  cmds:
+  - "echo 'This is Bookmark1'"
+  - cmd::greet
+  - bookmark::Bookmark2
+  - cmd::custom_echo
+  exec: false
+  labels:
+  - "utilities"
+  - "example"
+  vars:
+    message: "Bye Bye!"
+
+- name: "Bookmark2"
+  desc: "Command to list files dynamically using the path variable."
+  cmds:
+  - "cmd::list_files"
+  exec: true
+  labels:
+  - "files"
