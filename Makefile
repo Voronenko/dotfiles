@@ -103,8 +103,8 @@ install-snyk:
 
 # cat with syntax highlight https://github.com/sharkdp/bat
 install-console-bat:
-	curl -sLo /tmp/bat_0.24.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
-	sudo dpkg -i /tmp/bat_0.24.0_amd64.deb
+	curl -sLo /tmp/bat_0.25.0_amd64.deb https://github.com/sharkdp/bat/releases/download/v0.25.0/bat_0.25.0_amd64.deb
+	sudo dpkg -i /tmp/bat_0.25.0_amd64.deb
 
 install-console-lazysuite: install-console-lazygit install-console-lazydocker install-console-lazycli install-console-lazynpm
 	echo "Done"
@@ -1516,6 +1516,9 @@ install-zed:
 install-pipx:
 	sudo apt install pipx
 	pipx ensurepath
+
+install-pipx-pgcli:
+	pipx install pgcli
 
 install-pipx-poetry:
 	pipx install poetry

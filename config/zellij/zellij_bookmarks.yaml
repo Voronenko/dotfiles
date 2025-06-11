@@ -8,6 +8,20 @@ cmds:
   custom_echo: "echo '{{ message }}'"
 
 bookmarks:
+- name: "LazyDocker"
+  desc: "run lazy docker ui"
+  cmds:
+  - "lazydocker"
+  exec: true
+  labels:
+  - "docker"
+- name: "LazyGit"
+  desc: "run lazy git ui"
+  cmds:
+  - "lazygit"
+  exec: true
+  labels:
+  - "git"
 - name: "Bookmark1"
   desc: "A test bookmark combining plain text and reusable commands."
   cmds:
