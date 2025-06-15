@@ -22,19 +22,13 @@ bookmarks:
   exec: true
   labels:
   - "git"
-- name: "Bookmark1"
-  desc: "A test bookmark combining plain text and reusable commands."
+- name: "Checkout branch with UI"
+  desc: ""
   cmds:
-  - "echo 'This is Bookmark1'"
-  - cmd::greet
-  - bookmark::Bookmark2
-  - cmd::custom_echo
-  exec: false
+  - "forgit::checkout::branch"
+  exec: true
   labels:
-  - "utilities"
-  - "example"
-  vars:
-    message: "Bye Bye!"
+  - "git"
 
 - name: "Bookmark2"
   desc: "Command to list files dynamically using the path variable."
