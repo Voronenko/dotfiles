@@ -69,11 +69,20 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-#if [ "$color_prompt" = yes ]; then
-#    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-#else
-#    PS1='\[$(tput setaf 3)\]⇕\[$(tput sgr0)\] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#fi
+function parse_git_dirty {
+  local status=$(git status --porcelain 2> /dev/null)
+  if [[ $status ]]; then
+    echo "*"
+  fi
+}
+
+function parse_git_branch {
+  local branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  if [[ $branch ]]; then
+    echo " ($branch$(parse_git_dirty))"
+  fi
+}
+
 if [ "$color_prompt" = yes ]; then
     PS1="\[\033[0;33m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;91m\]\342\234\227\[\033[0;33m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;33m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]${debian_chroot:+($debian_chroot)}\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;33m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;33m\]]\n\[\033[0;33m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
 else
