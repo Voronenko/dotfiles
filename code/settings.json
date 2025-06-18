@@ -1,12 +1,15 @@
 // Place your settings in this file to overwrite the default vscode settings
 {
+// telemetries
+  "redhat.telemetry.enabled": false,
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+
   "editor.minimap.enabled": true,
-  "atomKeymap.promptV3Features": true,
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.formatOnPaste": true,
   // Controls how the editor should render the current line highlight, possibilities are 'none', 'gutter', 'line', and 'all'.
   "editor.renderLineHighlight": "all",
-
   "python.venvPath": "./p-env, ~/.pyenv/versions/, ./venv",
 
   "kogito.bpmn.runOnSave": "extension.kogito.silentlyGenerateSvgBpmn",
@@ -46,6 +49,11 @@
     "waderyan.gitblame"
   ],
 
+  "workbench.editorAssociations": {
+      "*.copilotmd": "vscode.markdown.preview.editor",
+      "file:/**/*.csv": "jupyter-data-wrangler"
+  },
+
   "jsonnet.outputFormat": "json",
   "jsonnet.libPaths": [
   "./vendor",
@@ -59,8 +67,6 @@
   "editor.mouseWheelZoom": true,
   "terminal.integrated.rendererType": "dom",
   "plantuml.jar": "/opt/plantuml/plantuml.jar",
-  "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
   "gitlens.advanced.telemetry.enabled": false,
   "vsicons.dontShowNewVersionMessage": true,
   "aws.samcli.location": "/home/slavko/.local/bin/sam",
@@ -98,10 +104,6 @@
     "**/bower_components/**",
     "**/vendor/**/{Test,test,Tests,tests}/**/*Test.php"
   ],
-  "projectTemplates.placeholders": {},
-  "projectTemplates.placeholderRegExp": "#{(\\w+)?}",
-  "projectTemplates.usePlaceholders": true,
-
   "indentRainbow.includedLanguages": [
     "yaml",
     "python"
@@ -123,14 +125,15 @@
   ],
   "hediet.vscode-drawio.resizeImages": null,
   "editor.insertSpaces": false,
-  "python.analysis.extraPaths": [
-    "/home/slavko/.vscode/extensions/continue.continue-0.8.1-linux-x64"
-  ],
-  "python.autoComplete.extraPaths": [
-    "/home/slavko/.vscode/extensions/continue.continue-0.8.1-linux-x64"
-  ],
-  "bitoAI.codeCompletion.setAutoCompletionTriggerLogic": 250,
   "python.experiments.optInto": [],
-  "telemetry.telemetryLevel": "error" // for example ["nim", "nims", "python"]
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "roo-cline.allowedCommands": [
+    "npm test",
+    "npm install",
+    "tsc",
+    "git log",
+    "git diff",
+    "git show"
+  ]
 
 }

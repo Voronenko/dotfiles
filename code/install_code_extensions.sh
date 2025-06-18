@@ -7,8 +7,6 @@ code --install-extension buenon.scratchpads
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
 code --install-extension circleci.circleci
-code --install-extension codeium.codeium
-code --install-extension continue.continue
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension deerawan.vscode-dash
 code --install-extension dirk-thomas.vscode-lark
@@ -16,7 +14,6 @@ code --install-extension docker.docker
 code --install-extension eamodio.gitlens
 code --install-extension editorconfig.editorconfig
 code --install-extension evilz.vscode-reveal
-code --install-extension formulahendry.code-runner
 code --install-extension github.vscode-github-actions
 code --install-extension golang.go
 code --install-extension hashicorp.hcl
