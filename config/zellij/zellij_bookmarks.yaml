@@ -30,10 +30,15 @@ bookmarks:
   labels:
   - "git"
 
-- name: "Bookmark2"
-  desc: "Command to list files dynamically using the path variable."
+- name: "lnav-install"
+  desc: "Installs lnav on remote"
   cmds:
-  - "cmd::list_files"
+  - "read -p \"Do you want to install lnav? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.12.4/lnav-0.12.4-linux-musl-x86_64.zip"
+  - "cd /tmp && unzip lnav.zip"
+  - "chmod +x /tmp/lnav-0.12.4/lnav"
+  - "sudo  mv /tmp/lnav-0.12.4/lnav /usr/bin/lnav"
+  - "lnav -i extra"
   exec: true
   labels:
   - "files"

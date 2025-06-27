@@ -359,7 +359,7 @@ alias sessionshare='screen -d -m -S shared'
 alias sessionjoin='screen -x shared'
 alias externalip='getent hosts `dig +short myip.opendns.com @resolver1.opendns.com`'
 alias wanip='curl https://checkip.amazonaws.com/'
-alias intranetip="ifconfig -a | grep inet | grep -v 127.0.0.1 | grep 192.168 | awk '{print \$2}'"
+alias intranetip="(if command -v ifconfig >/dev/null 2>&1; then ifconfig -a | grep inet | grep -v 127.0.0.1 | grep 192.168 | awk '{print $2}'; else ip -4 addr show | grep inet | grep 192.168 | awk '{print $2}' | cut -d/ -f1; fi)"
 
 # source management
 alias reset_rights_here='find -type f -exec chmod --changes 644 {} + -o -type d -exec chmod --changes 755 {} +'

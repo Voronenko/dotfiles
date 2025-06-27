@@ -14,6 +14,8 @@ code --install-extension docker.docker
 code --install-extension eamodio.gitlens
 code --install-extension editorconfig.editorconfig
 code --install-extension evilz.vscode-reveal
+code --install-extension github.copilot
+code --install-extension github.copilot-chat
 code --install-extension github.vscode-github-actions
 code --install-extension golang.go
 code --install-extension hashicorp.hcl
@@ -66,6 +68,7 @@ code --install-extension shardulm94.trailing-spaces
 code --install-extension shopify.ruby-lsp
 code --install-extension supermaven.supermaven
 code --install-extension voronenko.vscode-plantuml-stdlib-snippets
+code --install-extension vstirbu.vscode-mermaid-preview
 code --install-extension waderyan.gitblame
 code --install-extension wholroyd.jinja
 code --install-extension xdebug.php-debug
