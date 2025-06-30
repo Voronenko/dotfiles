@@ -137,6 +137,12 @@ install-console-logreader-lnav:
 	mv /tmp/lnav-0.12.4/lnav ~/dotfiles/bin
 	lnav -i extra
 
+install-console-csv-qsv:
+	mkdir -p /tmp/qsv
+	curl -sLo /tmp/qsv/qsv.zip https://github.com/dathere/qsv/releases/download/5.1.0/qsv-5.1.0-x86_64-unknown-linux-musl.zip
+	cd /tmp/qsv && unzip qsv.zip
+	mv /tmp/qsv/qsv* ~/dotfiles/bin/
+
 install-console-loki-logcli:
 	curl -sLo /tmp/logcli.zip https://github.com/grafana/loki/releases/download/v2.2.1/logcli-linux-amd64.zip
 	cd /tmp && unzip logcli.zip

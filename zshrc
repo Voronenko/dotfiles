@@ -292,6 +292,13 @@ autoload -Uz dclnavf
 
 fi
 
+if command -v qsv &> /dev/null; then
+    csv() {
+        qsv lens "$@"
+    }
+fi
+
+
 # certificates manager
 if [ -d "$HOME/acme.sh" ]; then
     if [ -f "$HOME/.acme.sh/acme.sh.env" ]; then
