@@ -178,3 +178,5 @@ bin/zed
 .aider*
 config/zellij/plugins/
 bin/qsv*
+bin/plantuml
+bin/plantuml.jar
