@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-# Usage: credential_process = ~/dotfiles/bin/aws-pass-creds.sh <aws-vault-profile>
+# Usage: credential_process = aws-pass-creds <aws-vault-profile>
+# retrieves amazon credentials for aws cli from pass storage backend
 set -euo pipefail
 
 PROFILE="$1"
