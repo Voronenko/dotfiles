@@ -180,3 +180,4 @@ config/zellij/plugins/
 bin/qsv*
 bin/plantuml
 bin/plantuml.jar
+bin/aws-vault

@@ -174,7 +174,7 @@ global-console-logreader-lnav:
 
 # https://github.com/rcoh/angle-grinder#query-syntax
 install-console-logreader-agrind:
-	curl -sLo /tmp/agrind.tar.gz https://github.com/rcoh/angle-grinder/releases/download/v0.13.0/angle_grinder-v0.13.0-x86_64-unknown-linux-musl.tar.gz
+	curl -sLo /tmp/agrind.tar.gz https://github.com/rcoh/angle-grinder/releases/download/v0.19.6/agrind-x86_64-unknown-linux-musl.tar.gz
 	tar -xvzf /tmp/agrind.tar.gz -C /tmp
 	cp /tmp/agrind ~/dotfiles/bin/ag
 	chmod +x ~/dotfiles/bin/ag
@@ -1018,6 +1018,13 @@ install-aws-cw:
 	mv /tmp/cw ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/cw
 
+install-aws-vault:
+	curl -L -o ~/dotfiles/bin/aws-vault https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-amd64
+	chmod +x ~/dotfiles/bin/aws-vault
+	aws-vault --version
+	echo sudo apt install pinentry-tty -y  == or ===  sudo dnf install pinentry -y
+
+
 # utility to speedup working with aws nodes via ssm
 install-aws-ssm:
 	curl -sLo /tmp/ssm.tar.gz https://github.com/disneystreaming/ssm-helpers/releases/download/v1.0.0/ssm-helpers_1.0.0_Linux_x86_64.tar.gz
@@ -1607,3 +1614,5 @@ dotfiles-set-git-remote:
 # https://github.com/sorenisanerd/gotty
 
 
+# Mermaid cli
+#npm install -g @mermaid-js/mermaid-cli

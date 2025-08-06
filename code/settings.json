@@ -66,7 +66,7 @@
   "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
   "editor.mouseWheelZoom": true,
   "terminal.integrated.rendererType": "dom",
-  "plantuml.jar": "/opt/plantuml/plantuml.jar",
+  "plantuml.jar": "/home/slavko/dotfiles/bin/plantuml.jar",
   "gitlens.advanced.telemetry.enabled": false,
   "vsicons.dontShowNewVersionMessage": true,
   "aws.samcli.location": "/home/slavko/.local/bin/sam",
@@ -75,7 +75,7 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "plantuml.render": "Local",
-  "plantuml.server": "https://www.plantuml.com/plantuml",
+  "plantuml.server": "https://plantuml.fiks.im/",
   "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg",
   "plantuml.exportOutDir": "./",
   "remote.extensionKind": {
@@ -135,27 +135,6 @@
     "git diff",
     "git show"
   ],
-  "mcp": {
-    "inputs": [],
-    "servers": {
-      "mcp-server-time": {
-        "command": "python",
-        "args": [
-          "-m",
-          "mcp_server_time",
-          "--local-timezone=America/Los_Angeles"
-        ],
-        "env": {}
-      },
-      "O-MCP": {
-        "url": "http://192.168.3.4:27123",
-        "env": {
-          "OBSIDIAN_HOST": "192.168.3.4",
-          "OBSIDIAN_PORT": "27123"
-        }
-      }
-    }
-  },
   "kilo-code.allowedCommands": [
     "npm test",
     "npm install",

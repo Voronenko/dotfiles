@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Usage: credential_process = ~/dotfiles/bin/aws-pass-creds.sh <aws-vault-profile>
+set -euo pipefail
+
+PROFILE="$1"
+
+# Export credentials to environment variables
+eval "$(aws-vault export "$PROFILE")"
+
+# Output JSON in the format expected by credential_process
+cat <<EOF
+{
+  "Version": 1,
+  "AccessKeyId": "$AWS_ACCESS_KEY_ID",
+  "SecretAccessKey": "$AWS_SECRET_ACCESS_KEY",
+  "SessionToken": "$AWS_SESSION_TOKEN",
+  "Expiration": "$AWS_CREDENTIAL_EXPIRATION"
+}
+EOF

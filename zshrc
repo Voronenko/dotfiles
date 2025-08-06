@@ -592,6 +592,8 @@ fi
 # AWS simplification
 if [[ -d $HOME/.aws ]]; then
 
+export AWS_VAULT_BACKEND=pass
+export AWS_VAULT_PASS_PREFIX="psst/aws-vault/"
 
 #
 declare -a AWS_GLOBALS=(ec2ssh ec2sshi ec2forward ec2ssm cwg)
