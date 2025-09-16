@@ -159,6 +159,12 @@ install-console-loki-benchtool:
 	curl -sLo ~/dotfiles/bin/benchtool https://github.com/grafana/cortex-tools/releases/download/$(shell curl -s https://api.github.com/repos/grafana/cortex-tools/releases/latest | grep tag_name | cut -d '"' -f 4)/benchtool_$(shell curl -s https://api.github.com/repos/grafana/cortex-tools/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2- )_linux_x86_64
 	chmod +x ~/dotfiles/bin/benchtool
 
+install-console-grafana-grafanacli:
+	curl -sLo /tmp/grafanacli.tar.gz https://github.com/grafana/grafanactl/releases/download/v0.1.4/grafanactl_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/grafanacli.tar.gz -C /tmp
+	mv /tmp/grafanactl ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/grafanactl
+
 
 # run github actions locally
 # # Run a specific job:

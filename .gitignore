@@ -181,3 +181,4 @@ bin/qsv*
 bin/plantuml
 bin/plantuml.jar
 bin/aws-vault
+bin/grafanactl
