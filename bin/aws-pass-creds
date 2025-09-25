@@ -2,9 +2,18 @@
 
 # Usage: credential_process = aws-pass-creds <aws-vault-profile>
 # retrieves amazon credentials for aws cli from pass storage backend
+
+# you can also use directly in direnv with
+# eval "$(aws-vault exec my-profile --duration=12h -- env | grep '^AWS_')"
+
 set -euo pipefail
 
-PROFILE="$1"
+PROFILE="${1-}"
+
+if [[ -z "$PROFILE" ]]; then
+  echo "Error: missing required PROFILE argument" >&2
+  exit 1
+fi
 
 # Export credentials to environment variables
 eval "$(aws-vault export "$PROFILE")"
