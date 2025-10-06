@@ -1,12 +1,10 @@
 code --install-extension aaron-bond.better-comments
 code --install-extension ahmadalli.vscode-nginx-conf
 code --install-extension alefragnani.numbered-bookmarks
-code --install-extension arcsine.chronicler
 code --install-extension bpmn-io.vs-code-bpmn-io
 code --install-extension buenon.scratchpads
 code --install-extension christian-kohler.npm-intellisense
 code --install-extension christian-kohler.path-intellisense
-code --install-extension circleci.circleci
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension deerawan.vscode-dash
 code --install-extension dirk-thomas.vscode-lark
@@ -25,7 +23,7 @@ code --install-extension humao.rest-client
 code --install-extension jebbs.plantuml
 code --install-extension junstyle.php-cs-fixer
 code --install-extension k--kato.intellij-idea-keybindings
-code --install-extension kevinglasson.cornflakes-linter
+code --install-extension kilocode.kilo-code
 code --install-extension lextudio.restructuredtext
 code --install-extension ms-azuretools.vscode-azureresourcegroups
 code --install-extension ms-azuretools.vscode-containers
@@ -36,6 +34,7 @@ code --install-extension ms-python.debugpy
 code --install-extension ms-python.isort
 code --install-extension ms-python.python
 code --install-extension ms-python.vscode-pylance
+code --install-extension ms-python.vscode-python-envs
 code --install-extension ms-sarifvscode.sarif-viewer
 code --install-extension ms-toolsai.datawrangler
 code --install-extension ms-toolsai.jupyter

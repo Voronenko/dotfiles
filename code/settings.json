@@ -6,7 +6,6 @@
   "telemetry.enableTelemetry": false,
 
   "editor.minimap.enabled": true,
-  "editor.multiCursorModifier": "ctrlCmd",
   "editor.formatOnPaste": true,
   // Controls how the editor should render the current line highlight, possibilities are 'none', 'gutter', 'line', and 'all'.
   "editor.renderLineHighlight": "all",
