@@ -1,0 +1,29 @@
+#!/bin/sh
+
+PLANTUML_JAR="$HOME/dotfiles/bin/plantuml.jar"
+PLANTUML_URL="https://github.com/plantuml/plantuml/releases/download/v1.2025.8/plantuml-1.2025.8.jar"
+
+# Ensure directory exists
+mkdir -p "$(dirname "$PLANTUML_JAR")"
+
+# Download if missing
+if [ ! -f "$PLANTUML_JAR" ]; then
+    echo "PlantUML JAR not found. Downloading..."
+    curl -L -o "$PLANTUML_JAR" "$PLANTUML_URL" || {
+        echo "Failed to download PlantUML."
+        exit 1
+    }
+fi
+
+# Find Java
+if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ]; then
+    JAVA="${JAVA_HOME}/bin/java"
+elif command -v java >/dev/null 2>&1; then
+    JAVA=$(command -v java)
+else
+    echo "Cannot find JVM"
+    exit 1
+fi
+
+# Run PlantUML
+exec "$JAVA" -jar "$PLANTUML_JAR" "$@"

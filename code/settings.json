@@ -135,12 +135,13 @@
     "git show"
   ],
   "kilo-code.allowedCommands": [
-    "npm test",
-    "npm install",
-    "tsc",
     "git log",
     "git diff",
-    "git show"
-  ]
+    "git show",
+    "npm test",
+    "npm install",
+    "tsc"
+  ],
+  "kilo-code.deniedCommands": []
 
 }

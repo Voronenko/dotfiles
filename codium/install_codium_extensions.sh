@@ -7,6 +7,7 @@ codium --install-extension github.vscode-github-actions
 codium --install-extension golang.go
 codium --install-extension hashicorp.hcl
 codium --install-extension hashicorp.terraform
+codium --install-extension hotovo-sk.aider-desk-connector
 codium --install-extension humao.rest-client
 codium --install-extension jebbs.plantuml
 codium --install-extension k--kato.intellij-idea-keybindings

@@ -19,6 +19,7 @@ code --install-extension golang.go
 code --install-extension hashicorp.hcl
 code --install-extension hashicorp.terraform
 code --install-extension hediet.vscode-drawio
+code --install-extension hotovo-sk.aider-desk-connector
 code --install-extension humao.rest-client
 code --install-extension jebbs.plantuml
 code --install-extension junstyle.php-cs-fixer
