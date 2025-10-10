@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+SSH_CONFIG="$HOME/.ssh/config"
+
+# Extract only concrete hosts (no *, ?, [)
+mapfile -t HOSTS < <(
+    awk '
+    /^Host[ \t]+/ {
+        host=$2
+        if (host !~ /[\*\?\[]/) print host
+    }
+    ' "$SSH_CONFIG"
+)
+
+SELECTED_HOST=$(printf "%s\n" "${HOSTS[@]}" | fzf --prompt="SSH to host> ")
+
+if [[ -z "$SELECTED_HOST" ]]; then
+    echo "No host selected."
+    exit 1
+fi
+
+read USER HOST < <(ssh -G "$SELECTED_HOST" | awk '
+    $1=="user" { u=$2 }
+    $1=="hostname" { h=$2 }
+    END { print u,h }
+')
+
+SSH_CMD="${USER}@${HOST}"
+
+echo "Connecting to: $SSH_CMD"
+exec ssh "$SSH_CMD"
