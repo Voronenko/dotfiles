@@ -53,6 +53,7 @@ code --install-extension ms-vscode.mono-debug
 code --install-extension ms-vscode.powershell
 code --install-extension ms-vscode.remote-explorer
 code --install-extension ms-vscode.remote-server
+code --install-extension ms-windows-ai-studio.windows-ai-studio
 code --install-extension naco-siren.gradle-language
 code --install-extension njpwerner.autodocstring
 code --install-extension oderwat.indent-rainbow
@@ -67,6 +68,7 @@ code --install-extension searking.preview-vscode
 code --install-extension shardulm94.trailing-spaces
 code --install-extension shopify.ruby-lsp
 code --install-extension supermaven.supermaven
+code --install-extension teamsdevapp.vscode-ai-foundry
 code --install-extension voronenko.vscode-plantuml-stdlib-snippets
 code --install-extension vstirbu.vscode-mermaid-preview
 code --install-extension waderyan.gitblame
