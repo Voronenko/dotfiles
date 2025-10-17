@@ -55,16 +55,16 @@ LS_COLORS=$LS_COLORS:'di=1;097' ; export LS_COLORS
 
 
 # completion sugar
+
+# custom completion scripts
+fpath=($HOME/dotfiles/completions $fpath)
+
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit && compinit -i
 
 if [ -f /.dockerenv ]; then
     ZSH_IN_DOCKER=true
 fi
-
-
-# custom completion scripts
-fpath=($HOME/dotfiles/completions $fpath)
 
 # params block
 

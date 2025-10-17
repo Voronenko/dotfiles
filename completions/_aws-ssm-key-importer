@@ -1,0 +1,13 @@
+#compdef aws-ssm-key-importer
+
+_aws_ssm_key_importer() {
+  local -a instances
+  if (( CURRENT == 2 )); then
+    instances=($(aws ec2 describe-instances \
+      --query "Reservations[*].Instances[*].[InstanceId, Tags[?Key=='Name'].Value|[0]]" \
+      --output text 2>/dev/null | awk '{print $1 ":" $2}'))
+    compadd -a -- instances
+    return 0
+  fi
+  return 1
+}

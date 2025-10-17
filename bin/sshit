@@ -28,4 +28,5 @@ read USER HOST < <(ssh -G "$SELECTED_HOST" | awk '
 SSH_CMD="${USER}@${HOST}"
 
 echo "Connecting to: $SSH_CMD"
-exec ssh "$SSH_CMD"
+#exec ssh "$SSH_CMD"
+exec ssh $SELECTED_HOST

@@ -13,7 +13,6 @@ export_function() {
   fi
 }
 
-
 inherit_env() {
     local dir=$(pwd)
     dir=$(dirname "$dir")  # Start from the parent directory
@@ -50,6 +49,19 @@ use_nodejs() {
 
     type nvm >/dev/null 2>&1 || . ~/.nvm/nvm.sh
     nvm use "$NODE_VERSION"
+}
+
+# Usage: load_env_from_pass "path/to/secret" "ENV_VAR_NAME"
+load_env_from_pass() {
+    local pass_entry="$1"
+    local var_name="$2"
+    
+    if [ -z "$var_name" ]; then
+        var_name=$(echo "$pass_entry" | tr '/' '_' | tr '[:lower:]' '[:upper:]')
+    fi
+    
+    export "$var_name"="$(pass show "$pass_entry")"
+    echo "Loaded $var_name from pass"
 }
 
 
