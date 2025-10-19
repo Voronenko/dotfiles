@@ -30,7 +30,7 @@ bookmarks:
   labels:
   - "git"
 
-- name: "lnav-install"
+- name: "r-lnav-install"
   desc: "Installs lnav on remote"
   cmds:
   - "read -p \"Do you want to install lnav? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
@@ -42,3 +42,48 @@ bookmarks:
   exec: true
   labels:
   - "files"
+
+
+- name: "r-dotfiles-docker-install"
+  desc: "Installs dotfiles in docker container"
+  cmds:
+  - "read -p \"Do you want to install dotfiles in docker container mode? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "cd ~"
+  - "curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh"
+  - "./bootstrap.sh docker"
+  exec: true
+  labels:
+  - "remote"
+
+- name: "r-dotfiles-simple-install"
+  desc: "Installs dotfiles in simple mode"
+  cmds:
+  - "read -p \"Do you want to install dotfiles in simple mode mode? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "cd ~"
+  - "curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh"
+  - "./bootstrap.sh simple"
+  exec: true
+  labels:
+  - "remote"
+
+- name: "r-dotfiles-full-install"
+  desc: "Installs dotfiles in full mode"
+  cmds:
+  - "read -p \"Do you want to install dotfiles in full mode mode? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "cd ~"
+  - "curl -sSL https://bit.ly/slavkodotfiles > bootstrap.sh && chmod +x bootstrap.sh"
+  - "./bootstrap.sh full"
+  exec: true
+  labels:
+  - "remote"
+
+
+- name: "x-webinstall-k9"
+  desc: "Installs tmp k9 on remote"
+  cmds:
+  - "read -p \"Do you want to install tmp k9? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "curl -sS https://webi.sh/k9s | sh;"
+  - "source ~/.config/envman/PATH.env"
+  exec: true
+  labels:
+  - "remote"
