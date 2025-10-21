@@ -175,7 +175,90 @@ function onproject() {
   fi
 }
 
-fi
+## ZelliJ perks
+
+if [[ -n "$ZELLIJ" ]]; then
+
+_short_pwd() {
+  local full_path="$PWD"
+  local home="$HOME"
+
+  # Replace HOME with ~
+  if [[ "$full_path" == "$home" ]]; then
+    echo "~"
+    return
+  elif [[ "$full_path" == "$home/"* ]]; then
+    full_path="~/${full_path#$home/}"
+  fi
+
+  # Split into components
+  local -a parts
+  parts=("${(@s:/:)full_path}")
+
+  # If path starts with ~, handle accordingly
+  if [[ "$parts[1]" = "~" ]]; then
+    local -a new_parts
+    new_parts=("~")
+    # Shorten all but the last component to first letter
+    local last_idx=${#parts}
+    for i in {2..$(( last_idx - 1 ))}; do
+      if [[ -n "$parts[i]" ]]; then
+        new_parts+="${parts[i][1]}"
+      fi
+    done
+    # Keep last component full
+    if (( last_idx >= 2 )); then
+      new_parts+="$parts[last_idx]"
+    fi
+    echo "${(j:/:)new_parts}"
+  else
+    # Not under home — just return relative or full path shortened similarly
+    local -a new_parts
+    local last_idx=${#parts}
+    for i in {1..$(( last_idx - 1 ))}; do
+      if [[ -n "$parts[i]" ]]; then
+        new_parts+="${parts[i][1]}"
+      fi
+    done
+    if (( last_idx >= 1 )); then
+      new_parts+="$parts[last_idx]"
+    fi
+    echo "${(j:/:)new_parts}"
+  fi
+}
+
+_get_git_repo_name() {
+    local top_level
+    top_level=$(git rev-parse --show-toplevel 2>/dev/null) || return
+    basename "$top_level"
+}
+
+_update_zellij_ctx_name() {
+    local git_repo ctx_name
+
+    git_repo=$(_get_git_repo_name)
+    if [[ -n "$git_repo" ]]; then
+      ctx_name=" ${git_repo}"
+    else
+      ctx_name=$(_short_pwd)
+    fi
+
+    # Avoid unnecessary renames
+    if [[ "$ctx_name" != "$_LAST_ZELLIJ_CTX_NAME" ]]; then
+      zellij action rename-pane "$ctx_name" 2>/dev/null
+      _LAST_ZELLIJ_TAB_NAME="$ctx_name"
+    fi
+}
+
+chpwd_functions+=(_update_zellij_ctx_name)
+
+_update_zellij_ctx_name
+
+trap '_update_zellij_ctx_name' EXIT
+
+fi # within zellij session
+
+fi  #/zellij binary present
 
 autoload -Uz onproject
 autoload -Uz offproject
