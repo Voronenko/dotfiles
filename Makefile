@@ -510,12 +510,28 @@ install-k8s-weaveworks-eksctl:
 
 # Get latest released kubectl version at https://storage.googleapis.com/kubernetes-release/release/stable.txt
 install-k8s-kubectl-ubuntu:
-	sudo apt-get update && sudo apt-get install -y apt-transport-https
-	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-	sudo touch /etc/apt/sources.list.d/kubernetes.list
-	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-	sudo apt-get update
-	sudo apt-get install -y kubectl
+	@echo ">>> Checking if kubectl is installed..."
+	@if ! command -v kubectl >/dev/null 2>&1; then \
+		echo ">>> kubectl not found. Installing latest stable release..."; \
+		KUBECTL_VERSION=$$(curl -L -s https://dl.k8s.io/release/stable.txt); \
+		curl -LO "https://dl.k8s.io/release/$${KUBECTL_VERSION}/bin/linux/amd64/kubectl"; \
+		chmod +x kubectl; \
+		install_path="/usr/local/bin/kubectl"; \
+		if command -v sudo >/dev/null 2>&1; then \
+			echo ">>> Installing globally using sudo..."; \
+			sudo install -o root -g root -m 0755 kubectl $${install_path}; \
+		else \
+			echo ">>> sudo not found — installing locally to $$HOME/dotfiles/bin/"; \
+			install -m 0755 kubectl $$HOME/dotfiles/bin/kubectl; \
+		fi; \
+		mkdir -p $$HOME/dotfiles/bin; \
+		cp kubectl $$HOME/dotfiles/bin/; \
+		rm kubectl; \
+		echo ">>> kubectl installed successfully: $$(kubectl version --client --short || echo 'Installation complete.')"; \
+	else \
+		echo ">>> kubectl already installed: $$(kubectl version --client --short)"; \
+	fi
+
 
 install-k8s-kubectl-color:
 	mkdir -p /tmp/kubecolor
