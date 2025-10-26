@@ -574,7 +574,7 @@ install-k8s-vmware-octant:
 # https://github.com/derailed/popeye
 # A Kubernetes cluster resource sanitizer
 install-k8s-popeye:
-	curl -sLo /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/$(shell curl -s https://api.github.com/repos/derailed/popeye/releases/latest | grep tag_name | cut -d '"' -f 4)/popeye_Linux_x86_64.tar.gz
+	curl -sLo /tmp/popeye.tar.gz https://github.com/derailed/popeye/releases/download/$(shell curl -s https://api.github.com/repos/derailed/popeye/releases/latest | grep tag_name | cut -d '"' -f 4)/popeye_linux_amd64.tar.gz
 	tar -xvzf /tmp/popeye.tar.gz -C /tmp
 	cp /tmp/popeye ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/popeye
