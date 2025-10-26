@@ -17,7 +17,7 @@ swiss-ops: install-hashicorp-terraform install-terraform-docs install-hashicorp-
 	@echo ops tools ok
 	@echo if you need reverse engineering consider make install-terraformer
 
-swiss-k8s: install-k8s-ksonnet install-k8s-stern install-k8s-helm3-fixed install-k8s-deepmind-kapitan install-k8s-kubectl-ubuntu install-k8s-kubefwd install-k8s-kubeval install-k8s-kubeval install-k8s-rakkess install-k8s-popeye install-k8s-polaris install-k8s-kubespy install-k8s-vmware-octant
+swiss-k8s: install-k8s-stern install-k8s-helm3-fixed install-k8s-deepmind-kapitan install-k8s-kubectl-ubuntu install-k8s-kubefwd install-k8s-kubeval install-k8s-kubeval install-k8s-popeye install-k8s-polaris install-k8s-kubespy install-k8s-vmware-octant install-k8s-kubectl-krew
 	@echo k8s tools ok
 
 swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
@@ -430,11 +430,6 @@ install-k3s-up:
 	curl -sLo ~/dotfiles/bin/k3sup https://github.com/alexellis/k3sup/releases/download/0.10.2/k3sup
 	chmod +x ~/dotfiles/bin/k3sup
 
-install-k8s-ksonnet:
-	curl -sLo /tmp/ks_linux_amd64.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.10.1/ks_0.10.1_linux_amd64.tar.gz
-	tar -xvzf /tmp/ks_linux_amd64.tar.gz -C /tmp
-	cp /tmp/ks_0.10.1_linux_amd64/ks ~/dotfiles/bin
-
 # tail utility for kubernetes
 install-k8s-stern:
 	mkdir -p /tmp/stern
@@ -490,15 +485,10 @@ install-k8s-helm-latest:
 
 install-k8s-deepmind-kapitan:
 #	pip3 install --user --upgrade git+https://github.com/deepmind/kapitan.git  --process-dependency-links
-	curl -sLo ~/dotfiles/bin/kapitan https://github.com/deepmind/kapitan/releases/download/v0.29.4/kapitan-linux-amd64
+	curl -sLo ~/dotfiles/bin/kapitan https://github.com/deepmind/kapitan/releases/download/v0.34.7/kapitan-linux-amd64
 	chmod +x ~/dotfiles/bin/kapitan
 	echo "You can alternatively install with pip, if you have python 3.6"
 	echo "pip3 install --user --upgrade kapitan"
-
-install-k8s-heptio-authenticator-aws:
-	curl -sLo ~/dotfiles/bin/heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws
-	curl -sLo ~/dotfiles/bin/heptio-authenticator-aws.md5 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws.md5
-	chmod +x ~/dotfiles/bin/heptio-authenticator-aws
 
 install-k8s-aws-iam-authenticator:
 	curl -sLo ~/dotfiles/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/aws-iam-authenticator
@@ -531,13 +521,6 @@ install-k8s-kubectl-ubuntu:
 	else \
 		echo ">>> kubectl already installed: $$(kubectl version --client --short)"; \
 	fi
-
-
-install-k8s-kubectl-color:
-	mkdir -p /tmp/kubecolor
-	curl -sLo /tmp/kubecolor/kubecolor.tar.gz https://github.com/dty1er/kubecolor/releases/download/v0.0.9/kubecolor_0.0.9_Linux_x86_64.tar.gz
-	cd /tmp/kubecolor && tar -xzf kubecolor.tar.gz && mv /tmp/kubecolor/kubecolor ~/dotfiles/bin/
-	ln -s ~/dotfiles/bin/kubecolor  ~/dotfiles/bin/kc
 
 install-k8s-kubectl-cert_manager:
 	mkdir -p /tmp/kubecertmanager
@@ -587,14 +570,6 @@ install-k8s-vmware-octant:
 	curl -sLo /tmp/octant.deb https://github.com/vmware-tanzu/octant/releases/download/v0.25.1/octant_0.25.1_Linux-64bit.deb
 	sudo apt install /tmp/octant.deb
 	echo use octant --listener-addr 0.0.0.0:7777 to listen remotely
-
-# https://github.com/corneliusweig/rakkess
-# Review Access - kubectl plugin to show an access matrix for k8s server resources
-install-k8s-rakkess:
-	curl -Lo /tmp/rakkess.tar.gz https://github.com/corneliusweig/rakkess/releases/download/v0.4.5/rakkess-amd64-linux.tar.gz && \
-	tar -xvzf /tmp/rakkess.tar.gz -C /tmp
-	cd /tmp && mv rakkess-amd64-linux ~/dotfiles/bin/rakkess
-	chmod +x ~/dotfiles/bin/rakkess
 
 # https://github.com/derailed/popeye
 # A Kubernetes cluster resource sanitizer
@@ -668,11 +643,9 @@ install-k8s-kubectl-krew-plugins:
 	kubectl krew install view-webhook
 	# installed separately via Makefile install-k8s-popeye
 #	kubectl krew install popeye
-	# installed separately via Makefile install-k8s-rakkess
-#	kubectl krew install access-matrix
+	kubectl krew install access-matrix
 	# https://github.com/jordanwilson230/kubectl-plugins/blob/krew/kubectl-exec-as
 	kubectl krew install exec-as
-	kubectl krew install datree
 
 install-k8s-kubescape:
 	curl -Lo ~/dotfiles/bin/kubescape https://github.com/armosec/kubescape/releases/download/betav1.0.43/kubescape-ubuntu-latest
