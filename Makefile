@@ -26,6 +26,9 @@ swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fon
 swiss-aws:  install-aws-key-importer install-aws-myaws
 	@echo aws tools added
 
+swiss-db: install-db-postgres-pgcli install-db-mysql-mycli
+	@echo clients installed
+
 # ZSH
 zsh-fzf-repo:
 	rm -rf ~/.fzf
@@ -555,7 +558,7 @@ install-k8s-kubie:
 # https://imti.co/kubernetes-port-forwarding/
 install-k8s-kubefwd:
 	curl -sLo /tmp/kubefwd.deb https://github.com/txn2/kubefwd/releases/download/1.12.0/kubefwd_amd64.deb
-	sudo apt install /tmp/kubefwd.deb
+	sudo apt install -y /tmp/kubefwd.deb
 
 # https://github.com/instrumenta/kubeval/
 install-k8s-kubeval:
@@ -1380,9 +1383,12 @@ install-sourcetrail:
 # DATABASE helpers
 
 #https://github.com/dbcli/pgcli
-install-db-cli-postgres:
+install-db-postgres-pgcli:
 	pip3 install --user -U pgcli
 	echo "Usage: pgcli DBURI"
+
+install-db-mysql-mycli:
+	pip3 install --user mycli
 
 # https://github.com/hatarist/clickhouse-cli
 install-db-cli-clickhouse:
