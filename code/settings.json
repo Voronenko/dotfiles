@@ -127,12 +127,12 @@
   "python.experiments.optInto": [],
   "terminal.integrated.defaultProfile.linux": "bash",
   "roo-cline.allowedCommands": [
-    "npm test",
-    "npm install",
-    "tsc",
     "git log",
     "git diff",
-    "git show"
+    "git show",
+    "npm test",
+    "npm install",
+    "tsc"
   ],
   "kilo-code.allowedCommands": [
     "git log",
@@ -142,6 +142,7 @@
     "npm install",
     "tsc"
   ],
-  "kilo-code.deniedCommands": []
+  "kilo-code.deniedCommands": [],
+  "roo-cline.deniedCommands": []
 
 }
