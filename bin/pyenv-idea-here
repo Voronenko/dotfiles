@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# --- Step 1: Git repo name ---
+project_name=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)")
+[[ -z "$project_name" ]] && { echo "Not in a git repo"; exit 1; }
+
+# --- Step 2: pyenv python info ---
+python_path=$(pyenv which python)
+[[ -z "$python_path" ]] && { echo "No active pyenv environment"; exit 1; }
+
+python_version=$("$python_path" -V 2>&1 | awk '{print $2}')
+env_path=$(dirname "$(dirname "$python_path")")
+jdk_name="Python ${python_version} pyenv at ${env_path}"
+
+# --- Step 3: Find .iml file ---
+iml_file=$(find . -maxdepth 2 -type f -name "*.iml" | head -n1)
+if [[ -z "$iml_file" ]]; then
+  mkdir -p .idea
+  iml_file=".idea/${project_name}.iml"
+  cat >"$iml_file" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output/>
+    <content url="file://\$MODULE_DIR\$"/>
+    <orderEntry type="jdk" jdkName="${jdk_name}" jdkType="Python SDK"/>
+    <orderEntry type="sourceFolder" forTests="false"/>
+  </component>
+</module>
+EOF
+  echo "Created $iml_file"
+  exit 0
+fi
+
+# --- Step 4: Check if a Python SDK orderEntry exists ---
+exists=$(xmlstarlet sel -t -v "count(/module/component/orderEntry[@type='jdk' and @jdkType='Python SDK'])" "$iml_file")
+
+if [[ "$exists" -gt 0 ]]; then
+  # Update existing entry
+  xmlstarlet ed -L \
+    -u "/module/component/orderEntry[@type='jdk' and @jdkType='Python SDK']/@jdkName" \
+    -v "$jdk_name" \
+    "$iml_file"
+  echo "Updated existing Python SDK entry"
+else
+  # Insert before the first sourceFolder entry if exists
+  xmlstarlet ed -L \
+    -s "/module/component/orderEntry[@type='sourceFolder'][1]" -t elem -n tmp_insert -v "" \
+    -i "//tmp_insert" -t attr -n type -v "jdk" \
+    -i "//tmp_insert" -t attr -n jdkType -v "Python SDK" \
+    -i "//tmp_insert" -t attr -n jdkName -v "$jdk_name" \
+    -r "//tmp_insert" -v "orderEntry" \
+    "$iml_file"
+  echo "Inserted new Python SDK entry"
+fi
+
+echo "→ jdkName = $jdk_name"
+

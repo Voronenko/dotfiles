@@ -270,8 +270,11 @@ install-console-procs:
 	chmod +x ~/dotfiles/bin/procs
 
 # jql for yml
-install-console-yq:
-	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+install-console-xmlstarlet:
+	sudo apt-get install xmlstarlet
+
+install-console-yq: install-console-xmlstarlet
+	curl -sLo ~/dotfiles/bin/yq https://github.com/mikefarah/yq/releases/download/v4.48.1/yq_linux_amd64
 	chmod +x ~/dotfiles/bin/yq
 
 install-console-jiq:
