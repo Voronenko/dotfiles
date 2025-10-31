@@ -1,2 +1,0 @@
-mkdocs==1.0.4
-mkdocs-build-plantuml-plugin==1.0.0

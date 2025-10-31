@@ -537,12 +537,19 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-fi
 
-if [[ -d ~/.virtualenvs/project_notes ]]; then
+# hack, for lazy teams allow .python-version override with local .python-version-override
+pyenv_auto_override() {
+  local override_file=".python-version-override"
+  if [[ -f "$override_file" ]]; then
+    local version=$(<"$override_file")
+    export PYENV_VERSION="$version"
+  else
+    unset PYENV_VERSION  # Let pyenv fall back to .python-version
+  fi
+}
 
-alias znotes='workon project_notes && cd ${ZNOTES_PATH-~/z_personal_notes} && jupyter lab'
-
+add-zsh-hook chpwd pyenv_auto_override
 fi
 
 # >>> conda initialize >>>
