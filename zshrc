@@ -533,6 +533,7 @@ fi
 #TODO: consider moving to pyenv plugin
 if [[ -d ~/.pyenv ]]; then
 export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$HOME/.pyenv/shims:$PATH"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"

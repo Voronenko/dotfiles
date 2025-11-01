@@ -53,6 +53,9 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+[color "status"]
+        changed = "#ff9999"
+        untracked = cyan normal bold
 [merge]
 #        tool = intellij
 	tool = bc3
