@@ -1,0 +1,24 @@
+#compdef pass-ssh-add
+
+# Zsh completion for pass-ssh-add
+# Suggests entries under ~/.password-store/psst/
+# with prefix "psst/" (e.g., psst/ssh/github)
+
+_pass_ssh_add() {
+  local store="$HOME/.password-store/ssh"
+  local -a entries
+
+  if [[ -d "$store" ]]; then
+    # Find all GPG files under ~/.password-store/psst/
+    # and output paths relative to ~/.password-store/
+    entries=(${(f)"$(find "$store" -type f -name '*.gpg' \
+      | sed "s|^$HOME/.password-store/||" \
+      | sed 's|\.gpg$||')"})
+
+    _describe -t pass_entries 'pass entries' entries
+  else
+    _message "No psst directory found at $store"
+  fi
+}
+
+_pass_ssh_add "$@"

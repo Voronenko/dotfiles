@@ -1,28 +1,51 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# pass-ssh-add: Load SSH private key stored in pass(1)
+# Usage: pass-ssh-add path/to/key/in/pass
+#
+# Example:
+#   pass-ssh-add ssh/github
+#
+# The entry `ssh/github` should contain only the private key content.
 
-FILE=$1
+set -euo pipefail
 
-if [ -z "$FILE" ]; then
-  echo "Error: Please provide a key path as a parameter"
+KEY_PATH="$1"
+
+if [[ -z "${HOME}/.password-store/${KEY_PATH:-}" ]]; then
+  echo "Usage: $0 <pass-entry-path>"
   exit 1
 fi
 
-if [ ! -f "$FILE" ]; then
-  echo "Error: File not found: $FILE"
+# Check if 'pass' is available
+if ! command -v pass >/dev/null 2>&1; then
+  echo "Error: 'pass' utility not found. Please install it first." >&2
   exit 1
 fi
 
-if [ ! -r "$FILE" ]; then
-  echo "Error: File is not readable: $FILE"
+# Check if 'ssh-add' is available
+if ! command -v ssh-add >/dev/null 2>&1; then
+  echo "Error: 'ssh-add' command not found. Please install OpenSSH." >&2
   exit 1
 fi
 
-if [ ! -s "$FILE" ]; then
-  echo "Error: File is empty: $FILE"
+# Create a temporary file to hold the private key
+TMP_KEY=$(mktemp /tmp/pass-ssh-key.XXXXXX)
+trap 'rm -f "$TMP_KEY"' EXIT
+
+# Retrieve and write the key securely
+if ! pass show "$KEY_PATH" > "$TMP_KEY"; then
+  echo "Error: Failed to retrieve key from pass: $KEY_PATH" >&2
   exit 1
 fi
 
-gpg --output - --decrypt "$FILE" | ssh-add - || {
-  echo "Error: ssh-add failed to add the decrypted key"
+chmod 600 "$TMP_KEY"
+
+# Add the key to the SSH agent
+# ssh-add will prompt for passphrase if required
+if ssh-add "$TMP_KEY"; then
+  echo "✅ SSH key from pass '$KEY_PATH' successfully added."
+else
+  echo "❌ Failed to add SSH key from pass '$KEY_PATH'." >&2
   exit 1
-}
+fi
