@@ -135,9 +135,9 @@ install-console-lazynpm:
 
 # http://lnav.org/
 install-console-logreader-lnav:
-	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.13.1/lnav-0.13.1-linux-musl-x86_64.zip
+	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.13.2/lnav-0.13.2-linux-musl-x86_64.zip
 	cd /tmp && unzip lnav.zip
-	mv /tmp/lnav-0.13.1/lnav ~/dotfiles/bin
+	mv /tmp/lnav-0.13.2/lnav ~/dotfiles/bin
 	lnav -i extra
 
 install-console-csv-qsv:
