@@ -2,99 +2,156 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Set defaults
-PYVER="$(pyenv versions | grep -Po "\s+\K\d\.\d.\d" | uniq | head -1)"
-
 # Define colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-
 displayUsage() {
     echo "
 An extension for pyenv virtualenv to instantiate a virtual environment and
 associate the local folder with the same virtual environment
-usage:  pyenv-here [pyver] <name>
-operations:
-    pyenv-here {-h help} shis dialogue
-    pyenv-here {-l list} list available python versions
-    pyenv-here {-p python version} python version to use, defauls: $PYVER
+
+Usage:
+  pyenv-here [-i] [-p python_version] <name>
+
+Options:
+  -i                    Interactive mode: use fzf to select missing args.
+  -p <python_version>   Specify Python version explicitly.
+  -l                    List available Python versions.
+  -h                    Show this help.
 "
 }
 
-# Go through optional arguments
-while getopts ":hlp:" opt; do
+INTERACTIVE=0
+PYVER=""
+
+# Parse options
+while getopts ":hilp:" opt; do
     case ${opt} in
+        i)
+            INTERACTIVE=1
+            ;;
         l)
             echo "Available virtual python versions:"
             pyenv versions
-            exit 1
+            exit 0
             ;;
         p)
             PYVER=${OPTARG}
             ;;
         h)
             displayUsage
-            exit 1
+            exit 0
             ;;
         \?)
-            echo "Invalid option: $OPTARG" 1>&2
+            echo -e "${RED}Invalid option: -$OPTARG${NC}" >&2
             displayUsage
             exit 2
             ;;
         :)
-            echo "Invalid option: $OPTARG requires an argument" 1>&2
+            echo -e "${RED}Option -$OPTARG requires an argument.${NC}" >&2
             exit 2
             ;;
     esac
 done
-shift $(( OPTIND - 1 ))
-OPTIND=1
+shift $((OPTIND - 1))
 
-# Check for mandatory arguments
-if [ $# -lt 1 ]
-then
-    echo '
-Not enough args provided. At least provide a name'
-    displayUsage
+# Default python version is set only if not in interactive mode
+if [[ $INTERACTIVE -eq 0 && -z "${PYVER:-}" ]]; then
+    PYVER="$(pyenv versions --bare | grep -E '^[0-9]+(\.[0-9]+)*$' | head -1 || true)"
 fi
 
-ENVNAME=$1
+# --- INTERACTIVE MODE ---
+if [[ $INTERACTIVE -eq 1 ]]; then
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo -e "${RED}fzf is required for interactive mode but not found.${NC}" >&2
+        exit 1
+    fi
 
-# init and associate pyenv virtualenv
-echo pyenv virtualenv "$PYVER" "$ENVNAME"
+    DEFAULT_PYVER="$(pyenv versions --bare | grep -E '^[0-9]+(\.[0-9]+)*$' | head -1 || echo system)"
+    echo -e "${YELLOW}Interactive mode active. Default Python: ${DEFAULT_PYVER}${NC}"
+
+    if [[ -z "${PYVER:-}" ]]; then
+        PYLIST=$( (echo "system"; pyenv versions --bare | grep -E '^[0-9]+(\.[0-9]+)*$') )
+
+        export FZF_DEFAULT_OPTS="
+            --ansi
+            --height=80
+            --border
+            --header='Select Python version (default: ${DEFAULT_PYVER})'
+            --reverse
+            --query='${DEFAULT_PYVER}'
+            --preview-window=hidden
+        "
+
+        PYVER=$(echo "${PYLIST}" | fzf --prompt="Python> " || true)
+
+        if [[ -z "${PYVER}" ]]; then
+            PYVER="${DEFAULT_PYVER}"
+            echo -e "${YELLOW}No version selected — using default ${PYVER}${NC}"
+        fi
+    fi
+
+    if [[ $# -lt 1 ]]; then
+        echo
+        echo -e "${YELLOW}Enter a new virtualenv name based on ${PYVER} (type + Enter):${NC}"
+        read -r -p "Virtualenv name> " ENVNAME
+    else
+        ENVNAME="$1"
+    fi
+else
+    # --- NON-INTERACTIVE MODE ---
+    if [[ $# -lt 1 ]]; then
+        echo -e "${RED}Not enough arguments provided.${NC}"
+        displayUsage
+        exit 2
+    fi
+    ENVNAME="$1"
+fi
+
+# Sanity checks
+if [[ -z "${PYVER:-}" ]]; then
+    echo -e "${RED}Python version not set.${NC}" >&2
+    exit 1
+fi
+if [[ -z "${ENVNAME:-}" ]]; then
+    echo -e "${RED}Environment name not provided.${NC}" >&2
+    exit 1
+fi
+
+# Init and associate pyenv virtualenv
+echo -e "${GREEN}Creating virtualenv '${ENVNAME}' with Python ${PYVER}${NC}"
 pyenv virtualenv "$PYVER" "$ENVNAME"
 pyenv local "$ENVNAME"
 
-# upgrade pip
-pip install --upgrade pip
+# Upgrade pip within virtualenv
+pyenv exec python -m pip install --upgrade pip
 
-echo -e "${YELLOW} > Note: good idea to have poetry already installed globally with pipx. ${NC}"
-read -p "$(echo -e "${YELLOW}Install local poetry within project? [y/N]${NC} ")" ans
+echo -e "${YELLOW}> Tip: it’s a good idea to have Poetry installed globally with pipx.${NC}"
+read -p "$(echo -e "${YELLOW}Install local Poetry within project? [y/N]${NC} ")" ans
 if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv exec python -m pip install poetry
     pyenv rehash
-    # or uncomment and use virtualenvironment way - up to you
     pyenv exec poetry config virtualenvs.create false --local
     echo "command to install dependencies: pyenv exec poetry install --no-root"
 else
-  echo -e "${GREEN}Skipping installing poetry.${NC}"
-  if command -v poetry &> /dev/null; then
-    echo "command to install dependencies: poetry install --no-root"
-  fi
+    echo -e "${GREEN}Skipping installing Poetry.${NC}"
+    if command -v poetry &>/dev/null; then
+        echo "command to install dependencies: poetry install --no-root"
+    fi
 fi
 
-echo -e "${YELLOW} uv is alternative package manager ${NC}"
+echo -e "${YELLOW}uv is an alternative package manager${NC}"
 read -p "$(echo -e "${YELLOW}Install uv? [y/N]${NC} ")" ans
 if [[ "$ans" =~ ^[yY]$ ]]; then
     pyenv exec python -m pip install uv
     pyenv rehash
     echo "command to install dependencies: pyenv exec uv sync"
 else
-  echo -e "${GREEN}Skipping installing uv.${NC}"
-  if command -v uv &> /dev/null; then
-    echo "command to install dependencies: pyenv exec uv sync"
-  fi
+    echo -e "${GREEN}Skipping installing uv.${NC}"
+    if command -v uv &>/dev/null; then
+        echo "command to install dependencies: pyenv exec uv sync"
+    fi
 fi
