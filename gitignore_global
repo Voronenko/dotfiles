@@ -1,0 +1,6 @@
+.idea/
+.vscode/
+.roo/
+.ai*/
+.env.local
+.python-version-override

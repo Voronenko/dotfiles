@@ -139,6 +139,7 @@ if [[ "$ans" =~ ^[yY]$ ]]; then
 else
     echo -e "${GREEN}Skipping installing Poetry.${NC}"
     if command -v poetry &>/dev/null; then
+	echo "command to instruct poetry not to clatch with pyenv poetry config virtualenvs.create false --local"
         echo "command to install dependencies: poetry install --no-root"
     fi
 fi
