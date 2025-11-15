@@ -322,6 +322,20 @@ install-console-httpie-xh:
 	ln -s ~/dotfiles/bin/xh ~/dotfiles/bin/xhs
 	cp /tmp/xh-v0.10.0-x86_64-unknown-linux-musl/completions/* ~/dotfiles/completions
 
+install-console-task:
+	@echo "Fetching latest version for go-task..."
+	@VERSION=$$(curl -s https://api.github.com/repos/go-task/task/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d 'v' -f 2); \
+	echo "Latest release version: $$VERSION"; \	echo "Downloading task binary and completions..."; \
+	mkdir -p /tmp/task; \
+	curl -sLo /tmp/task.tar.gz https://github.com/go-task/task/releases/download/$$VERSION/task_linux_amd64.tar.gz; \
+	tar -xvzf /tmp/task.tar.gz -C /tmp/task; \
+	echo "Installing task binary..."; \
+	mv /tmp/task/task ~/dotfiles/bin/task; \
+	chmod +x ~/dotfiles/bin/task; \
+	echo "Installing completions..."; \
+	mv /tmp/task/completion/zsh/_task ~/dotfiles/completions/_task; \
+	mv /tmp/task/completion/bash/task.bash ~/dotfiles/completions/task.bash; \
+	echo "Task installation complete."
 
 # /CONSOLE TOOLS
 
