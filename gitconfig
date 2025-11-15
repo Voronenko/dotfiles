@@ -29,6 +29,20 @@
         browse = !git open
         gl-pr-master = "push -o merge_request.create -o merge_request.target=master"
         gl-pr-develop = "push -o merge_request.create -o merge_request.target=develop"
+        local-ignore = "!f() { \
+            repo_root=\"$(git rev-parse --show-toplevel)\" || exit 1; \
+            exclude_file=\"$repo_root/.git/info/exclude\"; \
+            link_file=\"$repo_root/.gitignore.local\"; \
+            mkdir -p \"$repo_root/.git/info\"; \
+            touch \"$exclude_file\"; \
+            if [ ! -L \"$link_file\" ]; then \
+                ln -s \"./.git/info/exclude\" \"$link_file\"; \
+            fi; \
+            if ! grep -qxF \".gitignore.local\" \"$exclude_file\"; then \
+                echo \".gitignore.local\" >> \"$exclude_file\"; \
+            fi; \
+        }; f"
+
 
 [push]
 	default = current
