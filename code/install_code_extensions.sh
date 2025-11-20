@@ -54,6 +54,10 @@ code --install-extension ms-vscode.powershell
 code --install-extension ms-vscode.remote-explorer
 code --install-extension ms-vscode.remote-server
 code --install-extension ms-windows-ai-studio.windows-ai-studio
+code --install-extension mtxr.sqltools
+code --install-extension mtxr.sqltools-driver-mysql
+code --install-extension mtxr.sqltools-driver-pg
+code --install-extension mtxr.sqltools-driver-sqlite
 code --install-extension naco-siren.gradle-language
 code --install-extension njpwerner.autodocstring
 code --install-extension oderwat.indent-rainbow

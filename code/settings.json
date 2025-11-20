@@ -143,6 +143,9 @@
     "tsc"
   ],
   "kilo-code.deniedCommands": [],
-  "roo-cline.deniedCommands": []
+  "roo-cline.deniedCommands": [],
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true,
+  },
 
 }

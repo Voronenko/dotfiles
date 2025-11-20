@@ -27,6 +27,9 @@ codium --install-extension ms-toolsai.vscode-jupyter-cell-tags
 codium --install-extension ms-toolsai.vscode-jupyter-slideshow
 codium --install-extension ms-vscode.mono-debug
 codium --install-extension ms-vscode.powershell
+codium --install-extension mtxr.sqltools
+codium --install-extension mtxr.sqltools-driver-mysql
+codium --install-extension mtxr.sqltools-driver-pg
 codium --install-extension oderwat.indent-rainbow
 codium --install-extension orta.vscode-jest
 codium --install-extension redhat.java
