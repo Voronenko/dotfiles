@@ -158,6 +158,7 @@ bin/tflint
 bin/tfschema
 bin/toggl
 bin/toggl_*
+bin/trafficmirror
 bin/traefik
 bin/traefik1
 bin/Updater

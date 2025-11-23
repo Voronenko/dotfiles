@@ -77,6 +77,13 @@ install-cdci-circleci-runner:
 install-tmuxinator:
 	gem install tmuxinator
 
+install-trafficmirror:
+	curl -sLo /tmp/trafficmirror.tar.gz https://github.com/rb3ckers/trafficmirror/releases/download/v$$(curl -s https://api.github.com/repos/rb3ckers/trafficmirror/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/trafficmirror_$$(curl -s https://api.github.com/repos/rb3ckers/trafficmirror/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
+	tar -xvzf /tmp/trafficmirror.tar.gz -C /tmp
+	mv /tmp/trafficmirror $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/trafficmirror
+
+
 # jsonnet processing tool
 install-console-jsonnet: install-console-yq
 	curl -sLo /tmp/jsonnet.tar.gz https://github.com/google/jsonnet/releases/download/v0.17.0/jsonnet-bin-v0.17.0-linux.tar.gz

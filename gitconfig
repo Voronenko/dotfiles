@@ -25,6 +25,7 @@
 	clean-hard-dfx-windows = "clean -dxf -e *.user -e *.bat -e *.cmd -e packages/ -e .vs/ -e .vscode/ -e .idea/"
 	fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 	pam = checkout $(git recent | fzf)
+        # check profile name via chrome://version/ and set it to GOOGLE_PROFILE in envrc
 	open = "!f() { \
             URL=$(git config remote.${1-origin}.url | sed -e 's#^.*@#https://#' -e 's#.git$##' -e 's#:#/#2'); \
             PROFILE=${GOOGLE_PROFILE:-Default}; \
