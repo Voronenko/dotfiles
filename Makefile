@@ -1209,7 +1209,7 @@ install-vmware-ovftool:
 
 # interactive https proxy https://mitmproxy.org/
 install-mitmproxy-org:
-	curl -sLo /tmp/mitmproxy.tar.gz https://snapshots.mitmproxy.org/11.0.2/mitmproxy-11.0.2-linux-x86_64.tar.gz
+	curl -sLo /tmp/mitmproxy.tar.gz https://downloads.mitmproxy.org/12.2.0/mitmproxy-12.2.0-linux-x86_64.tar.gz
 	tar -xvzf /tmp/mitmproxy.tar.gz -C ~/dotfiles/bin
 
 install-screenshot-tool:
@@ -1597,6 +1597,23 @@ install-pipx-adr:
 
 dotfiles-set-git-remote:
 	git remote set-url origin git@github.com:Voronenko/dotfiles.git
+
+install-solidtime-client:
+	@LATEST_TAG=$$(curl -s https://api.github.com/repos/solidtime-io/solidtime-desktop/releases/latest \
+		| grep tag_name | cut -d '"' -f 4); \
+	URL="https://github.com/solidtime-io/solidtime-desktop/releases/download/$${LATEST_TAG}/solidtime-amd64.deb"; \
+	echo "Latest Solidtime Desktop version: $${LATEST_TAG}"; \
+	echo "Download URL: $${URL}"; \
+	read -p "Install Solidtime Desktop $${LATEST_TAG}? [y/N] " ans; \
+	if [ "$$ans" = "y" ] || [ "$$ans" = "Y" ]; then \
+		echo "Downloading…"; \
+		curl -sLo /tmp/solidtime.deb "$${URL}"; \
+		echo "Installing…"; \
+		sudo dpkg -i /tmp/solidtime.deb; \
+	else \
+		echo "Canceled."; \
+	fi
+
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
