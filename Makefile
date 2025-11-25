@@ -1614,6 +1614,14 @@ install-solidtime-client:
 		echo "Canceled."; \
 	fi
 
+install-kitty-terminal:
+	./config/kitty/get_kitty_terminal.sh
+	ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/ || echo "Link exists?"
+	cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+	sed -i "s|Icon=kitty|Icon=$(shell readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+	sed -i "s|Exec=kitty|Exec=$(shell readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+
+
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
