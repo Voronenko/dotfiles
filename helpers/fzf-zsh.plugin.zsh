@@ -16,7 +16,7 @@ fzf_path="$( cd "$fzf_zsh_path/../fzf/" && pwd )"
 # only enable plugins when fzf and fzf-tmux are installed correctly
 if [ -x $fzf_path/bin/fzf ] && [ -x $fzf_path/bin/fzf-tmux ]; then
 
-  # export $PAHT and $MANPATH
+  # export $PATH and $MANPATH
   export PATH="$PATH:$fzf_path/bin"
   export MANPATH="$MANPATH:$fzf_path/man"
 
@@ -43,5 +43,5 @@ if [ -x $fzf_path/bin/fzf ] && [ -x $fzf_path/bin/fzf-tmux ]; then
   # export FZF_COMPLETION_TRIGGER='~~'
   # source "$fzf_path/shell/completion.zsh"
 
-  source "$fzf_path/shell/key-bindings.zsh"
+  source "$HOME/dotfiles/helpers/fzf-key-bindings.zsh"
 fi;

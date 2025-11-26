@@ -853,9 +853,9 @@ if type "fzf" > /dev/null; then
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort,f3:execute(less -f {}),f4:execute(nano {}),ctrl-l:execute-silent(echo {} | xclip -selection clipboard)+abort,f2:toggle-preview,enter:replace-query+print-query,ctrl-n:execute(bat {})'"
 export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" .';
 # FZF_CTRL_T_OPTS
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+#export FZF_CTRL_T_COMMAND=""
 source ~/dotfiles/completions/fzf-completion.zsh
-source ~/dotfiles/completions/fzf-key-binding.zsh
+#source ~/dotfiles/helpers/fzf-key-binding.zsh
 source ~/dotfiles/helpers/forgit.plugin.zsh
 source  ~/dotfiles/helpers/fzf-git.sh
 source ~/dotfiles/helpers/fzf-docker.zsh
@@ -944,14 +944,6 @@ if type "exa" > /dev/null; then
 fi
 
 alias timestamp="date +%s%3N|pbcopy && pbpaste"
-
-
-# terminal shortcuts
-
-if type "toggl" > /dev/null; then
-  # bind ctrl-t to see currently tracked activity
-  bindkey -s "^t" "^Q toggl now^J"
-fi
 
 # Anything locally specific?
 if [[ -f ${HOME}/.zshrc.local ]]; then source ${HOME}/.zshrc.local; fi
