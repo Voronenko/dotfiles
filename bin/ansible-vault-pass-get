@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Or fallback to environment variable:
+if [[ -n "${ANSIBLE_VAULT_PASS_PATH:-}" ]]; then
+    PHRASE=$(pass show $ANSIBLE_VAULT_PASS_PATH)
+    echo $PHRASE
+    exit 0
+fi
+
+echo "No vault env var ANSIBLE_VAULT_PASS_PATH  password available." >&2
+exit 1
