@@ -1,34 +1,69 @@
 #!/bin/bash
 
-export instance_id=$1
-export username=${2:-"ec2-user"}
+instance_id="$1"
+username="$2"
 
 select_instance_id() {
     aws ec2 describe-instances \
         --query "Reservations[*].Instances[*].[InstanceId, Tags[?Key=='Name'].Value|[0]]" \
-        --output text | awk '{print $1, ($2!="" ? $2 : "Unnamed")}' | fzf --prompt="Select instance ID: " | awk '{print $1}'
+        --output text |
+        awk '{print $1, ($2 != "" ? $2 : "Unnamed")}' |
+        fzf --prompt="Select instance ID: " |
+        awk '{print $1}'
 }
 
-if [ -z "$1" ]; then
-    echo "Usage: aws-ssm-key-importer <instance-id> <user|ec2-user>"
-    instance_id=$(select_instance_id)
-    if [ -z "$instance_id" ]; then
+select_username() {
+    local default="ubuntu"
+    local choices=("ubuntu" "ec2-user" "custom/manual")
+
+    selected=$(printf "%s\n" "${choices[@]}" | fzf --prompt="Select username (default: $default): ")
+
+    if [[ -z "$selected" ]]; then
+        echo "$default"
+    elif [[ "$selected" == "custom/manual" ]]; then
+        read -rp "Enter custom username: " custom_user
+        echo "$custom_user"
+    else
+        echo "$selected"
+    fi
+}
+
+# --- INSTANCE SELECTION ---
+if [[ -z "$instance_id" ]]; then
+    echo "Usage: aws-ssm-key-importer <instance-id> <username>"
+    instance_id="$(select_instance_id)"
+
+    if [[ -z "$instance_id" ]]; then
         echo "No instance selected. Exiting."
         exit 1
     fi
-else
-    instance_id=$1
 fi
 
+# --- USERNAME SELECTION ---
+if [[ -z "$username" ]]; then
+    username="$(select_username)"
+fi
+
+# --- MAIN LOGIC ---
 id_ed25519_pub=$(cat ~/.ssh/id_ed25519.pub)
-export ssm_command="echo '$id_ed25519_pub' >> /home/'"$username"'/.ssh/authorized_keys"
-echo injecting key using $ssm_command
-export command_id=$(aws ssm send-command --instance-ids "$instance_id" --document-name "AWS-RunShellScript" --parameters "commands=[\"${ssm_command}\"]" --output json --query "Command.CommandId")
+ssm_command="echo '$id_ed25519_pub' >> /home/$username/.ssh/authorized_keys"
 
-echo command sent for execution $command_id
-export raw_command_id=${command_id//\"/}
+echo "Injecting key using: $ssm_command"
 
-aws ssm wait command-executed --instance-id "$instance_id" --command-id "${raw_command_id}"
+command_id=$(aws ssm send-command \
+    --instance-ids "$instance_id" \
+    --document-name "AWS-RunShellScript" \
+    --parameters "commands=[\"${ssm_command}\"]" \
+    --output json \
+    --query "Command.CommandId")
+
+echo "Command sent: $command_id"
+
+raw_command_id=${command_id//\"/}
+
+aws ssm wait command-executed \
+    --instance-id "$instance_id" \
+    --command-id "$raw_command_id"
 
 echo "aws-ssm-key-importer $instance_id $username"
-echo added.
+echo "Public key added."
