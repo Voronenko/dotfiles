@@ -7,7 +7,7 @@
 	pager = ~/dotfiles/bin/diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = /home/slavko/.gitignore_global
 [alias]
-	cd-root = !cd "$(git rev-parse --show-toplevel)"
+	cd-root = "!cd \"$(git rev-parse --show-toplevel)\""
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
 	lnc = log --pretty=format:"%h\\ %s\\ [%cn]"

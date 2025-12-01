@@ -47,6 +47,11 @@ setopt HIST_SAVE_NO_DUPS
 setopt HIST_BEEP
 
 LS_COLORS=$LS_COLORS:'di=1;097' ; export LS_COLORS
+##
+
+# Ensure UTF-8 locale is set if not already defined
+[ -z "$LANG" ] && export LANG="en_US.UTF-8"
+[ -z "$LC_ALL" ] && export LC_ALL="en_US.UTF-8"
 
 ##
 
@@ -283,8 +288,7 @@ fi
 alias web='python3 -m http.server 3000'
 alias webcors='http-server -p 8000 --cors'
 
-# remove locally all branches merged into develop
-alias gitclean='git branch --merged develop | grep -v "\* develop" | xargs -n 1 git branch -d'
+#alias git-cd-root="cd \"$(git rev-parse --show-toplevel)\""
 
 
 if [[ -f /usr/bin/docker ]]; then

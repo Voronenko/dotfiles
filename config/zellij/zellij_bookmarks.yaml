@@ -43,6 +43,30 @@ bookmarks:
   labels:
   - "files"
 
+- name: "r-lazydocker-install"
+  desc: "Installs lazydocker on remote"
+  cmds:
+  - "read -p \"Do you want to install lazydocker? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.24.2/lazydocker_0.24.2_Linux_x86.tar.gz"
+  - "tar -xvzf /tmp/lazydocker.tar.gz -C /tmp"
+  - "sudo mv /tmp/lazydocker /usr/local/bin/"
+  - "sudo chmod +x /usr/local/bin/lazydocker"
+  - "rm -f /tmp/lazydocker.tar.gz"
+  exec: true
+  labels:
+  - "files"
+
+- name: "r-awscli2-install"
+  desc: "Installs aws cli v2 on remote"
+  cmds:
+  - "read -p \"Do you want to install aws cli v2? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "curl -sLo /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+  - "cd /tmp"
+  - "unzip awscliv2.zip"
+  - "sudo ./aws/install"
+  exec: true
+  labels:
+  - "files"
 
 - name: "r-dotfiles-docker-install"
   desc: "Installs dotfiles in docker container"
