@@ -22,13 +22,28 @@ bookmarks:
   exec: true
   labels:
   - "git"
-- name: "Checkout branch with UI"
+- name: "git cd-root"
+  desc: "change directory to root of the git repo"
+  cmds:
+  - "cd \"$(git rev-parse --show-toplevel)\""
+  exec: true
+  labels:
+  - "git"
+- name: "Checkout branch with UI forgit::checkout::branch"
   desc: ""
   cmds:
   - "forgit::checkout::branch"
   exec: true
   labels:
   - "git"
+
+- name: "kitty"
+  desc: ""
+  cmds:
+  - "kitty >/dev/null 2>&1 &"
+  exec: true
+  labels:
+  - "utils"
 
 - name: "r-lnav-install"
   desc: "Installs lnav on remote"
@@ -111,3 +126,21 @@ bookmarks:
   exec: true
   labels:
   - "remote"
+
+- name: "mitmproxy"
+  desc: "starts mitmproxy on port 8866"
+  cmds:
+  - "mitmproxy --listen-port 8866"
+  exec: true
+  labels:
+  - "proxy"
+
+- name: "mitmproxyweb"
+  desc: "starts mitmproxyweb on port 8866"
+  cmds:
+  - "mitmproxyweb --listen-port 8866 >/dev/null 2>&1 &"
+  exec: true
+  labels:
+  - "proxy"
+
+
