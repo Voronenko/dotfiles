@@ -53,6 +53,12 @@ install-zellij:
 	sudo mv /tmp/zellij /usr/local/bin
 	sudo chmod +x /usr/local/bin/zellij
 
+install-github-gh:
+	curl -sLo /tmp/gh.tar.gz https://github.com/cli/cli/releases/download/v$(shell curl -s https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/gh_$(shell curl -s https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
+	tar -xvzf /tmp/gh.tar.gz -C /tmp
+	mv /tmp/gh_$(shell curl -s https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64/bin/gh $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/gh
+
 # CD CI local runners
 
 install-cdci-gitlab-runner:

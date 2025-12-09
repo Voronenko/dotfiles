@@ -47,6 +47,7 @@ bin/esxi-vm-destroy
 bin/exa
 bin/fd*
 bin/fzf
+bin/gh
 bin/gdu
 bin/gilt
 bin/gimme
