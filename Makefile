@@ -41,6 +41,12 @@ install-fzf:
 	chmod +x $(HOME)/dotfiles/bin/fzf
 # /ZSH
 
+install-github-mcp-server:
+	curl -sLo /tmp/github-mcp-server.tar.gz https://github.com/github/github-mcp-server/releases/download/v$(shell curl -s https://api.github.com/repos/github/github-mcp-server/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/github-mcp-server_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/github-mcp-server.tar.gz -C /tmp
+	mv /tmp/github-mcp-server $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/github-mcp-server
+
 install-zellij:
 	curl -sLo /tmp/zellij.tar.gz https://github.com/zellij-org/zellij/releases/download/v$(shell curl -s https://api.github.com/repos/zellij-org/zellij/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/zellij-x86_64-unknown-linux-musl.tar.gz
 	tar -xvzf /tmp/zellij.tar.gz -C /tmp

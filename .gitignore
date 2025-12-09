@@ -52,6 +52,7 @@ bin/gilt
 bin/gimme
 bin/git-chglog
 bin/git-crypt
+bin/github-mcp-server
 bin/github-release
 bin/govc
 bin/grafanactl
