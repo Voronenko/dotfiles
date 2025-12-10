@@ -222,9 +222,9 @@ install-console-fzf:
 
 # WTF is a personal information dashboard for your terminal, developed for those who spend most of their day in the command line.
 install-console-wtfutil:
-	curl -sLo /tmp/wtf.tar.gz  https://github.com/wtfutil/wtf/releases/download/v0.43.0/wtf_0.43.0_linux_amd64.tar.gz
+	curl -sLo /tmp/wtf.tar.gz  https://github.com/wtfutil/wtf/releases/download/v0.47.1/wtf_0.47.1_linux_amd64.tar.gz
 	tar -xvzf /tmp/wtf.tar.gz -C /tmp
-	cp /tmp/wtf_0.43.0_linux_amd64/wtfutil ~/dotfiles/bin/wtfutil
+	cp /tmp/wtfutil ~/dotfiles/bin/wtfutil
 	chmod +x ~/dotfiles/bin/wtfutil
 
 # https://github.com/so-fancy/diff-so-fancy

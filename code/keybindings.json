@@ -1655,7 +1655,9 @@
     "command": "list.select",
     "intellij": "Open Highlighted File (Explorer)",
     "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsFolder"
+  },
+  {
+    "key": "shift+alt+0",
+    "command": "workbench.action.debug.callStackTop"
   }
-
-
 ]
