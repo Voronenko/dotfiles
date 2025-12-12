@@ -1,16 +1,77 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-usage() {
-  echo "Usage: gpg_ssh_add path/to/key[.gpg]" >&2
-  exit 1
+# Function to list SSH keys in ~/.ssh directory
+list_ssh_keys() {
+  find -L "${HOME}/.ssh" -type f \( -name "*.gpg" -o -name "*.pem" -o -not -name "*.*" \) -not \( -name "authorized_keys" -o -name "known_hosts" -o -name "config" -o -name "environment" \) -printf "%p\n" | while read -r file; do
+    if [[ "$file" == *.gpg ]]; then
+      # Encrypted GPG file - show in orange without .gpg extension
+      echo -e "\033[38;5;208m${file%.gpg}\033[0m"
+    else
+      # Regular key file - show in green
+      echo -e "\033[38;5;76m$file\033[0m"
+    fi
+  done
 }
 
-if [ "${1-}" = "" ]; then
-  usage
+# Check if 'ssh-add' is available
+if ! command -v ssh-add >/dev/null 2>&1; then
+  echo "Error: 'ssh-add' command not found. Please install OpenSSH." >&2
+  exit 1
 fi
 
-key="$1"
+# Check if 'fzf' is available (needed for interactive selection)
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "Warning: 'fzf' not found. Interactive selection will not be available." >&2
+fi
+
+# Handle parameter or interactive selection
+if [ $# -eq 0 ]; then
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "Error: No key path provided and fzf not available for interactive selection." >&2
+    echo "Usage: $0 <key-path>" >&2
+    exit 1
+  fi
+
+  KEY_PATH="$(list_ssh_keys | fzf --ansi --prompt='Select SSH key: ' --height=40% --reverse || true)"
+
+  if [ -z "${KEY_PATH}" ]; then
+    echo "No key selected. Exiting."
+    exit 0
+  fi
+else
+  KEY_PATH="$1"
+fi
+
+# Resolve the actual file path (handle color codes and extensions)
+# First, strip ANSI color codes from the selected path
+CLEAN_KEY_PATH=$(echo "$KEY_PATH" | sed -r "s/\x1B\[[0-9;]*[mG]//g")
+
+# Check if the path is already absolute (from symlink resolution)
+if [[ "$CLEAN_KEY_PATH" == /* ]]; then
+  if [ -f "$CLEAN_KEY_PATH" ]; then
+    ACTUAL_FILE="$CLEAN_KEY_PATH"
+  elif [ -f "${CLEAN_KEY_PATH}.gpg" ]; then
+    ACTUAL_FILE="${CLEAN_KEY_PATH}.gpg"
+  else
+    echo "Error: Key file not found: ${CLEAN_KEY_PATH}" >&2
+    exit 1
+  fi
+else
+  # Relative path - construct from ~/.ssh
+  # First check if the file exists as-is
+  if [ -f "${HOME}/.ssh/${CLEAN_KEY_PATH}" ]; then
+    ACTUAL_FILE="${HOME}/.ssh/${CLEAN_KEY_PATH}"
+  # Then check if it's a .gpg file without the extension (display name)
+  elif [ -f "${HOME}/.ssh/${CLEAN_KEY_PATH}.gpg" ]; then
+    ACTUAL_FILE="${HOME}/.ssh/${CLEAN_KEY_PATH}.gpg"
+  else
+    echo "Error: Key file not found: ${HOME}/.ssh/${CLEAN_KEY_PATH}" >&2
+    exit 1
+  fi
+fi
+
+key="$ACTUAL_FILE"
 
 if [ ! -f "$key" ]; then
   echo "Error: '$key' not found or not a regular file" >&2
