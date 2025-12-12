@@ -1,21 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
 # pass-ssh-add: Load SSH private key stored in pass(1)
-# Usage: pass-ssh-add path/to/key/in/pass
-#
-# Example:
-#   pass-ssh-add ssh/github
-#
-# The entry `ssh/github` should contain only the private key content.
 
-set -euo pipefail
+set -eu
 
-KEY_PATH="$1"
-
-if [[ -z "${HOME}/.password-store/${KEY_PATH:-}" ]]; then
-  echo "Usage: $0 <pass-entry-path>"
-  exit 1
-fi
+# Function to list SSH keys in password store
+list_ssh_keys() {
+  find "${HOME}/.password-store/ssh" -name "*.gpg" -printf "%P\n" | sed 's/\.gpg$//' | sort
+}
 
 # Check if 'pass' is available
 if ! command -v pass >/dev/null 2>&1; then
@@ -29,23 +21,46 @@ if ! command -v ssh-add >/dev/null 2>&1; then
   exit 1
 fi
 
+# Check if 'fzf' is available (needed for interactive selection)
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "Warning: 'fzf' not found. Interactive selection will not be available." >&2
+fi
+
+# Handle parameter or interactive selection
+if [ $# -eq 0 ]; then
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "Error: No key path provided and fzf not available for interactive selection." >&2
+    echo "Usage: $0 <pass-entry-path>" >&2
+    exit 1
+  fi
+
+  KEY_PATH="$(list_ssh_keys | fzf --prompt='Select SSH key: ' --height=40% --reverse || true)"
+
+  if [ -z "${KEY_PATH}" ]; then
+    echo "No key selected. Exiting."
+    exit 0
+  fi
+else
+  KEY_PATH="$1"
+fi
+
 # Create a temporary file to hold the private key
-TMP_KEY=$(mktemp /tmp/pass-ssh-key.XXXXXX)
+mkdir -p "/tmp/ssh/$(dirname "$KEY_PATH")"
+TMP_KEY="$(mktemp "/tmp/ssh/$KEY_PATH.XXXXXX")"
 trap 'rm -f "$TMP_KEY"' EXIT
 
 # Retrieve and write the key securely
-if ! pass show "$KEY_PATH" > "$TMP_KEY"; then
-  echo "Error: Failed to retrieve key from pass: $KEY_PATH" >&2
+if ! pass show "ssh/$KEY_PATH" > "$TMP_KEY"; then
+  echo "Error: Failed to retrieve key from pass: ssh/$KEY_PATH" >&2
   exit 1
 fi
 
 chmod 600 "$TMP_KEY"
 
-# Add the key to the SSH agent
-# ssh-add will prompt for passphrase if required
+# Add the key to ssh-agent
 if ssh-add "$TMP_KEY"; then
-  echo "✅ SSH key from pass '$KEY_PATH' successfully added."
+  echo "✓ SSH key from pass '$KEY_PATH' successfully added."
 else
-  echo "❌ Failed to add SSH key from pass '$KEY_PATH'." >&2
+  echo "✗ Failed to add SSH key from pass '$KEY_PATH'." >&2
   exit 1
 fi

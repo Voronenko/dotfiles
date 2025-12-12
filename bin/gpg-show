@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "${1-}" = "" ]; then
+  echo "Usage: $0 file.gpg" >&2
+  exit 1
+fi
+
+file=$1
+
+if [ ! -f "$file" ]; then
+  echo "Error: file '$file' not found or is not a regular file" >&2
+  exit 1
+fi
+
+# Check that file looks like an OpenPGP/GPG packet stream
+if ! gpg --list-only --list-packets --quiet -- "$file" > /dev/null 2>&1; then
+  echo "Error: '$file' does not appear to be a valid GPG/OpenPGP file" >&2
+  exit 1
+fi
+
+# Now actually decrypt to stdout
+gpg --decrypt --quiet --yes -- "$file"

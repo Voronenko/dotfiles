@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+KEYID="FAC7DBB3935114CC84529E21F262FB038EFB3A88"
+
+if [ "${1-}" = "" ]; then
+  echo "Usage: $0 file" >&2
+  exit 1
+fi
+
+in=$1
+
+if [ ! -f "$in" ]; then
+  echo "Error: file '$in' not found or is not a regular file" >&2
+  exit 1
+fi
+
+out="${in}.gpg"
+
+gpg \
+  --yes \
+  --encrypt \
+  --recipient "$KEYID" \
+  --output "$out" \
+  -- "$in"

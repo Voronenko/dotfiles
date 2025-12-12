@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: gpg_ssh_add path/to/key[.gpg]" >&2
+  exit 1
+}
+
+if [ "${1-}" = "" ]; then
+  usage
+fi
+
+key="$1"
+
+if [ ! -f "$key" ]; then
+  echo "Error: '$key' not found or not a regular file" >&2
+  exit 1
+fi
+
+tmp=""
+
+cleanup() {
+  if [[ -n "$tmp" ]]; then
+    rm -f -- "$tmp"
+  fi
+}
+trap cleanup EXIT
+
+# Detect OpenPGP/GPG file
+if gpg --list-only --list-packets --quiet -- "$key" > /dev/null 2>&1; then
+  base=$(basename "$key")
+  base_no_gpg="${base%.gpg}"
+  tmp="${TMPDIR:-/tmp}/ssh.${base_no_gpg}"
+
+  if ! gpg --decrypt --quiet --yes --output "$tmp" -- "$key"; then
+    echo "Error: GPG decryption failed" >&2
+    exit 1
+  fi
+
+  chmod 600 -- "$tmp"
+  ssh-add -- "$tmp"
+else
+  ssh-add -- "$key"
+fi
