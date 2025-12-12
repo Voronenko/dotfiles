@@ -65,7 +65,18 @@ function cwg() {
     local selected_group=$(aws --profile=${aws_profile_name} --region=${aws_region} logs describe-log-groups --output text | cut -f4 | fzf)
     if [ -n "${selected_group}" ]; then
         local trimmed_group=$(echo "${selected_group}" | sed 's/^.*:log-group://')
-        BUFFER="cw tail -f ${trimmed_group} --no-color ${extra_args} | lnav"
+
+        # Ask for starting time
+        echo "Starting time options:"
+        local start_time=$(echo -e "0m\n5m\n10m\n15m\n30m\n60m\n2h\n4h\n8h\n1d" | fzf --prompt="Starting time: ")
+
+        # Build the command with start time if selected (not 0m)
+        local start_option=""
+        if [ -n "${start_time}" ] && [ "${start_time}" != "0m" ]; then
+            start_option="--start=${start_time}"
+        fi
+
+        BUFFER="cw tail -f ${trimmed_group} --no-color ${extra_args} ${start_option} | lnav"
         if zle; then
             zle accept-line
         else
