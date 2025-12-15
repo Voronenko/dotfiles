@@ -54,7 +54,7 @@ function cwg() {
         --query \"events[].message\" \
         --output text 2>&1)
       if [[ \$? -eq 0 ]]; then
-        echo \"\$result\" | tail -n 20
+        printf '%s\n' \"\$result\" | tail -n 20
       else
         echo \"Error fetching logs for [\$group]: \$result\"
         echo \"Debug: Raw group name: [{}]\"
