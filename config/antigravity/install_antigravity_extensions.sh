@@ -1,0 +1,13 @@
+antigravity --install-extension aaron-bond.better-comments
+antigravity --install-extension alefragnani.numbered-bookmarks
+antigravity --install-extension eamodio.gitlens
+antigravity --install-extension editorconfig.editorconfig
+antigravity --install-extension golang.go
+antigravity --install-extension meta.pyrefly
+antigravity --install-extension ms-python.debugpy
+antigravity --install-extension ms-python.python
+antigravity --install-extension ms-python.vscode-python-envs
+antigravity --install-extension ms-vscode.makefile-tools
+antigravity --install-extension ms-vscode.mono-debug
+antigravity --install-extension ms-vscode.powershell
+antigravity --install-extension mtxr.sqltools
