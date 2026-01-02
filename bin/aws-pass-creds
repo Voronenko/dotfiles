@@ -15,7 +15,7 @@ if [[ -z "$PROFILE" ]]; then
   exit 1
 fi
 
-aws-vault exec "$PROFILE" --json
+aws-vault exec "$PROFILE" --json --duration=4h
 
 ## outputs kind of
 #{

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INCLUDE_REMOTE=false
+
+if [[ "${1:-}" == "--remote" ]]; then
+  INCLUDE_REMOTE=true
+fi
+
+# Ensure we're inside a git repository
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+  echo "Not inside a git repository"
+  exit 1
+}
+
+# Ensure fzf exists
+command -v fzf >/dev/null 2>&1 || {
+  echo "fzf is required but not installed"
+  exit 1
+}
+
+current_branch="$(git branch --show-current)"
+
+branches="$(
+  git for-each-ref --format='%(refname:short)' refs/heads \
+  | while read -r branch; do
+      [[ "$branch" == "$current_branch" ]] && continue
+
+      if $INCLUDE_REMOTE; then
+        echo "$branch"
+      else
+        git rev-parse --abbrev-ref "${branch}@{upstream}" >/dev/null 2>&1 || echo "$branch"
+      fi
+    done
+)"
+
+selected_branch="$(
+  printf '%s\n' "$branches" \
+  | fzf --prompt="Squash-merge into '${current_branch}': "
+)"
+
+# Exit if nothing selected
+[[ -z "${selected_branch}" ]] && exit 0
+
+echo "Squash merging '${selected_branch}' into '${current_branch}'"
+git merge --squash "${selected_branch}"
