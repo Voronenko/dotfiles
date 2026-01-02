@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# git-wt: fast switching between git worktrees
+
+# -------------------------
+# Dependency checks
+# -------------------------
+require_cmd() {
+    command -v "$1" >/dev/null 2>&1 || {
+        echo "Error: required command '$1' not found in PATH" >&2
+        exit 1
+    }
+}
+
+require_cmd git
+
+# -------------------------
+# Helpers
+# -------------------------
+die() {
+    echo "Error: $*" >&2
+    exit 1
+}
+
+is_git_repo() {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1
+}
+
+list_worktrees() {
+    git worktree list
+}
+
+goto_main_worktree() {
+    local main
+    main=$(git worktree list --porcelain \
+        | awk '/^worktree / {print $2; exit}')
+
+    [[ -n "$main" ]] || die "Could not determine main worktree"
+
+    echo "Changing to main worktree: $main"
+    cd "$main"
+    exec "$SHELL"
+}
+
+select_interactive() {
+    require_cmd fzf
+
+    git worktree list --porcelain |
+        awk '
+            /^worktree / { wt=$2 }
+            /^branch / {
+                sub("refs/heads/", "", $2)
+                print wt " [" $2 "]"
+            }
+        ' |
+        fzf --height=10% --no-multi --exit-0 |
+        awk '{print $1}'
+}
+
+select_by_name() {
+    local query="$1"
+    git worktree list --porcelain |
+        awk -v q="$query" '
+            /^worktree / {
+                wt=$2
+                if (wt ~ q) {
+                    print wt
+                    exit
+                }
+            }
+        '
+}
+
+change_worktree() {
+    local dir="$1"
+    [[ -n "$dir" ]] || exit 0
+
+    echo "Changing to worktree: $dir"
+    cd "$dir"
+    exec "$SHELL"
+}
+
+usage() {
+    cat <<EOF
+git-wt — fast git worktree switching
+
+Usage:
+  git-wt <name>    Switch to the first worktree matching <name>
+  git-wt -i        Interactively select a worktree using fzf
+  git-wt list      List all worktrees
+  git-wt -         Go to main worktree
+  git-wt help      Show this help
+EOF
+}
+
+# -------------------------
+# Main
+# -------------------------
+is_git_repo || die "Not inside a git repository"
+
+arg="${1:-}"
+
+case "$arg" in
+    list)
+        list_worktrees
+        ;;
+    -)
+        goto_main_worktree
+        ;;
+    -i)
+        dir=$(select_interactive)
+        change_worktree "$dir"
+        ;;
+    help|"")
+        usage
+        ;;
+    *)
+        dir=$(select_by_name "$arg")
+        change_worktree "$dir"
+        ;;
+esac
