@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+LOW=33000
+HIGH=34000
+RANGE=$((HIGH - LOW + 1))
+
+print_result() {
+  local project_id="$1"
+
+  local sha1_hex
+  sha1_hex=$(printf "%s" "$project_id" | sha1sum | awk '{print $1}')
+
+  local sha1_int=$((16#$sha1_hex))
+  local port=$((sha1_int % RANGE + LOW))
+
+  echo "Project ID: $project_id"
+  echo "SHA1:       $sha1_hex"
+  echo "Port:       $port"
+}
+
+echo "Deterministic project-id → port generator"
+echo "Formula: sha1 → int → % ($HIGH-$LOW+1) + $LOW"
+echo
+
+# ---- Non-interactive mode ----
+if [[ -n "${1:-}" ]]; then
+  print_result "$1"
+  exit 0
+fi
+
+echo "Press Ctrl+C to exit."
+echo
+
+# ---- Interactive mode ----
+while true; do
+  read -rp "Enter project identifier: " project_id
+  [[ -z "$project_id" ]] && continue
+  print_result "$project_id"
+  echo
+done
