@@ -18,6 +18,11 @@ require_cmd git
 # -------------------------
 # Helpers
 # -------------------------
+get_main_worktree() {
+    git worktree list --porcelain \
+        | awk '/^worktree / {print $2; exit}'
+}
+
 die() {
     echo "Error: $*" >&2
     exit 1
@@ -33,8 +38,7 @@ list_worktrees() {
 
 goto_main_worktree() {
     local main
-    main=$(git worktree list --porcelain \
-        | awk '/^worktree / {print $2; exit}')
+    main=$(get_main_worktree)
 
     [[ -n "$main" ]] || die "Could not determine main worktree"
 
@@ -72,6 +76,45 @@ select_by_name() {
         '
 }
 
+select_secondary_worktree() {
+    require_cmd fzf
+
+    local main
+    main=$(get_main_worktree)
+
+    git worktree list --porcelain |
+        awk -v main="$main" '
+            /^worktree / { wt=$2 }
+            /^branch / {
+                sub("refs/heads/", "", $2)
+                if (wt != main) {
+                    print wt " [" $2 "]"
+                }
+            }
+        ' |
+        fzf --height=10% --no-multi --exit-0 |
+        awk '{print $1}'
+}
+
+sync_worktree() {
+    local secondary="$1"
+    local main
+
+    main=$(get_main_worktree)
+    [[ -n "$main" ]] || die "Could not determine main worktree"
+
+    if [[ -z "$secondary" ]]; then
+        secondary=$(select_secondary_worktree)
+        [[ -n "$secondary" ]] || die "No secondary worktree selected"
+    fi
+
+    [[ -d "$secondary" ]] || die "Secondary worktree directory does not exist: $secondary"
+
+    echo "Syncing untracked files from main worktree ($main) to secondary worktree ($secondary)"
+    git ls-files -o -i --exclude-standard -z | rsync -a --files-from=- --from0 "$main" "$secondary"
+    echo "Sync complete"
+}
+
 change_worktree() {
     local dir="$1"
     [[ -n "$dir" ]] || exit 0
@@ -89,6 +132,7 @@ Usage:
   git-wt <name>    Switch to the first worktree matching <name>
   git-wt -i        Interactively select a worktree using fzf
   git-wt list      List all worktrees
+  git-wt sync <path> Sync untracked files from main worktree to secondary worktree
   git-wt -         Go to main worktree
   git-wt help      Show this help
 EOF
@@ -111,6 +155,9 @@ case "$arg" in
     -i)
         dir=$(select_interactive)
         change_worktree "$dir"
+        ;;
+    sync)
+        sync_worktree "${2:-}"
         ;;
     help|"")
         usage

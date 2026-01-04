@@ -137,6 +137,7 @@ bin/step2.xml
 bin/stern
 bin/swagen
 bin/swagger-codegen-cli.jar
+bin/shellcheck
 bin/syft
 bin/symfony
 bin/task

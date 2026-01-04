@@ -89,6 +89,12 @@ install-cdci-circleci-runner:
 install-tmuxinator:
 	gem install tmuxinator
 
+install-shellcheck:
+	curl -sLo /tmp/shellcheck.tar.xz https://github.com/koalaman/shellcheck/releases/download/v$(shell curl -s https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/shellcheck-v$(shell curl -s https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-).linux.x86_64.tar.xz
+	tar -xJf /tmp/shellcheck.tar.xz -C /tmp
+	mv /tmp/shellcheck-v$(shell curl -s https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/shellcheck $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/shellcheck
+
 install-trafficmirror:
 	curl -sLo /tmp/trafficmirror.tar.gz https://github.com/rb3ckers/trafficmirror/releases/download/v$$(curl -s https://api.github.com/repos/rb3ckers/trafficmirror/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/trafficmirror_$$(curl -s https://api.github.com/repos/rb3ckers/trafficmirror/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
 	tar -xvzf /tmp/trafficmirror.tar.gz -C /tmp
