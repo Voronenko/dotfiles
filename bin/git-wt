@@ -92,7 +92,7 @@ select_secondary_worktree() {
                 }
             }
         ' |
-        fzf --height=10% --no-multi --exit-0 |
+        fzf --height=10% --no-multi --exit-0 --prompt="sync out-of-git files from main worktree to: " |
         awk '{print $1}'
 }
 
