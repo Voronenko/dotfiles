@@ -15,7 +15,7 @@ shared_except "locked" {
         LaunchOrFocusPlugin "file:~/dotfiles/config/zellij/plugins/ghost.wasm" {
             floating true
 
-            // Ghost config 
+            // Ghost config
             shell "zsh"      // required ("bash", "fish", "zsh")
             shell_flag "-ic" // required ("-ic",  "-c",    "-ic")
 
@@ -30,7 +30,7 @@ shared_except "locked" {
             //    tf apply -auto-approve
             //    cargo build
             //    go test -v  ./...
-            //    
+            //
             ///"#
         }
     }

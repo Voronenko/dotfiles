@@ -37,7 +37,7 @@ _git-staged() {
 
 _git-forgit-reflog() {
 	declare -a cmds
-	cmds=('expire:prune old reflog entries' 'delete:delete entries from reflog' 'show:show log of ref' 'exists:check whether a ref has a reflog') 
+	cmds=('expire:prune old reflog entries' 'delete:delete entries from reflog' 'show:show log of ref' 'exists:check whether a ref has a reflog')
 	_alternative 'cmds:: _describe -t cmds cmd cmds' 'refs:: __git_references'
 }
 
@@ -52,7 +52,7 @@ _git-forgit() {
 		# The last word is the relevant command
 		cmd=${words[(( ${#words} - 1 ))]}
 	fi
-	
+
 	case ${cmd} in
 	forgit)
 		local -a subcommands
@@ -124,7 +124,7 @@ compdef __git_recent_commits forgit::revert::commit
 compdef _git-stash-show forgit::stash::show
 
 # this is the case of calling the command and pressing tab
-# the very first time of a shell session, we have to manually 
+# the very first time of a shell session, we have to manually
 # call the dispatch function
 if [[ $funcstack[1] == "_git-forgit" ]]; then
   _git-forgit "$@"

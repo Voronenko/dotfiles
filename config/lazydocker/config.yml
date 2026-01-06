@@ -22,4 +22,3 @@ customCommands:
     attach: true
     command: bash -c "lnav -e 'docker logs --timestamps --since 60m {{ .Container.ID }}'"
     serviceNames: []
-

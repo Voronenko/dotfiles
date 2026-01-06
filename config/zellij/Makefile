@@ -27,8 +27,3 @@ pl-ghost:
 	mkdir -p ~/dotfiles/config/zellij/plugins/
 	TAG=$$(curl -s https://api.github.com/repos/vdbulcke/ghost/releases/latest | grep tag_name | cut -d '"' -f 4); \
 	curl -sLo ~/dotfiles/config/zellij/plugins/ghost.wasm "https://github.com/vdbulcke/ghost/releases/download/$$TAG/ghost.wasm"
-
-
-
-
-

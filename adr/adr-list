@@ -15,4 +15,3 @@ else
     echo "The $adr_dir directory does not exist"
     exit 1
 fi
-

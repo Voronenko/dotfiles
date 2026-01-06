@@ -93,4 +93,3 @@ function cwg() {
     zle && zle clear-screen
 }
 zle -N cwg
-

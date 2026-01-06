@@ -56,4 +56,3 @@ else
 fi
 
 echo "→ jdkName = $jdk_name"
-
