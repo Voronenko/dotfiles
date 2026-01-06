@@ -1496,12 +1496,6 @@ update-open-ssl:
 	make test && \
 	sudo make install
 
-install-bito:
-	curl -sLo /tmp/bito.tar.gz https://github.com/gitbito/CLI/releases/download/v$(shell curl -s https://api.github.com/repos/gitbito/CLI/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/bito-linux-x86.tar.gz
-	tar -xvzf /tmp/bito.tar.gz -C /tmp
-	mv /tmp/bito-linux-x86 ~/dotfiles/bin/bito
-	chmod +x ~/dotfiles/bin/bito
-
 install-komiser:
 	curl -sLo ~/dotfiles/bin/komiser https://cli.komiser.io/latest/komiser_Linux_x86_64
 	chmod +x ~/dotfiles/bin/komiser
@@ -1579,6 +1573,7 @@ install-pipx-pgcli:
 install-pipx-poetry:
 	pipx install poetry
 	pipx inject poetry "poetry-plugin-export"
+	pipx inject poetry "poetry-plugin-shell"
 
 install-pipx-papermill:
 	pipx install papermill
@@ -1639,7 +1634,40 @@ install-kitty-terminal:
 	sed -i "s|Icon=kitty|Icon=$(shell readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
 	sed -i "s|Exec=kitty|Exec=$(shell readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
 
+# AI
 
+install-ai-goose:
+	@set -e; \
+	LATEST_TAG="$$(curl -fsSL https://api.github.com/repos/block/goose/releases/latest \
+		| sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p')"; \
+	echo "Latest goose release: $$LATEST_TAG"; \
+	echo "Downloading installer..."; \
+	curl -fsSL \
+		"https://github.com/block/goose/releases/download/$$LATEST_TAG/download_cli.sh" \
+		-o /tmp/download_goose_cli.sh; \
+	chmod +x /tmp/download_goose_cli.sh; \
+	echo "Installing goose to $$HOME/dotfiles/bin"; \
+	GOOSE_BIN_DIR="$$HOME/dotfiles/bin" \
+		bash /tmp/download_goose_cli.sh
+
+install-desktop-ai-goose:
+	@set -e; \
+	echo "Detecting latest goose desktop release..."; \
+	RELEASE_JSON="$$(curl -fsSL https://api.github.com/repos/block/goose/releases/latest)"; \
+	TAG="$$(echo "$$RELEASE_JSON" | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p')"; \
+	DEB_URL="$$(echo "$$RELEASE_JSON" \
+		| sed -n 's/.*"browser_download_url":[[:space:]]*"\([^"]*goose_[^"]*_amd64\.deb\)".*/\1/p')"; \
+	if [ -z "$$DEB_URL" ]; then \
+		echo "ERROR: amd64 .deb not found for $$TAG"; \
+		exit 1; \
+	fi; \
+	DEB_FILE="/tmp/$$(basename $$DEB_URL)"; \
+	echo "Latest version: $$TAG"; \
+	echo "Downloading $$DEB_FILE"; \
+	curl -fsSL "$$DEB_URL" -o "$$DEB_FILE"; \
+	echo "Installing goose desktop (requires sudo)..."; \
+	sudo dpkg -i "$$DEB_FILE"; \
+	echo "goose desktop installed successfully"
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
@@ -1684,3 +1712,13 @@ install-kitty-terminal:
 
 # Mermaid cli
 #npm install -g @mermaid-js/mermaid-cli
+
+
+### RETIRING
+
+#install-bito:
+#       curl -sLo /tmp/bito.tar.gz https://github.com/gitbito/CLI/releases/download/v$(shell curl -s https://api.github.com/repos/gitbito/CLI/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/bito-linux-x86.tar.gz
+#       tar -xvzf /tmp/bito.tar.gz -C /tmp
+#       mv /tmp/bito-linux-x86 ~/dotfiles/bin/bito
+#       chmod +x ~/dotfiles/bin/bito
+

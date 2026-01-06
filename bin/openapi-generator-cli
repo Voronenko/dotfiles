@@ -21,7 +21,8 @@ else
 fi
 
 if [ ! -f $OPENAPIJAR ]; then
-    curl -sLo $OPENAPIJAR https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar
+    echo downloading 7.9.0
+    curl -sLo $OPENAPIJAR https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar
 fi
 
 

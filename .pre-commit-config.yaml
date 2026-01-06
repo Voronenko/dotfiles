@@ -7,3 +7,18 @@ repos:
     - id: end-of-file-fixer
     - id: check-added-large-files
     - id: detect-private-key
+- repo: local
+  hooks:
+    - id: sort-gitignore
+      name: Sort .gitignore (preserve comments)
+      entry: >
+        sh -c '
+        tmp=$(mktemp) &&
+        {
+          grep "^#" .gitignore;
+          grep -v "^#" .gitignore | grep -v "^$" | sort -u;
+        } > "$tmp" &&
+        mv "$tmp" .gitignore
+        '
+      language: system
+      files: ^\.gitignore$

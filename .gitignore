@@ -184,3 +184,4 @@ startup.log
 terraformer-all-linux-amd64
 terraformer-google-linux-amd64
 zshrc.local
+bin/goose
