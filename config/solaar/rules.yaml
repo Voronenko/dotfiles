@@ -1,0 +1,116 @@
+- Rule:
+  - Key: [Left Tilt, released]
+  - KeyPress:
+    - [Control_L, minus]
+    - click
+- Rule:
+  - Key: [Right Tilt, released]
+  - KeyPress:
+    - [Control_L, plus]
+    - click
+...
+---
+- Rule:
+  - Key: [Forward Button, released]
+  - Or:
+    - Rule:
+      - MouseGesture: Mouse Left
+      - KeyPress:
+        - Print
+        - click
+    - Or:
+      - Rule:
+        - MouseGesture: Mouse Up
+        - KeyPress:
+          - Escape
+          - click
+      - Or:
+        - Rule:
+          - MouseGesture: Mouse Right
+          - KeyPress:
+            - [Control_L, f]
+            - click
+        - Or:
+          - Rule:
+            - MouseGesture: Mouse Down
+            - KeyPress:
+              - [Control_L, Alt_L, h]
+              - click
+            - Later: 0x1
+            - KeyPress:
+              - Return
+              - click
+          - Or:
+            - Not:
+                MouseGesture: []
+            - KeyPress:
+              - [Control_L, f]
+              - click
+...
+---
+- Rule:
+  - Key: [Back Button, released]
+  - Or:
+    - Rule:
+      - MouseGesture: Mouse Left
+      - KeyPress:
+        - [Control_L, c]
+        - click
+    - Or:
+      - Rule:
+        - MouseGesture: Mouse Up
+        - KeyPress:
+          - [Control_L, x]
+          - click
+      - Or:
+        - Rule:
+          - MouseGesture: Mouse Right
+          - KeyPress:
+            - [Control_L, v]
+            - click
+        - Or:
+          - Rule:
+            - MouseGesture: Mouse Down
+            - KeyPress:
+              - [Control_L, z]
+              - click
+          - Or:
+            - Not:
+                MouseGesture: []
+            - KeyPress:
+              - XF86_AudioPlay
+              - click
+...
+---
+- Rule:
+  - Key: [MultiPlatform Gesture Button, released]
+  - Or:
+    - Rule:
+      - MouseGesture: Mouse Left
+      - KeyPress:
+        - [Control_L, Alt_L, Shift_L, p]
+        - click
+    - Or:
+      - Rule:
+        - MouseGesture: Mouse Up
+        - KeyPress:
+          - [Control_L, Alt_L, Shift_L, y]
+          - click
+      - Or:
+        - Rule:
+          - MouseGesture: Mouse Right
+          - KeyPress:
+            - Return
+            - click
+        - Or:
+          - Rule:
+            - MouseGesture: Mouse Down
+            - KeyPress:
+              - [Control_L, Shift_L, l]
+              - click
+          - Or:
+            - Not:
+                MouseGesture: []
+            - KeyPress:
+              - BackSpace
+              - click
