@@ -37,13 +37,29 @@ bookmarks:
   labels:
   - "git"
 
-- name: "kitty"
+- name: "c-kitty-console"
   desc: ""
   cmds:
   - "kitty >/dev/null 2>&1 &"
   exec: true
   labels:
   - "utils"
+
+- name: "c-terminator-console"
+  desc: ""
+  cmds:
+    - "terminator >/dev/null 2>&1 &"
+  exec: true
+  labels:
+    - "utils"
+
+- name: "c-gnome-terminal-console"
+  desc: ""
+  cmds:
+    - "gnome-terminal >/dev/null 2>&1 &"
+  exec: true
+  labels:
+    - "utils"
 
 - name: "r-lnav-install"
   desc: "Installs lnav on remote"
