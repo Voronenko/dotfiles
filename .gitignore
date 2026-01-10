@@ -104,6 +104,7 @@ bin/ngrok
 bin/nitrokey-app
 bin/oc
 bin/openapi-generator-cli.jar
+bin/opencode
 bin/packer
 bin/phpmd
 bin/plantuml.jar
