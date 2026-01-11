@@ -79,9 +79,10 @@ if [ ! -f "$key" ]; then
 fi
 
 tmp=""
+use_shm=false
 
 cleanup() {
-  if [[ -n "$tmp" ]]; then
+  if [[ -n "$tmp" ]] && [[ "$use_shm" == false ]]; then
     rm -f -- "$tmp"
   fi
 }
@@ -91,7 +92,42 @@ trap cleanup EXIT
 if gpg --list-only --list-packets --quiet -- "$key" > /dev/null 2>&1; then
   base=$(basename "$key")
   base_no_gpg="${base%.gpg}"
-  tmp="${TMPDIR:-/tmp}/ssh.${base_no_gpg}"
+
+  # Determine the temp directory
+  if [[ -n "${SSH_RUNTIME_FOLDER:-}" ]] && [[ -L "${HOME}/.ssh/runtime" ]] && [[ "$(readlink "${HOME}/.ssh/runtime")" == "$SSH_RUNTIME_FOLDER" ]]; then
+    # Use ~/.ssh/runtime if it is a symlink to SSH_RUNTIME_FOLDER
+    tmp_dir="${HOME}/.ssh/runtime"
+    use_shm=true
+  elif [[ -n "${SSH_RUNTIME_FOLDER:-}" ]] && [[ "$SSH_RUNTIME_FOLDER" == /dev/shm* ]]; then
+    # Use SSH_RUNTIME_FOLDER if it starts with /dev/shm
+    tmp_dir="$SSH_RUNTIME_FOLDER"
+    use_shm=true
+  else
+    tmp_dir="${TMPDIR:-/tmp}"
+    use_shm=false
+  fi
+
+  # Respect relative path from ~/.ssh in the temp directory structure
+  # Extract the relative path from ~/.ssh
+  if [[ "$key" == "${HOME}/.ssh/"* ]]; then
+    # Remove ${HOME}/.ssh/ prefix to get relative path
+    relative_path="${key#"${HOME}/.ssh/"}"
+    # Get the directory part (excluding filename)
+    relative_dir=$(dirname "$relative_path")
+
+    if [[ "$relative_dir" != "." ]]; then
+      # Create the temp path maintaining the directory structure
+      tmp="${tmp_dir}/${relative_dir}/${base_no_gpg}"
+      # Create the directory if it doesn't exist
+      mkdir -p "$(dirname "$tmp")"
+    else
+      # File is directly in ~/.ssh
+      tmp="${tmp_dir}/${base_no_gpg}"
+    fi
+  else
+    # File is not in ~/.ssh, use simple naming
+    tmp="${tmp_dir}/ssh.${base_no_gpg}"
+  fi
 
   if ! gpg --decrypt --quiet --yes --output "$tmp" -- "$key"; then
     echo "Error: GPG decryption failed" >&2
