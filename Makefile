@@ -803,6 +803,10 @@ gnome-another-window-session-manager:  install-console-ydotool
 gnome-status-area-horizontal-spacing:
 	gext install 355
 
+# https://extensions.gnome.org/extension/7024/custom-command-list/
+gnome-custom-command-list:
+	gext install 7024
+
 # https://extensions.gnome.org/extension/5090/space-bar/
 gnome-spacebar-workflows:
 	gext install 5090
