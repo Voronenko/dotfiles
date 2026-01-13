@@ -97,14 +97,12 @@ export COL_NAME COL_HOST_PORT COL_CONTAINER_PORT COL_COMPOSE COL_STATUS
 
 # Helper to create separator line (full width)
 make_separator() {
-    local col1_fill=$(printf "%${COL_NAME}s" | tr ' ' '-')
-    local col2_fill=$(printf "%${COL_HOST_PORT}s" | tr ' ' '-')
-    local col3_fill=$(printf "%${COL_CONTAINER_PORT}s" | tr ' ' '-')
-    local col4_fill=$(printf "%${COL_COMPOSE}s" | tr ' ' '-')
-    local col5_fill=$(printf "%${COL_STATUS}s" | tr ' ' '-')
-    # Total width = sum of columns + 4 plus signs + 10 spaces for padding
-    local total_width=$((COL_NAME + COL_HOST_PORT + COL_CONTAINER_PORT + COL_COMPOSE + COL_STATUS + 10))
-    echo "+${col1_fill}+${col2_fill}+${col3_fill}+${col4_fill}+${col5_fill}+"
+    printf "+%s+%s+%s+%s+%s+\n" \
+        "$(printf '%*s' $((COL_NAME + 2)) '' | tr ' ' '-')" \
+        "$(printf '%*s' $((COL_HOST_PORT + 2)) '' | tr ' ' '-')" \
+        "$(printf '%*s' $((COL_CONTAINER_PORT + 2)) '' | tr ' ' '-')" \
+        "$(printf '%*s' $((COL_COMPOSE + 2)) '' | tr ' ' '-')" \
+        "$(printf '%*s' $((COL_STATUS + 2)) '' | tr ' ' '-')"
 }
 
 # Print table header
