@@ -1,0 +1,317 @@
+#!/usr/bin/env bash
+# Ensure we're running in bash
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec bash "$0" "$@"
+fi
+
+# Don't use set -e to avoid silent failures
+set -o pipefail
+
+# Color definitions
+readonly COLOR_RESET='\033[0m'
+readonly COLOR_HEADER='\033[38;5;39m'      # Cyan
+readonly COLOR_RUNNING='\033[38;5;76m'    # Green
+readonly COLOR_STOPPED='\033[38;5;196m'   # Red
+readonly COLOR_NAME='\033[38;5;226m'      # Yellow
+readonly COLOR_HOST_PORT='\033[38;5;201m' # Magenta
+readonly COLOR_CONTAINER_PORT='\033[38;5;75m' # Blue
+readonly COLOR_COMPOSE='\033[38;5;208m'  # Orange
+
+# Column width variables (will be set by calculate_column_widths)
+COL_NAME=""
+COL_HOST_PORT=""
+COL_CONTAINER_PORT=""
+COL_COMPOSE=""
+COL_STATUS=""
+
+# Get terminal width
+get_terminal_width() {
+    if command -v tput >/dev/null 2>&1; then
+        tput cols 2>/dev/null || echo 120
+    elif command -v stty >/dev/null 2>&1; then
+        stty size 2>/dev/null | awk '{print $2}' || echo 120
+    else
+        echo 120
+    fi
+}
+
+# Calculate column widths based on terminal width
+calculate_column_widths() {
+    local terminal_width
+    terminal_width=$(get_terminal_width)
+
+    # Set maximum reasonable width to prevent issues with very wide terminals
+    local max_width=200
+    [[ $terminal_width -gt $max_width ]] && terminal_width=$max_width
+
+    # Reserve space for borders and padding (2 chars per column border + 4 chars per column padding)
+    # Total borders: 6 vertical bars * 1 char = 6
+    # Total padding: 5 columns * 2 spaces = 10
+    # Total reserved: 16 chars
+    local available_width=$((terminal_width - 16))
+
+    # Ensure available_width is positive
+    [[ $available_width -lt 50 ]] && available_width=50
+
+    # Base proportions with 25% increase for all columns, 50% for compose path
+    # Adjusted: Host Port 10% less, Container Port 25% more + 15% additional, Status reduced
+    # Container Port increased by ~5 characters
+    # Original: name=3, host_port=1, container_port=2, compose=4, status=1
+    # Increased: name=3.75, host_port=1, container_port=5.5, compose=6, status=0.75
+    # Scaled to integers: name=15, host_port=4, container_port=22, compose=24, status=3
+    local name_weight=15
+    local host_port_weight=4
+    local container_port_weight=22
+    local compose_weight=24
+    local status_weight=3
+
+    local total_weight=$((name_weight + host_port_weight + container_port_weight + compose_weight + status_weight))
+
+    # Calculate widths
+    COL_NAME=$((available_width * name_weight / total_weight))
+    COL_HOST_PORT=$((available_width * host_port_weight / total_weight))
+    COL_CONTAINER_PORT=$((available_width * container_port_weight / total_weight))
+    COL_COMPOSE=$((available_width * compose_weight / total_weight))
+    COL_STATUS=$((available_width * status_weight / total_weight))
+
+    # Ensure minimum widths (adjusted for narrow terminals)
+    [[ $COL_NAME -lt 16 ]] && COL_NAME=16
+    [[ $COL_HOST_PORT -lt 8 ]] && COL_HOST_PORT=8
+    [[ $COL_CONTAINER_PORT -lt 10 ]] && COL_CONTAINER_PORT=10
+    [[ $COL_COMPOSE -lt 26 ]] && COL_COMPOSE=26
+    [[ $COL_STATUS -lt 5 ]] && COL_STATUS=5
+
+    # Ensure maximum widths to prevent overflow
+    [[ $COL_NAME -gt 50 ]] && COL_NAME=50
+    [[ $COL_HOST_PORT -gt 15 ]] && COL_HOST_PORT=15
+    [[ $COL_CONTAINER_PORT -gt 30 ]] && COL_CONTAINER_PORT=30
+    [[ $COL_COMPOSE -gt 80 ]] && COL_COMPOSE=80
+    [[ $COL_STATUS -gt 10 ]] && COL_STATUS=10
+}
+
+# Initialize column widths
+calculate_column_widths
+
+# Export column widths for use in subshells
+export COL_NAME COL_HOST_PORT COL_CONTAINER_PORT COL_COMPOSE COL_STATUS
+
+# Helper to create separator line (full width)
+make_separator() {
+    local col1_fill=$(printf "%${COL_NAME}s" | tr ' ' '-')
+    local col2_fill=$(printf "%${COL_HOST_PORT}s" | tr ' ' '-')
+    local col3_fill=$(printf "%${COL_CONTAINER_PORT}s" | tr ' ' '-')
+    local col4_fill=$(printf "%${COL_COMPOSE}s" | tr ' ' '-')
+    local col5_fill=$(printf "%${COL_STATUS}s" | tr ' ' '-')
+    # Total width = sum of columns + 4 plus signs + 10 spaces for padding
+    local total_width=$((COL_NAME + COL_HOST_PORT + COL_CONTAINER_PORT + COL_COMPOSE + COL_STATUS + 10))
+    echo "+${col1_fill}+${col2_fill}+${col3_fill}+${col4_fill}+${col5_fill}+"
+}
+
+# Print table header
+print_header() {
+    # Ensure column widths are set
+    [[ -z "$COL_NAME" ]] && COL_NAME=16
+    [[ -z "$COL_HOST_PORT" ]] && COL_HOST_PORT=8
+    [[ -z "$COL_CONTAINER_PORT" ]] && COL_CONTAINER_PORT=10
+    [[ -z "$COL_COMPOSE" ]] && COL_COMPOSE=26
+    [[ -z "$COL_STATUS" ]] && COL_STATUS=5
+
+    local separator=$(make_separator)
+
+    printf "${COLOR_HEADER}"
+    printf "%s\n" "$separator"
+    printf "| %-${COL_NAME}s | %-${COL_HOST_PORT}s | %-${COL_CONTAINER_PORT}s | %-${COL_COMPOSE}s | %-${COL_STATUS}s |\n" \
+        "Container Name" "Host Port" "Container Port" "Compose Path" "Status"
+    printf "%s\n" "$separator"
+    printf "${COLOR_RESET}"
+}
+
+# Print table footer
+print_footer() {
+    # Ensure column widths are set
+    [[ -z "$COL_NAME" ]] && COL_NAME=16
+    [[ -z "$COL_HOST_PORT" ]] && COL_HOST_PORT=8
+    [[ -z "$COL_CONTAINER_PORT" ]] && COL_CONTAINER_PORT=10
+    [[ -z "$COL_COMPOSE" ]] && COL_COMPOSE=26
+    [[ -z "$COL_STATUS" ]] && COL_STATUS=5
+
+    local separator=$(make_separator)
+
+    printf "${COLOR_HEADER}"
+    printf "%s\n" "$separator"
+    printf "${COLOR_RESET}"
+}
+
+# Get container status (running or stopped)
+get_container_status() {
+    local container_id="$1"
+    local status
+
+    status=$(docker inspect --format='{{.State.Status}}' "$container_id" 2>/dev/null || echo "unknown")
+
+    if [[ "$status" == "running" ]]; then
+        echo "running"
+    else
+        echo "stopped"
+    fi
+}
+
+# Get port mappings for a container
+get_port_mappings() {
+    local container_id="$1"
+    local ports_json
+    local host_ports=""
+    local container_ports=""
+
+    # Get port information from docker inspect
+    ports_json=$(docker inspect --format='{{json .NetworkSettings.Ports}}' "$container_id" 2>/dev/null || echo '{}')
+
+    # Parse port mappings
+    if [[ "$ports_json" != "{}" ]]; then
+        # Extract port mappings using jq if available, otherwise use grep/sed
+        if command -v jq >/dev/null 2>&1; then
+            host_ports=$(echo "$ports_json" | jq -r 'to_entries[] | select(.value != null) | .value[0].HostPort // ""' | grep -v '^$' | tr '\n' ',' | sed 's/,$//')
+            container_ports=$(echo "$ports_json" | jq -r 'to_entries[] | .key' | tr '\n' ',' | sed 's/,$//')
+        else
+            # Fallback without jq - use docker port command
+            local port_output
+            port_output=$(docker port "$container_id" 2>/dev/null || true)
+
+            if [[ -n "$port_output" ]]; then
+                host_ports=$(echo "$port_output" | awk -F'->' '{print $1}' | awk -F':' '{print $NF}' | tr '\n' ',' | sed 's/,$//')
+                container_ports=$(echo "$port_output" | awk -F'->' '{print $2}' | tr '\n' ',' | sed 's/,$//')
+            fi
+        fi
+    fi
+
+    # If no ports found, try docker port command as fallback
+    if [[ -z "$host_ports" ]]; then
+        local port_output
+        port_output=$(docker port "$container_id" 2>/dev/null || true)
+        if [[ -n "$port_output" ]]; then
+            host_ports=$(echo "$port_output" | awk -F':' '{print $NF}' | tr '\n' ',' | sed 's/,$//')
+            container_ports=$(echo "$port_output" | awk -F'->' '{print $2}' | tr '\n' ',' | sed 's/,$//')
+        fi
+    fi
+
+    echo "$host_ports|$container_ports"
+}
+
+# Get docker-compose project path
+get_compose_path() {
+    local container_id="$1"
+    local compose_path
+
+    compose_path=$(docker inspect --format='{{index .Config.Labels "com.docker.compose.project.working_dir"}}' "$container_id" 2>/dev/null || echo "")
+
+    if [[ -z "$compose_path" ]]; then
+        echo "N/A"
+    else
+        # Replace /home/$USER with ~ to save space
+        compose_path="${compose_path/#\/home\/$USER\//~\/}"
+        echo "$compose_path"
+    fi
+}
+
+# Truncate string if too long
+truncate_string() {
+    local str="$1"
+    local max_len="$2"
+
+    if [[ ${#str} -gt $max_len ]]; then
+        echo "${str:0:$((max_len - 3))}..."
+    else
+        echo "$str"
+    fi
+}
+
+# Print a single container row
+print_row() {
+    # Ensure column widths are set
+    [[ -z "$COL_NAME" ]] && COL_NAME=16
+    [[ -z "$COL_HOST_PORT" ]] && COL_HOST_PORT=8
+    [[ -z "$COL_CONTAINER_PORT" ]] && COL_CONTAINER_PORT=10
+    [[ -z "$COL_COMPOSE" ]] && COL_COMPOSE=26
+    [[ -z "$COL_STATUS" ]] && COL_STATUS=5
+
+    local container_name="$1"
+    local container_id="$2"
+    local status="$3"
+
+    # Get port mappings
+    local port_info
+    port_info=$(get_port_mappings "$container_id")
+    local host_ports="${port_info%%|*}"
+    local container_ports="${port_info##*|}"
+
+    # Get compose path
+    local compose_path
+    compose_path=$(get_compose_path "$container_id")
+
+    # Truncate values if too long
+    local display_name
+    local display_compose
+    display_name=$(truncate_string "$container_name" "$COL_NAME")
+    display_compose=$(truncate_string "$compose_path" "$COL_COMPOSE")
+
+    # Handle empty ports
+    if [[ -z "$host_ports" ]]; then
+        host_ports="-"
+    fi
+    if [[ -z "$container_ports" ]]; then
+        container_ports="-"
+    fi
+
+    # Print row with colors
+    printf "| ${COLOR_NAME}%-${COL_NAME}s${COLOR_RESET} | ${COLOR_HOST_PORT}%-${COL_HOST_PORT}s${COLOR_RESET} | ${COLOR_CONTAINER_PORT}%-${COL_CONTAINER_PORT}s${COLOR_RESET} | ${COLOR_COMPOSE}%-${COL_COMPOSE}s${COLOR_RESET} | " \
+        "$display_name" "$host_ports" "$container_ports" "$display_compose"
+
+    if [[ "$status" == "running" ]]; then
+        printf "${COLOR_RUNNING}%-${COL_STATUS}s${COLOR_RESET} |\n" "Running"
+    else
+        printf "${COLOR_STOPPED}%-${COL_STATUS}s${COLOR_RESET} |\n" "Stopped"
+    fi
+}
+
+# Main function
+main() {
+    # Check if Docker is available
+    if ! command -v docker >/dev/null 2>&1; then
+        echo "Error: Docker is not installed or not accessible." >&2
+        exit 1
+    fi
+
+    # Check if Docker daemon is running
+    if ! docker info >/dev/null 2>&1; then
+        echo "Error: Docker daemon is not running." >&2
+        exit 1
+    fi
+
+    # Get all containers
+    local containers
+    containers=$(docker ps -a --format '{{.Names}}\t{{.ID}}' 2>/dev/null || true)
+
+    if [[ -z "$containers" ]]; then
+        echo "No containers found."
+        exit 0
+    fi
+
+    # Print header
+    print_header
+
+    # Process each container
+    while IFS=$'\t' read -r container_name container_id; do
+        # Get container status
+        local status
+        status=$(get_container_status "$container_id")
+
+        # Print row
+        print_row "$container_name" "$container_id" "$status"
+    done <<< "$containers"
+
+    # Print footer
+    print_footer
+}
+
+# Run main function
+main "$@"
