@@ -42,6 +42,7 @@ bin/esxi_vm_functions.py
 bin/esxi_vm_functions.pyc
 bin/exa
 bin/fd*
+bin/fiksim
 bin/fzf
 bin/gdu
 bin/gh
@@ -180,6 +181,7 @@ esxcli.logesxcli.log
 .idea
 oh-my-zsh
 *.phar
+plans/
 startup.log
 *.swp
 terraformer-all-linux-amd64

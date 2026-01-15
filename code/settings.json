@@ -1,24 +1,20 @@
 // Place your settings in this file to overwrite the default vscode settings
 {
-// telemetries
+  // telemetries
   "redhat.telemetry.enabled": false,
   "telemetry.enableCrashReporter": false,
   "telemetry.enableTelemetry": false,
-
   "editor.minimap.enabled": true,
   "editor.formatOnPaste": true,
   // Controls how the editor should render the current line highlight, possibilities are 'none', 'gutter', 'line', and 'all'.
   "editor.renderLineHighlight": "all",
   "python.venvPath": "./p-env, ~/.pyenv/versions/, ./venv",
-
   "kogito.bpmn.runOnSave": "extension.kogito.silentlyGenerateSvgBpmn",
   "kogito.dmn.runOnSave": "extension.kogito.silentlyGenerateSvgDmn",
-
-// https://github.com/plantuml/plantuml-stdlib
+  // https://github.com/plantuml/plantuml-stdlib
   "plantuml.includepaths": [
     "/home/slavko/apps/plantuml/plantuml-stdlib/"
   ],
-
   "remote.SSH.defaultExtensions": [
     "alefragnani.numbered-bookmarks",
     "CoenraadS.bracket-pair-colorizer-2",
@@ -33,7 +29,6 @@
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
   ],
-
   "remote.containers.defaultExtensions": [
     "alefragnani.numbered-bookmarks",
     "CoenraadS.bracket-pair-colorizer-2",
@@ -47,20 +42,18 @@
     "shardulm94.trailing-spaces",
     "waderyan.gitblame"
   ],
-
   "workbench.editorAssociations": {
-      "*.copilotmd": "vscode.markdown.preview.editor",
-      "file:/**/*.csv": "jupyter-data-wrangler"
+    "*.copilotmd": "vscode.markdown.preview.editor",
+    "file:/**/*.csv": "jupyter-data-wrangler"
   },
-
   "jsonnet.outputFormat": "json",
   "jsonnet.libPaths": [
-  "./vendor",
-  "${workspaceFolder}/vendor",
-  "${workspaceFolder}/jsonnet-libs",
-  "${workspaceFolder}/vendor/github.com/grafana",
-  "${workspaceFolder}/tf/monitoring-box/grafana/vendor/github.com/grafana",
-  "/home/slavko/apps/jsonnet",
+    "./vendor",
+    "${workspaceFolder}/vendor",
+    "${workspaceFolder}/jsonnet-libs",
+    "${workspaceFolder}/vendor/github.com/grafana",
+    "${workspaceFolder}/tf/monitoring-box/grafana/vendor/github.com/grafana",
+    "/home/slavko/apps/jsonnet",
   ],
   "restructuredtext.sphinxBuildPath": "${workspaceRoot}/p-env/bin/sphinx-build -c ../../docs/conf.py",
   "editor.mouseWheelZoom": true,
@@ -78,7 +71,6 @@
   "chronicler.ffmpeg-binary": "/usr/bin/ffmpeg",
   "plantuml.exportOutDir": "./",
   "remote.extensionKind": {
-
     "pub.name": [
       "ui"
     ]
@@ -89,9 +81,10 @@
   "remote.containers.dotfiles.installCommand": "~/dotfiles/init_simple.sh",
   "remote.containers.dotfiles.targetPath": "~/dotfiles",
   "go.formatTool": "goimports",
-
   "php.suggest.basic": false,
-  "editor.quickSuggestions": { "comments": true },
+  "editor.quickSuggestions": {
+    "comments": true
+  },
   "editor.formatOnSaveTimeout": 5000,
   "intelephense.files.exclude": [
     "**/.git/**",
@@ -116,7 +109,6 @@
   "bracket-pair-colorizer-2.depreciation-notice": false,
   "explorer.confirmDelete": false,
   "bracket-pair-colorizer-2.activeScopeCSS": [
-
     "borderStyle : solid",
     "borderWidth : 1px",
     "borderColor : {color}",
@@ -148,5 +140,5 @@
     ".github/instructions": true,
   },
   "claudeCode.preferredLocation": "panel",
-
+  "python.languageServer": "Default",
 }

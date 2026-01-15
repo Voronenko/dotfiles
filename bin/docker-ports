@@ -7,15 +7,83 @@ fi
 # Don't use set -e to avoid silent failures
 set -o pipefail
 
-# Color definitions
-readonly COLOR_RESET='\033[0m'
-readonly COLOR_HEADER='\033[38;5;39m'      # Cyan
-readonly COLOR_RUNNING='\033[38;5;76m'    # Green
-readonly COLOR_STOPPED='\033[38;5;196m'   # Red
-readonly COLOR_NAME='\033[38;5;226m'      # Yellow
-readonly COLOR_HOST_PORT='\033[38;5;201m' # Magenta
-readonly COLOR_CONTAINER_PORT='\033[38;5;75m' # Blue
-readonly COLOR_COMPOSE='\033[38;5;208m'  # Orange
+# Color mode: 'auto', 'always', 'never'
+COLOR_MODE='auto'
+
+# Parse command-line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --color)
+            COLOR_MODE='always'
+            shift
+            ;;
+        --no-color)
+            COLOR_MODE='never'
+            shift
+            ;;
+        *)
+            # Unknown argument, skip
+            shift
+            ;;
+    esac
+done
+
+# Function to detect if terminal supports colors
+supports_color() {
+    # stdout must be a terminal
+    [[ -t 1 ]] || return 1
+
+    # user explicitly disabled colors
+    [[ -n "${NO_COLOR:-}" ]] && return 1
+
+    # dumb terminal
+    [[ "${TERM:-}" == "dumb" ]] && return 1
+
+    # terminfo capability check
+    local colors
+    colors=$(tput colors 2>/dev/null || echo 0)
+    (( colors >= 8 ))
+}
+
+# Determine if colors should be enabled
+USE_COLORS=false
+
+case "$COLOR_MODE" in
+    always)
+        USE_COLORS=true
+        ;;
+    never)
+        USE_COLORS=false
+        ;;
+    auto)
+        if supports_color; then
+            USE_COLORS=true
+        else
+            USE_COLORS=false
+        fi
+        ;;
+esac
+
+# Color definitions (set based on USE_COLORS)
+if [[ "$USE_COLORS" == true ]]; then
+    readonly COLOR_RESET='\033[0m'
+    readonly COLOR_HEADER='\033[38;5;39m'      # Cyan
+    readonly COLOR_RUNNING='\033[38;5;76m'    # Green
+    readonly COLOR_STOPPED='\033[38;5;196m'   # Red
+    readonly COLOR_NAME='\033[38;5;226m'      # Yellow
+    readonly COLOR_HOST_PORT='\033[38;5;201m' # Magenta
+    readonly COLOR_CONTAINER_PORT='\033[38;5;75m' # Blue
+    readonly COLOR_COMPOSE='\033[38;5;208m'  # Orange
+else
+    readonly COLOR_RESET=''
+    readonly COLOR_HEADER=''
+    readonly COLOR_RUNNING=''
+    readonly COLOR_STOPPED=''
+    readonly COLOR_NAME=''
+    readonly COLOR_HOST_PORT=''
+    readonly COLOR_CONTAINER_PORT=''
+    readonly COLOR_COMPOSE=''
+fi
 
 # Column width variables (will be set by calculate_column_widths)
 COL_NAME=""
