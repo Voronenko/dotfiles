@@ -15,4 +15,7 @@ if [[ -z "$2" ]]; then
     exit 1
 fi
 
-yq r $1 $2 | ansible-vault view -
+expr="$2"
+[[ "$expr" != .* ]] && expr=".$expr"
+
+yq e "$expr" "$1" | ansible-vault view -
