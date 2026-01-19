@@ -82,6 +82,7 @@ tmp=""
 use_shm=false
 
 cleanup() {
+  echo "Loaded from $tmp with shm: $use_shm"
   if [[ -n "$tmp" ]] && [[ "$use_shm" == false ]]; then
     rm -f -- "$tmp"
   fi

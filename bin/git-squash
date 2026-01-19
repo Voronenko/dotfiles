@@ -43,4 +43,20 @@ selected_branch="$(
 [[ -z "${selected_branch}" ]] && exit 0
 
 echo "Squash merging '${selected_branch}' into '${current_branch}'"
-git merge --squash "${selected_branch}"
+
+if git merge --squash "${selected_branch}"; then
+  echo "Squash merge succeeded."
+
+  read -rp "Do you want to delete local branch '${selected_branch}'? [y/N]: " answer
+  case "$answer" in
+    y|Y|yes|YES)
+      git branch -D "${selected_branch}"
+      echo "Branch '${selected_branch}' deleted."
+      ;;
+    *)
+      echo "Branch '${selected_branch}' kept."
+      ;;
+  esac
+else
+  echo "Squash merge failed. Branch not deleted."
+fi

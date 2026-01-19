@@ -89,13 +89,17 @@ shared_except "locked" {
       }
     }
 
-    normal {
-        // uncomment this and adjust key if using copy_on_select=false
-        // bind "Alt c" { Copy; }
-    }
-    locked {
-        bind "Ctrl g" { SwitchToMode "Normal"; }
-    }
+normal {
+    // uncomment this and adjust key if using copy_on_select=false
+    // bind "Alt c" { Copy; }
+    bind "Ctrl q" { SwitchToMode "Locked"; }
+}
+
+locked {
+    bind "Ctrl g" { SwitchToMode "Normal"; }
+    bind "Ctrl q" { Quit; }
+    bind "Esc" { SwitchToMode "Normal"; }
+}
     resize {
         bind "Ctrl n" { SwitchToMode "Normal"; }
         bind "h" "Left" { Resize "Increase Left"; }
@@ -258,7 +262,6 @@ shared_except "locked" {
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
-        bind "Ctrl q" { Quit; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt n" { NewPane; }
         bind "Alt i" { MoveTab "Left"; }
