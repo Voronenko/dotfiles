@@ -1,0 +1,102 @@
+#!/usr/bin/env sh
+
+set -eu
+
+DEFAULT_FILE=".zellij-default-cmd"
+USER_SHELL="${SHELL:-/bin/sh}"
+
+# -------- helpers --------
+
+color() { printf "\033[%sm%s\033[0m" "$1" "$2"; }
+bold()   { color "1" "$1"; }
+green()  { color "32" "$1"; }
+yellow() { color "33" "$1"; }
+cyan()   { color "36" "$1"; }
+red()    { color "31" "$1"; }
+
+# -------- git boundary --------
+
+GIT_ROOT=""
+GIT_PARENT=""
+
+if git rev-parse --show-toplevel >/dev/null 2>&1; then
+  GIT_ROOT="$(git rev-parse --show-toplevel)"
+  GIT_PARENT="$(cd "$GIT_ROOT/.." && pwd)"
+fi
+
+FOUND_FILE=""
+
+if [ -n "$GIT_ROOT" ]; then
+  FOUND_FILE="$(
+    (
+      while :; do
+        if [ -f "$DEFAULT_FILE" ]; then
+          printf "%s/%s\n" "$PWD" "$DEFAULT_FILE"
+          exit 0
+        fi
+        [ "$PWD" = "$GIT_PARENT" ] && exit 1
+        cd ..
+      done
+    ) || true
+  )"
+else
+  (
+    while :; do
+      if [ -f "$DEFAULT_FILE" ]; then
+        printf "%s/%s\n" "$PWD" "$DEFAULT_FILE"
+        exit 0
+      fi
+      [ "$PWD" = "/" ] && exit 1
+      cd ..
+    done
+  ) || true
+fi
+
+# -------- no default command → shell --------
+
+[ -z "${FOUND_FILE:-}" ] && exec "$USER_SHELL"
+
+DEFAULT_CMD="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "$FOUND_FILE")"
+[ -z "$DEFAULT_CMD" ] && exec "$USER_SHELL"
+
+# -------- prompt --------
+
+echo
+bold "$(cyan "Default command detected:")"
+echo "  $(green "$DEFAULT_CMD")"
+echo
+yellow "Run default command? [Y/n]"
+printf "> "
+
+answer=""
+trap '' INT   # Ctrl-C → read fails → treated as NO
+
+if ! read answer; then
+  echo
+  red "Cancelled. Opening shell."
+  exec "$USER_SHELL"
+fi
+
+case "$answer" in
+  y|Y)
+    ;;
+  *)
+    echo
+    red "Cancelled. Opening shell."
+    exec "$USER_SHELL"
+    ;;
+esac
+
+# -------- execute command --------
+
+echo
+bold "$(green "Executing default command…")"
+echo
+
+"$USER_SHELL" -c "$DEFAULT_CMD"
+
+echo
+bold "$(cyan "Command finished. Returning to shell.")"
+echo
+
+exec "$USER_SHELL"
