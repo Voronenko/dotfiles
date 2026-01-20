@@ -1,4 +1,34 @@
 #!/bin/bash
 
-git push --delete origin $1
-git tag -d $1
+# Colors
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+YELLOW="\033[1;33m"
+CYAN="\033[0;36m"
+RESET="\033[0m"
+
+# Get the tag from argument or use fzf to select one
+TAG="$1"
+
+if [ -z "$TAG" ]; then
+    TAG=$(git tag | fzf --prompt="Select a tag to delete:")
+    if [ -z "$TAG" ]; then
+        echo -e "${YELLOW}No tag selected. Exiting.${RESET}"
+        exit 1
+    fi
+fi
+
+# Confirm deletion
+read -p "$(echo -e ${RED}Are you sure you want to delete tag '${TAG}'? This cannot be undone! [y/N] ${RESET})" CONFIRM
+CONFIRM=${CONFIRM,,} # lowercase
+
+if [[ "$CONFIRM" != "y" ]]; then
+    echo -e "${YELLOW}Aborted.${RESET}"
+    exit 0
+fi
+
+# Delete the tag locally and remotely
+git tag -d "$TAG"
+git push --delete origin "$TAG"
+
+echo -e "${GREEN}Tag '${TAG}' deleted locally and on origin.${RESET}"

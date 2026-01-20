@@ -1,0 +1,17 @@
+#!/bin/bash
+# git-cclone: clone into a folder named after the repo
+
+if [ -z "$1" ]; then
+    echo "Usage: git cclone <repo-url> [git clone options...]"
+    echo "clones repo under repo/repo for git worktree code organization"
+    exit 1
+fi
+
+repo_url="$1"
+shift
+repo_name=$(basename "$repo_url" .git)
+
+# Create the folder and clone inside it
+mkdir -p "$repo_name"
+cd $repo_name
+git clone "$repo_url" "$repo_name" "$@"
