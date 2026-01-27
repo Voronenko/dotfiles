@@ -112,7 +112,7 @@ install-console-jsonnet: install-console-yq
 
 # jsonnet bundler
 install-console-jb:
-	curl -sLo ~/dotfiles/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64
+	curl -sLo ~/dotfiles/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.6.0/jb-linux-amd64
 	chmod +x ~/dotfiles/bin/jb
 
 install-mysql-skeema:

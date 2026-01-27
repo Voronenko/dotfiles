@@ -4,11 +4,34 @@ set -Eeuo pipefail
 # git-wt: fast switching between git worktrees
 
 # -------------------------
+# Colors
+# -------------------------
+if [[ -t 1 ]] && [[ $(tput colors 2>/dev/null || echo 0) -ge 8 ]]; then
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[0;33m'
+    BLUE='\033[0;34m'
+    MAGENTA='\033[0;35m'
+    CYAN='\033[0;36m'
+    BOLD='\033[1m'
+    NC='\033[0m' # No Color
+else
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    MAGENTA=''
+    CYAN=''
+    BOLD=''
+    NC=''
+fi
+
+# -------------------------
 # Dependency checks
 # -------------------------
 require_cmd() {
     command -v "$1" >/dev/null 2>&1 || {
-        echo "Error: required command '$1' not found in PATH" >&2
+        echo -e "${RED}Error: required command '$1' not found in PATH${NC}" >&2
         exit 1
     }
 }
@@ -24,7 +47,7 @@ get_main_worktree() {
 }
 
 die() {
-    echo "Error: $*" >&2
+    echo -e "${RED}Error: $*${NC}" >&2
     exit 1
 }
 
@@ -42,7 +65,7 @@ goto_main_worktree() {
 
     [[ -n "$main" ]] || die "Could not determine main worktree"
 
-    echo "Changing to main worktree: $main"
+    echo -e "${GREEN}Changing to main worktree:${NC} ${BOLD}$main${NC}"
     cd "$main"
     exec "$SHELL"
 }
@@ -110,27 +133,239 @@ sync_worktree() {
 
     [[ -d "$secondary" ]] || die "Secondary worktree directory does not exist: $secondary"
 
-    echo "Syncing untracked files from main worktree ($main) to secondary worktree ($secondary)"
-    git ls-files -o -i --exclude-standard -z | rsync -a --files-from=- --from0 "$main" "$secondary"
-    echo "Sync complete"
+    echo -e "${CYAN}Syncing untracked files from main worktree${NC} ${BOLD}($main)${NC} ${CYAN}to secondary worktree${NC} ${BOLD}($secondary)${NC}"
+    git ls-files -o -i --exclude-standard -z | rsync -av --files-from=- --from0 "$main" "$secondary"
+    echo -e "${GREEN}Sync complete${NC}"
+}
+
+detect_worktree_root() {
+    local repo_root
+    local repo_dir_name
+    local parent_dir
+    local parent_dir_name
+
+    repo_root=$(git rev-parse --show-toplevel)
+    repo_dir_name=$(basename "$repo_root")
+    parent_dir=$(dirname "$repo_root")
+    parent_dir_name=$(basename "$parent_dir")
+
+    if [[ "$repo_dir_name" == "$parent_dir_name" ]]; then
+        echo "$parent_dir"
+    else
+        echo -e "${YELLOW}Enter the directory where worktrees should be created (WORKTREE_ROOT):${NC} "
+        read -r worktree_root
+        [[ -d "$worktree_root" ]] || die "Directory does not exist: $worktree_root"
+        echo "$worktree_root"
+    fi
+}
+
+prompt_worktree_name() {
+    local worktree_name
+
+    {
+        echo
+        echo -e "${BOLD}${CYAN}=== Add new worktree ===${NC}"
+        echo -e "${CYAN}Desired worktree name:${NC}"
+        echo
+        echo -ne "${CYAN}> ${NC}"
+    } >&2
+
+    while true; do
+        read -r worktree_name
+
+        if [[ -n "$worktree_name" ]]; then
+            echo "$worktree_name"   # <-- ONLY the value goes to stdout
+            break
+        else
+            echo -e "${RED}Error: worktree name cannot be empty${NC}" >&2
+            echo -ne "${CYAN}> ${NC}" >&2
+        fi
+    done
+}
+
+select_branch_fzf() {
+    require_cmd fzf
+
+    local branch
+    branch=$(git branch -a |
+        sed 's/^[* ] //; s|remotes/origin/||' |
+        grep -v "^HEAD$" |
+        sort -u |
+        fzf --height=40% --prompt="Select branch to checkout: " --exit-0)
+
+    [[ -n "$branch" ]] || die "No branch selected"
+    echo "$branch"
+}
+
+worktree_exists() {
+    local worktree_name="$1"
+    local worktree_path
+    local worktree_root
+
+    worktree_root=$(detect_worktree_root)
+    worktree_path="$worktree_root/$worktree_name"
+
+    git worktree list --porcelain |
+        awk -v path="$worktree_path" '
+            /^worktree / {
+                if ($2 == path) {
+                    exit 0
+                }
+            }
+            END { exit 1 }
+        '
+}
+
+add_usage() {
+    cat <<EOF
+${BOLD}git-wt add${NC} — add a new worktree
+
+${BOLD}Usage:${NC}
+  git-wt add [options] [worktree-name]
+  git-wt add --help
+
+${BOLD}Options:${NC}
+  -f, --force         checkout <branch> even if already checked out in other worktree
+  -b <branch>         create a new branch
+  -B <branch>         create or reset a branch
+  --help              show this help
+
+If worktree-name is provided, it will be used directly.
+If not provided, you will be prompted interactively.
+If branch is not provided via -b or -B, you will be prompted to select one via fzf.
+
+${BOLD}Examples:${NC}
+  git-wt add my-feature           # Create worktree with name 'my-feature'
+  git-wt add -b feature/new-branch my-feature  # Create worktree with new branch
+  git-wt add -f -b feature/new-branch my-feature  # Force create with new branch
+EOF
+}
+
+add_worktree() {
+    local worktree_root
+    local worktree_name=""
+    local worktree_path
+    local branch=""
+    local force_flag=""
+    local branch_flag=""
+    local new_branch_name=""
+    local OPTIND=1
+
+    # Handle long options before getopts
+    for arg in "$@"; do
+        case "$arg" in
+            --force)
+                force_flag="-f"
+                ;;
+            --help)
+                add_usage
+                exit 0
+                ;;
+        esac
+    done
+
+    # Use getopts for short options
+    while getopts ":fb:B:" opt; do
+        case "$opt" in
+            f)
+                force_flag="-f"
+                ;;
+            b)
+                new_branch_name="$OPTARG"
+                branch_flag="-b"
+                ;;
+            B)
+                new_branch_name="$OPTARG"
+                branch_flag="-B"
+                ;;
+            \?)
+                echo "Error: invalid option: -$OPTARG" >&2
+                add_usage
+                exit 1
+                ;;
+            :)
+                echo "Error: option -$OPTARG requires an argument" >&2
+                add_usage
+                exit 1
+                ;;
+        esac
+    done
+
+    # Shift processed options, leaving positional arguments
+    shift $((OPTIND - 1))
+
+    # Get worktree name from remaining arguments
+    if [[ $# -gt 0 ]]; then
+        worktree_name="$1"
+        if [[ $# -gt 1 ]]; then
+            echo "Error: too many arguments" >&2
+            add_usage
+            exit 1
+        fi
+    fi
+
+    # Detect worktree root
+    worktree_root=$(detect_worktree_root)
+
+    # Prompt for worktree name if not provided
+    if [[ -z "$worktree_name" ]]; then
+        worktree_name=$(prompt_worktree_name)
+    fi
+
+    worktree_path="$worktree_root/$worktree_name"
+
+    # Check if worktree already exists
+    if worktree_exists "$worktree_name"; then
+        echo -e "${RED}Error: worktree already exists at:${NC} ${BOLD}$worktree_path${NC}" >&2
+        echo -e "${YELLOW}You can switch to it using:${NC} ${BOLD}git-wt $worktree_name${NC}" >&2
+        exit 1
+    fi
+
+    # Determine branch
+    if [[ -n "$new_branch_name" ]]; then
+        branch="$new_branch_name"
+    else
+        branch=$(select_branch_fzf)
+    fi
+
+    # Build git worktree add command
+    local git_args=()
+    [[ -n "$force_flag" ]] && git_args+=("$force_flag")
+    [[ -n "$branch_flag" ]] && git_args+=("$branch_flag")
+    git_args+=("$worktree_path")
+    git_args+=("$branch")
+
+    echo -e "${GREEN}Creating worktree at:${NC} ${BOLD}$worktree_path${NC}"
+    echo -e "${GREEN}Checking out branch:${NC} ${BOLD}$branch${NC}"
+    [[ -n "$force_flag" ]] && echo -e "${YELLOW}Force flag:${NC} ${BOLD}enabled${NC}"
+    [[ -n "$branch_flag" ]] && echo -e "${YELLOW}Branch flag:${NC} ${BOLD}$branch_flag${NC}"
+
+    echo -e "${CYAN}Running:${NC} ${BOLD}git worktree add ${git_args[*]}${NC}"
+
+    git worktree add "${git_args[@]}" || die "Failed to create worktree"
+
+    echo -e "${GREEN}Changing to new worktree:${NC} ${BOLD}$worktree_path${NC}"
+    cd "$worktree_path"
+    exec "$SHELL"
 }
 
 change_worktree() {
     local dir="$1"
     [[ -n "$dir" ]] || exit 0
 
-    echo "Changing to worktree: $dir"
+    echo -e "${GREEN}Changing to worktree:${NC} ${BOLD}$dir${NC}"
     cd "$dir"
     exec "$SHELL"
 }
 
 usage() {
     cat <<EOF
-git-wt — fast git worktree switching
+${BOLD}git-wt${NC} — fast git worktree switching
 
-Usage:
+${BOLD}Usage:${NC}
   git-wt <name>    Switch to the first worktree matching <name>
   git-wt -i        Interactively select a worktree using fzf
+  git-wt add       Add a new worktree interactively
   git-wt list      List all worktrees
   git-wt sync <path> Sync untracked files from main worktree to secondary worktree
   git-wt -         Go to main worktree
@@ -146,6 +381,10 @@ is_git_repo || die "Not inside a git repository"
 arg="${1:-}"
 
 case "$arg" in
+    add)
+        shift
+        add_worktree "$@"
+        ;;
     list)
         list_worktrees
         ;;

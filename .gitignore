@@ -73,6 +73,7 @@ bin/k0sctl
 bin/k3sup
 bin/k9s
 bin/kapitan
+bin/kbt
 bin/kc
 bin/komiser
 bin/ks
