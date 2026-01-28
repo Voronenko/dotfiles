@@ -360,9 +360,9 @@ change_worktree() {
 
 usage() {
     cat <<EOF
-${BOLD}git-wt${NC} — fast git worktree switching
+git-wt — fast git worktree switching
 
-${BOLD}Usage:${NC}
+Usage:
   git-wt <name>    Switch to the first worktree matching <name>
   git-wt -i        Interactively select a worktree using fzf
   git-wt add       Add a new worktree interactively
