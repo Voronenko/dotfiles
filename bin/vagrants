@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# -----------------------------
+# Colors
+# -----------------------------
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+YELLOW="\033[1;33m"
+BLUE="\033[0;34m"
+CYAN="\033[0;36m"
+GRAY="\033[0;90m"
+RESET="\033[0m"
+
+# -----------------------------
+# Header
+# -----------------------------
+echo -e "${CYAN}Listing Vagrant machine IPs (multi-machine ready):${RESET}"
+echo
+
+# -----------------------------
+# Temp cache for ID → name mapping
+# -----------------------------
+TMP_CACHE="$(mktemp)"
+trap 'rm -f "$TMP_CACHE"' EXIT
+
+# -----------------------------
+# Collect running machines + dirs
+# -----------------------------
+vagrant global-status --prune --machine-readable 2>/dev/null |
+awk -F, '
+  $3=="machine-id"   {id=$4}
+  $3=="machine-home" {dir[id]=$4}
+  $3=="state" && $4=="running" {running[id]=1}
+  END {
+    for (i in running)
+      print i "," dir[i]
+  }
+' |
+while IFS=, read -r id dir; do
+  [[ -z "$dir" ]] && continue
+  cd "$dir" 2>/dev/null || continue
+
+  # -----------------------------
+  # Try to get machine name
+  # -----------------------------
+  name="$(vagrant global-status --prune 2>/dev/null |
+          awk -v ID="$id" '$1==ID {print $2}')"
+
+  # Fallback to cache
+  if [[ -z "$name" ]]; then
+    name="$(grep "^$id=" "$TMP_CACHE" 2>/dev/null | cut -d= -f2)"
+  else
+    # Update cache
+    sed -i "/^$id=/d" "$TMP_CACHE" 2>/dev/null || true
+    echo "$id=$name" >> "$TMP_CACHE"
+  fi
+
+  [[ -z "$name" ]] && name="(no name)"
+
+  # -----------------------------
+  # Extract host-only IP
+  # -----------------------------
+  ip="$(VAGRANT_LOG=error vagrant ssh -c 'hostname -I' 2>/dev/null |
+        grep -oE '192\.168\.56\.[0-9]+' | tr '\n' ' ')"
+
+  [[ -z "$ip" ]] && ip="(no host-only IP)"
+
+  # -----------------------------
+  # Pretty Output
+  # -----------------------------
+  echo -e "${GREEN}${name}${RESET} ${GRAY}(${id})${RESET}: ${YELLOW}${ip}${RESET}"
+done

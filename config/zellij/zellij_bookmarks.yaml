@@ -65,10 +65,10 @@ bookmarks:
   desc: "Installs lnav on remote"
   cmds:
   - "read -p \"Do you want to install lnav? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
-  - "curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.12.4/lnav-0.12.4-linux-musl-x86_64.zip"
+  - "curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.13.2/lnav-0.13.2-linux-musl-x86_64.zip"
   - "cd /tmp && unzip lnav.zip"
-  - "chmod +x /tmp/lnav-0.12.4/lnav"
-  - "sudo  mv /tmp/lnav-0.12.4/lnav /usr/bin/lnav"
+  - "chmod +x /tmp/lnav-0.13.2/lnav"
+  - "sudo  mv /tmp/lnav-0.13.2/lnav /usr/bin/lnav"
   - "lnav -i extra"
   exec: true
   labels:
