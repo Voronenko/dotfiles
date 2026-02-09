@@ -20,7 +20,7 @@ swiss-ops: install-hashicorp-terraform install-terraform-docs install-hashicorp-
 swiss-k8s: install-k8s-stern install-k8s-helm3-fixed install-k8s-deepmind-kapitan install-k8s-kubectl-ubuntu install-k8s-kubefwd install-k8s-kubeval install-k8s-kubeval install-k8s-popeye install-k8s-polaris install-k8s-kubespy install-k8s-vmware-octant install-k8s-kubectl-krew
 	@echo k8s tools ok
 
-swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
+swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro
 	@echo zsh extras ok
 
 swiss-aws:  install-aws-key-importer install-aws-myaws
@@ -1142,7 +1142,7 @@ install-esxi-govc:
 	curl -L https://github.com/vmware/govmomi/releases/download/v0.21.0/govc_linux_amd64.gz | gunzip > ~/dotfiles/bin/govc
 # /ESXI
 
-fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts fonts-source-code-pro-patched
+fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts
 	mkdir -p ~/.fonts
 
 fonts-init:
