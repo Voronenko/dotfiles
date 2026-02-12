@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -e
+
+case "$1" in
+kvm)
+    echo "Switching to KVM..."
+
+    sudo systemctl stop vboxdrv.service 2>/dev/null || true
+    sudo modprobe -r vboxnetflt vboxnetadp vboxdrv 2>/dev/null || true
+
+    sudo modprobe kvm
+    sudo modprobe kvm_intel 2>/dev/null || sudo modprobe kvm_amd
+
+    echo "KVM ready"
+    ls -l /dev/kvm
+    ;;
+
+vbox)
+    echo "Switching to VirtualBox..."
+
+    sudo modprobe -r kvm_intel 2>/dev/null || true
+    sudo modprobe -r kvm_amd 2>/dev/null || true
+    sudo modprobe -r kvm 2>/dev/null || true
+
+    sudo modprobe vboxdrv
+    sudo modprobe vboxnetflt
+    sudo modprobe vboxnetadp
+
+    echo "VirtualBox ready"
+    ;;
+
+*)
+    echo "Usage: hypervisor [kvm|vbox]"
+    exit 1
+esac
