@@ -42,11 +42,53 @@ prompt_anaconda() {
 ################################################################
 # AWS Profile
 prompt_aws() {
-  local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
+  local profile="${AWS_SESSION_PROFILE:-${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}}"
+  [[ -z "$profile" ]] && return
 
-  if [[ -n "$aws_profile" ]]; then
-    "$1_prompt_segment" "$0" "$2" red white "$aws_profile" 'AWS_ICON'
+  local mode icon color text
+
+  if [[ -n "$AWS_VAULT" ]]; then
+    mode="vault"
+    icon="🔐"
+    color=magenta
+  elif [[ -n "$AWS_CONTAINER_CREDENTIALS_FULL_URI" ]]; then
+    mode="vault-md"
+    icon="🧠"
+    color=magenta
+  elif [[ -n "$AWS_SESSION_TOKEN" ]]; then
+    mode="sts"
+    icon="⏱"
+    color=yellow
+  elif [[ -n "$AWS_ACCESS_KEY_ID" ]]; then
+    mode="static"
+    icon="🔑"
+    color=blue
+  else
+    mode="profile"
+    icon="☁️"
+    color=cyan
   fi
+
+  text="${profile}:${mode}"
+
+  # expiration timer
+  if [[ -n "$AWS_CREDENTIAL_EXPIRATION" ]]; then
+    local now exp mins
+    now=$(date +%s)
+    exp=$(date -d "$AWS_CREDENTIAL_EXPIRATION" +%s 2>/dev/null)
+    if [[ -n "$exp" ]]; then
+      mins=$(( (exp-now)/60 ))
+      if (( mins > 0 )); then
+        text="${text}(${mins}m)"
+      else
+        text="${text}(expired)"
+        color=red
+      fi
+    fi
+  fi
+
+  # Use Powerline9k segment helper
+  $1_prompt_segment "$0" "$2" $color white "$text" "$icon"
 }
 
 ################################################################

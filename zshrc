@@ -714,45 +714,82 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     aws configure list-profiles
   }
 
-  set-aws-profile() {
-    local aws_profile=$1
+  is_aws_vault_managed() {
+      local profile="$1"
+      local creds
 
-    if [[ ! -z "$aws_profile" ]]; then
-      region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A2 | grep -B 2 "")
-      AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
-      echo "Detected region AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
-      set -x
-      unset AWS_ACCESS_KEY_ID
-      unset AWS_SECRET_ACCESS_KEY
-      unset AWS_ASSUME_ROLE_NAME
-      unset AWS_ASSUME_ACCOUNT_ID
-      export AWS_PROFILE=${aws_profile}
-      export AWS_REGION=${AWS_DEFAULT_REGION}
-      export AWS_PROFILE=${aws_profile}
-#     supress default less pager
-      export AWS_PAGER=""
-      set +x
-      PROFILE_ASSUMED_ROLE=$(echo $region_data  | grep role_arn | sed 's:.*/::')
-      if [[ ! -z "$PROFILE_ASSUMED_ROLE" ]]; then
-        export AWS_ASSUME_ROLE_NAME=${PROFILE_ASSUMED_ROLE}
-        export AWS_ASSUME_ACCOUNT_ID=$(echo $region_data | awk -F'arn:aws:iam::|:role' '{print $2}' | grep -v '^ *$')
-      fi
-      export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
-      export TF_VAR_AWS_REGION=${AWS_DEFAULT_REGION}
-      export AWS_SDK_LOAD_CONFIG=1
-      export TF_AWS_SDK_LOAD_CONFIG=1
-      export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
-    else
-      local declare selected_profile=($(aws-profiles | fzf))
-      if [[ -n "$selected_profile" ]]; then
-       if zle; then
-            zle accept-line
-        else
-            print -z "set-aws-profile $selected_profile"
-        fi
-      fi
-    fi
+      creds=$(aws-vault list 2>/dev/null \
+          | awk -v prof="$profile" '$1==prof {print $2}')
+
+      [[ "$creds" == "$profile" ]]
   }
+
+
+  set-aws-profile() {
+    local aws_profile="$1"
+
+    # Pick profile if not provided
+    if [[ -z "$aws_profile" ]]; then
+        aws_profile=$(aws-profiles | fzf)
+        [[ -z "$aws_profile" ]] && return
+    fi
+
+    # Detect region
+    local region
+    region=$(aws configure get region --profile "$aws_profile" 2>/dev/null)
+    [[ -z "$region" ]] && region="eu-central-1"
+
+    # Canonical session identity
+    export AWS_SESSION_PROFILE="$aws_profile"
+
+    # Always unset old AWS_PROFILE / AWS_DEFAULT_PROFILE
+    unset AWS_PROFILE
+    unset AWS_DEFAULT_PROFILE
+
+    if is_aws_vault_managed "$aws_profile"; then
+        echo "Activating aws-vault session for profile '$aws_profile'"
+
+        # Inject aws-vault credentials into current shell
+        # shellcheck disable=SC2046
+        eval $(aws-vault exec "$aws_profile" -- env | grep -E '^(AWS|TF_VAR)_')
+
+    else
+        # Classic profile
+        echo "Using classic AWS profile: $aws_profile"
+        unset AWS_ACCESS_KEY_ID
+        unset AWS_SECRET_ACCESS_KEY
+        unset AWS_SESSION_TOKEN
+
+        export AWS_PROFILE="$aws_profile"
+        export AWS_DEFAULT_PROFILE="$aws_profile"
+    fi
+
+    # Common env
+    export AWS_REGION="$region"
+    export AWS_DEFAULT_REGION="$region"
+    export TF_VAR_AWS_PROFILE="$aws_profile"
+    export TF_VAR_AWS_REGION="$region"
+    export AWS_SDK_LOAD_CONFIG=1
+    export TF_AWS_SDK_LOAD_CONFIG=1
+    export AWS_PAGER=""
+
+    # Optional account alias
+    local alias
+    alias=$(aws iam list-account-aliases --query "AccountAliases[0]" --output text 2>/dev/null)
+    [[ "$alias" != "None" ]] && export AWS_ORG_NAME="$alias"
+}
+
+
+# Helper function for detection
+is_aws_vault_managed() {
+    local profile="$1"
+    local creds
+    creds=$(aws-vault list 2>/dev/null \
+        | awk -v prof="$profile" '$1==prof {print $2}')
+    [[ "$creds" == "$profile" ]]
+}
+
+
 
   set-aws-keys() {
     local aws_profile=$1
