@@ -39,7 +39,13 @@ function ec2sshconfig() {
       source $HOME/dotfiles/bin/source-aws-sts-role-keys.sh
     fi
 
-    if [ -z "${aws_profile_name}" ]; then
+    local aws_profile_arg=""
+    if [ -n "${AWS_ACCESS_KEY_ID}" ]; then
+        # Use existing keys in environment, ignore profile
+        :
+    elif [ -n "${aws_profile_name}" ]; then
+        aws_profile_arg="--profile=${aws_profile_name}"
+    else
         echo "AWS profile name is required. Please call this function with aws profile name or set AWS_DEFAULT_REGION in evironment variables."
         return
     fi
@@ -50,7 +56,7 @@ function ec2sshconfig() {
     fi
 
     echo "Fetching ec2 instances..."
-    local selected_instance=$(aws --profile=${aws_profile_name} --region=${aws_region} ec2 describe-instances \
+    local selected_instance=$(aws ${aws_profile_arg} --region=${aws_region} ec2 describe-instances \
         --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' \
         --output text | sort -k5 | fzf)
 
@@ -73,7 +79,7 @@ function ec2sshconfig() {
 
         # Query security groups for the selected instance
         echo "Fetching security groups for instance..."
-        local security_groups=$(aws --profile=${aws_profile_name} --region=${aws_region} ec2 describe-instances \
+        local security_groups=$(aws ${aws_profile_arg} --region=${aws_region} ec2 describe-instances \
             --instance-ids ${instance_id} \
             --query 'Reservations[*].Instances[*].SecurityGroups[*].[GroupId,GroupName]' \
             --output text)
@@ -98,7 +104,7 @@ Host ${host_name}
     SetEnv TERM=xterm
     User ubuntu
     Hostname ${instance_id}
-    ProxyCommand sh -c "aws ssm start-session --profile ${aws_profile_name} --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+    ProxyCommand sh -c "aws ssm start-session ${aws_profile_arg} --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
 #    LocalForward 5432 127.0.0.1:5432
     ForwardAgent yes
 EOF
