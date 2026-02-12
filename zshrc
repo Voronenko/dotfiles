@@ -749,9 +749,24 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     if is_aws_vault_managed "$aws_profile"; then
         echo "Activating aws-vault session for profile '$aws_profile'"
 
-        # Inject aws-vault credentials into current shell
-        # shellcheck disable=SC2046
-        eval $(aws-vault exec "$aws_profile" -- env | grep -E '^(AWS|TF_VAR)_')
+        # Debugging: Capture output first to handle potential failures or password prompts matching issues
+        local vault_output
+        # We use a temporary file to capture stderr/stdout mixed or just separate if needed.
+        # Check if we can run it simply first.
+        vault_output=$(aws-vault exec "$aws_profile" -- env | grep -E '^(AWS|TF_VAR)_')
+        local ret=$?
+
+        if [[ $ret -ne 0 || -z "$vault_output" ]]; then
+            echo "Error: aws-vault failed to produce credentials. Exit code: $ret" >&2
+            echo "Output was empty or command failed." >&2
+            echo "Try running manual debug command to check for password prompts:" >&2
+            echo "  aws-vault exec $aws_profile -- env" >&2
+        else
+            # Use 'set -a' to automatically export all variables defined in the eval block
+            set -a
+            eval "$vault_output"
+            set +a
+        fi
 
     else
         # Classic profile
@@ -780,14 +795,7 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
 }
 
 
-# Helper function for detection
-is_aws_vault_managed() {
-    local profile="$1"
-    local creds
-    creds=$(aws-vault list 2>/dev/null \
-        | awk -v prof="$profile" '$1==prof {print $2}')
-    [[ "$creds" == "$profile" ]]
-}
+
 
 
 
