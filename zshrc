@@ -915,6 +915,7 @@ if [ -f $HOME/.terraform-version ]; then
 fi
 
 # fco - checkout git branch/tag
+unalias gco 2>/dev/null
 gco() {
   local tags branches target
   branches=$(
