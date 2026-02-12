@@ -114,16 +114,50 @@ prompt_dot_toggl() {
 ########################
 # AWS Profile
 prompt_aws() {
-  local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
-  local aws_region="${AWS_REGION:-$AWS_DEFAULT_REGION}"
-#  local aws_orgname="${AWS_ORG_NAME}"
-#  if [ "${aws_orgname}" = "None" ]; then
-#    aws_orgname = ""
-#  fi
+  local profile="${AWS_SESSION_PROFILE:-${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}}"
+  [[ -z "$profile" ]] && return
 
-  if [[ -n "${aws_profile}${aws_region}" ]]; then
-    "$1_prompt_segment" "$0" "$2" red white "$aws_profile $aws_region" 'AWS_ICON'
+  local region="${AWS_REGION:-$AWS_DEFAULT_REGION}"
+
+  local mode icon color text
+
+  if [[ -n "$AWS_VAULT" ]]; then
+    mode="🔐" #vault
+    color=magenta
+  elif [[ -n "$AWS_CONTAINER_CREDENTIALS_FULL_URI" ]]; then
+    mode="🧠" # vault-md
+    color=magenta
+  elif [[ -n "$AWS_SESSION_TOKEN" ]]; then
+    mode="⏱" #sts
+    color=magenta
+  elif [[ -n "$AWS_ACCESS_KEY_ID" ]]; then
+    mode="🔑" #static
+    color=magenta
+  else
+    mode="☁️" #profile
+    color=magenta
   fi
+
+  text="${mode} ${profile}"
+  [[ -n "$region" ]] && text="${text} ${region}"
+
+  # expiration timer
+  if [[ -n "$AWS_CREDENTIAL_EXPIRATION" ]]; then
+    local now exp mins
+    now=$(date +%s)
+    exp=$(date -d "$AWS_CREDENTIAL_EXPIRATION" +%s 2>/dev/null)
+    if [[ -n "$exp" ]]; then
+      mins=$(( (exp-now)/60 ))
+      if (( mins > 0 )); then
+        text="${text} (${mins}m)"
+      else
+        text="${text} (expired)"
+        color=red
+      fi
+    fi
+  fi
+
+  "$1_prompt_segment" "$0" "$2" $color white "$text" 'AWS_ICON'
 }
 
 prompt_mybr() {
