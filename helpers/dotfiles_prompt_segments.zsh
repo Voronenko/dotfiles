@@ -113,7 +113,7 @@ prompt_dot_toggl() {
 
 ########################
 # AWS Profile
-prompt_aws() {
+prompt_dot_aws() {
   local profile="${AWS_SESSION_PROFILE:-${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}}"
   [[ -z "$profile" ]] && return
 
