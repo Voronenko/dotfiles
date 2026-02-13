@@ -75,3 +75,88 @@ load_env_from_pass() {
 
 
 #export_alias somealias "some shell command"
+
+# Set AWS profile for direnv
+# Usage: set_aws_profile <profile_name>
+# Requirements:
+#   - Profile name must be provided as argument (no interactive selection)
+#   - If AWS_SESSION_PROFILE is already set, does nothing (won't override)
+set_aws_profile() {
+    local aws_profile="$1"
+
+    # Require profile name as argument
+    if [[ -z "$aws_profile" ]]; then
+        echo "Error: set_aws_profile requires a profile name as argument" >&2
+        return 1
+    fi
+
+    # Check if another profile is already activated
+    if [[ -n "$AWS_SESSION_PROFILE" ]]; then
+        echo "Warning: AWS profile '$AWS_SESSION_PROFILE' is already active. Not overriding." >&2
+        return 0
+    fi
+
+    # Detect region
+    local region
+    region=$(aws configure get region --profile "$aws_profile" 2>/dev/null)
+    [[ -z "$region" ]] && region="eu-central-1"
+
+    # Canonical session identity
+    export AWS_SESSION_PROFILE="$aws_profile"
+
+    # Always unset old AWS_PROFILE / AWS_DEFAULT_PROFILE
+    unset AWS_PROFILE
+    unset AWS_DEFAULT_PROFILE
+
+    # Check if profile is aws-vault managed
+    local creds
+    creds=$(aws-vault list 2>/dev/null \
+        | awk -v prof="$aws_profile" '$1==prof {print $2}')
+
+    if [[ "$creds" == "$aws_profile" ]]; then
+        echo "Activating aws-vault session for profile '$aws_profile'"
+
+        # Capture output from aws-vault
+        local vault_output
+        vault_output=$(aws-vault exec "$aws_profile" -- env | grep -E '^(AWS|TF_VAR)_')
+        local ret=$?
+
+        if [[ $ret -ne 0 || -z "$vault_output" ]]; then
+            echo "Error: aws-vault failed to produce credentials. Exit code: $ret" >&2
+            echo "Output was empty or command failed." >&2
+            echo "Try running manual debug command to check for password prompts:" >&2
+            echo "  aws-vault exec $aws_profile -- env" >&2
+            return 1
+        else
+            # Use 'set -a' to automatically export all variables defined in the eval block
+            set -a
+            eval "$vault_output"
+            set +a
+        fi
+
+    else
+        # Classic profile
+        echo "Using classic AWS profile: $aws_profile"
+        unset AWS_ACCESS_KEY_ID
+        unset AWS_SECRET_ACCESS_KEY
+        unset AWS_SESSION_TOKEN
+
+        export AWS_PROFILE="$aws_profile"
+        export AWS_DEFAULT_PROFILE="$aws_profile"
+    fi
+
+    # Common env
+    export AWS_REGION="$region"
+    export AWS_DEFAULT_REGION="$region"
+    export TF_VAR_AWS_PROFILE="$aws_profile"
+    export TF_VAR_AWS_REGION="$region"
+    export AWS_SDK_LOAD_CONFIG=1
+    export TF_AWS_SDK_LOAD_CONFIG=1
+    export AWS_PAGER=""
+
+    # Optional account alias
+    local alias
+    alias=$(aws iam list-account-aliases --query "AccountAliases[0]" --output text 2>/dev/null)
+    [[ "$alias" != "None" ]] && export AWS_ORG_NAME="$alias"
+}
+}
