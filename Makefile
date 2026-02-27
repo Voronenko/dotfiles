@@ -1270,6 +1270,12 @@ sec-expoit-suggest:
 	curl -sLo ~/dotfiles/bin/linux-exploit-suggester.sh https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh
 	chmod +x ~/dotfiles/bin/linux-exploit-suggester.sh
 
+sec-steampipe:
+	curl -sLo /tmp/steampipe.deb https://github.com/turbot/steampipe/releases/download/v2.3.5/steampipe_linux_amd64.deb
+	sudo dpkg -i /tmp/steampipe.deb
+	steampipe plugin install hub.steampipe.io/plugins/turbot/aws@latest
+
+
 # /SECURITY
 
 
@@ -1672,6 +1678,13 @@ install-desktop-ai-goose:
 	echo "Installing goose desktop (requires sudo)..."; \
 	sudo dpkg -i "$$DEB_FILE"; \
 	echo "goose desktop installed successfully"
+
+install-cypher-shell:
+	curl -L -o /tmp/cypher-shell.deb https://dist.neo4j.org/cypher-shell/cypher-shell_5.26.20_all.deb
+	sudo dpkg -i /tmp/cypher-shell.deb || sudo apt-get -f install -y
+	rm -f /tmp/cypher-shell.deb
+	echo "The /usr/]bin/cypher-shell bash script should call org.neo4j.shell.Main instead of org.neo4j.shell.startup.CypherShellBoot."
+	echo "These classes are in cypher-shell-5.26.20.jar. The directory containing the jar should be in the CLASSPATH variable in [/usr/]bin/cypher-shell."
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

@@ -2,6 +2,8 @@
 bin/act
 bin/ag
 bin/amtool
+bin/apktool
+bin/apktool.jar
 bin/awless
 bin/aws-iam-authenticator*
 bin/aws-key-importer

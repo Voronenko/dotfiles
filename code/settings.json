@@ -141,4 +141,5 @@
   },
   "claudeCode.preferredLocation": "panel",
   "python.languageServer": "Default",
+  "kilo-code.debug": false,
 }

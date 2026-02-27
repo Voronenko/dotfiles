@@ -159,4 +159,3 @@ set_aws_profile() {
     alias=$(aws iam list-account-aliases --query "AccountAliases[0]" --output text 2>/dev/null)
     [[ "$alias" != "None" ]] && export AWS_ORG_NAME="$alias"
 }
-}
