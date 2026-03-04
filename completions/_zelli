@@ -1,0 +1,19 @@
+#compdef zelli
+
+_zelli() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments '1: :->session' '2: :->action'
+
+    case $state in
+    session)
+      _arguments "1: :($(find ~/.config/zellij/layouts/*.kdl -printf '%f\n' 2>/dev/null | sed 's/\.kdl$//'))"
+      ;;
+    action)
+      _arguments "2: :((clear))"
+      ;;
+    esac
+}
+
+_zelli "$@"

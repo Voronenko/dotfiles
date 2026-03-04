@@ -1,3 +1,9 @@
 #!/bin/bash
 
-lsof -t -i :${1:-5000} | xargs kill -9
+PIDS=$(lsof -t -i :${1:-5000})
+if [ -n "$PIDS" ]; then
+    echo "$PIDS" | xargs kill -9
+    echo "Killed process(es) on port ${1:-5000}: $PIDS"
+else
+    echo "No process found on port ${1:-5000}"
+fi
