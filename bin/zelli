@@ -56,5 +56,5 @@ if [ "$SESSION_EXISTS" -gt 0 ]; then
     gnome-terminal -- zellij attach "$SESSION_NAME" &
 else
     echo "Creating new session: $SESSION_NAME"
-    gnome-terminal -- zellij -n "$SESSION_NAME" -s "$SESSION_NAME" &
+    gnome-terminal -- zellij -n "$SESSION_NAME" -s "$SESSION_NAME" --layout "$SESSION_NAME" &
 fi
