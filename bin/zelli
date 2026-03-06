@@ -47,7 +47,6 @@ if [ "$ACTION" = "clear" ]; then
     else
         echo "Session '$SESSION_NAME' does not exist, nothing to clear."
     fi
-    exit 0
 fi
 
 # Normal mode: join if exists, otherwise create new
@@ -56,5 +55,6 @@ if [ "$SESSION_EXISTS" -gt 0 ]; then
     gnome-terminal -- zellij attach "$SESSION_NAME" &
 else
     echo "Creating new session: $SESSION_NAME"
-    gnome-terminal -- zellij -n "$SESSION_NAME" -s "$SESSION_NAME" --layout "$SESSION_NAME" &
+    echo "zellij --new-session-with-layout ${SESSION_NAME} -s ${SESSION_NAME}"
+    gnome-terminal -- zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}" &
 fi
