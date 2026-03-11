@@ -1,28 +1,60 @@
 #!/bin/bash
 
 # zelli - Zellij session manager with layout validation
-# Usage: zelli <session_name> [clear]
-#   <session_name> - Name of the session (must match a layout in ~/.config/zellij/layouts/)
-#   clear           - Optional: kill the session if it exists
+# Usage: zelli [--no-terminal] <session_name> [clear]
+#   --no-terminal   Skip terminal wrapper (for SSH sessions)
+#   <session_name>  Name of session (must match a layout in ~/.config/zellij/layouts/)
+#   clear           Optional: kill the session if it exists
 
 set -e
 
-# Check if at least one argument is provided
-if [ $# -lt 1 ]; then
-    echo "Usage: zelli <session_name> [clear]"
-    echo ""
-    echo "Arguments:"
-    echo "  <session_name>  Name of the session (must have a corresponding .kdl layout)"
-    echo "  clear           Optional: kill the session if it exists"
-    echo ""
-    echo "Examples:"
-    echo "  zelli myproject       # Join or create session 'myproject'"
-    echo "  zelli myproject clear # Kill session 'myproject' if it exists"
+# Parse arguments
+USE_TERMINAL=true
+SESSION_NAME=""
+ACTION=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --no-terminal)
+            USE_TERMINAL=false
+            shift
+            ;;
+        --help|-h)
+            echo "Usage: zelli [--no-terminal] <session_name> [clear]"
+            echo ""
+            echo "Arguments:"
+            echo "  --no-terminal   Skip terminal wrapper (for SSH sessions)"
+            echo "  <session_name>  Name of session (must have a corresponding .kdl layout)"
+            echo "  clear           Optional: kill the session if it exists"
+            echo ""
+            echo "Examples:"
+            echo "  zelli myproject             # Join or create session 'myproject' in new terminal"
+            echo "  zelli --no-terminal myproject  # Join or create session 'myproject' directly"
+            echo "  zelli myproject clear       # Kill session 'myproject' if it exists"
+            exit 0
+            ;;
+        *)
+            if [ -z "$SESSION_NAME" ]; then
+                SESSION_NAME="$1"
+            elif [ -z "$ACTION" ]; then
+                ACTION="$1"
+            else
+                echo "Error: Unexpected argument: $1"
+                echo "Use --help for usage information"
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Check if session name is provided
+if [ -z "$SESSION_NAME" ]; then
+    echo "Error: Session name is required"
+    echo "Use --help for usage information"
     exit 1
 fi
 
-SESSION_NAME="$1"
-ACTION="${2:-}"
 LAYOUT_PATH="$HOME/.config/zellij/layouts/${SESSION_NAME}.kdl"
 
 # Validate that the layout exists
@@ -47,14 +79,22 @@ if [ "$ACTION" = "clear" ]; then
     else
         echo "Session '$SESSION_NAME' does not exist, nothing to clear."
     fi
+    exit 0
 fi
 
 # Normal mode: join if exists, otherwise create new
 if [ "$SESSION_EXISTS" -gt 0 ]; then
     echo "Joining existing session: $SESSION_NAME"
-    gnome-terminal -- zellij attach "$SESSION_NAME" &
+    if [ "$USE_TERMINAL" = "true" ]; then
+        gnome-terminal -- zellij attach "$SESSION_NAME" &
+    else
+        zellij attach "$SESSION_NAME"
+    fi
 else
     echo "Creating new session: $SESSION_NAME"
-    echo "zellij --new-session-with-layout ${SESSION_NAME} -s ${SESSION_NAME}"
-    gnome-terminal -- zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}" &
+    if [ "$USE_TERMINAL" = "true" ]; then
+        gnome-terminal -- zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}" &
+    else
+        zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}"
+    fi
 fi

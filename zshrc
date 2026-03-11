@@ -150,59 +150,23 @@ unsetopt BG_NICE
 else
 
 function onproject() {
+  # Detect SSH session
+  local session_type="local"
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    SESSION_TYPE="remote/ssh"
+    session_type="remote/ssh"
   else
     case $(ps -o comm= -p "$PPID") in
-      sshd|*/sshd) SESSION_TYPE="remote/ssh";;
+      sshd|*/sshd) session_type="remote/ssh";;
     esac
   fi
 
-  SESSION_NAME="$1"
-  ACTION="${2:-}"
-  LAYOUT_PATH="$HOME/.config/zellij/layouts/${SESSION_NAME}.kdl"
-
-  # Validate that the layout exists (from zelli)
-  if [ ! -f "$LAYOUT_PATH" ]; then
-    echo "Error: Layout file not found: $LAYOUT_PATH"
-    echo ""
-    echo "Available layouts:"
-    find "$HOME/.config/zellij/layouts" -name "*.kdl" -type f 2>/dev/null | sed 's|.*/||; s|\.kdl$||' | sort | while read -r layout; do
-      echo "  - $layout"
-    done
-    return 1
-  fi
-
-  # Check if the session exists (from zelli)
-  SESSION_EXISTS=$(zellij list-sessions --no-formatting 2>/dev/null | grep -c "^${SESSION_NAME} " || true)
-
-  # Handle clear action (from zelli)
-  if [ "$ACTION" = "clear" ]; then
-    if [ "$SESSION_EXISTS" -gt 0 ]; then
-      echo "Killing session: $SESSION_NAME"
-      zellij delete-session "$SESSION_NAME" --force
-    else
-      echo "Session '$SESSION_NAME' does not exist, nothing to clear."
-    fi
-  fi
-
-  # Normal mode: join if exists, otherwise create new (from zelli)
-  if [ "$SESSION_TYPE" = "remote/ssh" ]; then
-    if [ "$SESSION_EXISTS" -gt 0 ]; then
-      echo "Joining existing session: $SESSION_NAME"
-      zellij attach "$SESSION_NAME"
-    else
-      echo "Creating new session: $SESSION_NAME"
-      zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}"
-    fi
+  # Delegate to zelli with appropriate flag
+  if [ "$session_type" = "remote/ssh" ]; then
+    # SSH mode: no terminal wrapper
+    zelli --no-terminal "$@"
   else
-    if [ "$SESSION_EXISTS" -gt 0 ]; then
-      echo "Joining existing session: $SESSION_NAME"
-      gnome-terminal -- zellij attach "$SESSION_NAME" &
-    else
-      echo "Creating new session: $SESSION_NAME"
-      gnome-terminal -- zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}" &
-    fi
+    # Local mode: use default terminal
+    zelli "$@"
   fi
 }
 

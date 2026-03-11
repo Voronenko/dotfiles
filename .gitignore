@@ -111,6 +111,7 @@ bin/openapi-generator-cli.jar
 bin/opencode
 bin/packer
 bin/phpmd
+bin/plantuml-full
 bin/plantuml.jar
 bin/plumber
 bin/pluralith
@@ -133,6 +134,7 @@ bin/skaffold
 bin/skeema
 bin/slack-term
 bin/snyk
+bin/*.so
 bin/sourcetrail
 bin/ssm
 bin/step1.xml
