@@ -79,6 +79,8 @@ if [ "$ACTION" = "clear" ]; then
     else
         echo "Session '$SESSION_NAME' does not exist, nothing to clear."
     fi
+    # Recalculate SESSION_EXISTS after deletion
+    SESSION_EXISTS=$(zellij list-sessions --no-formatting 2>/dev/null | grep -c "^${SESSION_NAME} " || true)
 fi
 
 # Normal mode: join if exists, otherwise create new
