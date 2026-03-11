@@ -79,7 +79,6 @@ if [ "$ACTION" = "clear" ]; then
     else
         echo "Session '$SESSION_NAME' does not exist, nothing to clear."
     fi
-    exit 0
 fi
 
 # Normal mode: join if exists, otherwise create new
