@@ -306,6 +306,18 @@ install-console-jiq:
 	curl -sLo ~/dotfiles/bin/jiq https://github.com/fiatjaf/jiq/releases/download/0.7.1/jiq_linux_amd64
 	chmod +x ~/dotfiles/bin/jiq
 
+install-console-ast-grep:
+	@LATEST_VERSION=$$(curl -s "https://api.github.com/repos/ast-grep/ast-grep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading ast-grep version $$LATEST_VERSION..."; \
+	mkdir -p /tmp/ast-grep; \
+	curl -sLo /tmp/ast-grep/ast-grep.zip "https://github.com/ast-grep/ast-grep/releases/download/$$LATEST_VERSION/app-x86_64-unknown-linux-gnu.zip"; \
+	cd /tmp/ast-grep && unzip ast-grep.zip; \
+	mv /tmp/ast-grep/ast-grep ~/dotfiles/bin/; \
+	mv /tmp/ast-grep/sg ~/dotfiles/bin/; \
+	chmod +x ~/dotfiles/bin/ast-grep ~/dotfiles/bin/sg; \
+	rm -rf /tmp/ast-grep; \
+	echo "ast-grep installed successfully"
+
 install-console-jq:
 	curl -sLo ~/dotfiles/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 	chmod +x ~/dotfiles/bin/jq
@@ -1685,6 +1697,13 @@ install-cypher-shell:
 	rm -f /tmp/cypher-shell.deb
 	echo "The /usr/]bin/cypher-shell bash script should call org.neo4j.shell.Main instead of org.neo4j.shell.startup.CypherShellBoot."
 	echo "These classes are in cypher-shell-5.26.20.jar. The directory containing the jar should be in the CLASSPATH variable in [/usr/]bin/cypher-shell."
+
+install-md-generation:
+	sudo apt install pandoc
+	pipx-install pandoc-mermaid-filter
+	pipx-install  pandoc-plantuml-filter
+	npm install -g @mermaid-js/mermaid-cli
+	sudo apt install texlive-xetex
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
