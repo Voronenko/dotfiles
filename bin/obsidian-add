@@ -1,0 +1,238 @@
+#!/bin/sh
+
+set -eu
+
+readonly EX_USAGE=64
+readonly EX_NOINPUT=66
+
+# URL encode a string (simple version for most common characters)
+url_encode() {
+    printf '%s' "$1" | sed 's/ /%20/g; s/\//%2F/g; s/?/%3F/g; s/#/%23/g; s/&/%26/g'
+}
+
+# Print text in yellow color
+print_yellow() {
+    printf '%s%s%s\n' "$(tput bold 2>/dev/null)$(tput setaf 3 2>/dev/null)" "$1" "$(tput sgr0 2>/dev/null)"
+}
+
+# Format tags for the properties block
+# Returns two lines: "tags: [tag1, tag2, tag3]" and "tags:: tag1, tag2, tag3"
+# Also deduplicates tags while preserving order
+format_tags_lines() {
+    _tags="$1"
+    # Deduplicate tags while preserving order using awk
+    _unique_tags=$(printf '%s' "$_tags" | awk -F',' '
+        {
+            for (i = 1; i <= NF; i++) {
+                tag = $i
+                gsub(/^[ \t]+|[ \t]+$/, "", tag)  # trim whitespace
+                if (!(tag in seen)) {
+                    seen[tag] = 1
+                    tags[n++] = tag
+                }
+            }
+        }
+        END {
+            for (i = 0; i < n; i++) {
+                printf "%s%s", (i > 0 ? "," : ""), tags[i]
+            }
+        }
+    ')
+    # Obsidian format: tags: [tag1, tag2, tag3]
+    _obsidian_tags="tags: [$_unique_tags]"
+    # Logseq format: tags:: tag1, tag2, tag3
+    _logseq_tags="tags:: $_unique_tags"
+    printf '%s\n%s' "$_obsidian_tags" "$_logseq_tags"
+}
+
+# Add/update tags in a markdown file
+# Args: file_path, tags (comma-separated)
+update_tags_in_file() {
+    _file="$1"
+    _tags="$2"
+    _tags_lines=$(format_tags_lines "$_tags")
+
+    _temp_file=$(mktemp)
+    awk -v tags_lines="$_tags_lines" '
+        BEGIN {
+            split(tags_lines, lines, "\n")
+            obsidian_line = lines[1]
+            logseq_line = lines[2]
+            in_props = 0
+            props_ended = 0
+            tags_added = 0
+            has_props = 0
+        }
+        /^---$/ {
+            if (!in_props) {
+                in_props = 1
+                has_props = 1
+            } else {
+                in_props = 0
+                props_ended = 1
+                print obsidian_line
+                print logseq_line
+                tags_added = 1
+                print
+                next
+            }
+            print
+            next
+        }
+        /^tags: \[/ && in_props {
+            # Replace existing Obsidian tags line
+            print obsidian_line
+            tags_added = 1
+            next
+        }
+        /^tags::/ && in_props {
+            # Replace existing Logseq tags line
+            print logseq_line
+            next
+        }
+        { print }
+        END {
+            # If no properties block existed, add one at the beginning
+            if (!has_props && !tags_added) {
+                print "---"
+                print obsidian_line
+                print logseq_line
+                print "---"
+                print ""
+                # Print original content by re-reading the file
+            }
+        }
+    ' "$_file" > "$_temp_file"
+
+    # If no properties block existed, we need to prepend content
+    if ! grep -q '^---' "$_file"; then
+        {
+            echo "---"
+            echo "$_tags_lines"
+            echo "---"
+            echo ""
+            cat "$_file"
+        } > "$_temp_file"
+    fi
+
+    mv "$_temp_file" "$_file"
+}
+
+usage() {
+    cat <<EOF
+usage: $(basename "$0") -v <vault> [-p <path>] [-t <tags>] <markdown-file>
+
+Add a new entry to Obsidian from an existing markdown file.
+
+Arguments:
+  <markdown-file>    Path to existing markdown file to read content from
+
+Options:
+  -v <vault>         Target vault name (required)
+  -p <path>          Folder path within vault (e.g. "journal/2025" or "ideas")
+  -t <tags>          Comma-separated tags to add (e.g. "tag1,tag2,tag3")
+  -n <name>          Note name (defaults to source filename)
+  -o                 Open note after creating in Obsidian
+  -h, --help         Show this help
+
+Examples:
+  $(basename "$0") -v MyVault -t "work,ideas" ./note.md
+  $(basename "$0") -v Personal -p "journal/2025" -t "daily" ./entry.md -o
+  $(basename "$0") -v KB -p "articles" -n "Research" ./draft.md
+EOF
+}
+
+vault=""
+folder_path=""
+tags=""
+note_name=""
+open_flag=""
+markdown_file=""
+
+while getopts "v:p:t:n:oh" opt; do
+    case $opt in
+        v) vault="$OPTARG" ;;
+        p) folder_path="$OPTARG" ;;
+        t) tags="$OPTARG" ;;
+        n) note_name="$OPTARG" ;;
+        o) open_flag="open" ;;
+        h) usage; exit 0 ;;
+        *) usage; exit $EX_USAGE ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+if [ -z "${vault:-}" ]; then
+    echo "error: vault is required (-v option)" >&2
+    usage
+    exit $EX_USAGE
+fi
+
+if [ $# -ne 1 ]; then
+    usage
+    exit $EX_USAGE
+fi
+
+markdown_file="$1"
+
+if [ ! -f "$markdown_file" ]; then
+    echo "$(basename "$0"): $markdown_file: No such file" >&2
+    exit $EX_NOINPUT
+fi
+
+# Determine note name
+if [ -z "$note_name" ]; then
+    note_name=$(basename "$markdown_file" .md)
+fi
+
+# Get vault path
+vault_path=$(obsidian vault="$vault" vault info=path)
+
+# Build target file path
+target_path="$vault_path"
+if [ -n "$folder_path" ]; then
+    target_path="$target_path/$folder_path"
+fi
+
+# Ensure target directory exists
+mkdir -p "$target_path"
+
+# Full path to the new note
+note_file="$target_path/$note_name.md"
+
+# Copy file contents to the target location
+cp "$markdown_file" "$note_file"
+
+# Build file reference for Obsidian CLI (relative to vault root)
+file_ref="$note_name"
+if [ -n "$folder_path" ]; then
+    file_ref="$folder_path/$note_name"
+fi
+
+# If tags are provided, add them to the file
+if [ -n "$tags" ]; then
+    update_tags_in_file "$note_file" "$tags"
+fi
+
+# Open in Obsidian if requested
+if [ -n "$open_flag" ]; then
+    obsidian vault="$vault" open file="$file_ref"
+fi
+
+# Build and print URIs
+vault_encoded=$(url_encode "$vault")
+file_ref_encoded=$(url_encode "$file_ref")
+note_name_encoded=$(url_encode "$note_name")
+
+# Obsidian URI: obsidian://open?vault=<vault>&file=<file_path>
+obsidian_uri="obsidian://open?vault=$vault_encoded&file=$file_ref_encoded"
+
+# Logseq URI: logseq://graph/<graph_name>?page=<page_name>
+# Uses vault name as graph name, note name (without path) as page
+logseq_uri="logseq://graph/$vault_encoded?page=$note_name_encoded"
+
+# Print URIs in yellow
+echo
+print_yellow "xdg-open \"$obsidian_uri\""
+print_yellow "xdg-open \"$logseq_uri\""

@@ -1,6 +1,7 @@
 .aider*
 bin/act
 bin/ag
+bin/ai-files-cli*
 bin/amtool
 bin/apktool
 bin/apktool.jar
