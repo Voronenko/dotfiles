@@ -51,64 +51,62 @@ update_tags_in_file() {
     _file="$1"
     _tags="$2"
     _tags_lines=$(format_tags_lines "$_tags")
+    _obsidian_line=$(printf '%s' "$_tags_lines" | head -1)
+    _logseq_line=$(printf '%s' "$_tags_lines" | tail -1)
+
+    # Check if file has a valid YAML frontmatter properties block
+    # (must start with --- on line 1 and have closing --- within first 10 lines)
+    _has_props=0
+    _first_line=$(head -1 "$_file")
+    if [ "$_first_line" = "---" ]; then
+        _second_dash=$(head -10 "$_file" | tail -9 | grep -n '^---' | head -1 | cut -d: -f1)
+        if [ -n "$_second_dash" ]; then
+            _has_props=1
+        fi
+    fi
 
     _temp_file=$(mktemp)
-    awk -v tags_lines="$_tags_lines" '
-        BEGIN {
-            split(tags_lines, lines, "\n")
-            obsidian_line = lines[1]
-            logseq_line = lines[2]
-            in_props = 0
-            props_ended = 0
-            tags_added = 0
-            has_props = 0
-        }
-        /^---$/ {
-            if (!in_props) {
-                in_props = 1
-                has_props = 1
-            } else {
+
+    if [ "$_has_props" -eq 1 ]; then
+        # File has properties block - update it
+        awk -v obsidian="$_obsidian_line" -v logseq="$_logseq_line" '
+            BEGIN {
                 in_props = 0
-                props_ended = 1
-                print obsidian_line
-                print logseq_line
-                tags_added = 1
+                obsidian_added = 0
+                logseq_added = 0
+            }
+            /^---$/ {
+                if (!in_props) {
+                    in_props = 1
+                } else {
+                    in_props = 0
+                    # Add tags if not already added
+                    if (!obsidian_added) print obsidian
+                    if (!logseq_added) print logseq
+                    print
+                    next
+                }
                 print
                 next
             }
-            print
-            next
-        }
-        /^tags: \[/ && in_props {
-            # Replace existing Obsidian tags line
-            print obsidian_line
-            tags_added = 1
-            next
-        }
-        /^tags::/ && in_props {
-            # Replace existing Logseq tags line
-            print logseq_line
-            next
-        }
-        { print }
-        END {
-            # If no properties block existed, add one at the beginning
-            if (!has_props && !tags_added) {
-                print "---"
-                print obsidian_line
-                print logseq_line
-                print "---"
-                print ""
-                # Print original content by re-reading the file
+            /^tags: \[/ && in_props && !obsidian_added {
+                print obsidian
+                obsidian_added = 1
+                next
             }
-        }
-    ' "$_file" > "$_temp_file"
-
-    # If no properties block existed, we need to prepend content
-    if ! grep -q '^---' "$_file"; then
+            /^tags::/ && in_props && !logseq_added {
+                print logseq
+                logseq_added = 1
+                next
+            }
+            { print }
+        ' "$_file" > "$_temp_file"
+    else
+        # File has no properties block - add one
         {
             echo "---"
-            echo "$_tags_lines"
+            echo "$_obsidian_line"
+            echo "$_logseq_line"
             echo "---"
             echo ""
             cat "$_file"
@@ -236,3 +234,7 @@ logseq_uri="logseq://graph/$vault_encoded?page=$note_name_encoded"
 echo
 print_yellow "xdg-open \"$obsidian_uri\""
 print_yellow "xdg-open \"$logseq_uri\""
+
+# Print file path
+echo
+echo "File: $note_file"
