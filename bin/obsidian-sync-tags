@@ -40,8 +40,8 @@ format_tags_lines() {
     ')
     # Obsidian format: tags: [tag1, tag2, tag3]
     _obsidian_tags="tags: [$_unique_tags]"
-    # Logseq format: tags:: tag1, tag2, tag3
-    _logseq_tags="tags:: $_unique_tags"
+    # Logseq format: Tags: tag1, tag2, tag3
+    _logseq_tags="Tags: $_unique_tags"
     printf '%s\n%s' "$_obsidian_tags" "$_logseq_tags"
 }
 
@@ -126,9 +126,9 @@ existing_tags=$(
             print
             exit
         }
-        /^tags::/ && in_props {
-            # Extract tags from tags:: tag1, tag2, tag3 format
-            gsub(/^tags:: /, "")
+        /^Tags:/ && in_props {
+            # Extract tags from Tags: tag1, tag2, tag3 format
+            gsub(/^Tags: /, "")
             gsub(/, /, ",")
             print
             exit
@@ -188,7 +188,7 @@ awk -v obsidian="$tags_obsidian" -v logseq="$tags_logseq" '
         obsidian_added = 1
         next
     }
-    /^tags::/ && in_props && !logseq_added {
+    /^Tags:/ && in_props && !logseq_added {
         # Replace existing Logseq tags line
         print logseq
         logseq_added = 1

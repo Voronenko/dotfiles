@@ -40,8 +40,8 @@ format_tags_lines() {
     ')
     # Obsidian format: tags: [tag1, tag2, tag3]
     _obsidian_tags="tags: [$_unique_tags]"
-    # Logseq format: tags:: tag1, tag2, tag3
-    _logseq_tags="tags:: $_unique_tags"
+    # Logseq format: Tags: tag1, tag2, tag3
+    _logseq_tags="Tags: $_unique_tags"
     printf '%s\n%s' "$_obsidian_tags" "$_logseq_tags"
 }
 
@@ -94,7 +94,7 @@ update_tags_in_file() {
                 obsidian_added = 1
                 next
             }
-            /^tags::/ && in_props && !logseq_added {
+            /^Tags:/ && in_props && !logseq_added {
                 print logseq
                 logseq_added = 1
                 next
