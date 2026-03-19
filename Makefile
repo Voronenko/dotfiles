@@ -1655,6 +1655,8 @@ install-kitty-terminal:
 	cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
 	sed -i "s|Icon=kitty|Icon=$(shell readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
 	sed -i "s|Exec=kitty|Exec=$(shell readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+upgrade-kitty-terminal:
+	./config/kitty/get_kitty_terminal.sh
 
 # AI
 
