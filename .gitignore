@@ -15,6 +15,7 @@ bin/bfg.jar
 bin/bito
 bin/bito-*
 bin/borg
+bin/bun
 bin/bw
 bin/cadvisor
 bin/chartmuseum

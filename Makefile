@@ -1707,6 +1707,16 @@ install-md-generation:
 	npm install -g @mermaid-js/mermaid-cli
 	sudo apt install texlive-xetex
 
+install-node-bun:
+	@set -e; \
+	tmp_dir=$$(mktemp -d); \
+	curl -L https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip -o $$tmp_dir/bun.zip; \
+	unzip -q $$tmp_dir/bun.zip -d $$tmp_dir; \
+	mv $$tmp_dir/bun-linux-x64/bun $$HOME/dotfiles/bin/bun; \
+	chmod +x $$HOME/dotfiles/bin/bun; \
+	rm -rf $$tmp_dir; \
+	echo "bun installed to $$HOME/dotfiles/bin/bun"
+
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive
 
