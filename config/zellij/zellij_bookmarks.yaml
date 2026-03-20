@@ -40,10 +40,10 @@ bookmarks:
 - name: "c-kitty-console"
   desc: ""
   cmds:
-  - "kitty >/dev/null 2>&1 &"
+    - "kitty-popup"
   exec: true
   labels:
-  - "utils"
+    - "utils"
 
 - name: "c-terminator-console"
   desc: ""

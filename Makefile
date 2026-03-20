@@ -1716,6 +1716,7 @@ install-node-bun:
 	chmod +x $$HOME/dotfiles/bin/bun; \
 	rm -rf $$tmp_dir; \
 	echo "bun installed to $$HOME/dotfiles/bin/bun"
+	ln -s $(HOME)/dotfiles/bin/bun $(HOME)/dotfiles/bin/bunx
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

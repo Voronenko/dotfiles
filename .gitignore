@@ -16,6 +16,7 @@ bin/bito
 bin/bito-*
 bin/borg
 bin/bun
+bin/bunx
 bin/bw
 bin/cadvisor
 bin/chartmuseum
