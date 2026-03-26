@@ -1,3 +1,21 @@
+function _load_aws_profile() {
+    local aws_profile=$1
+    if [[ -z "${aws_profile}" ]]; then
+        aws_profile=${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}
+    fi
+    echo $aws_profile
+    return
+}
+
+function _load_aws_region() {
+    local aws_region=$1
+    if [[ -z "${aws_region}" ]]; then
+        aws_region=${AWS_REGION:-$AWS_DEFAULT_REGION}
+    fi
+    echo $aws_region
+    return
+}
+
 function cwg() {
     local aws_profile_name=""
     local aws_region=""
@@ -31,8 +49,24 @@ function cwg() {
     aws_profile_name=$(_load_aws_profile "$aws_profile_name")
     aws_region=$(_load_aws_region "$aws_region")
 
-    if [[ -z "$aws_profile_name" || -z "$aws_region" ]]; then
-        echo "AWS profile and region are required"
+    # Determine if we should use profile flag
+    local aws_profile_arg=""
+    if [[ -n "${AWS_ACCESS_KEY_ID}" ]]; then
+        # Use existing keys in environment, ignore profile
+        aws_profile_arg=""
+    else
+        # Use profile if available
+        if [[ -n "$aws_profile_name" ]]; then
+            aws_profile_arg="--profile=$aws_profile_name"
+        else
+            echo "AWS profile name is required. Please provide --profile flag or set AWS_ACCESS_KEY_ID in environment variables."
+            return 1
+        fi
+    fi
+
+    # Region is optional - will use AWS_REGION or AWS_DEFAULT_REGION from environment
+    if [[ -z "$aws_region" ]]; then
+        echo "AWS region is required. Please provide --region flag or set AWS_REGION in environment variables."
         return 1
     fi
 
@@ -46,7 +80,7 @@ function cwg() {
       group=\"{}\"
       group=\"\${group#\\'}\"
       group=\"\${group%\\'}\"
-      result=\$(aws --profile=\"$aws_profile_name\" --region=\"$aws_region\" \
+      result=\$(aws ${aws_profile_arg} --region=\"$aws_region\" \
         logs filter-log-events \
         --log-group-name \"\$group\" \
         --start-time \"\$start_ms\" \
@@ -62,7 +96,7 @@ function cwg() {
     "
 
     local selected_group=$(
-      aws --profile="$aws_profile_name" --region="$aws_region" \
+      aws ${aws_profile_arg} --region="$aws_region" \
         logs describe-log-groups \
         --query 'logGroups[].logGroupName' \
         --output text | tr '\t' '\n' |
