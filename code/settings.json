@@ -142,4 +142,8 @@
   "claudeCode.preferredLocation": "panel",
   "python.languageServer": "Default",
   "kilo-code.debug": false,
+  "terminal.integrated.commandsToSkipShell": [
+    "kilo-code.new.agentManagerOpen",
+    "kilo-code.new.agentManager.showTerminal"
+  ],
 }
