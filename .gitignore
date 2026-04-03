@@ -1,5 +1,6 @@
 .aider*
 bin/act
+bin/actionlint
 bin/ag
 bin/ai-files-cli*
 bin/amtool

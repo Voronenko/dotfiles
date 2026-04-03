@@ -203,6 +203,14 @@ install-github-actions-act:
 	cp /tmp/act ~/dotfiles/bin/act
 	chmod +x ~/dotfiles/bin/act
 
+install-github-actionlint:
+	mkdir -p /tmp/actionlint
+	curl -sLo /tmp/actionlint/actionlint.tar.gz https://github.com/rhysd/actionlint/releases/download/$(shell curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | grep tag_name | cut -d '"' -f 4)/actionlint_$(shell curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
+	tar -xzf /tmp/actionlint/actionlint.tar.gz -C /tmp/actionlint actionlint
+	mv /tmp/actionlint/actionlint ~/dotfiles/bin/actionlint
+	chmod +x ~/dotfiles/bin/actionlint
+	rm -rf /tmp/actionlint
+
 global-console-logreader-lnav:
 	sudo cp $(PWD)/bin/lnav /usr/local/bin
 
