@@ -94,10 +94,6 @@ as a part of helper for docker https://github.com/MartinRamm/fzf-docker.git
 `ec2ssm` - lookup instances to connect using aws ssm
 
 
-# Folder specific SSH identity for git
-
-see ssh-ident conf file for examples
-
 # Docker helpers
 
 ```sh
