@@ -76,6 +76,7 @@ bin/jfrog
 bin/jiq
 bin/jsonnet
 bin/jsonnetfmt
+bin/just
 bin/k0sctl
 bin/k3sup
 bin/k9s

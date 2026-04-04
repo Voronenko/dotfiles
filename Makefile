@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 swiss-knife: swiss-fzf swiss-console swiss-zsh fonts-swiss-knife
 	@echo OK
 
@@ -367,6 +368,7 @@ install-console-httpie-xh:
 	ln -s ~/dotfiles/bin/xh ~/dotfiles/bin/xhs
 	cp /tmp/xh-v0.10.0-x86_64-unknown-linux-musl/completions/* ~/dotfiles/completions
 
+# tasks running tool
 install-console-task:
 	@echo "Fetching latest version for go-task..."
 	@VERSION=$$(curl -s https://api.github.com/repos/go-task/task/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d 'v' -f 2); \
@@ -381,6 +383,20 @@ install-console-task:
 	mv /tmp/task/completion/zsh/_task ~/dotfiles/completions/_task; \
 	mv /tmp/task/completion/bash/task.bash ~/dotfiles/completions/task.bash; \
 	echo "Task installation complete."
+
+#another tasks running tool
+# https://just.systems/man/en/introduction.html
+install-console-just:
+	@set -euo pipefail; \
+	TAG=$$(curl -s https://api.github.com/repos/casey/just/releases/latest | grep tag_name | cut -d '"' -f4); \
+	URL=https://github.com/casey/just/releases/download/$$TAG/just-$$TAG-x86_64-unknown-linux-musl.tar.gz; \
+	TMP=$$(mktemp -d); \
+	echo "Installing just $$TAG (amd64)"; \
+	curl -sSfL $$URL | tar -xz -C $$TMP; \
+	cp $$TMP/just $$HOME/dotfiles/bin/just; \
+	chmod +x $$HOME/dotfiles/bin/just; \
+	rm -rf $$TMP; \
+	echo "Done: $$HOME/dotfiles/bin/just"
 
 # /CONSOLE TOOLS
 
