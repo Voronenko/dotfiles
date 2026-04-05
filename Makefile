@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 swiss-knife: swiss-fzf swiss-console swiss-zsh fonts-swiss-knife
 	@echo OK
 
@@ -20,7 +21,7 @@ swiss-ops: install-hashicorp-terraform install-terraform-docs install-hashicorp-
 swiss-k8s: install-k8s-stern install-k8s-helm3-fixed install-k8s-deepmind-kapitan install-k8s-kubectl-ubuntu install-k8s-kubefwd install-k8s-kubeval install-k8s-kubeval install-k8s-popeye install-k8s-polaris install-k8s-kubespy install-k8s-vmware-octant install-k8s-kubectl-krew
 	@echo k8s tools ok
 
-swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro fonts-source-code-pro-patched
+swiss-zsh: zsh-alias-tips fonts-awesome-terminal-fonts fonts-source-code-pro
 	@echo zsh extras ok
 
 swiss-aws:  install-aws-key-importer install-aws-myaws
@@ -112,7 +113,7 @@ install-console-jsonnet: install-console-yq
 
 # jsonnet bundler
 install-console-jb:
-	curl -sLo ~/dotfiles/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64
+	curl -sLo ~/dotfiles/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.6.0/jb-linux-amd64
 	chmod +x ~/dotfiles/bin/jb
 
 install-mysql-skeema:
@@ -202,6 +203,14 @@ install-github-actions-act:
 	tar -xvzf /tmp/act.tar.gz -C /tmp
 	cp /tmp/act ~/dotfiles/bin/act
 	chmod +x ~/dotfiles/bin/act
+
+install-github-actionlint:
+	mkdir -p /tmp/actionlint
+	curl -sLo /tmp/actionlint/actionlint.tar.gz https://github.com/rhysd/actionlint/releases/download/$(shell curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | grep tag_name | cut -d '"' -f 4)/actionlint_$(shell curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
+	tar -xzf /tmp/actionlint/actionlint.tar.gz -C /tmp/actionlint actionlint
+	mv /tmp/actionlint/actionlint ~/dotfiles/bin/actionlint
+	chmod +x ~/dotfiles/bin/actionlint
+	rm -rf /tmp/actionlint
 
 global-console-logreader-lnav:
 	sudo cp $(PWD)/bin/lnav /usr/local/bin
@@ -306,6 +315,18 @@ install-console-jiq:
 	curl -sLo ~/dotfiles/bin/jiq https://github.com/fiatjaf/jiq/releases/download/0.7.1/jiq_linux_amd64
 	chmod +x ~/dotfiles/bin/jiq
 
+install-console-ast-grep:
+	@LATEST_VERSION=$$(curl -s "https://api.github.com/repos/ast-grep/ast-grep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading ast-grep version $$LATEST_VERSION..."; \
+	mkdir -p /tmp/ast-grep; \
+	curl -sLo /tmp/ast-grep/ast-grep.zip "https://github.com/ast-grep/ast-grep/releases/download/$$LATEST_VERSION/app-x86_64-unknown-linux-gnu.zip"; \
+	cd /tmp/ast-grep && unzip ast-grep.zip; \
+	mv /tmp/ast-grep/ast-grep ~/dotfiles/bin/; \
+	mv /tmp/ast-grep/sg ~/dotfiles/bin/; \
+	chmod +x ~/dotfiles/bin/ast-grep ~/dotfiles/bin/sg; \
+	rm -rf /tmp/ast-grep; \
+	echo "ast-grep installed successfully"
+
 install-console-jq:
 	curl -sLo ~/dotfiles/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 	chmod +x ~/dotfiles/bin/jq
@@ -347,6 +368,7 @@ install-console-httpie-xh:
 	ln -s ~/dotfiles/bin/xh ~/dotfiles/bin/xhs
 	cp /tmp/xh-v0.10.0-x86_64-unknown-linux-musl/completions/* ~/dotfiles/completions
 
+# tasks running tool
 install-console-task:
 	@echo "Fetching latest version for go-task..."
 	@VERSION=$$(curl -s https://api.github.com/repos/go-task/task/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d 'v' -f 2); \
@@ -361,6 +383,20 @@ install-console-task:
 	mv /tmp/task/completion/zsh/_task ~/dotfiles/completions/_task; \
 	mv /tmp/task/completion/bash/task.bash ~/dotfiles/completions/task.bash; \
 	echo "Task installation complete."
+
+#another tasks running tool
+# https://just.systems/man/en/introduction.html
+install-console-just:
+	@set -euo pipefail; \
+	TAG=$$(curl -s https://api.github.com/repos/casey/just/releases/latest | grep tag_name | cut -d '"' -f4); \
+	URL=https://github.com/casey/just/releases/download/$$TAG/just-$$TAG-x86_64-unknown-linux-musl.tar.gz; \
+	TMP=$$(mktemp -d); \
+	echo "Installing just $$TAG (amd64)"; \
+	curl -sSfL $$URL | tar -xz -C $$TMP; \
+	cp $$TMP/just $$HOME/dotfiles/bin/just; \
+	chmod +x $$HOME/dotfiles/bin/just; \
+	rm -rf $$TMP; \
+	echo "Done: $$HOME/dotfiles/bin/just"
 
 # /CONSOLE TOOLS
 
@@ -1142,7 +1178,7 @@ install-esxi-govc:
 	curl -L https://github.com/vmware/govmomi/releases/download/v0.21.0/govc_linux_amd64.gz | gunzip > ~/dotfiles/bin/govc
 # /ESXI
 
-fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts fonts-source-code-pro-patched
+fonts-swiss-knife: fonts-init fonts-awesome-terminal-fonts
 	mkdir -p ~/.fonts
 
 fonts-init:
@@ -1269,6 +1305,12 @@ sec-nmap-sandmap:
 sec-expoit-suggest:
 	curl -sLo ~/dotfiles/bin/linux-exploit-suggester.sh https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh
 	chmod +x ~/dotfiles/bin/linux-exploit-suggester.sh
+
+sec-steampipe:
+	curl -sLo /tmp/steampipe.deb https://github.com/turbot/steampipe/releases/download/v2.3.5/steampipe_linux_amd64.deb
+	sudo dpkg -i /tmp/steampipe.deb
+	steampipe plugin install hub.steampipe.io/plugins/turbot/aws@latest
+
 
 # /SECURITY
 
@@ -1637,6 +1679,8 @@ install-kitty-terminal:
 	cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
 	sed -i "s|Icon=kitty|Icon=$(shell readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
 	sed -i "s|Exec=kitty|Exec=$(shell readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+upgrade-kitty-terminal:
+	./config/kitty/get_kitty_terminal.sh
 
 # AI
 
@@ -1672,6 +1716,31 @@ install-desktop-ai-goose:
 	echo "Installing goose desktop (requires sudo)..."; \
 	sudo dpkg -i "$$DEB_FILE"; \
 	echo "goose desktop installed successfully"
+
+install-cypher-shell:
+	curl -L -o /tmp/cypher-shell.deb https://dist.neo4j.org/cypher-shell/cypher-shell_5.26.20_all.deb
+	sudo dpkg -i /tmp/cypher-shell.deb || sudo apt-get -f install -y
+	rm -f /tmp/cypher-shell.deb
+	echo "The /usr/]bin/cypher-shell bash script should call org.neo4j.shell.Main instead of org.neo4j.shell.startup.CypherShellBoot."
+	echo "These classes are in cypher-shell-5.26.20.jar. The directory containing the jar should be in the CLASSPATH variable in [/usr/]bin/cypher-shell."
+
+install-md-generation:
+	sudo apt install pandoc
+	pipx-install pandoc-mermaid-filter
+	pipx-install  pandoc-plantuml-filter
+	npm install -g @mermaid-js/mermaid-cli
+	sudo apt install texlive-xetex
+
+install-node-bun:
+	@set -e; \
+	tmp_dir=$$(mktemp -d); \
+	curl -L https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip -o $$tmp_dir/bun.zip; \
+	unzip -q $$tmp_dir/bun.zip -d $$tmp_dir; \
+	mv $$tmp_dir/bun-linux-x64/bun $$HOME/dotfiles/bin/bun; \
+	chmod +x $$HOME/dotfiles/bin/bun; \
+	rm -rf $$tmp_dir; \
+	echo "bun installed to $$HOME/dotfiles/bin/bun"
+	ln -s $(HOME)/dotfiles/bin/bun $(HOME)/dotfiles/bin/bunx
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

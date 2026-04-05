@@ -1,0 +1,242 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROGRAM="validate_https"
+VERSION="2.0"
+
+# ---------- input ----------
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 <hostname[:port]>"
+  echo "Example: $0 www.softasap.com"
+  exit 1
+fi
+
+HOSTPORT="$1"
+HOST="${HOSTPORT%%:*}"
+PORT="${HOSTPORT##*:}"
+[[ "$HOST" == "$PORT" ]] && PORT=443
+
+OPENSSL=$(command -v openssl) || {
+  echo "ERROR: openssl not found"
+  exit 1
+}
+
+TMP=$(mktemp)
+trap 'rm -f "$TMP"' EXIT
+
+# ---------- banner ----------
+printf "\n%-30s : %s\n" "Program" "$PROGRAM"
+printf "%-30s : %s\n" "Version" "$VERSION"
+printf "%-30s : %s\n" "Target" "$HOST:$PORT"
+printf "%-30s : %s\n\n" "Timestamp (UTC)" "$(date -u)"
+
+# ---------- fetch cert ----------
+echo | "$OPENSSL" s_client \
+  -connect "$HOST:$PORT" \
+  -servername "$HOST" \
+  -verify_return_error \
+  -showcerts \
+  -tlsextdebug \
+  >"$TMP" 2>&1 || true
+
+# ---------- verify result ----------
+VERIFY_LINE=$(grep "Verify return code" "$TMP" || true)
+
+if [[ -z "$VERIFY_LINE" ]]; then
+  echo "❌ TLS handshake failed"
+  sed 's/^/  /' "$TMP"
+  exit 2
+fi
+
+printf "%-30s : %s\n" "Verification" "$VERIFY_LINE"
+
+if ! echo "$VERIFY_LINE" | grep -q "0 (ok)"; then
+  echo "❌ Certificate verification FAILED"
+  exit 3
+fi
+
+echo "✅ Certificate verification PASSED"
+
+# ---------- extract leaf cert ----------
+CERT=$(
+  awk '
+    /BEGIN CERTIFICATE/{flag=1}
+    flag{print}
+    /END CERTIFICATE/{exit}
+  ' "$TMP"
+)
+
+# ---------- parse certificate ----------
+SUBJECT=$(echo "$CERT" | "$OPENSSL" x509 -noout -subject | sed 's/^subject= //')
+ISSUER=$(echo "$CERT" | "$OPENSSL" x509 -noout -issuer | sed 's/^issuer= //')
+SERIAL=$(echo "$CERT" | "$OPENSSL" x509 -noout -serial | cut -d= -f2)
+NOTBEFORE=$(echo "$CERT" | "$OPENSSL" x509 -noout -startdate | cut -d= -f2)
+NOTAFTER=$(echo "$CERT" | "$OPENSSL" x509 -noout -enddate | cut -d= -f2)
+
+# Extract Common Name
+COMMONNAME=$(echo "$CERT" | "$OPENSSL" x509 -noout -subject | sed 's/.*CN = \([^,]*\).*/\1/' | head -1 || echo "Unknown")
+
+# Extract certificate details
+VERSION=$(echo "$CERT" | "$OPENSSL" x509 -noout -text | grep -m1 "Version:" | awk '{print $2}' || echo "Unknown")
+SIGALG=$(echo "$CERT" | "$OPENSSL" x509 -noout -text | grep -m1 "Signature Algorithm:" | cut -d: -f2- | xargs || echo "Unknown")
+
+# Extract public key algorithm and key size
+PUBKEYALG=$(echo "$CERT" | "$OPENSSL" x509 -noout -text | grep -m1 "Public Key Algorithm:" | cut -d: -f2- | xargs || echo "Unknown")
+
+# Extract key size (handles both RSA and ECDSA)
+KEYSIZE=$(echo "$CERT" | "$OPENSSL" x509 -noout -text | grep -Eo "([0-9]+) bit" | head -1 || echo "Unknown")
+
+# Extract certificate fingerprints
+FINGERPRINT_SHA1=$(echo "$CERT" | "$OPENSSL" x509 -noout -fingerprint -sha1 | cut -d= -f2)
+FINGERPRINT_SHA256=$(echo "$CERT" | "$OPENSSL" x509 -noout -fingerprint -sha256 | cut -d= -f2)
+
+# Extract SAN
+SAN=$(echo "$CERT" | "$OPENSSL" x509 -noout -ext subjectAltName 2>/dev/null | sed '1d')
+
+# Extract key usage and extended key usage
+KEYUSAGE=$(echo "$CERT" | "$OPENSSL" x509 -noout -ext keyUsage 2>/dev/null | grep -A1 "X509v3 Key Usage:" | tail -1 | xargs || echo "")
+EXTKEYUSAGE=$(echo "$CERT" | "$OPENSSL" x509 -noout -ext extendedKeyUsage 2>/dev/null | grep -A1 "X509v3 Extended Key Usage:" | tail -1 | xargs || echo "")
+
+# Extract OCSP and CRL info
+OCSP_URI=$(echo "$CERT" | "$OPENSSL" x509 -noout -ocsp_uri 2>/dev/null || echo "")
+CRL_DP=$(echo "$CERT" | "$OPENSSL" x509 -noout -text | grep -A5 "CRL Distribution Points" | grep "URI:" | head -1 | sed 's/.*URI:\(.*\)/\1/' | xargs || echo "")
+
+# Extract Authority Info Access
+AUTHINFO=$(echo "$CERT" | "$OPENSSL" x509 -noout -ext authorityInfoAccess 2>/dev/null | sed '1d' | head -5 || echo "")
+
+# Extract Subject Key Identifier and Authority Key Identifier
+SKI=$(echo "$CERT" | "$OPENSSL" x509 -noout -ext subjectKeyIdentifier 2>/dev/null | grep -A1 "Subject Key Identifier:" | tail -1 | xargs || echo "")
+AKI=$(echo "$CERT" | "$OPENSSL" x509 -noout -ext authorityKeyIdentifier 2>/dev/null | grep -A1 "Authority Key Identifier:" | tail -1 | xargs || echo "")
+
+# TLS connection details
+TLS_LINE=$(grep -m1 "New, TLS" "$TMP" || echo "")
+PROTO=$(echo "$TLS_LINE" | sed 's/.*TLSv\([0-9.]*\).*/TLSv\1/' || echo "Unknown")
+CIPHER=$(echo "$TLS_LINE" | sed 's/.*Cipher is //' || echo "Unknown")
+
+# Extract TLS version
+TLS_VERSION=$(echo "$TLS_LINE" | grep -oP 'TLSv[0-9.]+' || echo "Unknown")
+
+# Certificate chain info
+CHAIN_COUNT=$(grep -c "BEGIN CERTIFICATE" "$TMP" || echo "1")
+
+# ---------- output ----------
+echo
+echo "============================================"
+echo "           CERTIFICATE DETAILS"
+echo "============================================"
+printf "%-30s : %s\n" "Common Name (CN)" "$COMMONNAME"
+printf "%-30s : %s\n" "Subject" "$(echo "$SUBJECT" | sed 's/^subject=//')"
+printf "%-30s : %s\n" "Issuer" "$(echo "$ISSUER" | sed 's/^issuer=//')"
+printf "%-30s : %s\n" "Serial Number" "$SERIAL"
+printf "%-30s : v%s\n" "Version" "$VERSION"
+printf "%-30s : %s\n" "Signature Algorithm" "$SIGALG"
+printf "%-30s : %s\n" "Public Key Algorithm" "$PUBKEYALG"
+printf "%-30s : %s\n" "Public Key Size" "$KEYSIZE"
+
+echo
+echo "============================================"
+echo "           VALIDITY PERIOD"
+echo "============================================"
+printf "%-30s : %s\n" "Valid From" "$NOTBEFORE"
+printf "%-30s : %s\n" "Valid Until" "$NOTAFTER"
+
+# Calculate days left
+NOW=$(date -u +%s)
+EXP=$(date -u -d "$NOTAFTER" +%s 2>/dev/null || echo "0")
+if [[ "$EXP" == "0" ]]; then
+  # Try alternative date format parsing
+  EXP=$(date -u -j -f "%b %d %H:%M:%S %Y %Z" "$NOTAFTER" +%s 2>/dev/null || echo "0")
+fi
+DAYS_LEFT=$(( (EXP - NOW) / 86400 ))
+
+printf "%-30s : %s days\n" "Days Until Expiry" "$DAYS_LEFT"
+
+if (( DAYS_LEFT < 0 )); then
+  printf "%-30s : ❌ EXPIRED\n" "Status"
+  STATUS="Expired"
+elif (( DAYS_LEFT < 30 )); then
+  printf "%-30s : ⚠️  EXPIRING SOON\n" "Status"
+  STATUS="Expiring"
+else
+  printf "%-30s : ✅ VALID\n" "Status"
+  STATUS="Valid"
+fi
+
+echo
+echo "============================================"
+echo "           CERTIFICATE FINGERPRINTS"
+echo "============================================"
+printf "%-30s : %s\n" "SHA-1 Fingerprint" "$FINGERPRINT_SHA1"
+printf "%-30s : %s\n" "SHA-256 Fingerprint" "$FINGERPRINT_SHA256"
+
+echo
+echo "============================================"
+echo "           CERTIFICATE EXTENSIONS"
+echo "============================================"
+
+if [[ -n "$KEYUSAGE" ]]; then
+  printf "%-30s : %s\n" "Key Usage" "$KEYUSAGE"
+fi
+
+if [[ -n "$EXTKEYUSAGE" ]]; then
+  printf "%-30s : %s\n" "Extended Key Usage" "$EXTKEYUSAGE"
+fi
+
+if [[ -n "$SKI" ]]; then
+  printf "%-30s : %s\n" "Subject Key Identifier" "$SKI"
+fi
+
+if [[ -n "$AKI" ]]; then
+  printf "%-30s : %s\n" "Authority Key Identifier" "$AKI"
+fi
+
+if [[ -n "$OCSP_URI" ]]; then
+  printf "%-30s : %s\n" "OCSP URI" "$OCSP_URI"
+fi
+
+if [[ -n "$CRL_DP" ]]; then
+  printf "%-30s : %s\n" "CRL Distribution Point" "$CRL_DP"
+fi
+
+if [[ -n "$SAN" ]]; then
+  echo
+  echo "Subject Alternative Names:"
+  echo "$SAN" | sed 's/^/  /'
+fi
+
+if [[ -n "$AUTHINFO" ]]; then
+  echo
+  echo "Authority Information Access:"
+  echo "$AUTHINFO" | sed 's/^/  /'
+fi
+
+echo
+echo "============================================"
+echo "           TLS CONNECTION DETAILS"
+echo "============================================"
+printf "%-30s : %s\n" "TLS Protocol" "$PROTO"
+printf "%-30s : %s\n" "TLS Version" "$TLS_VERSION"
+printf "%-30s : %s\n" "Cipher Suite" "$CIPHER"
+printf "%-30s : %s\n" "Certificate Chain Length" "$CHAIN_COUNT certificate(s)"
+
+# ---------- summary ----------
+echo
+echo "============================================"
+echo "           SUMMARY"
+echo "============================================"
+printf "%-30s : %s\n" "Host" "$HOST:$PORT"
+printf "%-30s : %s\n" "Common Name" "$COMMONNAME"
+printf "%-30s : %s\n" "Issuer" "$(echo "$ISSUER" | sed 's/^issuer=//')"
+printf "%-30s : %s\n" "Serial" "$SERIAL"
+printf "%-30s : %s\n" "Status" "$STATUS"
+printf "%-30s : %s\n" "Expires" "$NOTAFTER"
+printf "%-30s : %s days\n" "Days Left" "$DAYS_LEFT"
+
+# ---------- exit code ----------
+if (( DAYS_LEFT < 0 )); then
+  exit 4
+elif (( DAYS_LEFT < 30 )); then
+  exit 5
+else
+  exit 0
+fi

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "Usage: md2pdf <markdown-file>"
+  exit 1
+fi
+
+INPUT="$(realpath "$1")"
+
+if [ ! -f "$INPUT" ]; then
+  echo "File not found: $INPUT"
+  exit 1
+fi
+
+BASENAME="$(basename "$INPUT")"
+NAME="${BASENAME%.*}"
+OUTPUT="${INPUT%.*}.pdf"
+
+TMPDIR="$(mktemp -d)"
+trap 'rm -rf "$TMPDIR"' EXIT
+
+cp "$INPUT" "$TMPDIR/$BASENAME"
+
+cd "$TMPDIR"
+
+pandoc "$BASENAME" \
+  --filter pandoc-mermaid \
+  --filter pandoc-plantuml \
+  -V geometry:margin=0.4cm \
+  -o "$NAME.pdf"
+
+mv "$NAME.pdf" "$OUTPUT"
+
+echo "Created: $OUTPUT"

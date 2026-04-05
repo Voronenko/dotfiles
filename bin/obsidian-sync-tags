@@ -1,0 +1,230 @@
+#!/bin/sh
+
+set -eu
+
+readonly EX_USAGE=64
+readonly EX_NOINPUT=66
+
+# Print text in yellow color
+print_yellow() {
+    printf '%s%s%s\n' "$(tput bold 2>/dev/null)$(tput setaf 3 2>/dev/null)" "$1" "$(tput sgr0 2>/dev/null)"
+}
+
+# URL encode a string
+url_encode() {
+    printf '%s' "$1" | sed 's/ /%20/g; s/\//%2F/g; s/?/%3F/g; s/#/%23/g; s/&/%26/g'
+}
+
+# Format tags for the properties block (same as obsidian-add)
+# Returns two lines: "tags: [tag1, tag2, tag3]" and "tags:: tag1, tag2, tag3"
+# Also deduplicates tags while preserving order
+format_tags_lines() {
+    _tags="$1"
+    # Deduplicate tags while preserving order using awk
+    _unique_tags=$(printf '%s' "$_tags" | awk -F',' '
+        {
+            for (i = 1; i <= NF; i++) {
+                tag = $i
+                gsub(/^[ \t]+|[ \t]+$/, "", tag)  # trim whitespace
+                if (!(tag in seen)) {
+                    seen[tag] = 1
+                    tags[n++] = tag
+                }
+            }
+        }
+        END {
+            for (i = 0; i < n; i++) {
+                printf "%s%s", (i > 0 ? "," : ""), tags[i]
+            }
+        }
+    ')
+    # Obsidian format: tags: [tag1, tag2, tag3]
+    _obsidian_tags="tags: [$_unique_tags]"
+    # Logseq format: Tags: tag1, tag2, tag3
+    _logseq_tags="Tags: $_unique_tags"
+    printf '%s\n%s' "$_obsidian_tags" "$_logseq_tags"
+}
+
+usage() {
+    cat <<EOF
+usage: $(basename "$0") -v <vault> <note>
+
+Sync tags in an existing Obsidian note to the unified with logseq format.
+
+The standard format adds/updates these lines in the properties block:
+  tags: [tag1, tag2, tag3]     # Obsidian format
+  tags:: tag1, tag2, tag3      # Logseq format
+
+Existing tags are read from the note and preserved. Other properties are untouched.
+
+Arguments:
+  <note>            Note path within vault (e.g. "my-note" or "folder/my-note")
+
+Options:
+  -v <vault>        Target vault name (required)
+  -h, --help        Show this help
+
+Examples:
+  $(basename "$0") -v KB "my-note"
+  $(basename "$0") -v Personal "journal/2025-03-15"
+EOF
+}
+
+vault=""
+note=""
+
+while getopts "v:h" opt; do
+    case $opt in
+        v) vault="$OPTARG" ;;
+        h) usage; exit 0 ;;
+        *) usage; exit $EX_USAGE ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+if [ -z "${vault:-}" ]; then
+    echo "error: vault is required (-v option)" >&2
+    usage
+    exit $EX_USAGE
+fi
+
+if [ $# -ne 1 ]; then
+    usage
+    exit $EX_USAGE
+fi
+
+note="$1"
+
+# Get vault path
+vault_path=$(obsidian vault="$vault" vault info=path)
+
+# Full path to the note
+note_file="$vault_path/$note.md"
+
+if [ ! -f "$note_file" ]; then
+    echo "error: note does not exist: $note" >&2
+    exit $EX_NOINPUT
+fi
+
+# Extract existing tags from the note
+existing_tags=$(
+    awk '
+        BEGIN { in_props = 0 }
+        /^---$/ {
+            if (!in_props) {
+                in_props = 1
+            } else {
+                exit
+            }
+            next
+        }
+        /^tags: \[/ && in_props {
+            # Extract tags from [tag1, tag2, tag3] format
+            gsub(/^tags: \[|\]$/, "")
+            gsub(/, /, ",")
+            print
+            exit
+        }
+        /^Tags:/ && in_props {
+            # Extract tags from Tags: tag1, tag2, tag3 format
+            gsub(/^Tags: /, "")
+            gsub(/, /, ",")
+            print
+            exit
+        }
+        /^tags:$/ && in_props {
+            # YAML list format, collect tags
+            in_tags = 1
+            next
+        }
+        /^  - / && in_tags && in_props {
+            # Extract from YAML list
+            gsub(/^  - /, "")
+            tags = (tags != "" ? tags "," : "") $0
+        }
+        END {
+            if (tags != "") print tags
+        }
+    ' "$note_file"
+)
+
+# If no tags found, exit
+if [ -z "$existing_tags" ]; then
+    echo "No tags found in: $note"
+    exit 0
+fi
+
+# Get formatted tag lines
+tags_lines=$(format_tags_lines "$existing_tags")
+tags_obsidian=$(printf '%s' "$tags_lines" | head -1)
+tags_logseq=$(printf '%s' "$tags_lines" | tail -1)
+
+# Update the file with the new tag format
+temp_file=$(mktemp)
+awk -v obsidian="$tags_obsidian" -v logseq="$tags_logseq" '
+    BEGIN {
+        in_props = 0
+        obsidian_added = 0
+        logseq_added = 0
+    }
+    /^---$/ {
+        if (!in_props) {
+            in_props = 1
+        } else {
+            in_props = 0
+            # Add tags if not already added
+            if (!obsidian_added) print obsidian
+            if (!logseq_added) print logseq
+            print
+            next
+        }
+        print
+        next
+    }
+    /^tags: \[/ && in_props && !obsidian_added {
+        # Replace existing Obsidian tags line
+        print obsidian
+        obsidian_added = 1
+        next
+    }
+    /^Tags:/ && in_props && !logseq_added {
+        # Replace existing Logseq tags line
+        print logseq
+        logseq_added = 1
+        next
+    }
+    /^tags:$/ && in_props {
+        # Skip YAML-style tags header (we replace with flat format)
+        in_tags_list = 1
+        next
+    }
+    /^  - / && in_tags_list {
+        # Skip YAML list items
+        next
+    }
+    {
+        # If we were in a tags list and hit a non-list item, we are done
+        if (in_tags_list && !/^  - /) {
+            in_tags_list = 0
+        }
+        print
+    }
+' "$note_file" > "$temp_file"
+mv "$temp_file" "$note_file"
+
+echo "Synced tags in: $note"
+echo "Tags: $existing_tags"
+
+# Build and print URIs
+vault_encoded=$(url_encode "$vault")
+note_encoded=$(url_encode "$note")
+note_name=$(basename "$note" .md)
+note_name_encoded=$(url_encode "$note_name")
+
+obsidian_uri="obsidian://open?vault=$vault_encoded&file=$note_encoded"
+logseq_uri="logseq://graph/$vault_encoded?page=$note_name_encoded"
+
+echo
+print_yellow "xdg-open \"$obsidian_uri\""
+print_yellow "xdg-open \"$logseq_uri\""

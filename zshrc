@@ -29,7 +29,7 @@ KUBE_PS1_DIVIDER='/'
 POWERLEVEL9K_MODE='nerdfont-complete' # compatible | awesome-fontconfig | nerdfont-complete
 POWERLEVEL9K_SPACELESS_PROMPT_ELEMENTS=(dot_dir)
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dot_dir_ex dot_git dot_status mybr) #icons_test
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv anaconda pyenv go_version aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv dot_node custom_kube_ps1 kubie)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv anaconda pyenv go_version dot_aws dot_ssh dot_dck dot_toggl dot_terraform dot_jenv dot_node custom_kube_ps1 kubie)
 
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
@@ -102,7 +102,7 @@ source ${HOME}/dotfiles/bin/kube-ps1.sh
 
 # User configuration
 
-export PATH=${HOME}/dotfiles/bin:${HOME}/dotfiles/adr:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:$HOME/config/composer/vendor/bin:$PATH:${KREW_ROOT:-$HOME/.krew}/bin
+export PATH=${HOME}/dotfiles/bin:${HOME}/dotfiles/adr:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:$HOME/config/composer/vendor/bin:$PATH:${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.bun/bin
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 export DISABLE_AUTO_TITLE='true'
 
@@ -150,33 +150,23 @@ unsetopt BG_NICE
 else
 
 function onproject() {
+  # Detect SSH session
+  local session_type="local"
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    SESSION_TYPE="remote/ssh"
+    session_type="remote/ssh"
   else
     case $(ps -o comm= -p "$PPID") in
-      sshd|*/sshd) SESSION_TYPE="remote/ssh";;
+      sshd|*/sshd) session_type="remote/ssh";;
     esac
   fi
 
-  if [ "$SESSION_TYPE" = "remote/ssh" ]; then
-      if [ "$2" = "clear" ]; then
-          zellij delete-session ${1} --force || true
-      fi
-      zellij --layout ${1} -s ${1}
+  # Delegate to zelli with appropriate flag
+  if [ "$session_type" = "remote/ssh" ]; then
+    # SSH mode: no terminal wrapper
+    zelli --no-terminal "$@"
   else
-      if [ "$2" = "clear" ]; then
-          zellij delete-session ${1} --force || true
-      fi
-
-      sess=${1}
-      output=$(zellij list-sessions --no-formatting | grep "${sess}")
-
-      if echo "$output" | grep -q "$sess" && echo "$output" | grep -q "EXITED - attach to resurrect"; then
-          gnome-terminal -- bash -c "zellij attach ${sess}" &
-      else
-          zellij delete-session ${1} --force || true
-          gnome-terminal -- bash -c "zellij -n $sess -s $sess" &
-      fi
+    # Local mode: use default terminal
+    zelli "$@"
   fi
 }
 
@@ -538,6 +528,7 @@ fi
 if [[ -d ~/.pyenv ]]; then
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$HOME/.pyenv/shims:$PATH"
+export PYTHON_CONFIGURE_OPTS="--enable-loadable-sqlite-extensions"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
@@ -714,45 +705,90 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     aws configure list-profiles
   }
 
-  set-aws-profile() {
-    local aws_profile=$1
+  is_aws_vault_managed() {
+      local profile="$1"
+      local creds
 
-    if [[ ! -z "$aws_profile" ]]; then
-      region_data=$(cat ~/.aws/config | grep "\[profile $aws_profile\]" -A2 | grep -B 2 "")
-      AWS_DEFAULT_REGION="$(echo $region_data | grep region | cut -f2 -d'=' | tr -d ' ')"
-      echo "Detected region AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
-      set -x
-      unset AWS_ACCESS_KEY_ID
-      unset AWS_SECRET_ACCESS_KEY
-      unset AWS_ASSUME_ROLE_NAME
-      unset AWS_ASSUME_ACCOUNT_ID
-      export AWS_PROFILE=${aws_profile}
-      export AWS_REGION=${AWS_DEFAULT_REGION}
-      export AWS_PROFILE=${aws_profile}
-#     supress default less pager
-      export AWS_PAGER=""
-      set +x
-      PROFILE_ASSUMED_ROLE=$(echo $region_data  | grep role_arn | sed 's:.*/::')
-      if [[ ! -z "$PROFILE_ASSUMED_ROLE" ]]; then
-        export AWS_ASSUME_ROLE_NAME=${PROFILE_ASSUMED_ROLE}
-        export AWS_ASSUME_ACCOUNT_ID=$(echo $region_data | awk -F'arn:aws:iam::|:role' '{print $2}' | grep -v '^ *$')
-      fi
-      export TF_VAR_AWS_PROFILE=${AWS_PROFILE}
-      export TF_VAR_AWS_REGION=${AWS_DEFAULT_REGION}
-      export AWS_SDK_LOAD_CONFIG=1
-      export TF_AWS_SDK_LOAD_CONFIG=1
-      export AWS_ORG_NAME=$(aws iam list-account-aliases --output text --query "AccountAliases[0]")
-    else
-      local declare selected_profile=($(aws-profiles | fzf))
-      if [[ -n "$selected_profile" ]]; then
-       if zle; then
-            zle accept-line
-        else
-            print -z "set-aws-profile $selected_profile"
-        fi
-      fi
-    fi
+      creds=$(aws-vault list 2>/dev/null \
+          | awk -v prof="$profile" '$1==prof {print $2}')
+
+      [[ "$creds" == "$profile" ]]
   }
+
+
+  set-aws-profile() {
+    local aws_profile="$1"
+
+    # Pick profile if not provided
+    if [[ -z "$aws_profile" ]]; then
+        aws_profile=$(aws-profiles | fzf)
+        [[ -z "$aws_profile" ]] && return
+    fi
+
+    # Detect region
+    local region
+    region=$(aws configure get region --profile "$aws_profile" 2>/dev/null)
+    [[ -z "$region" ]] && region="eu-central-1"
+
+    # Canonical session identity
+    export AWS_SESSION_PROFILE="$aws_profile"
+
+    # Always unset old AWS_PROFILE / AWS_DEFAULT_PROFILE
+    unset AWS_PROFILE
+    unset AWS_DEFAULT_PROFILE
+
+    if is_aws_vault_managed "$aws_profile"; then
+        echo "Activating aws-vault session for profile '$aws_profile'"
+
+        # Debugging: Capture output first to handle potential failures or password prompts matching issues
+        local vault_output
+        # We use a temporary file to capture stderr/stdout mixed or just separate if needed.
+        # Check if we can run it simply first.
+        vault_output=$(aws-vault exec "$aws_profile" -- env | grep -E '^(AWS|TF_VAR)_')
+        local ret=$?
+
+        if [[ $ret -ne 0 || -z "$vault_output" ]]; then
+            echo "Error: aws-vault failed to produce credentials. Exit code: $ret" >&2
+            echo "Output was empty or command failed." >&2
+            echo "Try running manual debug command to check for password prompts:" >&2
+            echo "  aws-vault exec $aws_profile -- env" >&2
+        else
+            # Use 'set -a' to automatically export all variables defined in the eval block
+            set -a
+            eval "$vault_output"
+            set +a
+        fi
+
+    else
+        # Classic profile
+        echo "Using classic AWS profile: $aws_profile"
+        unset AWS_ACCESS_KEY_ID
+        unset AWS_SECRET_ACCESS_KEY
+        unset AWS_SESSION_TOKEN
+
+        export AWS_PROFILE="$aws_profile"
+        export AWS_DEFAULT_PROFILE="$aws_profile"
+    fi
+
+    # Common env
+    export AWS_REGION="$region"
+    export AWS_DEFAULT_REGION="$region"
+    export TF_VAR_AWS_PROFILE="$aws_profile"
+    export TF_VAR_AWS_REGION="$region"
+    export AWS_SDK_LOAD_CONFIG=1
+    export TF_AWS_SDK_LOAD_CONFIG=1
+    export AWS_PAGER=""
+
+    # Optional account alias
+    local alias
+    alias=$(aws iam list-account-aliases --query "AccountAliases[0]" --output text 2>/dev/null)
+    [[ "$alias" != "None" ]] && export AWS_ORG_NAME="$alias"
+}
+
+
+
+
+
 
   set-aws-keys() {
     local aws_profile=$1
@@ -870,6 +906,7 @@ if [ -f $HOME/.terraform-version ]; then
 fi
 
 # fco - checkout git branch/tag
+unalias gco 2>/dev/null
 gco() {
   local tags branches target
   branches=$(

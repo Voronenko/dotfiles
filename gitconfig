@@ -55,6 +55,7 @@
             fi; \
         }; f"
 	get-bis = "!f() { \\\n  cur=$(git symbolic-ref --short HEAD) || exit 1; \\\n  case \"$cur\" in \\\n    *-bis) \\\n      echo \"Already on $cur\"; \\\n      ;; \\\n    *) \\\n      bis=\"${cur}-bis\"; \\\n      git show-ref --verify --quiet \"refs/heads/$bis\" \\\n        && git checkout \"$bis\" \\\n        || git checkout -b \"$bis\"; \\\n      ;; \\\n  esac; \\\n}; f"
+	pullsm = git status pull --no-recurse-submodules && git submodule update --init --recursive
 
 
 [push]
@@ -130,3 +131,7 @@
 	prompt = false
 [rerere]
 	enabled = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[submodule]
+	recurse = false

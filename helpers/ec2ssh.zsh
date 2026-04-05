@@ -65,7 +65,13 @@ function ec2ssh() {
     proxy_key_path=`_load_ssh_private_key_path $proxy_key_path`
     proxy_port=`_load_port $proxy_port`
 
-    if [ -z "${aws_profile_name}" ]; then
+    local aws_profile_arg=""
+    if [ -n "${AWS_ACCESS_KEY_ID}" ]; then
+        # Use existing keys in environment, ignore profile
+        :
+    elif [ -n "${aws_profile_name}" ]; then
+        aws_profile_arg="--profile=${aws_profile_name}"
+    else
         echo "AWS profile name is required. Please call this function with aws profile name or set AWS_DEFAULT_REGION in evironment variables."
         return
     fi
@@ -81,7 +87,7 @@ function ec2ssh() {
     fi
 
     echo "Fetching ec2 host..."
-    local selected_host=$(aws --profile=${aws_profile_name} --region=${aws_region} ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' --output text | sort -k4 | fzf | cut -f2)
+    local selected_host=$(aws ${aws_profile_arg} --region=${aws_region} ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' --output text | sort -k4 | fzf | cut -f2)
     if [ -n "${selected_host}" ]; then
         if [ -z "${proxy_host}" ]; then
             #BUFFER="ssh -i ${target_private_key_path} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${target_port} ${target_user}@${selected_host}"

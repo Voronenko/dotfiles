@@ -53,7 +53,13 @@ function ec2ssm() {
       source $HOME/dotfiles/bin/source-aws-sts-role-keys.sh
     }
 
-    if [ -z "${aws_profile_name}" ]; then
+    local aws_profile_arg=""
+    if [ -n "${AWS_ACCESS_KEY_ID}" ]; then
+        # Use existing keys in environment, ignore profile
+        :
+    elif [ -n "${aws_profile_name}" ]; then
+        aws_profile_arg="--profile=${aws_profile_name}"
+    else
         echo "AWS profile name is required. Please call this function with aws profile name or set AWS_DEFAULT_REGION in evironment variables."
         return
     fi
@@ -64,9 +70,9 @@ function ec2ssm() {
     fi
 
     echo "Fetching ec2 host..."
-    local selected_host=$(aws --profile=${aws_profile_name} --region=${aws_region} ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' --output text | sort -k4 | fzf | cut -f1)
+    local selected_host=$(aws ${aws_profile_arg} --region=${aws_region} ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0],LaunchTime,Tags[?Key==`aws:autoscaling:groupName`].Value|[0]]' --output text | sort -k4 | fzf | cut -f1)
     if [ -n "${selected_host}" ]; then
-        BUFFER="aws --region=${aws_region} --profile=${aws_profile_name} ssm start-session --target ${selected_host}"
+        BUFFER="aws --region=${aws_region} ${aws_profile_arg} ssm start-session --target ${selected_host}"
         if zle; then
             zle accept-line
         else

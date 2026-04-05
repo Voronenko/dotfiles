@@ -1,0 +1,64 @@
+{
+  "ecs_json_logs": {
+    "title": "ECS JSON Logs",
+    "description": "CloudWatch ECS structured logs",
+    "file-type": "json",
+    "json": true,
+
+    "timestamp-field": "timestamp",
+    "timestamp-format": ["%Y-%m-%d %H:%M:%S"],
+
+    "level-field": "level",
+    "body-field": "message",
+    "opid-field": "request_id",
+
+    "level": {
+      "INFO": "info",
+      "info": "info",
+      "DEBUG": "debug",
+      "debug": "debug",
+      "WARN": "warning",
+      "warn": "warning",
+      "WARNING": "warning",
+      "warning": "warning",
+      "ERROR": "error",
+      "error": "error",
+      "CRITICAL": "critical",
+      "critical": "critical",
+      "FATAL": "fatal",
+      "fatal": "fatal",
+      "TRACE": "trace",
+      "trace": "trace"
+    },
+
+    "value": {
+      "http_method": { "kind": "string" },
+      "http_path": { "kind": "string" },
+      "status_code": { "kind": "integer" },
+      "duration": { "kind": "float" },
+      "message": { "kind": "string" },
+      "request_id": { "kind": "string" },
+      "client_ip": { "kind": "string" },
+      "user_agent": { "kind": "string" },
+      "file": { "kind": "string" },
+      "http_version": { "kind": "string" },
+      "url": { "kind": "string" },
+      "url_scheme": { "kind": "string" },
+      "content_length": { "kind": "string" }
+    },
+
+    "sample": [
+      {
+        "level": "info",
+        "timestamp": "2026-03-27 10:56:16,498",
+        "file": "aci.server.middleware.interceptor",
+        "message": "Response sent",
+        "http_method": "GET",
+        "http_path": "/v1/health",
+        "status_code": 200,
+        "duration": 0.008568,
+        "request_id": "9798229d-768f-43c8-b498-f312f0b5be7a"
+      }
+    ]
+  }
+}

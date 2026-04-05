@@ -14,6 +14,17 @@ yellow() { color "33" "$1"; }
 cyan()   { color "36" "$1"; }
 red()    { color "31" "$1"; }
 
+usage() {
+  echo "Usage: $0 [command]"
+  echo
+  echo "Commands:"
+  echo "  run              Run zellij default command (default)"
+  echo "  set <command>    Set zellij default command in git repo root"
+  echo "  del              Delete zellij default command config file"
+  echo
+  echo "If no command is specified, 'run' is assumed."
+}
+
 # -------- git boundary --------
 
 GIT_ROOT=""
@@ -24,79 +35,182 @@ if git rev-parse --show-toplevel >/dev/null 2>&1; then
   GIT_PARENT="$(cd "$GIT_ROOT/.." && pwd)"
 fi
 
-FOUND_FILE=""
+# -------- file search --------
 
-if [ -n "$GIT_ROOT" ]; then
-  FOUND_FILE="$(
-    (
-      while :; do
-        if [ -f "$DEFAULT_FILE" ]; then
-          printf "%s/%s\n" "$PWD" "$DEFAULT_FILE"
-          exit 0
-        fi
-        [ "$PWD" = "$GIT_PARENT" ] && exit 1
-        cd ..
-      done
-    ) || true
-  )"
-else
-  (
-    while :; do
-      if [ -f "$DEFAULT_FILE" ]; then
-        printf "%s/%s\n" "$PWD" "$DEFAULT_FILE"
-        exit 0
-      fi
-      [ "$PWD" = "/" ] && exit 1
-      cd ..
-    done
-  ) || true
-fi
+find_default_file() {
+  if [ -n "$GIT_ROOT" ]; then
+    FOUND_FILE="$(
+      (
+        while :; do
+          if [ -f "$DEFAULT_FILE" ]; then
+            printf "%s/%s\n" "$PWD" "$DEFAULT_FILE"
+            exit 0
+          fi
+          [ "$PWD" = "$GIT_PARENT" ] && exit 1
+          cd ..
+        done
+      ) || true
+    )"
+  else
+    FOUND_FILE="$(
+      (
+        while :; do
+          if [ -f "$DEFAULT_FILE" ]; then
+            printf "%s/%s\n" "$PWD" "$DEFAULT_FILE"
+            exit 0
+          fi
+          [ "$PWD" = "/" ] && exit 1
+          cd ..
+        done
+      ) || true
+    )"
+  fi
+}
 
-# -------- no default command → shell --------
+# -------- command handlers --------
 
-[ -z "${FOUND_FILE:-}" ] && exec "$USER_SHELL"
+cmd_set() {
+  if [ -z "${COMMAND_TO_SET:-}" ]; then
+    red "Error: Command argument required for 'set'"
+    echo
+    usage
+    exit 1
+  fi
 
-DEFAULT_CMD="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "$FOUND_FILE")"
-[ -z "$DEFAULT_CMD" ] && exec "$USER_SHELL"
+  if [ -z "$GIT_ROOT" ]; then
+    red "Error: Not inside a git repository"
+    echo "The 'set' command can only be used within a git repository."
+    exit 1
+  fi
 
-# -------- prompt --------
+  # Get the git repo folder name
+  GIT_REPO_NAME="$(basename "$GIT_ROOT")"
 
-echo
-bold "$(cyan "Default command detected:")"
-echo "  $(green "$DEFAULT_CMD")"
-echo
-yellow "Run default command? [Y/n]"
-printf "> "
+  # Check if there's a folder above git repo with the same name
+  if [ -d "$GIT_PARENT/$GIT_REPO_NAME" ]; then
+    TARGET_FILE="$GIT_PARENT/$GIT_REPO_NAME/$DEFAULT_FILE"
+  else
+    TARGET_FILE="$GIT_ROOT/$DEFAULT_FILE"
+  fi
 
-answer=""
-trap '' INT   # Ctrl-C → read fails → treated as NO
+  printf "%s" "$COMMAND_TO_SET" > "$TARGET_FILE"
+  green "Default command set in: $TARGET_FILE"
+  echo "  Command: $(cyan "$COMMAND_TO_SET")"
+}
 
-if ! read answer; then
+cmd_del() {
+  find_default_file
+
+  if [ -z "$FOUND_FILE" ]; then
+    yellow "No .zellij-default-cmd file found"
+    exit 0
+  fi
+
+  DEFAULT_CMD="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "$FOUND_FILE")"
+
   echo
-  red "Cancelled. Opening shell."
-  exec "$USER_SHELL"
-fi
+  bold "$(yellow "Found default command file:")"
+  echo "  $(cyan "$FOUND_FILE")"
+  echo
+  echo "  Command: $(green "$DEFAULT_CMD")"
+  echo
+  yellow "Delete this file? [y/N]"
+  printf "> "
 
-case "$answer" in
-  y|Y)
-    ;;
-  *)
+  answer=""
+  trap '' INT
+
+  if ! read answer; then
+    echo
+    red "Cancelled."
+    exit 0
+  fi
+
+  case "$answer" in
+    y|Y)
+      rm -f "$FOUND_FILE"
+      echo
+      green "File deleted: $FOUND_FILE"
+      ;;
+    *)
+      echo
+      yellow "Cancelled. File not deleted."
+      ;;
+  esac
+}
+
+cmd_run() {
+  find_default_file
+
+  # -------- no default command → shell --------
+
+  [ -z "${FOUND_FILE:-}" ] && exec "$USER_SHELL"
+
+  DEFAULT_CMD="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "$FOUND_FILE")"
+  [ -z "$DEFAULT_CMD" ] && exec "$USER_SHELL"
+
+  # -------- prompt --------
+
+  echo
+  bold "$(cyan "Default command detected:")"
+  echo "  $(green "$DEFAULT_CMD")"
+  echo
+  yellow "Run default command? [Y/n]"
+  printf "> "
+
+  answer=""
+  trap '' INT   # Ctrl-C → read fails → treated as NO
+
+  if ! read answer; then
     echo
     red "Cancelled. Opening shell."
     exec "$USER_SHELL"
+  fi
+
+  case "$answer" in
+    ""|y|Y)
+      ;;
+    *)
+      echo
+      red "Cancelled. Opening shell."
+      exec "$USER_SHELL"
+      ;;
+  esac
+
+  # -------- execute command --------
+
+  echo
+  bold "$(green "Executing default command…")"
+  echo
+
+  "$USER_SHELL" -c "$DEFAULT_CMD"
+
+  echo
+  bold "$(cyan "Command finished. Returning to shell.")"
+  echo
+
+  exec "$USER_SHELL"
+}
+
+# -------- main --------
+
+COMMAND="${1:-run}"
+
+case "$COMMAND" in
+  run|"")
+    cmd_run
+    ;;
+  set)
+    COMMAND_TO_SET="${2:-}"
+    cmd_set
+    ;;
+  del)
+    cmd_del
+    ;;
+  *)
+    red "Error: Unknown command '$COMMAND'"
+    echo
+    usage
+    exit 1
     ;;
 esac
-
-# -------- execute command --------
-
-echo
-bold "$(green "Executing default command…")"
-echo
-
-"$USER_SHELL" -c "$DEFAULT_CMD"
-
-echo
-bold "$(cyan "Command finished. Returning to shell.")"
-echo
-
-exec "$USER_SHELL"

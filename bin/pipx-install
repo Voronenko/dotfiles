@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Display usage information
+display_usage() {
+    cat <<EOF
+${YELLOW}pipx-install:${NC} Install Python packages using pipx with interactive Python version selection
+
+${YELLOW}Usage:${NC}
+  pipx-install <package-name>
+  pipx-install -h|--help
+
+${YELLOW}Description:${NC}
+  This utility allows you to install Python packages using pipx with an interactive
+  selection of Python versions available through pyenv. The selected Python version
+  will be used for the pipx installation.
+
+${YELLOW}Options:${NC}
+  -h, --help     Show this help message
+
+${YELLOW}Examples:${NC}
+  pipx-install poetry
+  pipx-install black
+
+${YELLOW}Requirements:${NC}
+  - pyenv must be installed and configured
+  - pipx must be installed
+  - fzf must be installed for interactive selection
+
+EOF
+}
+
+# Check if a command exists
+command_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Check dependencies
+check_dependencies() {
+    local missing_deps=()
+
+    if ! command_exists pyenv; then
+        missing_deps+=("pyenv")
+    fi
+
+    if ! command_exists pipx; then
+        missing_deps+=("pipx")
+    fi
+
+    if ! command_exists fzf; then
+        missing_deps+=("fzf")
+    fi
+
+    if [[ ${#missing_deps[@]} -gt 0 ]]; then
+        echo -e "${RED}Error: Missing required dependencies: ${missing_deps[*]}${NC}" >&2
+        echo -e "${YELLOW}Please install the missing dependencies and try again.${NC}" >&2
+        exit 1
+    fi
+}
+
+# Parse arguments
+if [[ $# -eq 0 ]]; then
+    echo -e "${RED}Error: No package name provided.${NC}" >&2
+    echo ""
+    display_usage
+    exit 1
+fi
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    display_usage
+    exit 0
+fi
+
+PACKAGE="$1"
+
+# Validate package name
+if [[ -z "$PACKAGE" ]]; then
+    echo -e "${RED}Error: Package name cannot be empty.${NC}" >&2
+    exit 1
+fi
+
+# Check dependencies
+check_dependencies
+
+# Get available Python versions from pyenv
+echo -e "${BLUE}Fetching available Python versions from pyenv...${NC}"
+
+# Get list of available Python versions (filter for version numbers like 3.12.7, 3.11.8)
+PYLIST=$(pyenv versions --bare 2>/dev/null | grep -E '^[0-9]+(\.[0-9]+)*$' | sort -V || true)
+
+if [[ -z "$PYLIST" ]]; then
+    echo -e "${RED}Error: No Python versions found in pyenv.${NC}" >&2
+    echo -e "${YELLOW}Please install a Python version using 'pyenv install <version>' first.${NC}" >&2
+    exit 1
+fi
+
+# Get default version (first in list)
+DEFAULT_PYVER=$(echo "$PYLIST" | head -1)
+
+# Configure fzf options
+export FZF_DEFAULT_OPTS="
+    --ansi
+    --height=80
+    --border
+    --header='Select Python version for pipx installation'
+    --reverse
+    --prompt='Python> '
+    --query='${DEFAULT_PYVER}'
+    --preview-window=hidden
+"
+
+# Interactive selection using fzf
+echo -e "${YELLOW}Select a Python version for installing '${PACKAGE}':${NC}"
+PYVER=$(echo "$PYLIST" | fzf || true)
+
+# Check if user cancelled the selection
+if [[ -z "$PYVER" ]]; then
+    echo -e "${YELLOW}No Python version selected. Installation cancelled.${NC}" >&2
+    exit 1
+fi
+
+# Construct the Python path
+PYENV_ROOT="${PYENV_ROOT:-$HOME/.pyenv}"
+PYTHON_PATH="${PYENV_ROOT}/versions/${PYVER}/bin/python3"
+
+# Validate the Python path exists
+if [[ ! -f "$PYTHON_PATH" ]]; then
+    echo -e "${RED}Error: Python binary not found at ${PYTHON_PATH}${NC}" >&2
+    exit 1
+fi
+
+# Display installation information
+echo ""
+echo -e "${GREEN}Installing package: ${BLUE}${PACKAGE}${NC}"
+echo -e "${GREEN}Using Python version: ${BLUE}${PYVER}${NC}"
+echo -e "${GREEN}Python path: ${BLUE}${PYTHON_PATH}${NC}"
+echo ""
+
+# Execute pipx install with the selected Python version
+if pipx install "${PACKAGE}" --python "${PYTHON_PATH}"; then
+    echo ""
+    echo -e "${GREEN}✓ Successfully installed '${PACKAGE}' with Python ${PYVER}${NC}"
+else
+    echo ""
+    echo -e "${RED}✗ Failed to install '${PACKAGE}'${NC}" >&2
+    exit 1
+fi

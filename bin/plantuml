@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PLANTUML_JAR="$HOME/dotfiles/bin/plantuml.jar"
-PLANTUML_URL="https://github.com/plantuml/plantuml/releases/download/v1.2025.8/plantuml-1.2025.8.jar"
+PLANTUML_URL="https://github.com/plantuml/plantuml/releases/download/v1.2026.2/plantuml-gplv2-1.2026.2.jar"
 
 # Ensure directory exists
 mkdir -p "$(dirname "$PLANTUML_JAR")"

@@ -1,21 +1,76 @@
 #!/usr/bin/env bash
 
-# Usage: credential_process = aws-pass-creds <aws-vault-profile>
+# Usage: credential_process = aws-pass-creds [OPTIONS] <aws-vault-profile>
 # retrieves amazon credentials for aws cli from pass storage backend
-
+#
+# Options:
+#   --no-session    Pass --no-session flag to aws-vault
+#   -h, --help      Show this help message
+#
 # you can also use directly in direnv with
 # eval "$(aws-vault exec my-profile --duration=12h -- env | grep '^AWS_')"
 
 set -euo pipefail
 
-PROFILE="${1-}"
+# Default values
+NO_SESSION=false
+PROFILE=""
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --no-session)
+      NO_SESSION=true
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 [OPTIONS] <aws-vault-profile>"
+      echo ""
+      echo "Retrieves AWS credentials from pass storage backend via aws-vault."
+      echo ""
+      echo "Options:"
+      echo "  --no-session    Pass --no-session flag to aws-vault"
+      echo "  -h, --help      Show this help message"
+      echo ""
+      echo "Example:"
+      echo "  $0 my-profile"
+      echo "  $0 --no-session my-profile"
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "Error: unknown option: $1" >&2
+      echo "Use -h or --help for usage information" >&2
+      exit 1
+      ;;
+    *)
+      # First non-option argument is the profile
+      if [[ -z "$PROFILE" ]]; then
+        PROFILE="$1"
+      else
+        echo "Error: unexpected argument: $1" >&2
+        exit 1
+      fi
+      shift
+      ;;
+  esac
+done
 
 if [[ -z "$PROFILE" ]]; then
   echo "Error: missing required PROFILE argument" >&2
+  echo "Use -h or --help for usage information" >&2
   exit 1
 fi
 
-aws-vault exec "$PROFILE" --json --duration=4h
+# Build aws-vault command with optional --no-session flag
+if [[ "$NO_SESSION" == true ]]; then
+  aws-vault exec "$PROFILE" --json --duration=4h --no-session
+else
+  aws-vault exec "$PROFILE" --json --duration=4h
+fi
 
 ## outputs kind of
 #{

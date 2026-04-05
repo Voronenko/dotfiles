@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+CYAN="\e[36m"
+RESET="\e[0m"
+
+error() {
+  echo -e "${RED}✖ $1${RESET}"
+  exit 1
+}
+
+info() {
+  echo -e "${CYAN}➜ $1${RESET}"
+}
+
+success() {
+  echo -e "${GREEN}✔ $1${RESET}"
+}
+
+PAIR_NAME="$1"
+
+if [[ -z "$PAIR_NAME" ]]; then
+  echo -e "${BLUE}No SSH key pair name provided.${RESET}"
+  read -rp "$(echo -e "${YELLOW}Enter SSH key pair name: ${RESET}")" PAIR_NAME
+fi
+
+[[ -z "$PAIR_NAME" ]] && error "Pair name cannot be empty."
+
+KEY_PATH="./$PAIR_NAME"
+
+if [[ -f "$KEY_PATH" || -f "$KEY_PATH.pub" ]]; then
+  error "Key '$PAIR_NAME' already exists in current directory."
+fi
+
+info "Generating ed25519 SSH key pair in current folder..."
+ssh-keygen -t ed25519 -f "$KEY_PATH" -C "$PAIR_NAME" || error "ssh-keygen failed"
+
+success "SSH key pair created!"
+echo -e "${GREEN}Private key:${RESET} $(pwd)/$PAIR_NAME"
+echo -e "${GREEN}Public key:${RESET}  $(pwd)/$PAIR_NAME.pub"

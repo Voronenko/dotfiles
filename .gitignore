@@ -1,7 +1,12 @@
 .aider*
 bin/act
+bin/actionlint
 bin/ag
+bin/ai-files-cli*
 bin/amtool
+bin/apktool
+bin/apktool.jar
+bin/ast-grep
 bin/awless
 bin/aws-iam-authenticator*
 bin/aws-key-importer
@@ -11,6 +16,8 @@ bin/bfg.jar
 bin/bito
 bin/bito-*
 bin/borg
+bin/bun
+bin/bunx
 bin/bw
 bin/cadvisor
 bin/chartmuseum
@@ -69,10 +76,12 @@ bin/jfrog
 bin/jiq
 bin/jsonnet
 bin/jsonnetfmt
+bin/just
 bin/k0sctl
 bin/k3sup
 bin/k9s
 bin/kapitan
+bin/kbt
 bin/kc
 bin/komiser
 bin/ks
@@ -108,6 +117,7 @@ bin/openapi-generator-cli.jar
 bin/opencode
 bin/packer
 bin/phpmd
+bin/plantuml-full
 bin/plantuml.jar
 bin/plumber
 bin/pluralith
@@ -124,12 +134,14 @@ bin/rider
 bin/s5cmd
 bin/schemacrawler
 bin/schemaspy.jar
+bin/sg
 bin/shellcheck
 bin/shellharden
 bin/skaffold
 bin/skeema
 bin/slack-term
 bin/snyk
+bin/*.so
 bin/sourcetrail
 bin/ssm
 bin/step1.xml

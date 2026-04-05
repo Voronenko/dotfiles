@@ -1,0 +1,39 @@
+#!/bin/bash
+# git-bclone: clone into repo/repo using worktree layout with bare repo
+
+set -e
+
+if [ -z "$1" ]; then
+    echo "Usage: git bclone <repo-url> [git clone options...]"
+    echo "Creates:"
+    echo "  repo/"
+    echo "    ├ repo.git   (bare repo)"
+    echo "    └ repo/      (worktree)"
+    exit 1
+fi
+
+repo_url="$1"
+shift
+
+# Extract repo name
+repo_name=$(basename "$repo_url" .git)
+
+echo "📦 Repository: $repo_name"
+
+# Create container directory
+mkdir -p "$repo_name"
+cd "$repo_name"
+
+# Clone as bare repo
+echo "⬇️ Cloning bare repo..."
+git clone --bare "$repo_url" "$repo_name.git" "$@"
+
+# Create main worktree
+echo "🌿 Creating worktree..."
+git --git-dir="$repo_name.git" worktree add "$repo_name" HEAD
+
+echo ""
+echo "✅ Done. Structure:"
+echo "  $repo_name/"
+echo "    ├ $repo_name.git"
+echo "    └ $repo_name"

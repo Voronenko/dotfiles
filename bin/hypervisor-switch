@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -e
+
+detect_current() {
+    if grep -q '^kvm_intel' /proc/modules; then
+        echo "KVM (Intel) is currently active 🏆"
+    elif grep -q '^kvm_amd' /proc/modules; then
+        echo "KVM (AMD) is currently active 🏆"
+    elif grep -q '^kvm' /proc/modules; then
+        echo "KVM is currently active 🏆"
+    elif grep -q '^vboxdrv' /proc/modules; then
+        echo "VirtualBox is currently active 🏆"
+    else
+        echo "No hypervisor modules loaded"
+    fi
+}
+
+if [ -z "$1" ]; then
+    detect_current
+    exit 0
+fi
+
+case "$1" in
+kvm)
+    echo "Switching to KVM..."
+
+    sudo systemctl stop vboxdrv.service 2>/dev/null || true
+    sudo modprobe -r vboxnetflt vboxnetadp vboxdrv 2>/dev/null || true
+
+    sudo modprobe kvm
+    sudo modprobe kvm_intel 2>/dev/null || sudo modprobe kvm_amd
+
+    echo "KVM ready"
+    ls -l /dev/kvm 2>/dev/null || true
+    ;;
+
+vbox)
+    echo "Switching to VirtualBox..."
+
+    sudo modprobe -r kvm_intel 2>/dev/null || true
+    sudo modprobe -r kvm_amd 2>/dev/null || true
+    sudo modprobe -r kvm 2>/dev/null || true
+
+    sudo modprobe vboxdrv
+    sudo modprobe vboxnetflt
+    sudo modprobe vboxnetadp
+
+    echo "VirtualBox ready"
+    ;;
+
+*)
+    echo "Usage: hypervisor [kvm|vbox]"
+    exit 1
+    ;;
+esac
