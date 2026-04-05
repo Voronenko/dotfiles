@@ -460,7 +460,7 @@ install-docker-lint:
 	ln -s ~/dotfiles/bin/hadolint  ~/dotfiles/bin/docker-lint
 
 install-docker-ctop:
-	curl -sLo ~/dotfiles/bin/ctop https://github.com/bcicen/ctop/releases/download/v0.7.5/ctop-0.7.5-linux-amd64
+	curl -sLo ~/dotfiles/bin/ctop https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
 	chmod +x ~/dotfiles/bin/ctop
 # /DOCKER TOOLS
 
