@@ -25,11 +25,27 @@ if ! command -v fzf >/dev/null 2>&1; then
   echo "Warning: 'fzf' not found. Interactive selection will not be available." >&2
 fi
 
+keep_temp=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --keep)
+      keep_temp=true
+      shift
+      ;;
+    *)
+      KEY_PATH="$1"
+      shift
+      ;;
+  esac
+done
+
 # Handle parameter or interactive selection
-if [ $# -eq 0 ]; then
+if [ -z "${KEY_PATH:-}" ]; then
   if ! command -v fzf >/dev/null 2>&1; then
     echo "Error: No key path provided and fzf not available for interactive selection." >&2
-    echo "Usage: $0 <key-path>" >&2
+    echo "Usage: $0 [--keep] <key-path>" >&2
     exit 1
   fi
 
@@ -39,8 +55,6 @@ if [ $# -eq 0 ]; then
     echo "No key selected. Exiting."
     exit 0
   fi
-else
-  KEY_PATH="$1"
 fi
 
 # Resolve the actual file path (handle color codes and extensions)
@@ -82,9 +96,13 @@ tmp=""
 use_shm=false
 
 cleanup() {
-  echo "Loaded from $tmp with shm: $use_shm"
-  if [[ -n "$tmp" ]] && [[ "$use_shm" == false ]]; then
-    rm -f -- "$tmp"
+  if [[ -n "$tmp" ]]; then
+    if [[ "$use_shm" == true ]] && [[ "$keep_temp" == true ]]; then
+      echo "Key kept in shared memory: $tmp"
+    else
+      rm -f -- "$tmp"
+      echo "Removed temporary key: $tmp"
+    fi
   fi
 }
 trap cleanup EXIT
