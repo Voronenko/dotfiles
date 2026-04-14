@@ -128,7 +128,6 @@ function ecstask() {
     local container_instance_arns=$(echo "${task_details}" | awk -F'\t' '{print $3}' | sort -u | grep -v "^None$" | grep -v "^$")
     local ec2_lookup_file=$(mktemp)
 
-    echo "DEBUG: container_instance_arns: ${container_instance_arns}"
 
     if [ -n "${container_instance_arns}" ]; then
         # Build the command as an array to avoid word splitting issues
@@ -145,21 +144,14 @@ function ecstask() {
 
         local ec2_mapping=$("${ecs_cmd[@]}")
 
-        echo "DEBUG: ec2_mapping raw: [${ec2_mapping}]"
 
-        echo "DEBUG: ec2_mapping raw: [${ec2_mapping}]"
 
         # Store as: short_arn=ec2_instance_id for easier lookup
         echo "${ec2_mapping}" | while IFS=$'\t' read -r container_arn ec2_id; do
             local short_arn=$(echo "${container_arn}" | awk -F'/' '{print $NF}')
-            echo "DEBUG: Writing to ec2_lookup_file: ${short_arn}=${ec2_id}"
             echo "${short_arn}=${ec2_id}" >> "${ec2_lookup_file}"
         done
 
-        echo "DEBUG: ec2_lookup_file contents:"
-        cat "${ec2_lookup_file}"
-    else
-        echo "DEBUG: No container instance ARNs found"
     fi
 
     # Step 5: Build preview lookup file and formatted task list
@@ -175,21 +167,10 @@ function ecstask() {
             local ec2_instance=""
             local exec_indicator="NO"
 
-            # Debug output for specific task
-            if [[ "${task_id}" == "1d4cd51122894dfb9254d337e5f3a3a2" ]]; then
-                echo "DEBUG: In subshell - task_id=${task_id}, container_arn=[${container_arn}]"
-            fi
-
             # Lookup EC2 instance ID from the lookup file
             if [ -n "${container_arn}" ] && [ "${container_arn}" != "None" ]; then
                 local short_container_arn=$(echo "${container_arn}" | awk -F'/' '{print $NF}')
                 ec2_instance=$(grep "^${short_container_arn}=" "${ec2_lookup_file}" 2>/dev/null | cut -d'=' -f2)
-                if [[ "${task_id}" == "1d4cd51122894dfb9254d337e5f3a3a2" ]]; then
-                    echo "DEBUG: Looking for short_container_arn=[${short_container_arn}]"
-                    echo "DEBUG: ec2_instance result=[${ec2_instance}]"
-                    echo "DEBUG: ec2_lookup_file contents in subshell:"
-                    cat "${ec2_lookup_file}" 2>/dev/null || echo "DEBUG: ec2_lookup_file not found!"
-                fi
             fi
 
             # Parse service name from group
@@ -206,8 +187,9 @@ function ecstask() {
             # Write to lookup file (pipe-delimited for easy parsing)
             echo "${task_id}|${short_task_id}|${last_status}|${desired_status}|${task_def}|${health_status}|${group}|${launch_type}|${ec2_instance}|${exec_indicator}|${container_name}" >> "${preview_lookup_file}"
 
-            # Format for main fzf display - use short task ID for list
-            printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "${short_task_id}" "${svc_name:0:60}" "${launch_type}" "${exec_indicator}" "${last_status}" "${container_name}" "${task_arn}"
+            # Format for main fzf display with fixed-width columns for table-like appearance
+            # TASK_ID(12) SERVICE(60) LAUNCH(8) EXEC(4) STATUS(10) CONTAINER(20) TASK_ARN(hidden)
+            printf "%-12s %-60s %-8s %-4s %-10s %-20s %s\n" "${short_task_id}" "${svc_name:0:60}" "${launch_type}" "${exec_indicator}" "${last_status}" "${container_name:0:20}" "${task_arn}"
         done <<< "${task_details}"
     )
 
@@ -215,11 +197,12 @@ function ecstask() {
 
     # Step 6: Present task selection with fzf
     local selected_task=$(echo "${formatted_tasks}" | \
-        fzf --prompt="Select task> " \
+        fzf --delimiter=' ' \
+        --prompt="Select task> " \
             --header="TASK_ID | SERVICE | LAUNCH | EXEC | STATUS | CONTAINER" \
             --preview="
-                # Extract short task_id from current line (first field)
-                short_task_id=\$(echo {} | awk -F'\t' '{print \$1}')
+                # Extract short_task_id from current line (first word, trimmed)
+                short_task_id=\$(echo {} | awk '{print \$1}')
                 # Look up task details using awk to match the short task_id in field 2
                 awk -F'|' -v sid=\"\$short_task_id\" '\$2 == sid {
                     printf \"\033[1;36mTASK_ID:\033[0m %s\n\", \$1
