@@ -18,10 +18,6 @@
 	dlc = diff --cached HEAD^
 	f = !git ls-files | grep -i
 	la = !git config -l | grep alias | cut -c 7-
-	latest = pull --recurse-submodules
-	clean = "!f() { git branch --merged ${1:-master} | egrep -v \"(^\\*|${1:-master})\" | xargs --no-run-if-empty git branch -d; };f"
-	clean-on-master = "!f() { git branch --merged master | egrep -v \"(^\\*|master)\" | xargs --no-run-if-empty git branch -d; };f"
-	clean-on-develop = "!f() { git branch --merged develop | egrep -v \"(^\\*|develop)\" | xargs --no-run-if-empty git branch -d; };f"
 	clean-hard-dfx = "clean -dfx -e .vscode/ -e .idea/"
 	clean-hard-dfx-windows = "clean -dxf -e *.user -e *.bat -e *.cmd -e packages/ -e .vs/ -e .vscode/ -e .idea/"
 	fixupstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
@@ -38,8 +34,6 @@
             fi; \
         }; f"
 	browse = !git open
-	gl-pr-master = "push -o merge_request.create -o merge_request.target=master"
-	gl-pr-develop = "push -o merge_request.create -o merge_request.target=develop"
         # make custom local .gitignore.local file
 	local-ignore = "!f() { \
             repo_root=\"$(git rev-parse --show-toplevel)\" || exit 1; \
@@ -55,7 +49,8 @@
             fi; \
         }; f"
 	get-bis = "!f() { \\\n  cur=$(git symbolic-ref --short HEAD) || exit 1; \\\n  case \"$cur\" in \\\n    *-bis) \\\n      echo \"Already on $cur\"; \\\n      ;; \\\n    *) \\\n      bis=\"${cur}-bis\"; \\\n      git show-ref --verify --quiet \"refs/heads/$bis\" \\\n        && git checkout \"$bis\" \\\n        || git checkout -b \"$bis\"; \\\n      ;; \\\n  esac; \\\n}; f"
-	pullsm = git status pull --no-recurse-submodules && git submodule update --init --recursive
+        pullsm = status pull --no-recurse-submodules
+        restore-submodules = submodule update --init --recursive --force
 
 
 [push]

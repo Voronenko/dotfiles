@@ -140,12 +140,12 @@ install-console-lazysuite: install-console-lazygit install-console-lazydocker in
 
 # https://github.com/jesseduffield/lazygit
 install-console-lazygit:
-	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.44.1/lazygit_0.44.1_Linux_x86_64.tar.gz
+	curl -sLo /tmp/lazygit.tar.gz https://github.com/jesseduffield/lazygit/releases/download/v0.61.1/lazygit_0.61.1_Linux_x86_64.tar.gz
 	tar -xvzf /tmp/lazygit.tar.gz -C /tmp
 	mv /tmp/lazygit ~/dotfiles/bin
 
 install-console-lazydocker:
-	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.24.2/lazydocker_0.24.2_Linux_x86.tar.gz
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.25.0/lazydocker_0.25.0_Linux_x86.tar.gz
 	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
 	mv /tmp/lazydocker ~/dotfiles/bin
 
@@ -423,7 +423,7 @@ install-direnv:
 # https://plugins.jetbrains.com/plugin/14221-git-machete
 install-git-machete:
 	curl -L https://raw.githubusercontent.com/VirtusLab/git-machete/master/completion/git-machete.completion.zsh -o ~/dotfiles/completions/git-machete.completion.zsh
-	sudo snap install --classic git-machete
+	pipx install git-machete
 
 install-git-changelog:
 	curl -sLo ~/dotfiles/bin/git-chglog https://github.com/git-chglog/git-chglog/releases/download/0.9.1/git-chglog_linux_amd64
