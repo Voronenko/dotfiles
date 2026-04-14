@@ -130,28 +130,23 @@ function ecstask() {
 
 
     if [ -n "${container_instance_arns}" ]; then
-        # Build the command as an array to avoid word splitting issues
-        local -a ecs_cmd
-        ecs_cmd=(aws ${aws_profile_arg} --region=${aws_region} ecs describe-container-instances)
-        ecs_cmd+=(--cluster "${cluster_name}")
-        ecs_cmd+=(--container-instances)
-        # Add each container instance ARN as a separate argument
-        echo "${container_instance_arns}" | while read -r arn; do
-            ecs_cmd+=("${arn}")
+        # Process each container instance ARN individually
+        echo "${container_instance_arns}" | while read -r container_arn; do
+            if [ -n "${container_arn}" ]; then
+                local ec2_mapping=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-container-instances \
+                    --cluster "${cluster_name}" \
+                    --container-instances "${container_arn}" \
+                    --query 'containerInstances[0].[containerInstanceArn,ec2InstanceId]' \
+                    --output text 2>/dev/null)
+
+                if [ -n "${ec2_mapping}" ]; then
+                    local arn=$(echo "${ec2_mapping}" | awk -F'\t' '{print $1}')
+                    local ec2_id=$(echo "${ec2_mapping}" | awk -F'\t' '{print $2}')
+                    local short_arn=$(echo "${arn}" | awk -F'/' '{print $NF}')
+                    echo "${short_arn}=${ec2_id}" >> "${ec2_lookup_file}"
+                fi
+            fi
         done
-        ecs_cmd+=(--query 'containerInstances[*].[containerInstanceArn,ec2InstanceId]')
-        ecs_cmd+=(--output text)
-
-        local ec2_mapping=$("${ecs_cmd[@]}")
-
-
-
-        # Store as: short_arn=ec2_instance_id for easier lookup
-        echo "${ec2_mapping}" | while IFS=$'\t' read -r container_arn ec2_id; do
-            local short_arn=$(echo "${container_arn}" | awk -F'/' '{print $NF}')
-            echo "${short_arn}=${ec2_id}" >> "${ec2_lookup_file}"
-        done
-
     fi
 
     # Step 5: Build preview lookup file and formatted task list
@@ -196,10 +191,11 @@ function ecstask() {
     rm -f "${ec2_lookup_file}"
 
     # Step 6: Present task selection with fzf
+    local formatted_header="$(printf '%-12s %-60s %-8s %-4s %-10s %-20s' 'TASK_ID' 'SERVICE' 'LAUNCH' 'EXEC' 'STATUS' 'CONTAINER')"
     local selected_task=$(echo "${formatted_tasks}" | \
         fzf --delimiter=' ' \
         --prompt="Select task> " \
-            --header="TASK_ID | SERVICE | LAUNCH | EXEC | STATUS | CONTAINER" \
+            --header="${formatted_header}" \
             --preview="
                 # Extract short_task_id from current line (first word, trimmed)
                 short_task_id=\$(echo {} | awk '{print \$1}')
@@ -230,21 +226,20 @@ function ecstask() {
         return
     fi
 
-    # Parse the selected task
-    local selected_task_id=$(echo "${selected_task}" | awk -F'\t' '{print $1}')
-    local selected_container=$(echo "${selected_task}" | awk -F'\t' '{print $6}')
-    local selected_task_arn=$(echo "${selected_task}" | awk -F'\t' '{print $7}')
+    # Parse the selected task (space-separated formatted output)
+    local selected_task_id=$(echo "${selected_task}" | awk '{print $1}')
+    local selected_container=$(echo "${selected_task}" | awk '{print $6}')
+    local selected_task_arn=$(echo "${selected_task}" | awk '{print $7}')
 
     # Get task execution info
     local task_info=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-tasks \
         --cluster "${cluster_name}" \
         --tasks "${selected_task_arn}" \
-        --query 'tasks[0].[enableExecuteCommand,containerInstanceArn,launchType]' \
+        --query 'tasks[0].[enableExecuteCommand,launchType]' \
         --output text)
 
     local exec_enabled=$(echo "${task_info}" | awk -F'\t' '{print $1}')
-    local container_instance_arn=$(echo "${task_info}" | awk -F'\t' '{print $2}')
-    local launch_type=$(echo "${task_info}" | awk -F'\t' '{print $3}')
+    local launch_type=$(echo "${task_info}" | awk -F'\t' '{print $2}')
 
     # Step 7: Execute appropriate command
     local command_to_run=""
@@ -260,27 +255,44 @@ function ecstask() {
             --interactive"
     else
         # Path B: Fall back to SSM on the EC2 instance (only for EC2 launch type)
-        if [[ "${launch_type}" == "EC2" ]] && [ -n "${container_instance_arn}" ] && [ "${container_instance_arn}" != "None" ]; then
-            local ec2_instance_id=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-container-instances \
+        if [[ "${launch_type}" == "EC2" ]]; then
+            # Get EC2 instance ID from container instance ARN
+            local container_instance_arn=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-tasks \
                 --cluster "${cluster_name}" \
-                --container-instances "${container_instance_arn}" \
-                --query 'containerInstances[0].ec2InstanceId' \
+                --tasks "${selected_task_arn}" \
+                --query 'tasks[0].containerInstanceArn' \
                 --output text)
 
-            if [ -n "${ec2_instance_id}" ]; then
-                echo "ECS Exec not enabled. Preparing SSM session to EC2 instance ${ec2_instance_id}..."
-                echo ""
-                echo "Container info:"
-                echo "  Name: ${selected_container}"
-                echo "  Task ID: ${selected_task_id}"
-                echo ""
-                echo "To find the container once connected:"
-                echo "  docker ps | grep ${selected_container}"
-                echo "  docker exec -it \$(docker ps -q -f name=${selected_container}) sh"
-                echo ""
-                command_to_run="aws ${aws_profile_arg} --region=${aws_region} ssm start-session --target ${ec2_instance_id}"
+            if [ -n "${container_instance_arn}" ] && [ "${container_instance_arn}" != "None" ]; then
+                local ec2_instance_id=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-container-instances \
+                    --cluster "${cluster_name}" \
+                    --container-instances "${container_instance_arn}" \
+                    --query 'containerInstances[0].ec2InstanceId' \
+                    --output text)
+
+                if [ -n "${ec2_instance_id}" ]; then
+                    echo "ECS Exec not enabled. Preparing SSM session to EC2 instance ${ec2_instance_id}..."
+                    echo ""
+                    echo "Container info:"
+                    echo "  Name: ${selected_container}"
+                    echo "  Task ID: ${selected_task_id}"
+                    echo ""
+                    echo "To find the container once connected:"
+                    echo "  docker ps | grep ${selected_container}"
+                    echo "  docker exec -it \$(docker ps -q -f name=${selected_container}) sh"
+                    echo ""
+                    command_to_run="aws ${aws_profile_arg} --region=${aws_region} ssm start-session --target ${ec2_instance_id}"
+                else
+                    echo "Error: Could not determine EC2 instance ID for container instance."
+                    return
+                fi
             else
-                echo "Error: Could not determine EC2 instance ID for container instance."
+                echo "Error: Task does not support ECS Execute Command."
+                if [[ "${launch_type}" == "FARGATE" ]]; then
+                    echo "Task is running on Fargate - SSM fallback not available."
+                else
+                    echo "Enable ECS Execute Command on the task definition or service to use this helper."
+                fi
                 return
             fi
         else

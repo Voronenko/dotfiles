@@ -682,7 +682,7 @@ export AWS_VAULT_BACKEND=pass
 export AWS_VAULT_PASS_PREFIX="psst/aws-vault/"
 
 #
-declare -a AWS_GLOBALS=(ec2ssh ec2sshi ec2forward ec2ssm ec2sshconfig cwg)
+declare -a AWS_GLOBALS=(ec2ssh ec2sshi ec2forward ec2ssm ec2sshconfig cwg ecstask)
 
 load_ec2tools() {
 source $HOME/dotfiles/helpers/ec2ssh.zsh
@@ -691,6 +691,7 @@ source $HOME/dotfiles/helpers/ec2forward.zsh
 source $HOME/dotfiles/helpers/ec2ssm.zsh
 source $HOME/dotfiles/helpers/ec2sshconfig.zsh
 source $HOME/dotfiles/helpers/cwg.zsh
+source $HOME/dotfiles/helpers/ecstask.zsh
 }
 
 for cmd in "${AWS_GLOBALS[@]}"; do
