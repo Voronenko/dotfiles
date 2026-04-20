@@ -146,4 +146,5 @@
     "kilo-code.new.agentManagerOpen",
     "kilo-code.new.agentManager.showTerminal"
   ],
+  "terminal.external.linuxExec": "kitty",
 }

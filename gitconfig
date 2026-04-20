@@ -51,6 +51,7 @@
 	get-bis = "!f() { \\\n  cur=$(git symbolic-ref --short HEAD) || exit 1; \\\n  case \"$cur\" in \\\n    *-bis) \\\n      echo \"Already on $cur\"; \\\n      ;; \\\n    *) \\\n      bis=\"${cur}-bis\"; \\\n      git show-ref --verify --quiet \"refs/heads/$bis\" \\\n        && git checkout \"$bis\" \\\n        || git checkout -b \"$bis\"; \\\n      ;; \\\n  esac; \\\n}; f"
         pullsm = status pull --no-recurse-submodules
         restore-submodules = submodule update --init --recursive --force
+	force-push-with-lease = "!f() { branch=$(git branch --show-current); echo \"Force-push $branch to origin? (y/N)\" && read answer && [ \"$answer\" = \"y\" ] && git push  --force-with-lease origin \"$branch\"; }; f"
 
 
 [push]

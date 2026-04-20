@@ -998,3 +998,16 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
     exec 2>&3 3>&-
 fi
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# kitty-tmux-shim: Hybrid activation (env vars from kitty.conf, PATH + state init here)
+if [[ -n "${KITTY_WINDOW_ID:-}" ]]; then
+    export PATH="$HOME/dotfiles/config/kitty/kitty-tmux-shim/bin:$PATH"
+
+    _shim_root="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/kitty-tmux-shim-$(id -u)"
+    export KITTY_TMUX_SHIM_STATE="$_shim_root/default"
+    unset _shim_root
+
+    mkdir -p "$KITTY_TMUX_SHIM_STATE"
+    [[ ! -f "$KITTY_TMUX_SHIM_STATE/next_id" ]] && echo "1" > "$KITTY_TMUX_SHIM_STATE/next_id"
+    [[ ! -f "$KITTY_TMUX_SHIM_STATE/sessions" ]] && touch "$KITTY_TMUX_SHIM_STATE/sessions"
+fi
