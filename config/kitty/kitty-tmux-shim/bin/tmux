@@ -10,6 +10,9 @@ set -uo pipefail
 STATE_DIR="${KITTY_TMUX_SHIM_STATE:?KITTY_TMUX_SHIM_STATE not set}"
 SHIM_DIR="${KITTY_TMUX_SHIM_DIR:?KITTY_TMUX_SHIM_DIR not set}"
 
+# Persistent log file in STATE_DIR (ensure it exists)
+LOG_FILE="${STATE_DIR}/shim.log"
+
 if date '+%N' 2>/dev/null | grep -q '^[0-9]'; then
     _SHIM_DATE_FMT='%H:%M:%S.%N'
 else
@@ -17,13 +20,14 @@ else
 fi
 
 log_debug() {
-    if [ "${KITTY_TMUX_SHIM_DEBUG:-}" = "1" ]; then
+    # Default to ON unless explicitly disabled with KITTY_TMUX_SHIM_DEBUG=0
+    if [ "${KITTY_TMUX_SHIM_DEBUG:-1}" != "0" ]; then
         echo "[$(date "+$_SHIM_DATE_FMT")] $*" >> "${STATE_DIR}/shim.log"
     fi
 }
 
 kitty_run() {
-    if [ "${KITTY_TMUX_SHIM_DEBUG:-}" = "1" ]; then
+    if [ "${KITTY_TMUX_SHIM_DEBUG:-1}" != "0" ]; then
         kitten "$@" 2>>"${STATE_DIR}/shim.log"
     else
         kitten "$@" 2>/dev/null
@@ -207,6 +211,12 @@ display-message)
         '#{window_index}')
             echo "0"
             ;;
+        '#{window_id}')
+            echo "0"
+            ;;
+        '#{client_control_mode}')
+            echo "0"
+            ;;
         *)
             log_debug "display-message: unhandled format '$dm_format'"
             echo "main:0"
@@ -249,26 +259,36 @@ split-window)
 
     echo "${KITTY_WINDOW_ID:-0}" > "${STATE_DIR}/${PANE_KEY}.group"
 
+    # Count existing panes in this group to determine split direction
+    # This mimics tmux behavior: alternate between horizontal and vertical splits
+    pane_count=0
     for _gf in "${STATE_DIR}"/*.group; do
         [ -f "$_gf" ] || continue
         _gk="${_gf##*/}"; _gk="${_gk%.group}"
-        [ "$_gk" = "$PANE_KEY" ] && continue
         [ "$(cat "$_gf" 2>/dev/null)" = "${KITTY_WINDOW_ID:-0}" ] || continue
         _pp="${STATE_DIR}/${_gk}.pid"
         [ -f "$_pp" ] || continue
         _pd=$(cat "$_pp" 2>/dev/null)
         if [ -n "$_pd" ] && kill -0 "$_pd" 2>/dev/null; then
-            sw_direction="vsplit"
-            break
+            pane_count=$((pane_count + 1))
         fi
     done
 
-    log_debug "split-window: creating pane ${NEW_PANE_ID} direction=${sw_direction}"
+    # For Kitty, we need to force alternating splits since --location alone
+    # doesn't create true tmux-style splits. After the first split, alternate.
+    if [ "$pane_count" -ge 1 ]; then
+        # Alternate: odd count = vsplit, even count = hsplit
+        if [ $((pane_count % 2)) -eq 1 ]; then
+            sw_direction="vsplit"
+        fi
+    fi
+
+    log_debug "split-window: creating pane ${NEW_PANE_ID} direction=${sw_direction} (group panes: ${pane_count})"
 
     snapshot_env
 
     kitty_args=(
-        @ launch
+        @ --no-response launch
         --type=window
         --location="$sw_direction"
         --keep-focus
@@ -287,24 +307,39 @@ split-window)
             --location="$sw_direction"
             --keep-focus
             --cwd=current
+            --allow-remote-control
         )
         KITTY_RESPONSE=$(kitty_run "${kitty_args[@]}" -- "${SHIM_DIR}/bin/kitty-window-wrapper" "$STATE_DIR" "$SHIM_DIR" "$NEW_PANE_ID")
         KITTY_RC=$?
     fi
 
-    if [ $KITTY_RC -ne 0 ] || [ -z "$KITTY_RESPONSE" ]; then
+    if [ $KITTY_RC -ne 0 ]; then
         log_debug "split-window: all launch attempts failed"
         exit 1
     fi
 
-    KITTY_WID=$(echo "$KITTY_RESPONSE" | tr -d '[:space:]')
-    log_debug "split-window: kitty window id=${KITTY_WID}"
-
-    if ! wait_for_ready "$PANE_KEY"; then
-        log_debug "split-window: pane ${NEW_PANE_ID} failed to become ready"
-        exit 1
+    # Get window ID from launch response (works because --allow-remote-control is set)
+    # The response format with --no-response is empty, so we use .kitty_id file as fallback
+    if [ -z "$KITTY_RESPONSE" ]; then
+        # Wait for wrapper to write its window ID
+        if ! wait_for_ready "$PANE_KEY"; then
+            log_debug "split-window: pane ${NEW_PANE_ID} failed to become ready"
+            exit 1
+        fi
+        KITTY_WID=$(cat "${STATE_DIR}/${PANE_KEY}.kitty_id" 2>/dev/null)
+    else
+        KITTY_WID=$(echo "$KITTY_RESPONSE" | tr -d '[:space:]')
+        # Still wait for ready after getting window ID
+        if ! wait_for_ready "$PANE_KEY"; then
+            log_debug "split-window: pane ${NEW_PANE_ID} failed to become ready"
+            exit 1
+        fi
     fi
 
+    if [ "$KITTY_WID" = "unknown" ] || [ -z "$KITTY_WID" ]; then
+        log_debug "split-window: could not get kitty window id"
+        KITTY_WID=""
+    fi
     log_debug "split-window: pane ${NEW_PANE_ID} ready (kitty_id=${KITTY_WID})"
 
     if [ ${#sw_command[@]} -gt 0 ]; then
@@ -314,6 +349,19 @@ split-window)
             log_debug "split-window: delivered command to ${NEW_PANE_ID}"
         fi
         wait_for_named "$PANE_KEY"
+
+        # Set window title if agent name was extracted
+        agent_name_file="${STATE_DIR}/${PANE_KEY}.agent_name"
+        if [ -f "$agent_name_file" ]; then
+            agent_name=$(cat "$agent_name_file" 2>/dev/null)
+            if [ -n "$agent_name" ]; then
+                kitten @ --no-response set-window-title --match="id:${KITTY_WID}" "$agent_name" 2>&1 || true
+                log_debug "split-window: set title '${agent_name}' on kitty window ${KITTY_WID}"
+            fi
+            # Signal to wrapper that we've consumed the agent name
+            touch "${STATE_DIR}/${PANE_KEY}.agent_name_consumed"
+            rm -f "$agent_name_file"
+        fi
     fi
 
     if [ "$sw_print" = true ]; then
@@ -377,7 +425,7 @@ send-keys)
         KITTY_WID=$(kitty_get_window_id "$PANE_KEY")
         if [ -n "$KITTY_WID" ]; then
             log_debug "send-keys: FIFO gone, falling back to send-text (kitty_id=${KITTY_WID})"
-            kitten @ send-text --match="id:${KITTY_WID}" "${COMMAND_TEXT}"$'\n' 2>/dev/null || true
+            kitten @ --no-response send-text --match="id:${KITTY_WID}" "${COMMAND_TEXT}"$'\n' 2>&1 || true
         else
             log_debug "send-keys: no FIFO and no kitty_id for ${sk_target}"
         fi
@@ -415,7 +463,7 @@ kill-pane)
 
     KITTY_WID=$(kitty_get_window_id "$PANE_KEY")
     if [ -n "$KITTY_WID" ]; then
-        kitten @ close-window --match="id:${KITTY_WID}" 2>/dev/null || true
+        kitten @ --no-response close-window --match="id:${KITTY_WID}" 2>&1 || true
         log_debug "kill-pane: closed kitty window ${KITTY_WID}"
     fi
 
@@ -425,6 +473,9 @@ kill-pane)
     rm -f "${STATE_DIR}/${PANE_KEY}.ready"
     rm -f "${STATE_DIR}/${PANE_KEY}.group"
     rm -f "${STATE_DIR}/${PANE_KEY}.named"
+    rm -f "${STATE_DIR}/${PANE_KEY}.agent_name"
+    rm -f "${STATE_DIR}/${PANE_KEY}.agent_name_consumed"
+    rm -f "${STATE_DIR}/${PANE_KEY}.cmd"
 
     exit 0
     ;;
@@ -463,7 +514,8 @@ has-session)
     done
 
     if [ -z "$hs_target" ]; then
-        exit 1
+        # No target specified - we always have a default "main" session
+        exit 0
     fi
 
     if grep -qxF "$hs_target" "${STATE_DIR}/sessions" 2>/dev/null; then
@@ -548,7 +600,7 @@ new-window)
     snapshot_env
 
     kitty_args=(
-        @ launch
+        @ --no-response launch
         --type=tab
         --keep-focus
         --cwd=current
@@ -558,20 +610,21 @@ new-window)
         kitty_args+=(--title="$nw_name")
     fi
 
-    KITTY_RESPONSE=$(kitty_run "${kitty_args[@]}" -- "${SHIM_DIR}/bin/kitty-window-wrapper" "$STATE_DIR" "$SHIM_DIR" "$NEW_PANE_ID")
+    kitty_run "${kitty_args[@]}" -- "${SHIM_DIR}/bin/kitty-window-wrapper" "$STATE_DIR" "$SHIM_DIR" "$NEW_PANE_ID"
     KITTY_RC=$?
 
-    if [ $KITTY_RC -ne 0 ] || [ -z "$KITTY_RESPONSE" ]; then
+    if [ $KITTY_RC -ne 0 ]; then
         kitty_args=(
             @ launch
             --type=tab
             --keep-focus
             --cwd=current
+            --allow-remote-control
         )
         if [ -n "$nw_name" ]; then
             kitty_args+=(--title="$nw_name")
         fi
-        KITTY_RESPONSE=$(kitty_run "${kitty_args[@]}" -- "${SHIM_DIR}/bin/kitty-window-wrapper" "$STATE_DIR" "$SHIM_DIR" "$NEW_PANE_ID")
+        kitty_run "${kitty_args[@]}" -- "${SHIM_DIR}/bin/kitty-window-wrapper" "$STATE_DIR" "$SHIM_DIR" "$NEW_PANE_ID"
     fi
 
     if ! wait_for_ready "$PANE_KEY"; then
@@ -585,6 +638,24 @@ new-window)
             serialize_command "${nw_command[@]}" > "$local_fifo"
         fi
         wait_for_named "$PANE_KEY"
+
+        # Set window title if agent name was extracted
+        # Read kitty window ID from the .kitty_id file that the wrapper writes
+        KITTY_WID=$(cat "${STATE_DIR}/${PANE_KEY}.kitty_id" 2>/dev/null)
+        if [ "$KITTY_WID" = "unknown" ] || [ -z "$KITTY_WID" ]; then
+            KITTY_WID=""
+        fi
+        agent_name_file="${STATE_DIR}/${PANE_KEY}.agent_name"
+        if [ -n "$KITTY_WID" ] && [ -f "$agent_name_file" ]; then
+            agent_name=$(cat "$agent_name_file" 2>/dev/null)
+            if [ -n "$agent_name" ]; then
+                kitten @ --no-response set-window-title --match="id:${KITTY_WID}" "$agent_name" 2>&1 || true
+                log_debug "new-window: set title '${agent_name}' on kitty window ${KITTY_WID}"
+            fi
+            # Signal to wrapper that we've consumed the agent name
+            touch "${STATE_DIR}/${PANE_KEY}.agent_name_consumed"
+            rm -f "$agent_name_file"
+        fi
     fi
 
     if [ "$nw_print" = true ]; then
@@ -608,26 +679,33 @@ list-windows)
 select-pane)
     sp_target=""
     sp_title=""
+    sp_print=false
     while [ $# -gt 0 ]; do
         case "$1" in
             -t) sp_target="${2:-}"; shift 2 || shift ;;
             -T) sp_title="${2:-}"; shift 2 || shift ;;
-            -P) shift 2 || shift ;;
+            -P) sp_print=true; shift ;;
             *) shift ;;
         esac
     done
+
+    # If -P flag, print the target pane
+    if [ "$sp_print" = true ]; then
+        echo "${sp_target:-${TMUX_PANE:-%0}}"
+    fi
+
     if [ -n "$sp_title" ] && [ -n "$sp_target" ]; then
         PANE_KEY="${sp_target#%}"
         KITTY_WID=$(kitty_get_window_id "$PANE_KEY")
         if [ -n "$KITTY_WID" ]; then
-            kitten @ set-window-title --match="id:${KITTY_WID}" "$sp_title" 2>/dev/null || true
+            kitten @ --no-response set-window-title --match="id:${KITTY_WID}" "$sp_title" 2>&1 || true
             log_debug "select-pane: set title '${sp_title}' on kitty window ${KITTY_WID}"
         fi
-    elif [ -n "$sp_target" ]; then
+    elif [ -n "$sp_target" ] && [ "$sp_print" != true ]; then
         PANE_KEY="${sp_target#%}"
         KITTY_WID=$(kitty_get_window_id "$PANE_KEY")
         if [ -n "$KITTY_WID" ]; then
-            kitten @ focus-window --match="id:${KITTY_WID}" 2>/dev/null || true
+            kitten @ --no-response focus-window --match="id:${KITTY_WID}" 2>&1 || true
             log_debug "select-pane: focused kitty window ${KITTY_WID}"
         fi
     fi

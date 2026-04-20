@@ -50,6 +50,12 @@ cleanup() {
     rm -f "${STATE_DIR}/${PANE_KEY}.ready"
     rm -f "${STATE_DIR}/${PANE_KEY}.group"
     rm -f "${STATE_DIR}/${PANE_KEY}.named"
+    # Only remove .agent_name if shim hasn't consumed it yet
+    if [ ! -f "${STATE_DIR}/${PANE_KEY}.agent_name_consumed" ]; then
+        rm -f "${STATE_DIR}/${PANE_KEY}.agent_name"
+    fi
+    rm -f "${STATE_DIR}/${PANE_KEY}.agent_name_consumed"
+    rm -f "${STATE_DIR}/${PANE_KEY}.cmd"
 }
 trap cleanup EXIT
 
@@ -81,8 +87,9 @@ fi
 AGENT_NAME=""
 if [[ "$COMMAND" =~ --agent-name[[:space:]]+([^[:space:]]+) ]]; then
     AGENT_NAME="${BASH_REMATCH[1]}"
-    echo "[wrapper] renaming pane to '${AGENT_NAME}' (kitty_window=${KITTY_WINDOW_ID:-?})" >> "${STATE_DIR}/shim.log" 2>/dev/null || true
-    kitten @ set-window-title --match="id:${KITTY_WINDOW_ID}" "$AGENT_NAME" 2>>"${STATE_DIR}/shim.log" || true
+    echo "[wrapper] agent-name '${AGENT_NAME}' (kitty_window=${KITTY_WINDOW_ID:-?})" >> "${STATE_DIR}/wrapper.log" 2>/dev/null || true
+    # Store agent name for the shim to read and set window title
+    echo "$AGENT_NAME" > "${STATE_DIR}/${PANE_KEY}.agent_name"
 fi
 
 touch "${STATE_DIR}/${PANE_KEY}.named"
