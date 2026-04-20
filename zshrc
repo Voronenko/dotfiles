@@ -1003,11 +1003,15 @@ fi
 if [[ -n "${KITTY_WINDOW_ID:-}" ]]; then
     export PATH="$HOME/dotfiles/config/kitty/kitty-tmux-shim/bin:$PATH"
 
+    # Use KITTY_WINDOW_ID to isolate different kitty instances
     _shim_root="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/kitty-tmux-shim-$(id -u)"
-    export KITTY_TMUX_SHIM_STATE="$_shim_root/default"
+    export KITTY_TMUX_SHIM_STATE="$_shim_root/window-${KITTY_WINDOW_ID}"
     unset _shim_root
 
     mkdir -p "$KITTY_TMUX_SHIM_STATE"
     [[ ! -f "$KITTY_TMUX_SHIM_STATE/next_id" ]] && echo "1" > "$KITTY_TMUX_SHIM_STATE/next_id"
-    [[ ! -f "$KITTY_TMUX_SHIM_STATE/sessions" ]] && touch "$KITTY_TMUX_SHIM_STATE/sessions"
+    # Initialize sessions file with default "main" session
+    if [[ ! -f "$KITTY_TMUX_SHIM_STATE/sessions" ]]; then
+        echo "main" > "$KITTY_TMUX_SHIM_STATE/sessions"
+    fi
 fi
