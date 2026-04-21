@@ -115,27 +115,96 @@ select_secondary_worktree() {
                 }
             }
         ' |
-        fzf --height=10% --no-multi --exit-0 --prompt="sync out-of-git files from main worktree to: " |
+        fzf --height=10% --no-multi --exit-0 --prompt="select secondary worktree: " |
         awk '{print $1}'
 }
 
+show_sync_candidates() {
+    local main="$1"
+    local files_list="$2"
+
+    echo -e "${BOLD}${CYAN}=== Candidates for sync ===${NC}"
+    echo -e "${CYAN}These files are untracked/ignored in the main worktree:${NC}"
+    echo
+
+    if [[ -f "$files_list" ]]; then
+        (cd "$main" && git ls-files --others --ignored --exclude-standard \
+            | grep -v -F -f "$files_list" 2>/dev/null || true)
+    else
+        (cd "$main" && git ls-files --others --ignored --exclude-standard 2>/dev/null || true)
+    fi
+}
+
 sync_worktree() {
-    local secondary="$1"
+    local files_list="${1:-}"
+    local secondary="${2:-}"
     local main
 
     main=$(get_main_worktree)
     [[ -n "$main" ]] || die "Could not determine main worktree"
 
+    # If no secondary worktree provided, check if we're in a worktree
     if [[ -z "$secondary" ]]; then
-        secondary=$(select_secondary_worktree)
-        [[ -n "$secondary" ]] || die "No secondary worktree selected"
+        if git rev-parse --git-dir 2>/dev/null | grep -q "/worktrees/"; then
+            # We're in a secondary worktree
+            secondary="$(git rev-parse --show-toplevel)"
+            echo -e "${CYAN}Using current worktree:${NC} ${BOLD}$secondary${NC}"
+        else
+            # We're in main worktree, prompt to select secondary
+            secondary=$(select_secondary_worktree)
+            [[ -n "$secondary" ]] || die "No secondary worktree selected"
+        fi
     fi
 
     [[ -d "$secondary" ]] || die "Secondary worktree directory does not exist: $secondary"
 
-    echo -e "${CYAN}Syncing untracked files from main worktree${NC} ${BOLD}($main)${NC} ${CYAN}to secondary worktree${NC} ${BOLD}($secondary)${NC}"
-    git ls-files -o -i --exclude-standard -z | rsync -av --files-from=- --from0 "$main" "$secondary"
-    echo -e "${GREEN}Sync complete${NC}"
+    # If no files list provided, show candidates and exit
+    if [[ -z "$files_list" ]]; then
+        show_sync_candidates "$main" ""
+        echo
+        echo -e "${YELLOW}Usage:${NC} ${BOLD}git-wt sync <files-list> [worktree-path]${NC}"
+        echo -e "${YELLOW}  <files-list>${NC}  — file containing list of files to sync (one per line)"
+        echo -e "${YELLOW}  [worktree-path]${NC} — optional, will prompt if not provided"
+        return 0
+    fi
+
+    # Check if files list exists
+    [[ -f "$files_list" ]] || die "Files list does not exist: $files_list"
+
+    echo -e "${CYAN}Syncing files from list:${NC} ${BOLD}$files_list${NC}"
+    echo -e "${CYAN}From main worktree:${NC} ${BOLD}$main${NC}"
+    echo -e "${CYAN}To secondary worktree:${NC} ${BOLD}$secondary${NC}"
+    echo
+
+    # Read files from list and sync each
+    local count=0
+    while IFS= read -r file || [[ -n "$file" ]]; do
+        # Skip empty lines and comments
+        [[ -z "$file" || "$file" =~ ^[[:space:]]*# ]] && continue
+
+        local src_file="$main/$file"
+        local dst_file="$secondary/$file"
+
+        # Check if source file exists
+        if [[ ! -e "$src_file" ]]; then
+            echo -e "${YELLOW}⚠️  Source not found, skipping:${NC} $file"
+            continue
+        fi
+
+        # Create destination directory if needed
+        mkdir -p "$(dirname "$dst_file")"
+
+        # Copy file
+        if cp "$src_file" "$dst_file"; then
+            echo -e "${GREEN}✓${NC} $file"
+            ((count++))
+        else
+            echo -e "${RED}✗ Failed to copy:${NC} $file"
+        fi
+    done < "$files_list"
+
+    echo
+    echo -e "${GREEN}Sync complete${NC} — ${BOLD}$count${NC} files copied"
 }
 
 detect_worktree_root() {
@@ -367,9 +436,15 @@ Usage:
   git-wt -i        Interactively select a worktree using fzf
   git-wt add       Add a new worktree interactively
   git-wt list      List all worktrees
-  git-wt sync <path> Sync untracked files from main worktree to secondary worktree
+  git-wt sync <files-list> [worktree]  Sync files from main to secondary worktree
   git-wt -         Go to main worktree
   git-wt help      Show this help
+
+Sync command:
+  <files-list>  File containing list of files to sync (one per line)
+  [worktree]    Optional destination worktree path
+                If omitted and already in a worktree, syncs to current
+                If omitted and in main, prompts to select destination
 EOF
 }
 
@@ -396,7 +471,7 @@ case "$arg" in
         change_worktree "$dir"
         ;;
     sync)
-        sync_worktree "${2:-}"
+        sync_worktree "${2:-}" "${3:-}"
         ;;
     help|"")
         usage
