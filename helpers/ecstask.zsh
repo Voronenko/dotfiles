@@ -227,9 +227,10 @@ function ecstask() {
     fi
 
     # Parse the selected task (space-separated formatted output)
-    local selected_task_id=$(echo "${selected_task}" | awk '{print $1}')
+    local selected_short_task_id=$(echo "${selected_task}" | awk '{print $1}')
     local selected_container=$(echo "${selected_task}" | awk '{print $6}')
     local selected_task_arn=$(echo "${selected_task}" | awk '{print $7}')
+    local selected_task_id=$(_extract_task_id "${selected_task_arn}")
 
     # Get task execution info
     local task_info=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-tasks \
@@ -251,7 +252,7 @@ function ecstask() {
             --cluster ${cluster_name} \
             --task ${selected_task_id} \
             --container ${selected_container} \
-            --command \"/bin/bash\" \
+            --command \"/bin/sh\" \
             --interactive"
     else
         # Path B: Fall back to SSM on the EC2 instance (only for EC2 launch type)
