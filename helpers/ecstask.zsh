@@ -242,6 +242,26 @@ function ecstask() {
     local exec_enabled=$(echo "${task_info}" | awk -F'\t' '{print $1}')
     local launch_type=$(echo "${task_info}" | awk -F'\t' '{print $2}')
 
+    # Check if task has multiple containers and require selection
+    local all_containers=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-tasks \
+        --cluster "${cluster_name}" \
+        --tasks "${selected_task_arn}" \
+        --query 'tasks[0].containers[].name' \
+        --output json 2>/dev/null)
+
+    local container_count=$(echo "${all_containers}" | jq 'length' 2>/dev/null)
+
+    if [ "${container_count}" -gt 1 ]; then
+        echo "Task has ${container_count} containers:"
+        selected_container=$(echo "${all_containers}" | jq -r '.[]' | \
+            fzf --prompt="Select container> " --height=30% --header="Available containers")
+
+        if [ -z "${selected_container}" ]; then
+            echo "No container selected."
+            return
+        fi
+    fi
+
     # Step 7: Execute appropriate command
     local command_to_run=""
 
