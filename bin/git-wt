@@ -91,7 +91,9 @@ select_by_name() {
         awk -v q="$query" '
             /^worktree / {
                 wt=$2
-                if (wt ~ q) {
+                # Match only the basename (last component of path)
+                n = split(wt, parts, "/")
+                if (parts[n] == q) {
                     print wt
                     exit
                 }
@@ -135,6 +137,15 @@ show_sync_candidates() {
     fi
 }
 
+sync_candidates_command() {
+    local main
+
+    main=$(get_main_worktree)
+    [[ -n "$main" ]] || die "Could not determine main worktree"
+
+    show_sync_candidates "$main" ""
+}
+
 sync_worktree() {
     local files_list="${1:-}"
     local secondary="${2:-}"
@@ -158,13 +169,14 @@ sync_worktree() {
 
     [[ -d "$secondary" ]] || die "Secondary worktree directory does not exist: $secondary"
 
-    # If no files list provided, show candidates and exit
+    # If no files list provided, show usage
     if [[ -z "$files_list" ]]; then
-        show_sync_candidates "$main" ""
-        echo
         echo -e "${YELLOW}Usage:${NC} ${BOLD}git-wt sync <files-list> [worktree-path]${NC}"
-        echo -e "${YELLOW}  <files-list>${NC}  — file containing list of files to sync (one per line)"
-        echo -e "${YELLOW}  [worktree-path]${NC} — optional, will prompt if not provided"
+        echo
+        echo -e "${CYAN}  <files-list>${NC}  — file containing list of files to sync (one per line)"
+        echo -e "${CYAN}  [worktree-path]${NC} — optional, will prompt if not provided"
+        echo
+        echo -e "${YELLOW}To see files that can be synced, run:${NC} ${BOLD}git-wt sync-candidates${NC}"
         return 0
     fi
 
@@ -285,6 +297,14 @@ worktree_exists() {
         '
 }
 
+branch_exists() {
+    local branch="$1"
+    # Check if branch exists locally or remotely
+    git rev-parse --verify --quiet "$branch" >/dev/null 2>&1 && return 0
+    git rev-parse --verify --quiet "refs/remotes/$branch" >/dev/null 2>&1 && return 0
+    return 1
+}
+
 add_usage() {
     cat <<EOF
 ${BOLD}git-wt add${NC} — add a new worktree
@@ -397,12 +417,22 @@ add_worktree() {
         branch=$(select_branch_fzf)
     fi
 
+    # Auto-detect if we need -b flag (branch doesn't exist yet)
+    if [[ -z "$branch_flag" ]] && ! branch_exists "$branch"; then
+        branch_flag="-b"
+    fi
+
     # Build git worktree add command
+    # With -b/-B: git worktree add [-f] -b <branch> <path> [<start-point>]
+    # Without -b/-B: git worktree add [-f] <path> <branch>
     local git_args=()
     [[ -n "$force_flag" ]] && git_args+=("$force_flag")
-    [[ -n "$branch_flag" ]] && git_args+=("$branch_flag")
-    git_args+=("$worktree_path")
-    git_args+=("$branch")
+
+    if [[ -n "$branch_flag" ]]; then
+        git_args+=("$branch_flag" "$branch" "$worktree_path")
+    else
+        git_args+=("$worktree_path" "$branch")
+    fi
 
     echo -e "${GREEN}Creating worktree at:${NC} ${BOLD}$worktree_path${NC}"
     echo -e "${GREEN}Checking out branch:${NC} ${BOLD}$branch${NC}"
@@ -432,19 +462,23 @@ usage() {
 git-wt — fast git worktree switching
 
 Usage:
-  git-wt <name>    Switch to the first worktree matching <name>
-  git-wt -i        Interactively select a worktree using fzf
-  git-wt add       Add a new worktree interactively
-  git-wt list      List all worktrees
-  git-wt sync <files-list> [worktree]  Sync files from main to secondary worktree
-  git-wt -         Go to main worktree
-  git-wt help      Show this help
+  git-wt <name>              Switch to the first worktree matching <name>
+  git-wt -i                  Interactively select a worktree using fzf
+  git-wt add                 Add a new worktree interactively
+  git-wt list                List all worktrees
+  git-wt sync <files-list>   Sync files from main to secondary worktree
+  git-wt sync-candidates     List files that can be synced from main worktree
+  git-wt -                   Go to main worktree
+  git-wt help                Show this help
 
 Sync command:
   <files-list>  File containing list of files to sync (one per line)
   [worktree]    Optional destination worktree path
                 If omitted and already in a worktree, syncs to current
                 If omitted and in main, prompts to select destination
+
+Sync-candidates command:
+  Lists files in main worktree that are untracked/ignored (potential sync targets)
 EOF
 }
 
@@ -473,11 +507,34 @@ case "$arg" in
     sync)
         sync_worktree "${2:-}" "${3:-}"
         ;;
+    sync-candidates)
+        sync_candidates_command
+        ;;
     help|"")
         usage
         ;;
     *)
         dir=$(select_by_name "$arg")
+        if [[ -z "$dir" ]]; then
+            echo -e "${YELLOW}No worktree matching '${BOLD}$arg${NC}${YELLOW}' found${NC}"
+            echo -e "${CYAN}Launching interactive selection...${NC}"
+            dir=$(select_interactive)
+            # Validate the selection is an actual directory
+            if [[ -n "$dir" && ! -d "$dir" ]]; then
+                echo -e "${YELLOW}Selection is not a valid worktree directory${NC}"
+                dir=""
+            fi
+            if [[ -z "$dir" ]]; then
+                echo -ne "${CYAN}Create new worktree '${BOLD}$arg${NC}${CYAN}'? [y/N] ${NC}"
+                read -r -n 1 answer
+                echo
+                if [[ "$answer" =~ ^[Yy]$ ]]; then
+                    add_worktree "$arg"
+                else
+                    exit 0
+                fi
+            fi
+        fi
         change_worktree "$dir"
         ;;
 esac
