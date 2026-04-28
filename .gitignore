@@ -50,6 +50,7 @@ bin/esxi_vm_functions.pyc
 bin/exa
 bin/fd*
 bin/fiksim
+bin/fnm
 bin/fzf
 bin/gdu
 bin/gh

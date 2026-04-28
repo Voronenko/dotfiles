@@ -495,6 +495,10 @@ add-zsh-hook chpwd load-nvmrc
 
 alias node_add_bin_path='export PATH="./node_modules/.bin/:$PATH"'
 
+# fallback to use fnm instead of nvm
+elif command -v fnm >/dev/null 2>&1; then
+  # initialize fnm (works for both bash and zsh)
+  eval "$(fnm env --use-on-cd)"
 fi
 
 # Python development
@@ -902,9 +906,7 @@ source ~/dotfiles/helpers/forgit.plugin.zsh
 source  ~/dotfiles/helpers/fzf-git.sh
 source ~/dotfiles/helpers/fzf-docker.zsh
 source ~/dotfiles/helpers/jq.plugin.zsh
-if [ -f $HOME/.terraform-version ]; then
-  source ~/dotfiles/helpers/tfenv-zsh.plugin.zsh
-fi
+source ~/dotfiles/helpers/tfenv-zsh.plugin.zsh
 
 # fco - checkout git branch/tag
 unalias gco 2>/dev/null

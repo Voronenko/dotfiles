@@ -498,6 +498,17 @@ install-docker-lint:
 install-docker-ctop:
 	curl -sLo ~/dotfiles/bin/ctop https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64
 	chmod +x ~/dotfiles/bin/ctop
+
+install-nvm-fnm:
+	@LATEST_VERSION=$$(curl -s "https://api.github.com/repos/Schniz/fnm/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading fnm version $$LATEST_VERSION..."; \
+	mkdir -p /tmp/fnm; \
+	curl -sLo /tmp/fnm/fnm.zip "https://github.com/Schniz/fnm/releases/download/$$LATEST_VERSION/fnm-linux.zip"; \
+	cd /tmp/fnm && unzip fnm.zip; \
+	mv /tmp/fnm/fnm ~/dotfiles/bin/; \
+	chmod +x ~/dotfiles/bin/fnm; \
+	rm -rf /tmp/fnm; \
+	echo "fnm installed successfully in ~/dotfiles/bin"
 # /DOCKER TOOLS
 
 

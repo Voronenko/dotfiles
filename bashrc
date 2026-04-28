@@ -256,6 +256,11 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 
+# fallback to fnm
+elif command -v fnm >/dev/null 2>&1; then
+  # initialize fnm (works for both bash and zsh)
+  eval "$(fnm env --use-on-cd)"
+
 fi
 
 # /NODEDEV

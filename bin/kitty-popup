@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
-
 set -e
+
+WITH_TABS=true
+
+# Parse args
+for arg in "$@"; do
+    case "$arg" in
+        --with-tabs)
+            WITH_TABS=true
+            shift
+            ;;
+    esac
+done
 
 # Detect title
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -9,8 +20,15 @@ else
     title=$(basename "$PWD")
 fi
 
-# Fallback just in case
 title=${title:-shell}
 
-# Run kitty in background
-kitty --title "$title" >/dev/null 2>&1 &
+SOCKET="unix:/tmp/kitty"
+
+# Check if kitty is already running
+if $WITH_TABS && kitty @ --to "$SOCKET" ls >/dev/null 2>&1; then
+    # Open new tab in existing kitty
+    kitty @ --to "$SOCKET" launch --type=tab --tab-title "$title"
+else
+    # Start new kitty instance
+    kitty --title "$title" >/dev/null 2>&1 &
+fi
