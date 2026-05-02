@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MENU_FILE="$HOME/.config/kitty/commands.yaml"
+MENU_FILE="$HOME/dotfiles/config/zellij/zellij_bookmarks.yaml"
 ENTRY_NAME="$1"
 
 # Extract commands
