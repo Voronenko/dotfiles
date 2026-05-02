@@ -8,8 +8,8 @@ choice=$(
   fzf --prompt="F2 > " --height=80% --border \
       --delimiter='|' \
       --with-nth=1 \
-      --preview='echo {2}' \
-      --preview-window=down:3:wrap
+      --preview="$HOME/dotfiles/config/kitty/f2-preview-helper.sh {1}" \
+      --preview-window=down:10:wrap
 )
 
 [ -z "$choice" ] && exit 0
@@ -26,7 +26,7 @@ mapfile -t CMDS < <(
   exit 1
 }
 
-# Send commands to the parent window
+# Send commands to the parent window (id:-2 = second most recent window)
 for cmd in "${CMDS[@]}"; do
   kitty @ send-text --match=id:-2 "$cmd"$'\n'
 done
