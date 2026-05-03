@@ -1,0 +1,190 @@
+{
+    "$schema": "https://lnav.org/schemas/config-v1.schema.json",
+    "global": {
+        "keymap_def_alt_warning": "Press ${ansi_bold}w${ansi_norm}/${ansi_bold}W${ansi_norm} to move forward/backward through ${ansi_yellow}warning${ansi_norm} messages",
+        "keymap_def_alt_hour_boundary": "Press ${ansi_bold}6${ansi_bold}/${ansi_bold}^${ansi_norm} to move to the next/previous hour boundary",
+        "keymap_def_scroll_horiz": "Press \\'${ansi_bold}>${ansi_norm}\\' or \\'${ansi_bold}<${ansi_norm}\\' to scroll horizontally to a search result",
+        "keymap_def_next_user_mark": "Press ${ansi_bold}u${ansi_norm}/${ansi_bold}U${ansi_norm} to move forward/backward through user bookmarks",
+        "keymap_def_db_view": "Press ${ansi_bold}v${ansi_norm}/${ansi_bold}V${ansi_norm} to switch to the SQL result view",
+        "keymap_def_hist_view": "Press ${ansi_bold}i${ansi_norm}/${ansi_bold}I${ansi_norm} to switch to the histogram view",
+        "keymap_def_text_view": "Press ${ansi_bold}t${ansi_norm} to switch to the text view",
+        "keymap_def_pop_view": "Press ${ansi_bold}q${ansi_norm} to return to the previous view",
+        "keymap_def_zoom": "Press ${ansi_bold}z${ansi_norm}/${ansi_bold}Z${ansi_norm} to zoom in/out",
+        "keymap_def_clear": "Press ${ansi_bold}C${ansi_norm} to clear marked messages",
+        "keymap_def_prev_section": "Press ${ansi_bold}{${ansi_norm} to move to the previous section in the view",
+        "keymap_def_next_section": "Press ${ansi_bold}}${ansi_norm} to move to the next section in the view",
+        "keymap_def_next_mark": "Press ${ansi_bold}c${ansi_norm} to copy marked lines to the clipboard; press ${ansi_bold}C${ansi_norm} to clear marked lines",
+        "keymap_def_time_offset": "Press ${ansi_bold}s${ansi_norm}/${ansi_bold}S${ansi_norm} to move forward/backward through slow downs"
+    },
+    "ui": {
+        "keymap-defs": {
+            "default": {
+                "x31": {
+                    "command": ":goto next 10 minutes after the hour"
+                },
+                "x32": {
+                    "command": ":goto next 20 minutes after the hour"
+                },
+                "x33": {
+                    "command": ":goto next 30 minutes after the hour"
+                },
+                "x34": {
+                    "command": ":goto next 40 minutes after the hour"
+                },
+                "x35": {
+                    "command": ":goto next 50 minutes after the hour"
+                },
+                "x36": {
+                    "command": ":goto next hour"
+                },
+                "x37": {
+                    "command": ":goto previous minute"
+                },
+                "x38": {
+                    "command": ":goto next minute"
+                },
+                "x21": {
+                    "command": ":goto last 10 minutes after the hour"
+                },
+                "x40": {
+                    "command": ":goto last 20 minutes after the hour"
+                },
+                "x23": {
+                    "command": ":goto last 30 minutes after the hour"
+                },
+                "x24": {
+                    "command": ":goto last 40 minutes after the hour"
+                },
+                "x25": {
+                    "command": ":goto last 50 minutes after the hour"
+                },
+                "x5e": {
+                    "command": ":goto last hour"
+                },
+                "x06": {
+                    "command": ";UPDATE lnav_view_filters SET enabled = 1 - enabled WHERE view_name = (SELECT name FROM lnav_view_stack WHERE name in ('log', 'text') ORDER BY rowid DESC LIMIT 1)"
+                },
+                "x0c": {
+                    "command": ":write-screen-to -"
+                },
+                "x12": {
+                    "command": ":reset-session"
+                },
+                "x18": {
+                    "command": ";UPDATE lnav_views SET movement = (CASE movement WHEN 'top' THEN 'cursor' ELSE 'top' END) WHERE name = (SELECT name FROM lnav_top_view)"
+                },
+                "x04": {
+                    "command": ";UPDATE lnav_views SET top = top + (height / 2), selection = (CASE movement WHEN 'top' THEN selection ELSE top + (height / 2) + (selection - top) END) WHERE name = (SELECT name FROM lnav_top_view)"
+                },
+                "x15": {
+                    "command": ";UPDATE lnav_views SET top = max(0, top - (height / 2)), selection = (CASE movement WHEN 'top' THEN selection ELSE max(0, top - (height / 2) + (selection - top)) END) WHERE name = (SELECT name FROM lnav_top_view)"
+                },
+                "x3d": {
+                    "command": ";UPDATE lnav_views SET paused = 1 - paused"
+                },
+                "x58": {
+                    "command": ":close"
+                },
+                "x3a": {
+                    "command": ":prompt command"
+                },
+                "x7c": {
+                    "command": ":prompt script"
+                },
+                "x2f": {
+                    "command": ":prompt search"
+                },
+                "x3b": {
+                    "command": ":prompt sql"
+                },
+                "x45": {
+                    "command": ":prev-mark error",
+                    "alt-msg": "${keymap_def_alt_warning}"
+                },
+                "x65": {
+                    "command": ":next-mark error",
+                    "alt-msg": "${keymap_def_alt_warning}"
+                },
+                "x57": {
+                    "command": ":prev-mark warning",
+                    "alt-msg": "${keymap_def_alt_hour_boundary}"
+                },
+                "x77": {
+                    "command": ":next-mark warning",
+                    "alt-msg": "${keymap_def_alt_hour_boundary}"
+                },
+                "x63": {
+                    "command": "|lnav-copy-text",
+                    "alt-msg": "${keymap_def_clear}"
+                },
+                "x67": {
+                    "command": ":goto 0"
+                },
+                "x6d": {
+                    "command": ":mark",
+                    "alt-msg": "${keymap_def_next_user_mark}"
+                },
+                "x4e": {
+                    "command": ":prev-mark search",
+                    "alt-msg": "${keymap_def_scroll_horiz}"
+                },
+                "x6e": {
+                    "command": ":next-mark search",
+                    "alt-msg": "${keymap_def_scroll_horiz}"
+                },
+                "x54": {
+                    "command": ";UPDATE lnav_views SET options = json_set(options, '$.row-time-offset', CASE jget(options, '/row-time-offset', 'hide') WHEN 'hide' THEN 'show' ELSE 'hide' END) WHERE name = (SELECT name FROM lnav_top_view)",
+                    "alt-msg": "${keymap_def_time_offset}"
+                },
+                "x70": {
+                    "command": ";UPDATE lnav_views SET options = json_set(options, '$.row-details', CASE jget(options, '/row-details', 'hide') WHEN 'hide' THEN 'show' ELSE 'hide' END) WHERE name = (SELECT name FROM lnav_top_view)"
+                },
+                "x78": {
+                    "command": ";UPDATE lnav_views SET options = json_set(options, '$.hidden-fields', CASE jget(options, '/hidden-fields', 'hide') WHEN 'hide' THEN 'show' ELSE 'hide' END) WHERE name = (SELECT name FROM lnav_top_view)"
+                },
+                "x17": {
+                    "command": ";UPDATE lnav_views SET options = json_set(options, '$.word-wrap', CASE jget(options, '/word-wrap', 'none') WHEN 'none' THEN 'normal' ELSE 'none' END) WHERE name = (SELECT name FROM lnav_top_view)"
+                },
+                "x75": {
+                    "command": ":next-mark",
+                    "alt-msg": "${keymap_def_next_mark}"
+                },
+                "x55": {
+                    "command": ":prev-mark"
+                },
+                "x7d": {
+                    "command": ":next-section",
+                    "alt-msg": "${keymap_def_prev_location}"
+                },
+                "x7b": {
+                    "command": ":prev-section",
+                    "alt-msg": "${keymap_def_next_location}"
+                },
+                "x3f": {
+                    "command": ":toggle-view help"
+                },
+                "x69": {
+                    "command": ":toggle-view histogram",
+                    "alt-msg": "${keymap_def_zoom}"
+                },
+                "x50": {
+                    "command": ":toggle-view pretty",
+                    "alt-msg": "${keymap_def_pop_view}"
+                },
+                "x60": {
+                    "id": "org.lnav.key.breadcrumb.focus",
+                    "command": ":prompt breadcrumb"
+                },
+                "x76": {
+                    "command": ":toggle-view db"
+                },
+                "x71": {
+                    "command": "|lnav-pop-view ${keyseq}"
+                },
+                "x51": {
+                    "command": "|lnav-pop-view ${keyseq}"
+                }
+            }
+        }
+    }
+}

@@ -2,6 +2,9 @@
 
 MENU_FILE="$HOME/dotfiles/config/zellij/zellij_bookmarks.yaml"
 
+# Get parent window ID dynamically (second newest window, excluding this overlay)
+PARENT_ID=$(kitty @ ls | jq -r '.[].tabs[].windows[] | .id' | sort -rn | sed -n '2p')
+
 # Build menu: name | desc (using | as delimiter)
 choice=$(
   yq -r '.bookmarks[] | .name + "|" + (.desc // "")' "$MENU_FILE" |
@@ -26,7 +29,7 @@ mapfile -t CMDS < <(
   exit 1
 }
 
-# Send commands to the parent window (id:-2 = second most recent window)
+# Send commands to the parent window using explicit ID
 for cmd in "${CMDS[@]}"; do
-  kitty @ send-text --match=id:-2 "$cmd"$'\n'
+  kitty @ send-text --match="id:$PARENT_ID" "$cmd"$'\n'
 done
