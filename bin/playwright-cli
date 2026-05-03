@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+export DEFAULT_PLAYWRIGHT_BIN="$HOME/.nvm/versions/node/v22.14.0/bin/"
+
+# If playwright-cli exists in PATH (excluding this script), use it
+REAL_BIN=$(command -v playwright-cli | grep -v "$(realpath "$0")")
+
+if [ -n "$REAL_BIN" ]; then
+  exec "$REAL_BIN" "$@"
+fi
+
+# Fallback to known nvm location
+NVM_BIN="$DEFAULT_PLAYWRIGHT_BIN/playwright-cli"
+
+if [ -x "$NVM_BIN" ]; then
+  exec "$NVM_BIN" "$@"
+fi
+
+echo "playwright-cli not found in PATH or fallback location" >&2
+exit 1
