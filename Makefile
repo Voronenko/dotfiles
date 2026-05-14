@@ -31,6 +31,19 @@ swiss-db: install-db-postgres-pgcli install-db-mysql-mycli
 	@echo clients installed
 
 # ZSH
+zsh-fix-oh-my-zsh:
+	@if [ -d "$(HOME)/dotfiles/oh-my-zsh" ] && [ ! -d "$(HOME)/dotfiles/oh-my-zsh/.git" ]; then \
+		echo "oh-my-zsh exists but is not a git repo. Removing and recloning..."; \
+		rm -rf $(HOME)/dotfiles/oh-my-zsh; \
+		git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $(HOME)/dotfiles/oh-my-zsh; \
+		echo "oh-my-zsh fixed!"; \
+	elif [ ! -d "$(HOME)/dotfiles/oh-my-zsh" ]; then \
+		echo "oh-my-zsh does not exist. Cloning..."; \
+		git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $(HOME)/dotfiles/oh-my-zsh; \
+	else \
+		echo "oh-my-zsh is already a valid git repo."; \
+	fi
+
 zsh-fzf-repo:
 	rm -rf ~/.fzf
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -1752,6 +1765,28 @@ install-node-bun:
 	rm -rf $$tmp_dir; \
 	echo "bun installed to $$HOME/dotfiles/bin/bun"
 	ln -s $(HOME)/dotfiles/bin/bun $(HOME)/dotfiles/bin/bunx
+
+install-ai-opencode:
+	@set -euo pipefail; \
+	mkdir -p "$(CURDIR)/bin"; \
+	os="$$(uname -s | tr '[:upper:]' '[:lower:]')"; \
+	case "$$os" in \
+		darwin*) archive="opencode-darwin-x64.zip" ;; \
+		linux*)  archive="opencode-linux-x64.tar.gz" ;; \
+		*) echo "unsupported os: $$os"; exit 1 ;; \
+	esac; \
+	url="https://github.com/anomalyco/opencode/releases/latest/download/$$archive"; \
+	tmp="$$(mktemp -d)"; \
+	echo "Downloading $$url"; \
+	curl -fsSL "$$url" -o "$$tmp/$$archive"; \
+	case "$$archive" in \
+		*.tar.gz) tar -xzf "$$tmp/$$archive" -C "$$tmp" ;; \
+		*.zip) unzip -q "$$tmp/$$archive" -d "$$tmp" ;; \
+	esac; \
+	mv "$$tmp/opencode" "$(CURDIR)/bin/opencode"; \
+	chmod +x "$(CURDIR)/bin/opencode"; \
+	rm -rf "$$tmp"; \
+	echo "Installed to $(CURDIR)/bin/opencode"
 
 # https://github.com/netblue30/firejail/releases/download/0.9.64.2/firejail_0.9.64.2_1_amd64.deb
 # https://github.com/iann0036/iamlive

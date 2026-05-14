@@ -40,8 +40,10 @@ if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
     mv ~/.ssh/tmp_hosts ~/.ssh/known_hosts
 
     echo "Clone my oh-my-zsh repository from GitHub only if it isn't already present"
-    if [[ ! -d $dir/oh-my-zsh/ ]]; then
-        git clone https://github.com/robbyrussell/oh-my-zsh.git
+    if [[ ! -d $dir/oh-my-zsh/ ]] || [[ ! -d $dir/oh-my-zsh/.git ]]; then
+        echo "oh-my-zsh not found or not a valid git repo. Cloning..."
+        rm -rf $dir/oh-my-zsh/
+        git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $dir/oh-my-zsh
     fi
     echo "Set the default shell to zsh if it isn't currently set to zsh"
     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
@@ -72,8 +74,10 @@ else
 
   echo "Clone my oh-my-zsh repository from GitHub only if it isn't already present"
   echo "In case if in the future you would like to use zsh :)"
-  if [[ ! -d $dir/oh-my-zsh/ ]]; then
-      git clone https://github.com/robbyrussell/oh-my-zsh.git
+  if [[ ! -d $dir/oh-my-zsh/ ]] || [[ ! -d $dir/oh-my-zsh/.git ]]; then
+      echo "oh-my-zsh not found or not a valid git repo. Cloning..."
+      rm -rf $dir/oh-my-zsh/
+      git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $dir/oh-my-zsh
   fi
 
 fi

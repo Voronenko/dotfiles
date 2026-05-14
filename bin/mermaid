@@ -1,3 +1,37 @@
 #!/usr/bin/env bash
-export PATH="/home/slavko/.nvm/versions/node/v22.14.0/bin:$PATH"
-exec /home/slavko/.nvm/versions/node/v22.14.0/bin/mmdc "$@" >/dev/null
+set -euo pipefail
+
+DEFAULT_NODEJS_BIN="${DEFAULT_NODEJS_BIN:-$HOME/.nvm/versions/node/v22.14.0/bin}"
+TOOL_COMMAND="mmdc"
+
+export DEFAULT_NODEJS_BIN
+
+resolve_path() {
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "$1"
+  else
+    readlink -f "$1"
+  fi
+}
+
+SELF="$(resolve_path "$0")"
+
+# Try PATH first
+if REAL_BIN="$(command -v "$TOOL_COMMAND" 2>/dev/null)"; then
+  REAL_BIN="$(resolve_path "$REAL_BIN")"
+
+  # Avoid recursive self-exec
+  if [[ "$REAL_BIN" != "$SELF" ]]; then
+    exec "$REAL_BIN" "$@"
+  fi
+fi
+
+# Fallback
+TOOL_BIN="$DEFAULT_NODEJS_BIN/$TOOL_COMMAND"
+
+if [[ -x "$TOOL_BIN" ]]; then
+  exec "$TOOL_BIN" "$@"
+fi
+
+echo "$TOOL_COMMAND not found in PATH or fallback location" >&2
+exit 1

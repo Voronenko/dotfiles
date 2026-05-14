@@ -21,6 +21,22 @@ print_pur () { local i; for i in "$@"; do echo -e "${C_PUR}${i}${C_NOC}"; done }
 print_cya () { local i; for i in "$@"; do echo -e "${C_CYA}${i}${C_NOC}"; done }
 print_whi () { local i; for i in "$@"; do echo -e "${C_WHI}${i}${C_NOC}"; done }
 
+ensure_ssh_key() {
+    if [[ ! -f ~/.ssh/id_ed25519 ]] && [[ ! -f ~/.ssh/id_rsa ]]; then
+        print_grn "No SSH key found. Generating ed25519 key pair..."
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+        local key_comment="${USER}@$(hostname)"
+        ssh-keygen -t ed25519 -C "$key_comment" -f ~/.ssh/id_ed25519 -N ""
+        print_grn "SSH key generated: ~/.ssh/id_ed25519"
+        print_grn "Public key contents:"
+        cat ~/.ssh/id_ed25519.pub
+        print_grn "Add this key to GitHub: https://github.com/settings/keys"
+        print_grn "Press Enter to continue or Ctrl+C to abort..."
+        read
+    fi
+}
+
 SUDO=${BECOME_METHOD:-sudo}
 
 if [ "$1" == "docker" ]; then
@@ -121,6 +137,7 @@ if [ "$1" == "simple" ] || [ "$1" == "docker" ]; then
   git clone https://github.com/Voronenko/dotfiles.git
 else
   git clone https://github.com/Voronenko/dotfiles.git
+  ensure_ssh_key
   cd dotfiles && git remote set-url origin git@github.com:Voronenko/dotfiles.git && cd ~
 fi
 
@@ -131,6 +148,7 @@ fi
 
 if [ "$1" == "full" ]; then
   git clone https://github.com/Voronenko/ansible-developer_recipes.git
+  ensure_ssh_key
   cd ansible-developer_recipes && git remote set-url origin git@github.com:Voronenko/ansible-developer_recipes.git && cd ~
 fi
 
