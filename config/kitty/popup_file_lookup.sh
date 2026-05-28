@@ -15,7 +15,7 @@ fi
 
 # Use fd or find to list files, then fzf for selection
 if command -v fd &>/dev/null; then
-  selected=$(fd --hidden --exclude '.git' . "$GIT_ROOT" | fzf --prompt="File in $prompt_path > " --height=80% --border)
+  selected=$(fd --hidden --no-ignore-vcs --exclude '.git' . "$GIT_ROOT" | fzf --prompt="File in $prompt_path > " --height=80% --border)
 else
   selected=$(find "$GIT_ROOT" -type f ! -path '*/.git/*' | fzf --prompt="File in $prompt_path > " --height=80% --border)
 fi

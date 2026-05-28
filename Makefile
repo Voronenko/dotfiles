@@ -535,6 +535,17 @@ install-k3s-up:
 	curl -sLo ~/dotfiles/bin/k3sup https://github.com/alexellis/k3sup/releases/download/0.10.2/k3sup
 	chmod +x ~/dotfiles/bin/k3sup
 
+install-k3d-local:
+	@set -e; \
+	BIN_DIR="$$HOME/dotfiles/bin"; \
+	mkdir -p "$$BIN_DIR"; \
+	VERSION="$$(curl -fsSL https://api.github.com/repos/k3d-io/k3d/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')"; \
+	echo "Installing k3d $$VERSION for linux-amd64 into $$BIN_DIR"; \
+	curl -fsSL -o "$$BIN_DIR/k3d" \
+		"https://github.com/k3d-io/k3d/releases/download/$$VERSION/k3d-linux-amd64"; \
+	chmod +x "$$BIN_DIR/k3d"; \
+	"$$BIN_DIR/k3d" version
+
 # tail utility for kubernetes
 install-k8s-stern:
 	mkdir -p /tmp/stern

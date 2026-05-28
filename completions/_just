@@ -1,0 +1,13 @@
+_just() {
+  local cur
+  cur="${COMP_WORDS[COMP_CWORD]}"
+
+  # only complete first argument after "just"
+  if [[ $COMP_CWORD -eq 1 && -f justfile ]]; then
+    local recipes
+    recipes=$(just --summary | sed 's/:.*//')
+    COMPREPLY=( $(compgen -W "$recipes" -- "$cur") )
+  fi
+}
+
+complete -F _just just

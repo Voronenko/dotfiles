@@ -2,6 +2,7 @@
 bin/act
 bin/actionlint
 bin/ag
+bin/agent
 bin/ai-files-cli*
 bin/amtool
 bin/apktool
@@ -63,6 +64,7 @@ bin/github-release
 bin/goose
 bin/govc
 bin/grafanactl
+bin/grok
 bin/grype
 bin/hadolint
 bin/hcloud
@@ -79,6 +81,7 @@ bin/jsonnet
 bin/jsonnetfmt
 bin/just
 bin/k0sctl
+bin/k3d
 bin/k3sup
 bin/k9s
 bin/kapitan
@@ -192,6 +195,7 @@ completions/_xh.ps1
 config/zellij/plugins/
 esxcli.logesxcli.log
 .idea
+.mcp.json
 oh-my-zsh
 *.phar
 plans/
