@@ -172,6 +172,12 @@ install-console-lazynpm:
 	tar -xvzf /tmp/lazynpm.tar.gz -C /tmp
 	mv /tmp/lazynpm ~/dotfiles/bin
 
+install-git-revdiff:
+	curl -sLo /tmp/revdiff.tar.gz https://github.com/umputun/revdiff/releases/download/v$(shell curl -s https://api.github.com/repos/umputun/revdiff/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/revdiff_$(shell curl -s https://api.github.com/repos/umputun/revdiff/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
+	tar -xvzf /tmp/revdiff.tar.gz -C /tmp
+	mv /tmp/revdiff $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/revdiff
+
 # http://lnav.org/
 install-console-logreader-lnav:
 	curl -sLo /tmp/lnav.zip https://github.com/tstack/lnav/releases/download/v0.14.0/lnav-0.14.0-linux-musl-x86_64.zip

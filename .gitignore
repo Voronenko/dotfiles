@@ -134,6 +134,7 @@ bin/promlens
 bin/promtool
 bin/qsv*
 bin/rakkess
+bin/revdiff
 bin/rider
 bin/s5cmd
 bin/schemacrawler
