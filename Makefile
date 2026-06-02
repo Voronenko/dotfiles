@@ -267,17 +267,13 @@ install-console-diffsofancy:
 	chmod +x ~/dotfiles/bin/diff-so-fancy
 
 install-console-dyff:
-	@LATEST_VERSION=$$(curl -s "https://api.github.com/repos/homeport/dyff/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
-	echo "Downloading dyff version $$LATEST_VERSION... from https://github.com/homeport/dyff/releases/download/$$LATEST_VERSION/dyff_$$LATEST_VERSION_linux_amd64.tar.gz"; \
-	curl -L -o /tmp/dyff.tar.gz "https://github.com/homeport/dyff/releases/download/$$LATEST_VERSION/dyff_$$LATEST_VERSION_linux_amd64.tar.gz"; \
-	echo "Unpacking dyff..."; \
-	tar -xzf /tmp/dyff.tar.gz -C /tmp --strip-components=1 dyff; \
-	echo "Moving dyff to ~/dotfiles/bin..."; \
-	mkdir -p ~/dotfiles/bin; \
-	mv /tmp/dyff ~/dotfiles/bin/; \
-	echo "Setting executable permissions..."; \
-	chmod +x ~/dotfiles/bin/dyff; \
-	echo "dyff installed successfully in ~/dotfiles/bin"; \
+	@echo "Downloading latest dyff..."
+	curl -sLo /tmp/dyff.tar.gz https://github.com/homeport/dyff/releases/download/v$(shell curl -s https://api.github.com/repos/homeport/dyff/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/dyff_$(shell curl -s https://api.github.com/repos/homeport/dyff/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
+	tar -xzf /tmp/dyff.tar.gz -C /tmp dyff
+	mkdir -p ~/dotfiles/bin
+	mv /tmp/dyff ~/dotfiles/bin/
+	chmod +x ~/dotfiles/bin/dyff
+	@echo "dyff installed successfully in ~/dotfiles/bin"
 	rm -f /tmp/dyff.tar.gz
 
 
