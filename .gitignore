@@ -42,6 +42,7 @@ bin/docker-slim
 bin/docker-slim-sensor
 bin/doctl
 bin/dry
+bin/dyff
 bin/eksctl
 bin/ep
 bin/esxi-vm-create

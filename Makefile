@@ -158,7 +158,7 @@ install-console-lazygit:
 	mv /tmp/lazygit ~/dotfiles/bin
 
 install-console-lazydocker:
-	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.25.0/lazydocker_0.25.0_Linux_x86.tar.gz
+	curl -sLo /tmp/lazydocker.tar.gz https://github.com/jesseduffield/lazydocker/releases/download/v0.25.2/lazydocker_0.25.2_Linux_x86.tar.gz
 	tar -xvzf /tmp/lazydocker.tar.gz -C /tmp
 	mv /tmp/lazydocker ~/dotfiles/bin
 
