@@ -120,6 +120,7 @@ bin/nitrokey-app
 bin/oc
 bin/openapi-generator-cli.jar
 bin/opencode
+bin/osc
 bin/packer
 bin/phpmd
 bin/plantuml-full

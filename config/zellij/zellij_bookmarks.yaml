@@ -99,6 +99,19 @@ bookmarks:
   labels:
   - "files"
 
+- name: "r-osc-install"
+  desc: "Installs osc on remote"
+  cmds:
+  - "read -p \"Do you want to install osc? (Y/N): \" answer; [[ \"$answer\" =~ ^[Yy]$ ]] && echo OK || { echo \"Exiting without installation.\"; exit 0; }"
+  - "OSC_VERSION=$$(curl -s https://api.github.com/repos/theimpostor/osc/releases/latest | grep tag_name | cut -d '\"' -f 4 | cut -c 2-); curl -sLo /tmp/osc.tar.gz https://github.com/theimpostor/osc/releases/download/$$OSC_VERSION/osc_Linux_x86_64.tar.gz"
+  - "tar -xvzf /tmp/osc.tar.gz -C /tmp"
+  - "sudo mv /tmp/osc /usr/local/bin/"
+  - "sudo chmod +x /usr/local/bin/osc"
+  - "rm -f /tmp/osc.tar.gz"
+  exec: true
+  labels:
+  - "files"
+
 - name: "r-dotfiles-docker-install"
   desc: "Installs dotfiles in docker container"
   cmds:

@@ -172,6 +172,13 @@ install-console-lazynpm:
 	tar -xvzf /tmp/lazynpm.tar.gz -C /tmp
 	mv /tmp/lazynpm ~/dotfiles/bin
 
+install-console-osc:
+	curl -sLo /tmp/osc.tar.gz https://github.com/theimpostor/osc/releases/download/v$(shell curl -s https://api.github.com/repos/theimpostor/osc/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/osc_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/osc.tar.gz -C /tmp
+	mv /tmp/osc $(HOME)/dotfiles/bin
+	chmod +x $(HOME)/dotfiles/bin/osc
+	rm -f /tmp/osc.tar.gz
+
 install-git-revdiff:
 	curl -sLo /tmp/revdiff.tar.gz https://github.com/umputun/revdiff/releases/download/v$(shell curl -s https://api.github.com/repos/umputun/revdiff/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/revdiff_$(shell curl -s https://api.github.com/repos/umputun/revdiff/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
 	tar -xvzf /tmp/revdiff.tar.gz -C /tmp

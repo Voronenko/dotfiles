@@ -4,3 +4,5 @@
 .ai*/
 .env.local
 .python-version-override
+
+**/.claude/settings.local.json
