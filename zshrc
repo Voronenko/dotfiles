@@ -103,6 +103,11 @@ source ${HOME}/dotfiles/bin/kube-ps1.sh
 # User configuration
 
 export PATH=${HOME}/dotfiles/bin:${HOME}/dotfiles/adr:$HOME/.jenv/bin:$HOME/.local/bin:/usr/local/bin:$HOME/config/composer/vendor/bin:$PATH:${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.bun/bin:${HOME}/dotfiles/bin/wrappers/
+
+# AI tools bin - append to PATH if present
+if [[ -d "$HOME/ai-files/bin" ]]; then
+  export PATH="$PATH:$HOME/ai-files/bin"
+fi
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 export DISABLE_AUTO_TITLE='true'
 
@@ -402,12 +407,7 @@ if [[ -f ~/dotfiles/bin/vault ]]; then
   complete -o nospace -C /home/slavko/dotfiles/bin/vault vault
 fi
 
-export PATH=$PATH:${HOME}/dotfiles/bin
-
 if type "kubectl" > /dev/null; then
-  # load support for kubernetes context switch
-  export PATH=$PATH:${HOME}/dotfiles/bin
-
   # heavy init
   function onkube() {
      kubeon
@@ -454,6 +454,8 @@ alias reset_rights_here='find -type f -exec chmod --changes 644 {} + -o -type d 
 if [[ -f ~/.nvm/nvm.sh ]]; then
 
 #source ~/.nvm/nvm.sh
+
+export COREPACK_ENABLE_AUTO_PIN=0
 
 declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
 NODE_GLOBALS+=("nvm", "nvm_find_nvmrc")
