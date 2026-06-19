@@ -37,6 +37,7 @@ function _shorten_task_id() {
 }
 
 function ecstask() {
+    emulate -L zsh -o noxtrace
     local aws_profile_name=$1
     local aws_region=$2
 
@@ -106,20 +107,54 @@ function ecstask() {
         return
     fi
 
-    # Step 3: Get comprehensive task details
-    local task_arn_list=$(echo "${task_arns}" | jq -R -s 'split("\n") | map(select(length > 0))')
+    # Step 3: Get comprehensive task details (batched, max 100 tasks per API call)
+    local task_arns_array=(${(f)task_arns})
+    local task_count=${#task_arns_array[@]}
+    local chunk_size=100
+    local task_details=""
+    local stderr_file=$(mktemp)
+    local stdout_file=$(mktemp)
 
-    local task_details
-    task_details=$(aws ${aws_profile_arg} --region=${aws_region} ecs describe-tasks \
-        --cluster "${cluster_name}" \
-        --tasks "${task_arn_list}" \
-        --query 'tasks[*].[taskArn,group,containerInstanceArn,enableExecuteCommand,lastStatus,desiredStatus,taskDefinitionArn,healthStatus,launchType,containers[0].name]' \
-        --output text 2>&1)
+    local i=0
+    while [ $i -lt $task_count ]; do
+        local chunk=("${task_arns_array[@]:$i:$chunk_size}")
+        aws ${aws_profile_arg} --region=${aws_region} ecs describe-tasks \
+            --cluster "${cluster_name}" \
+            --tasks "${chunk[@]}" \
+            --query 'tasks[*].[taskArn,group,containerInstanceArn,enableExecuteCommand,lastStatus,desiredStatus,taskDefinitionArn,healthStatus,launchType,containers[0].name]' \
+            --output text >"${stdout_file}" 2>"${stderr_file}"
 
-    local exit_code=$?
+        local chunk_exit=$?
+        if [ $chunk_exit -ne 0 ]; then
+            local chunk_stderr=$(<"${stderr_file}")
+            echo "Failed to fetch task details." >&2
+            echo "  Cluster: ${cluster_name}" >&2
+            echo "  Region: ${aws_region}" >&2
+            echo "  Exit code: ${chunk_exit}" >&2
+            if [ -n "${chunk_stderr}" ]; then
+                echo "  Error: ${chunk_stderr}" >&2
+            fi
+            rm -f "${stderr_file}" "${stdout_file}"
+            return
+        fi
 
-    if [ $exit_code -ne 0 ] || [ -z "${task_details}" ]; then
-        echo "Failed to fetch task details."
+        local chunk_result=$(<"${stdout_file}")
+        if [ -n "${chunk_result}" ]; then
+            if [ -n "${task_details}" ]; then
+                task_details="${task_details}"$'\n'"${chunk_result}"
+            else
+                task_details="${chunk_result}"
+            fi
+        fi
+
+        i=$((i + chunk_size))
+    done
+
+    rm -f "${stderr_file}" "${stdout_file}"
+
+    if [ -z "${task_details}" ]; then
+        echo "Failed to fetch task details." >&2
+        echo "  NOTE: All API calls succeeded but returned empty (tasks may have terminated)" >&2
         return
     fi
 
