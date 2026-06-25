@@ -1,11 +1,33 @@
 #!/usr/bin/env bash
 
+# === common block start ===
+_DEBUG_SENTINEL="${HOME}/.config/kitty/.popup-debug"
+_debug_log() {
+  [ -f "$_DEBUG_SENTINEL" ] || return 0
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> /tmp/kitty-popup-debug.log
+}
+_detect_parent_window() {
+  kitty @ ls | jq -r '
+    [ .[].tabs[]
+      | select(.is_focused)
+      | .windows[]
+      | select(.is_focused | not)
+    ]
+    | sort_by(.id)
+    | reverse
+    | .[0].id
+  '
+}
+# === common block end ===
+
 # The overlay inherits the parent window's CWD via --cwd=current in kitty.conf
 PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")
 SKILLS_DIR="$PROJECT_ROOT/.ai-files/skills"
 
 # Get parent window ID dynamically
-PARENT_ID=$(kitty @ ls | jq -r '.[].tabs[].windows[] | .id' | sort -rn | sed -n '2p')
+PARENT_ID=$(_detect_parent_window)
+_debug_log "PARENT_ID=$PARENT_ID"
+[ -f "$_DEBUG_SENTINEL" ] && _debug_log "kitty @ ls: $(kitty @ ls | jq -c '.')"
 
 # Check if skills directory exists
 if [ ! -d "$SKILLS_DIR" ]; then
@@ -57,7 +79,7 @@ selection=$(echo -e "$skills_list" | fzf \
   --header="[TAB] multi-select | [ENTER] confirm" \
   --bind='enter:accept')
 
-[ -z "$selection" ] && exit 0
+[ -z "$selection" ] && { _debug_log "no selection, exiting"; exit 0; }
 
 # Extract skill names from selection and format each with ** **
 formatted_skills=""
@@ -69,6 +91,7 @@ done <<< "$selection"
 
 # Remove trailing comma
 formatted_skills="${formatted_skills%,}"
+_debug_log "formatted_skills=$formatted_skills"
 
 # Format output and send to parent window
-kitty @ send-text --match="id:$PARENT_ID" "Use $formatted_skills skills"
+kitty @ send-text --match="id:$PARENT_ID" "Use skills: $formatted_skills"
