@@ -25,5 +25,7 @@ else
     exit 1
 fi
 
-# Run PlantUML
-exec "$JAVA" -jar "$PLANTUML_JAR" "$@"
+# Run PlantUML. Suppress stdout only: when invoked via a pandoc filter, our
+# stdout is the JSON AST channel, so any plantuml.jar stdout output would
+# corrupt it. Diagnostics go to stderr and stay visible.
+exec "$JAVA" -jar "$PLANTUML_JAR" "$@" >/dev/null

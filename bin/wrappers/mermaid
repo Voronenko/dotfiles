@@ -22,7 +22,10 @@ if REAL_BIN="$(command -v "$TOOL_COMMAND" 2>/dev/null)"; then
 
   # Avoid recursive self-exec
   if [[ "$REAL_BIN" != "$SELF" ]]; then
-    exec "$REAL_BIN" "$@"
+    # Suppress stdout: when invoked via a pandoc filter, our stdout is the
+    # JSON AST channel, so mmdc's progress (e.g. "Generating single mermaid
+    # chart") would corrupt it. Diagnostics go to stderr and stay visible.
+    exec "$REAL_BIN" "$@" >/dev/null
   fi
 fi
 
@@ -30,7 +33,7 @@ fi
 TOOL_BIN="$DEFAULT_NODEJS_BIN/$TOOL_COMMAND"
 
 if [[ -x "$TOOL_BIN" ]]; then
-  exec "$TOOL_BIN" "$@"
+  exec "$TOOL_BIN" "$@" >/dev/null
 fi
 
 echo "$TOOL_COMMAND not found in PATH or fallback location" >&2
