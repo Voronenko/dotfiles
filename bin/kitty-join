@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -e
+
+WITH_TABS=true
+SELECT_WINDOW=false
+
+# Parse args
+for arg in "$@"; do
+    case "$arg" in
+        --with-tabs)
+            WITH_TABS=true
+            shift
+            ;;
+        --select-window)
+            SELECT_WINDOW=true
+            WITH_TABS=true
+            shift
+            ;;
+    esac
+done
+
+# Detect title
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    title=$(basename "$(git rev-parse --show-toplevel)")
+else
+    title=$(basename "$PWD")
+fi
+
+title=${title:-shell}
+
+# Auto-detect kitty socket (kitty appends PID to socket name)
+SOCKET=$(ls -t /dev/shm/kitty-* 2>/dev/null | head -1)
+if [ -z "$SOCKET" ]; then
+    SOCKET="unix:/dev/shm/kitty"  # fallback
+else
+    SOCKET="unix:$SOCKET"
+fi
+
+# Check if kitty is already running
+if $WITH_TABS && kitty @ --to "$SOCKET" ls >/dev/null 2>&1; then
+    if $SELECT_WINDOW; then
+        # Check dependencies
+        if ! command -v jq >/dev/null 2>&1; then
+            echo "Error: jq is required for --select-window mode" >&2
+            exit 1
+        fi
+        if ! command -v fzf >/dev/null 2>&1; then
+            echo "Error: fzf is required for --select-window mode" >&2
+            exit 1
+        fi
+
+        # Get list of windows and let user select with fzf
+        if ! selected_window=$(kitty @ --to "$SOCKET" ls 2>/dev/null | jq -r '
+            [.[] | .tabs[] | .windows[]? // empty] |
+            map({id: .id, title: .title, cwd: .cwd}) |
+            .[] | "\(.id)│\(.title) (\(.cwd))"
+        ' 2>/dev/null | fzf --prompt="Select kitty window > " --height=40% --layout=reverse 2>/dev/null); then
+            # fzf cancelled or failed - create new window with session
+            kitty --session ~/dotfiles/config/kitty/layouts/agent-advisor.session >/dev/null 2>&1 &
+            exit 0
+        fi
+
+        if [ -n "$selected_window" ]; then
+            # Extract window ID from selection (first field before delimiter)
+            window_id=$(echo "$selected_window" | awk -F'│' '{print $1}')
+            # Create tabs from session file in selected window
+            SESSION_FILE="$HOME/dotfiles/config/kitty/layouts/agent-advisor.session"
+            if [ -f "$SESSION_FILE" ]; then
+                current_tab=""
+                while IFS= read -r line; do
+                    # Skip comments and empty lines
+                    [[ "$line" =~ ^# ]] && continue
+                    [[ -z "$line" ]] && continue
+
+                    if [[ "$line" =~ ^new_tab\ (.+) ]]; then
+                        current_tab="${BASH_REMATCH[1]}"
+                    elif [[ "$line" =~ ^launch\ (.+) ]] && [ -n "$current_tab" ]; then
+                        # Create tab with the specified command (or default shell if command is just "zsh")
+                        kitty @ --to "$SOCKET" launch --match "window_id:$window_id" --type=tab --tab-title "$current_tab" --cwd=current
+                        current_tab=""
+                    fi
+                done < "$SESSION_FILE"
+            else
+                # Fallback to single tab if session file not found
+                kitty @ --to "$SOCKET" launch --match "window_id:$window_id" --type=tab --tab-title "$title" --cwd=current
+            fi
+        else
+            # User cancelled - create new window with session
+            kitty --session ~/dotfiles/config/kitty/layouts/agent-advisor.session >/dev/null 2>&1 &
+            exit 0
+        fi
+    else
+        # Open new tab in existing kitty (default behavior)
+        kitty @ --to "$SOCKET" launch --type=tab --tab-title "$title" --cwd=current
+    fi
+else
+    # Start new kitty instance
+    kitty --session ~/dotfiles/config/kitty/layouts/agent-advisor.session >/dev/null 2>&1 &
+fi

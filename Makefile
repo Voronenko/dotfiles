@@ -534,6 +534,28 @@ install-nvm-fnm:
 # /DOCKER TOOLS
 
 
+# DEVOPS / CONTAINER REGISTRY TOOLS
+
+# https://github.com/google/go-containerregistry
+# crane - interact with remote images and registries (copy, inspect, list, push, pull)
+# crane cp alpine myregistry/alpine ; crane manifest registry/repo:tag
+install-devops-crane:
+	curl -sLo /tmp/crane.tar.gz https://github.com/google/go-containerregistry/releases/download/$(shell curl -s https://api.github.com/repos/google/go-containerregistry/releases/latest | grep tag_name | cut -d '"' -f 4)/go-containerregistry_Linux_x86_64.tar.gz
+	tar -xvzf /tmp/crane.tar.gz -C /tmp
+	cp /tmp/crane ~/dotfiles/bin
+	chmod +x ~/dotfiles/bin/crane
+
+# https://github.com/containers/skopeo
+# skopeo - copy/inspect/sign images between registries and container engines
+# plus xorriso (ISO/image creation) and cloud-image-utils (cloud image tooling)
+# NOTE: upstream no longer ships prebuilt binaries, so we use the distro package
+# (may lag behind latest; for a bleeding-edge build use: go install github.com/containers/skopeo/cmd/skopeo@latest)
+install-devops-skopeo:
+	sudo apt-get install -y skopeo xorriso cloud-image-utils
+
+# /DEVOPS / CONTAINER REGISTRY TOOLS
+
+
 # KUBERNETES
 # includes upgrade, disables k3s by default as you don't need it up on dev notebook
 install-k3s-local:
@@ -1081,7 +1103,7 @@ install-hashicorp-terraform:
 	cd ~/tmp/ && unzip terraform.zip && chmod +x terraform && rm terraform.zip && mv terraform ~/dotfiles/bin/
 
 install-hashicorp-packer:
-	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip"
+	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.16.0/packer_1.16.0_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
 
 

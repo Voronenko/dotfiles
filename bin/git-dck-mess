@@ -1,0 +1,320 @@
+#!/usr/bin/env bash
+#
+# git-dck-mess — Safely restore the git working tree to a clean state
+# without removing untracked files.  Fixes root-owned Docker artifacts
+# (directories and files) that block git operations.
+#
+# Background:
+#   Docker compose bind-mounts (e.g., ./mock/foo.py:/app/foo.py) silently
+#   create a *root-owned directory* when the host source file is missing.
+#   This blocks `git checkout` and `git restore` because git cannot
+#   remove or replace a root-owned directory.
+#
+# Usage:
+#   ./tools/git-dck-mess                    # dry-run: show what would change
+#   ./tools/git-dck-mess --fix          # actually fix and restore
+#   ./tools/git-dck-mess --ref main         # restore relative to a different ref
+#   ./tools/git-dck-mess --fix --force  # skip confirmation prompt
+#
+# Safety guarantees:
+#   • Never removes untracked files (no `git clean`)
+#   • Dry-run by default; requires --fix to make changes
+#   • Only touches root-owned files inside the repo (excludes .git, .local, data dirs)
+#   • Only removes *empty* Docker-created directories that conflict with git-tracked files
+
+# NOTE: We do NOT use `set -euo pipefail` because process-substitution
+# `while read` loops return non-zero on EOF, which would abort the script
+# prematurely.
+set -u
+
+# ── defaults ───────────────────────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+FIX=false
+FORCE=false
+REF="HEAD"
+VERBOSE=false
+
+# ── helpers ────────────────────────────────────────────────────────────
+bold()  { printf '\033[1m%s\033[0m\n' "$*"; }
+red()   { printf '\033[31m%s\033[0m\n' "$*"; }
+green() { printf '\033[32m%s\033[0m\n' "$*"; }
+yellow(){ printf '\033[33m%s\033[0m\n' "$*"; }
+dim()   { printf '\033[2m%s\033[0m\n' "$*"; }
+warn()  { yellow "WARNING: $*" >&2; }
+info()  { dim "INFO: $*" >&2; }
+die()   { red "ERROR: $*" >&2; exit 1; }
+
+usage() {
+  cat <<EOF
+$(bold "git-dck-mess") — Restore git working tree, fixing Docker permission artifacts.
+
+$(bold "USAGE")
+  $0 [OPTIONS]
+
+$(bold "OPTIONS")
+  --fix          Actually apply fixes (default is dry-run)
+  --force        Skip confirmation prompt (implied when used with --fix)
+  --ref <REF>    Restore relative to git ref (default: HEAD)
+  --verbose      Show extra diagnostic output
+  --help         This message
+
+$(bold "WHAT IT FIXES")
+  1. Root-owned files/directories created by Docker bind-mounts
+  2. Empty Docker-created directories that shadow git-tracked files
+  3. Restores all tracked files to match the target ref (preserves untracked files)
+
+$(bold "EXAMPLES")
+  $0                          # dry-run: preview what would be fixed
+  $0 --fix                    # fix permissions + restore tracked files
+  $0 --ref origin/dev         # restore relative to a remote branch
+EOF
+}
+
+# ── argument parsing ───────────────────────────────────────────────────
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --fix)     FIX=true; shift ;;
+    --force)   FORCE=true; shift ;;
+    --ref)     REF="$2"; shift 2 ;;
+    --verbose) VERBOSE=true; shift ;;
+    --help)    usage; exit 0 ;;
+    *)         die "Unknown argument: $1" ;;
+  esac
+done
+
+cd "$REPO_ROOT"
+
+# ── pre-flight checks ──────────────────────────────────────────────────
+git rev-parse --is-inside-work-tree &>/dev/null || die "Not inside a git repository"
+git rev-parse --verify "$REF" &>/dev/null          || die "Git ref '$REF' does not exist"
+
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+echo ""
+bold "git-restore"
+dim "  repo:    $(git rev-parse --show-toplevel)"
+dim "  branch:  $CURRENT_BRANCH"
+dim "  ref:     $REF"
+dim "  mode:    $(if $FIX; then green 'FIX'; else yellow 'DRY-RUN'; fi)"
+echo ""
+
+# ── Helper: identify git submodule paths ──────────────────────────────
+SUBMODULE_PATHS=()
+while IFS= read -r sm; do
+  [ -n "$sm" ] && SUBMODULE_PATHS+=("$sm")
+done < <(git config --file .gitmodules --get-regexp path 2>/dev/null | awk '{print $2}' || true)
+
+is_submodule() {
+  for sm in "${SUBMODULE_PATHS[@]}"; do
+    [ "$sm" = "$1" ] && return 0
+  done
+  return 1
+}
+
+# ── Helper: safely collect null-delimited output into array ───────────
+# Usage: collect_null_array output_var command [args...]
+# Runs the command, collects its null-delimited stdout into an array.
+collect_null_array() {
+  local _varname="$1"; shift
+  local _tmpfile
+  _tmpfile="$(mktemp)"
+  # Run command, capture output; ignore exit code (find may exit 1 with no matches)
+  "$@" > "$_tmpfile" 2>/dev/null || true
+  # Read null-delimited entries into the named array
+  local _arr=()
+  while IFS= read -r -d '' _entry; do
+    _arr+=("$_entry")
+  done < "$_tmpfile"
+  rm -f "$_tmpfile"
+  # Return via eval (safe because _arr contents are filenames we control)
+  eval "$_varname=(\"\${_arr[@]}\")"
+}
+
+# ── 1. Discover root-owned files/directories ──────────────────────────
+# Find root-owned paths NOT in .git, .local
+ROOT_OWNED_FILES=()
+collect_null_array ROOT_OWNED_FILES \
+  find . -user root \
+    -not -path './.git/*' \
+    -not -path './.local/*' \
+    -not -name '.git' \
+    -not -name '.local' \
+    -print0
+ROOT_OWNED_COUNT=${#ROOT_OWNED_FILES[@]}
+
+# ── 2. Discover directory-vs-file conflicts ───────────────────────────
+# Collect all file paths tracked by git (index + target ref).  For each
+# file path, if it exists on disk as a DIRECTORY, that's a conflict:
+# Docker likely created it as a bind-mount artifact.
+# Skip submodules (they are tracked as files but are legit directories).
+GIT_FILES_TMP="$(mktemp)"
+{ git ls-tree -r "$REF" --name-only 2>/dev/null || true
+  git ls-files 2>/dev/null || true
+} | sort -u > "$GIT_FILES_TMP"
+
+CONFLICTING_DIRS=()
+while IFS= read -r gf; do
+  [ -z "$gf" ] && continue
+  # Skip submodule paths
+  is_submodule "$gf" && continue
+  if [ -d "$gf" ]; then
+    if [ -z "$(ls -A "$gf" 2>/dev/null)" ]; then
+      CONFLICTING_DIRS+=("$gf")
+    elif ! is_submodule "$gf"; then
+      warn "Non-empty directory '$gf' collides with git-tracked file — needs manual review"
+    fi
+  fi
+done < "$GIT_FILES_TMP"
+rm -f "$GIT_FILES_TMP"
+
+# ── Summary ────────────────────────────────────────────────────────────
+echo ""
+bold "── Findings ──"
+echo ""
+
+if [ "$ROOT_OWNED_COUNT" -gt 0 ]; then
+  yellow "Root-owned files/directories (${ROOT_OWNED_COUNT}):"
+  for f in "${ROOT_OWNED_FILES[@]}"; do
+    echo "  $f"
+  done
+else
+  green "✓ No root-owned files found outside expected paths"
+fi
+
+echo ""
+
+if [ ${#CONFLICTING_DIRS[@]} -gt 0 ]; then
+  yellow "Empty Docker-created directories shadowing git files (${#CONFLICTING_DIRS[@]}):"
+  for d in "${CONFLICTING_DIRS[@]}"; do
+    echo "  $d  (will be removed — empty dir blocking file checkout)"
+  done
+else
+  green "✓ No directory-vs-file conflicts found"
+fi
+
+echo ""
+
+# ── 4. Show what git would restore ─────────────────────────────────────
+dim "Tracked files that differ from $REF:"
+git diff --name-status "$REF" 2>/dev/null | while IFS=$'\t' read -r status file; do
+  [ -z "$status" ] && continue
+  case "$status" in
+    M) echo "  modified:  $file" ;;
+    D) echo "  deleted:   $file" ;;
+    A) echo "  added:     $file" ;;
+    R*) echo "  renamed:   $file" ;;
+    *) echo "  $status:   $file" ;;
+  esac
+done || dim "  (none or could not determine)"
+
+# Count untracked files
+UNTRACKED_COUNT=$(git ls-files --others --exclude-standard 2>/dev/null | wc -l)
+echo ""
+dim "Untracked files (will be preserved): ${UNTRACKED_COUNT} files"
+if $VERBOSE && [ "$UNTRACKED_COUNT" -gt 0 ]; then
+  git ls-files --others --exclude-standard | while IFS= read -r f; do
+    [ -n "$f" ] && echo "  $f"
+  done
+fi
+
+FIX_COUNT=$((ROOT_OWNED_COUNT + ${#CONFLICTING_DIRS[@]}))
+echo ""
+
+if [ "$FIX_COUNT" -eq 0 ]; then
+  if git diff --quiet "$REF" 2>/dev/null; then
+    green "Working tree is clean. Nothing to do."
+    exit 0
+  else
+    yellow "No Docker artifacts to fix, but tracked files differ from $REF."
+    echo "Run with --fix to restore tracked files to match $REF."
+  fi
+fi
+
+# ── Fix or exit ────────────────────────────────────────────────────
+if ! $FIX; then
+  echo ""
+  yellow "DRY-RUN complete.  Run with --fix to apply changes."
+  exit 0
+fi
+
+# ── Confirmation ───────────────────────────────────────────────────────
+if ! $FORCE; then
+  echo ""
+  read -r -p "$(yellow 'Proceed with fixes? [y/N] ')" CONFIRM
+  if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+    info "Aborted by user"
+    exit 0
+  fi
+fi
+
+echo ""
+bold "── Applying fixes ──"
+echo ""
+
+# ── Step 1: Fix root-owned files ───────────────────────────────────────
+if [ "$ROOT_OWNED_COUNT" -gt 0 ]; then
+  info "Fixing ownership of ${ROOT_OWNED_COUNT} root-owned paths..."
+  OWNER="$(id -un):$(id -gn)"
+  for f in "${ROOT_OWNED_FILES[@]}"; do
+    sudo chown -R "$OWNER" "$f" && info "  chown'd: $f"
+  done
+  green "✓ Ownership fixed"
+else
+  green "✓ No root-owned files to fix"
+fi
+
+echo ""
+
+# ── Step 2: Remove conflicting empty directories ───────────────────────
+REMOVED_DIRS=0
+for d in "${CONFLICTING_DIRS[@]}"; do
+  if [ -d "$d" ]; then
+    if [ -z "$(ls -A "$d" 2>/dev/null)" ]; then
+      rmdir "$d" && { info "  removed empty dir: $d"; ((REMOVED_DIRS++)); }
+    else
+      warn "Directory '$d' is not empty — skipping (needs manual review)"
+    fi
+  fi
+done
+
+if [ "$REMOVED_DIRS" -gt 0 ]; then
+  green "✓ Removed ${REMOVED_DIRS} conflicting directories"
+fi
+
+echo ""
+
+# ── Step 3: Restore tracked files to match REF ─────────────────────────
+if ! git diff --quiet "$REF" 2>/dev/null; then
+  info "Restoring tracked files to match $REF..."
+  git checkout "$REF" -- . 2>&1 || {
+    warn "Bulk checkout failed — trying per-file restore..."
+    git diff --name-only "$REF" 2>/dev/null | while IFS= read -r file; do
+      [ -z "$file" ] && continue
+      if [ -d "$file" ]; then
+        rmdir "$file" 2>/dev/null || warn "Cannot remove directory '$file'"
+      fi
+      git checkout "$REF" -- "$file" 2>/dev/null || warn "Failed to restore: $file"
+    done
+  }
+
+  # Restore deleted files (present in REF but missing from working tree)
+  git diff --diff-filter=D --name-only "$REF" 2>/dev/null | while IFS= read -r file; do
+    [ -z "$file" ] && continue
+    if [ ! -e "$file" ]; then
+      mkdir -p "$(dirname "$file")"
+      git show "$REF:$file" > "$file" 2>/dev/null && info "  restored deleted: $file"
+    fi
+  done
+
+  green "✓ Tracked files restored to match $REF"
+else
+  green "✓ Tracked files already match $REF"
+fi
+
+echo ""
+bold "── Result ──"
+echo ""
+git status --short 2>/dev/null || true
+echo ""
+green "Done! Working tree restored. Untracked files preserved."

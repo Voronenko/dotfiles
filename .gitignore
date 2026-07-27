@@ -26,6 +26,7 @@ bin/chartmuseum-aws
 bin/circleci
 bin/cmctl
 bin/cortextool
+bin/crane
 bin/crictl
 bin/ctop
 bin/cw
@@ -106,6 +107,7 @@ bin/lazydocker
 bin/lazygit
 bin/lazynpm
 bin/libcrypto.so.1.1
+bin/LICENSE.txt
 bin/linux-exploit-suggester.sh
 bin/lnav
 bin/logcli
