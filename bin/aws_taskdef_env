@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# Extract the environment variables from an ECS task definition and print them
+# as .env-compatible "name=value" pairs, one per line.
+#
+# Usage: aws_taskdef_env [--profile <profile>] [--region <region>]
+#                        [--container <name|index>] <task-definition>
+#
+# <task-definition> may be a family name, family:revision, or full task definition ARN.
+# With --container, only that container's environment is printed (0-based index or exact
+# name). Without it, environments from all containers are merged.
+
+set -euo pipefail
+
+usage() {
+    cat >&2 <<'EOF'
+Usage: aws_taskdef_env [--profile <profile>] [--region <region>] [--container <name|index>] <task-definition>
+
+Extract the environment from an ECS task definition and print "name=value"
+pairs (one per line) suitable for a .env file.
+
+  <task-definition>       family name, family:revision, or full task definition ARN
+  --container <name|idx>  print only this container's environment (0-based index or exact name)
+  --profile <profile>     AWS profile to use (forwarded to aws)
+  --region <region>       AWS region to use (forwarded to aws)
+EOF
+    exit 1
+}
+
+profile_arg=""
+region_arg=""
+container=""
+task_def=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --profile=*)   profile_arg="--profile=${1#--profile=}" ;;
+        --region=*)    region_arg="--region=${1#--region=}" ;;
+        --container=*) container="${1#--container=}" ;;
+        --profile)
+            [[ $# -ge 2 ]] || usage
+            profile_arg="--profile=$2"
+            shift
+            ;;
+        --region)
+            [[ $# -ge 2 ]] || usage
+            region_arg="--region=$2"
+            shift
+            ;;
+        --container)
+            [[ $# -ge 2 ]] || usage
+            container="$2"
+            shift
+            ;;
+        -h|--help) usage ;;
+        -*) echo "Unknown option: $1" >&2; usage ;;
+        *) task_def="$1" ;;
+    esac
+    shift
+done
+
+if [[ -z "${task_def}" ]]; then
+    echo "Error: task-definition identifier is required." >&2
+    usage
+fi
+
+# profile_arg/region_arg may be empty and must expand to zero words, not an empty argument
+# shellcheck disable=SC2086
+task_def_json=$(aws ${profile_arg} ${region_arg} ecs describe-task-definition \
+    --task-definition "${task_def}" \
+    --output json)
+
+if [[ -n "${container}" ]]; then
+    if [[ "${container}" =~ ^[0-9]+$ ]]; then
+        count=$(printf '%s\n' "${task_def_json}" | jq '.taskDefinition.containerDefinitions | length')
+        if [[ "${container}" -ge "${count}" ]]; then
+            echo "Error: container index ${container} out of range (task definition has ${count} container(s))." >&2
+            exit 1
+        fi
+        printf '%s\n' "${task_def_json}" | jq -r ".taskDefinition.containerDefinitions[${container}] | .environment[]? | \"\(.name)=\(.value)\""
+    else
+        matched=$(printf '%s\n' "${task_def_json}" | jq -r --arg c "${container}" '.taskDefinition.containerDefinitions[] | select(.name == $c) | .name')
+        if [[ -z "${matched}" ]]; then
+            available=$(printf '%s\n' "${task_def_json}" | jq -r '[.taskDefinition.containerDefinitions[].name] | join(", ")')
+            echo "Error: no container named '${container}'. Available: ${available}" >&2
+            exit 1
+        fi
+        printf '%s\n' "${task_def_json}" | jq -r --arg c "${container}" '.taskDefinition.containerDefinitions[] | select(.name == $c) | .environment[]? | "\(.name)=\(.value)"'
+    fi
+else
+    printf '%s\n' "${task_def_json}" | jq -r '.taskDefinition.containerDefinitions[] | .environment[]? | "\(.name)=\(.value)"'
+fi
