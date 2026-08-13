@@ -1,0 +1,159 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# create-node-wrapper -- generate a bin/wrappers/<pkg> wrapper for a globally
+# installed node package.
+#
+# The wrapper first resolves the binary from PATH, then falls back to the nvm
+# node version that was detected to ship it. The generated file is parametrized
+# only at the top (DEFAULT_NODEJS_BIN / TOOL_COMMAND); the rest is generic.
+#
+# Usage: create-node-wrapper [--command <binary>] <package-name>
+#   --command <binary>  the installed binary name (defaults to <package-name>).
+#                       Use it when the wrapper name differs from the binary,
+#                       e.g.  create-node-wrapper mermaid --command mmdc
+
+usage() {
+  echo "usage: $(basename "$0") [--command <binary>] <package-name>" >&2
+  echo "  --command <binary>  installed binary name (defaults to <package-name>)" >&2
+}
+
+COMMAND=""
+args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help) usage; exit 0 ;;
+    --command)
+      [[ $# -ge 2 ]] || { usage; exit 1; }
+      COMMAND="$2"
+      shift 2
+      ;;
+    -*) echo "error: unknown option: $1" >&2; usage; exit 1 ;;
+    *) args+=("$1"); shift ;;
+  esac
+done
+
+[[ ${#args[@]} -eq 1 ]] || { usage; exit 1; }
+
+PKG="${args[0]}"
+COMMAND="${COMMAND:-$PKG}"
+
+# Names are plain command names; reject anything that could break the generated
+# wrapper (path separators, whitespace, shell/sed metacharacters).
+if [[ ! "$PKG" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "error: invalid package name '$PKG' (expected [A-Za-z0-9._-]+)" >&2
+  exit 1
+fi
+if [[ ! "$COMMAND" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "error: invalid command name '$COMMAND' (expected [A-Za-z0-9._-]+)" >&2
+  exit 1
+fi
+
+# Resolve locations relative to this script so it works from any cwd.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WRAPPERS_DIR="$SCRIPT_DIR/wrappers"
+WRAPPER_PATH="$WRAPPERS_DIR/$PKG"
+
+NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+VERSIONS_DIR="$NVM_DIR/versions/node"
+
+if [[ ! -d "$VERSIONS_DIR" ]]; then
+  echo "error: nvm node versions directory not found: $VERSIONS_DIR" >&2
+  echo "       (set NVM_DIR to point at your nvm installation)" >&2
+  exit 1
+fi
+
+# Collect every node version that ships this command's binary.
+matches=()
+for vdir in "$VERSIONS_DIR"/*/; do
+  [[ -d "$vdir/bin" ]] || continue
+  if [[ -x "$vdir/bin/$COMMAND" ]]; then
+    matches+=("$(basename "$vdir")")
+  fi
+done
+
+if [[ ${#matches[@]} -eq 0 ]]; then
+  echo "error: '$COMMAND' not found in any nvm node version under $VERSIONS_DIR" >&2
+  exit 1
+fi
+
+# Choose a node version: a single match is unambiguous; otherwise prefer the
+# currently active node version, else the newest that ships the binary.
+VERSION=""
+if [[ ${#matches[@]} -eq 1 ]]; then
+  VERSION="${matches[0]}"
+else
+  ACTIVE="$(node --version 2>/dev/null || true)"
+  for v in "${matches[@]}"; do
+    [[ -n "$ACTIVE" && "$v" == "$ACTIVE" ]] && VERSION="$v"
+  done
+  [[ -z "$VERSION" ]] && VERSION="$(printf '%s\n' "${matches[@]}" | sort -V | tail -n1)"
+fi
+
+if [[ -e "$WRAPPER_PATH" ]]; then
+  echo "error: wrapper already exists: $WRAPPER_PATH" >&2
+  echo "       remove it (or rename) before regenerating" >&2
+  exit 1
+fi
+
+mkdir -p "$WRAPPERS_DIR"
+
+# Template. @NODE_VERSION@ / @TOOL_COMMAND@ / @PKG@ are substituted after
+# writing; everything else is emitted verbatim (quoted heredoc -> no expansion).
+TMP="$(mktemp)"
+trap 'rm -f "$TMP"' EXIT
+
+cat >"$TMP" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+# npm install -g @PKG@
+
+DEFAULT_NODEJS_BIN="${DEFAULT_NODEJS_BIN:-$HOME/.nvm/versions/node/@NODE_VERSION@/bin}"
+TOOL_COMMAND="@TOOL_COMMAND@"
+
+export DEFAULT_NODEJS_BIN
+
+resolve_path() {
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "$1"
+  else
+    readlink -f "$1"
+  fi
+}
+
+SELF="$(resolve_path "$0")"
+
+# Try PATH first
+if REAL_BIN="$(command -v "$TOOL_COMMAND" 2>/dev/null)"; then
+  REAL_BIN="$(resolve_path "$REAL_BIN")"
+
+  # Avoid recursive self-exec
+  if [[ "$REAL_BIN" != "$SELF" ]]; then
+    exec "$REAL_BIN" "$@"
+  fi
+fi
+
+# Fallback
+TOOL_BIN="$DEFAULT_NODEJS_BIN/$TOOL_COMMAND"
+
+if [[ -x "$TOOL_BIN" ]]; then
+  exec "$TOOL_BIN" "$@"
+fi
+
+echo "$TOOL_COMMAND not found in PATH or fallback location" >&2
+exit 1
+EOF
+
+sed -e "s|@NODE_VERSION@|$VERSION|g" \
+    -e "s|@TOOL_COMMAND@|$COMMAND|g" \
+    -e "s|@PKG@|$PKG|g" \
+    "$TMP" >"$WRAPPER_PATH"
+
+chmod +x "$WRAPPER_PATH"
+
+echo "created wrapper: $WRAPPER_PATH"
+echo "  node version : $VERSION"
+if [[ "$COMMAND" != "$PKG" ]]; then
+  echo "  tool command : $COMMAND"
+fi
