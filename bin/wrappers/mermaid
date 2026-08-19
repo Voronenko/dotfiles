@@ -5,6 +5,8 @@ DEFAULT_NODEJS_BIN="${DEFAULT_NODEJS_BIN:-$HOME/.nvm/versions/node/v22.14.0/bin}
 TOOL_COMMAND="mmdc"
 
 export DEFAULT_NODEJS_BIN
+# Pin the wrapper's node so `#!/usr/bin/env node` shebangs resolve to it.
+export PATH="$DEFAULT_NODEJS_BIN:$PATH"
 
 resolve_path() {
   if command -v realpath >/dev/null 2>&1; then

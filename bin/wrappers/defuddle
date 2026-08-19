@@ -8,6 +8,8 @@
 #
 
 export DEFAULT_NODEJS_BIN="$HOME/.nvm/versions/node/v22.14.0/bin/"
+# Pin the wrapper's node so `#!/usr/bin/env node` shebangs resolve to it.
+export PATH="$DEFAULT_NODEJS_BIN:$PATH"
 
 # If defuddle exists in PATH (excluding this script), use it
 REAL_BIN=$(command -v defuddle | grep -v "$(realpath "$0")")
