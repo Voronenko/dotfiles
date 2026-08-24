@@ -724,6 +724,13 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
       [[ "$creds" == "$profile" ]]
   }
 
+  is_aws_sso_profile() {
+      local profile="$1"
+      local sso_session
+      sso_session=$(aws configure get sso_session --profile "$profile" 2>/dev/null)
+      [[ -n "$sso_session" ]]
+  }
+
 
   set-aws-profile() {
     local aws_profile="$1"
@@ -746,7 +753,30 @@ if [[ -f /usr/local/bin/aws_zsh_completer.sh ]]; then source /usr/local/bin/aws_
     unset AWS_PROFILE
     unset AWS_DEFAULT_PROFILE
 
-    if is_aws_vault_managed "$aws_profile"; then
+    if is_aws_sso_profile "$aws_profile"; then
+        echo "Activating SSO session for profile '$aws_profile'"
+
+        unset AWS_ACCESS_KEY_ID
+        unset AWS_SECRET_ACCESS_KEY
+        unset AWS_SESSION_TOKEN
+        unset AWS_CREDENTIAL_EXPIRATION
+        unset AWS_VAULT
+
+        if [[ -n "${GOOGLE_PROFILE:-}" ]]; then
+            export BROWSER="google-chrome --profile-directory=\"$GOOGLE_PROFILE\" %s"
+        fi
+
+        if ! aws sso login --profile "$aws_profile"; then
+            echo "Error: 'aws sso login --profile $aws_profile' failed (exit $?)" >&2
+            echo "Check SSO session (sso_session=$(aws configure get sso_session --profile "$aws_profile" 2>/dev/null)) and retry." >&2
+        else
+            echo "SSO login succeeded for '$aws_profile'"
+        fi
+
+        export AWS_PROFILE="$aws_profile"
+        export AWS_DEFAULT_PROFILE="$aws_profile"
+
+    elif is_aws_vault_managed "$aws_profile"; then
         echo "Activating aws-vault session for profile '$aws_profile'"
 
         # Debugging: Capture output first to handle potential failures or password prompts matching issues
