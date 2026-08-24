@@ -67,11 +67,41 @@ install-zellij:
 	sudo mv /tmp/zellij /usr/local/bin
 	sudo chmod +x /usr/local/bin/zellij
 
+# Git Forge CLIs — gh (GitHub), glab (GitLab), tea (Gitea)
 install-github-gh:
 	curl -sLo /tmp/gh.tar.gz https://github.com/cli/cli/releases/download/v$(shell curl -s https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)/gh_$(shell curl -s https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
 	tar -xvzf /tmp/gh.tar.gz -C /tmp
 	mv /tmp/gh_$(shell curl -s https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64/bin/gh $(HOME)/dotfiles/bin
 	chmod +x $(HOME)/dotfiles/bin/gh
+
+install-gitlab-glab:
+	@set -euo pipefail; \
+	TAG=$$(curl -fsSL "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases" | grep -o '"tag_name":"[^"]*"' | head -1 | cut -d'"' -f4); \
+	if [ -z "$$TAG" ]; then echo "Failed to fetch glab tag from GitLab API"; exit 1; fi; \
+	VERSION=$${TAG#v}; \
+	echo "Installing glab $$TAG (linux_amd64)"; \
+	curl -fsSL -o /tmp/glab.tar.gz "https://gitlab.com/gitlab-org/cli/-/releases/$$TAG/downloads/glab_$${VERSION}_linux_amd64.tar.gz"; \
+	tar -xvzf /tmp/glab.tar.gz -C /tmp; \
+	if [ -f /tmp/bin/glab ]; then mv /tmp/bin/glab $(HOME)/dotfiles/bin/glab; else mv /tmp/glab $(HOME)/dotfiles/bin/glab; fi; \
+	chmod +x $(HOME)/dotfiles/bin/glab; \
+	$(HOME)/dotfiles/bin/glab version; \
+	rm -f /tmp/glab.tar.gz; \
+	echo "glab installed to $(HOME)/dotfiles/bin/glab"
+
+install-gitea-tea:
+	@set -euo pipefail; \
+	TAG=$$(curl -fsSL "https://gitea.com/api/v1/repos/gitea/tea/releases/latest" | sed -n 's/.*"tag_name":"\([^"]*\)".*/\1/p'); \
+	if [ -z "$$TAG" ]; then echo "Failed to fetch tea tag from Gitea API"; exit 1; fi; \
+	VERSION=$${TAG#v}; \
+	echo "Installing tea $$TAG (linux_amd64)"; \
+	curl -fsSL -o $(HOME)/dotfiles/bin/tea "https://gitea.com/gitea/tea/releases/download/$$TAG/tea-$$VERSION-linux-amd64"; \
+	chmod +x $(HOME)/dotfiles/bin/tea; \
+	$(HOME)/dotfiles/bin/tea --version; \
+	echo "tea installed to $(HOME)/dotfiles/bin/tea"
+	# Alternative bandwidth-saving variant (requires xz): curl -fsSL "https://gitea.com/gitea/tea/releases/download/$$TAG/tea-$$VERSION-linux-amd64.xz" | unxz > $(HOME)/dotfiles/bin/tea
+
+install-forge-clis: install-github-gh install-gitlab-glab install-gitea-tea
+	@echo "Forge CLIs installed: gh, glab, tea"
 
 # CD CI local runners
 
