@@ -106,7 +106,7 @@ export PATH=${HOME}/dotfiles/bin:${HOME}/dotfiles/adr:$HOME/.jenv/bin:$HOME/.loc
 
 # AI tools bin - append to PATH if present
 if [[ -d "$HOME/ai-files/bin" ]]; then
-  export PATH="$PATH:$HOME/ai-files/bin"
+  export PATH="$PATH:$HOME/ai-files/bin:$PATH:$HOME/ai-files/wrappers"
 fi
 export IBUS_ENABLE_SYNC_MODE=1 # JetBrains issues with IBus prior 1.5.11
 export DISABLE_AUTO_TITLE='true'

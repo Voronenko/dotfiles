@@ -144,8 +144,11 @@
   "kilo-code.debug": false,
   "terminal.integrated.commandsToSkipShell": [
     "kilo-code.new.agentManagerOpen",
-    "kilo-code.new.agentManager.showTerminal"
+    "kilo-code.new.agentManager.showTerminal",
+    "kilo-code.new.agentManager.previousTerminal",
+    "kilo-code.new.agentManager.nextTerminal"
   ],
   "terminal.external.linuxExec": "kitty",
   "chat.disableAIFeatures": true,
+  "kilo-code.new.agentWorkStyle": "skipped",
 }
