@@ -923,7 +923,13 @@ alias ccat='bat'
 if type "fzf" > /dev/null; then
 
 alias preview="fzf --preview 'bat --color \"always\" {}'"
-alias fz="fzf --preview 'bat --color \"always\" {}'"
+
+# fuzzy open: directory -> cd into it, file -> cat it; live preview (dir listing or file content)
+fz() {
+  local sel
+  sel=$(fzf --preview '[[ -d {} ]] && ls -la --color=always {} || bat --color=always {}') || return
+  if [[ -d "$sel" ]]; then cd "$sel"; else bat "$sel"; fi
+}
 
 fi
 fi
