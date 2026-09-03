@@ -261,12 +261,19 @@ install-github-actions-act:
 	chmod +x ~/dotfiles/bin/act
 
 install-github-actionlint:
-	mkdir -p /tmp/actionlint
-	curl -sLo /tmp/actionlint/actionlint.tar.gz https://github.com/rhysd/actionlint/releases/download/$(shell curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | grep tag_name | cut -d '"' -f 4)/actionlint_$(shell curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c 2-)_linux_amd64.tar.gz
-	tar -xzf /tmp/actionlint/actionlint.tar.gz -C /tmp/actionlint actionlint
-	mv /tmp/actionlint/actionlint ~/dotfiles/bin/actionlint
-	chmod +x ~/dotfiles/bin/actionlint
-	rm -rf /tmp/actionlint
+	@set -euo pipefail; \
+	TAG=$$(curl -fsSL https://api.github.com/repos/rhysd/actionlint/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4); \
+	if [ -z "$$TAG" ]; then echo "Failed to fetch actionlint tag from GitHub API"; exit 1; fi; \
+	VERSION=$${TAG#v}; \
+	echo "Installing actionlint $$TAG (linux_amd64)"; \
+	mkdir -p /tmp/actionlint; \
+	curl -fsSL -o /tmp/actionlint/actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/$$TAG/actionlint_$${VERSION}_linux_amd64.tar.gz"; \
+	tar -xzf /tmp/actionlint/actionlint.tar.gz -C /tmp/actionlint actionlint; \
+	mkdir -p $(HOME)/dotfiles/bin; \
+	mv /tmp/actionlint/actionlint $(HOME)/dotfiles/bin/actionlint; \
+	chmod +x $(HOME)/dotfiles/bin/actionlint; \
+	rm -rf /tmp/actionlint; \
+	echo "actionlint installed to $(HOME)/dotfiles/bin/actionlint"
 
 global-console-logreader-lnav:
 	sudo cp $(PWD)/bin/lnav /usr/local/bin
