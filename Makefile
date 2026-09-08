@@ -377,6 +377,39 @@ install-console-tgrep:
 install-console-greps: install-console-ast-grep install-console-ripgrep install-console-tgrep
 	@echo "✅ all greps installed (ast-grep, ripgrep, tgrep) → $$(cd "$$(dirname "$$(realpath "$(lastword $(MAKEFILE_LIST))")")" && pwd)/bin"
 
+install-console-helix:
+	@set -euo pipefail; \
+	MAKEFILE_DIR="$$(cd "$$(dirname "$$(realpath "$(lastword $(MAKEFILE_LIST))")")" && pwd)"; \
+	BIN_DIR="$$MAKEFILE_DIR/bin"; mkdir -p "$$BIN_DIR"; \
+	HELIX_CONFIG_DIR="$$HOME/.config/helix"; \
+	LATEST_TAG=$$(curl -fsSL https://api.github.com/repos/helix-editor/helix/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4); \
+	if [ -z "$$LATEST_TAG" ]; then echo "Failed to fetch helix tag from GitHub API" >&2; exit 1; fi; \
+	UNAME_M=$$(uname -m); \
+	case "$$UNAME_M" in \
+		x86_64|amd64) HELIX_ARCH="x86_64" ;; \
+		aarch64|arm64) HELIX_ARCH="aarch64" ;; \
+		*) echo "Unsupported arch: $$UNAME_M (only x86_64/aarch64 Linux supported)" >&2; exit 1 ;; \
+	esac; \
+	echo "Installing helix $$LATEST_TAG ($$HELIX_ARCH-linux)"; \
+	tmp="$$(mktemp -d)"; trap 'rm -rf "$$tmp"' EXIT INT TERM; \
+	URL="https://github.com/helix-editor/helix/releases/download/$$LATEST_TAG/helix-$$LATEST_TAG-$${HELIX_ARCH}-linux.tar.xz"; \
+	echo "Downloading $$URL"; \
+	curl -fsSL "$$URL" -o "$$tmp/helix.tar.xz"; \
+	tar -xJf "$$tmp/helix.tar.xz" -C "$$tmp"; \
+	EXTRACT_DIR="$$tmp/helix-$$LATEST_TAG-$${HELIX_ARCH}-linux"; \
+	test -x "$$EXTRACT_DIR/hx" || { echo "hx binary not found in archive" >&2; ls -R "$$tmp" >&2; exit 1; }; \
+	test -d "$$EXTRACT_DIR/runtime" || { echo "runtime directory not found in archive" >&2; exit 1; }; \
+	install -m 0755 "$$EXTRACT_DIR/hx" "$$BIN_DIR/hx"; \
+	mkdir -p "$$HELIX_CONFIG_DIR"; \
+	rm -rf "$$HELIX_CONFIG_DIR/runtime"; \
+	cp -a "$$EXTRACT_DIR/runtime" "$$HELIX_CONFIG_DIR/"; \
+	echo "helix $$LATEST_TAG installed: $$BIN_DIR/hx + $$HELIX_CONFIG_DIR/runtime"; \
+	"$$BIN_DIR/hx" --version; \
+	"$$BIN_DIR/hx" --health 2>&1 | head -n 30 || true
+
+install-helix: install-console-helix
+	@echo "helix installed (alias)"
+
 # Glances is a cross-platform monitoring tool which aims
 # to present a large amount of monitoring information
 install-console-glances:

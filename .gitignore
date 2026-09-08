@@ -73,6 +73,7 @@ bin/hadolint
 bin/hcloud
 bin/helm
 bin/heptio-authenticator-aws*
+bin/hx
 bin/ignite
 bin/infracost
 bin/istioctl
