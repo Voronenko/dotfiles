@@ -8,7 +8,7 @@ swiss-fzf: zsh-fzf-repo install-console-fzf zsh-fzf
 swiss-docker: install-docker-dry install-docker-machine
 	@echo docker ok
 
-swiss-console: install-console-bat install-console-prettytyping install-console-diffsofancy install-console-fd install-console-ripgrep install-console-ncdu install-console-yq install-ngrok install-direnv install-console-lazysuite
+swiss-console: install-console-bat install-console-prettytyping install-console-diffsofancy install-console-fd install-console-greps install-console-ncdu install-console-yq install-ngrok install-direnv install-console-lazysuite
 	@echo console ok
 
 swiss-console-python: install-console-glances
@@ -331,11 +331,51 @@ install-console-fd:
 	cp /tmp/fd-v10.2.0-x86_64-unknown-linux-gnu/fd* ~/dotfiles/bin
 	chmod +x ~/dotfiles/bin/fd
 
-# ripgrep recursively searches directories for a regex pattern https://github.com/BurntSushi/ripgrep
-# rg -n -w '[A-Z]+_SUSPEND'
+install-console-ast-grep:
+	@set -euo pipefail; \
+	MAKEFILE_DIR="$$(cd "$$(dirname "$$(realpath "$(lastword $(MAKEFILE_LIST))")")" && pwd)"; \
+	BIN_DIR="$$MAKEFILE_DIR/bin"; mkdir -p "$$BIN_DIR"; \
+	LATEST_VERSION=$$(curl -s "https://api.github.com/repos/ast-grep/ast-grep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading ast-grep version $$LATEST_VERSION..."; \
+	mkdir -p /tmp/ast-grep; \
+	curl -sLo /tmp/ast-grep/ast-grep.zip "https://github.com/ast-grep/ast-grep/releases/download/$$LATEST_VERSION/app-x86_64-unknown-linux-gnu.zip"; \
+	cd /tmp/ast-grep && unzip -o ast-grep.zip; \
+	mv /tmp/ast-grep/ast-grep "$$BIN_DIR/"; \
+	mv /tmp/ast-grep/sg "$$BIN_DIR/"; \
+	chmod +x "$$BIN_DIR/ast-grep" "$$BIN_DIR/sg"; \
+	rm -rf /tmp/ast-grep; \
+	echo "ast-grep installed successfully to $$BIN_DIR"
+
 install-console-ripgrep:
-	curl -sLo /tmp/ripgrep.deb https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
-	sudo dpkg -i /tmp/ripgrep.deb
+	@set -euo pipefail; \
+	MAKEFILE_DIR="$$(cd "$$(dirname "$$(realpath "$(lastword $(MAKEFILE_LIST))")")" && pwd)"; \
+	BIN_DIR="$$MAKEFILE_DIR/bin"; mkdir -p "$$BIN_DIR"; \
+	LATEST_VERSION=$$(curl -s "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading ripgrep version $$LATEST_VERSION..."; \
+	tmp="$$(mktemp -d)"; trap 'rm -rf "$$tmp"' EXIT INT TERM; \
+	curl -fsSL "https://github.com/BurntSushi/ripgrep/releases/download/$$LATEST_VERSION/ripgrep-$$LATEST_VERSION-x86_64-unknown-linux-musl.tar.gz" -o "$$tmp/rg.tar.gz"; \
+	tar -xzf "$$tmp/rg.tar.gz" -C "$$tmp"; \
+	RG_BIN="$$(find "$$tmp" -type f -name rg -print -quit)"; \
+	test -n "$$RG_BIN" || { echo "rg binary not found in archive" >&2; exit 1; }; \
+	install -m 0755 "$$RG_BIN" "$$BIN_DIR/rg"; \
+	echo "ripgrep $$LATEST_VERSION installed successfully to $$BIN_DIR/rg"
+
+install-console-tgrep:
+	@set -euo pipefail; \
+	MAKEFILE_DIR="$$(cd "$$(dirname "$$(realpath "$(lastword $(MAKEFILE_LIST))")")" && pwd)"; \
+	BIN_DIR="$$MAKEFILE_DIR/bin"; mkdir -p "$$BIN_DIR"; \
+	LATEST_VERSION=$$(curl -s "https://api.github.com/repos/microsoft/tgrep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
+	echo "Downloading tgrep version $$LATEST_VERSION..."; \
+	tmp="$$(mktemp -d)"; trap 'rm -rf "$$tmp"' EXIT INT TERM; \
+	curl -fsSL "https://github.com/microsoft/tgrep/releases/download/$$LATEST_VERSION/tgrep-$$LATEST_VERSION-x86_64-unknown-linux-musl.tar.gz" -o "$$tmp/tg.tar.gz"; \
+	tar -xzf "$$tmp/tg.tar.gz" -C "$$tmp"; \
+	TG_BIN="$$(find "$$tmp" -type f -name tgrep -print -quit)"; \
+	test -n "$$TG_BIN" || { echo "tgrep binary not found in archive" >&2; exit 1; }; \
+	install -m 0755 "$$TG_BIN" "$$BIN_DIR/tgrep"; \
+	echo "tgrep $$LATEST_VERSION installed successfully to $$BIN_DIR/tgrep"
+
+install-console-greps: install-console-ast-grep install-console-ripgrep install-console-tgrep
+	@echo "✅ all greps installed (ast-grep, ripgrep, tgrep) → $$(cd "$$(dirname "$$(realpath "$(lastword $(MAKEFILE_LIST))")")" && pwd)/bin"
 
 # Glances is a cross-platform monitoring tool which aims
 # to present a large amount of monitoring information
@@ -351,7 +391,7 @@ install-console-ncdu:
 	sudo apt-get install ncdu
 
 install-console-gdu:
-	curl -sLo /tmp/gdu.tar.gz https://github.com/dundee/gdu/releases/download/v4.11.0/gdu_linux_amd64.tgz
+	4curl -sLo /tmp/gdu.tar.gz https://github.com/dundee/gdu/releases/download/v4.11.0/gdu_linux_amd64.tgz
 	tar -xvzf /tmp/gdu.tar.gz -C /tmp
 	mv /tmp/gdu_linux_amd64 ~/dotfiles/bin/gdu
 	chmod +x ~/dotfiles/bin/gdu
@@ -373,18 +413,6 @@ install-console-yq: install-console-xmlstarlet
 install-console-jiq:
 	curl -sLo ~/dotfiles/bin/jiq https://github.com/fiatjaf/jiq/releases/download/0.7.1/jiq_linux_amd64
 	chmod +x ~/dotfiles/bin/jiq
-
-install-console-ast-grep:
-	@LATEST_VERSION=$$(curl -s "https://api.github.com/repos/ast-grep/ast-grep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'); \
-	echo "Downloading ast-grep version $$LATEST_VERSION..."; \
-	mkdir -p /tmp/ast-grep; \
-	curl -sLo /tmp/ast-grep/ast-grep.zip "https://github.com/ast-grep/ast-grep/releases/download/$$LATEST_VERSION/app-x86_64-unknown-linux-gnu.zip"; \
-	cd /tmp/ast-grep && unzip ast-grep.zip; \
-	mv /tmp/ast-grep/ast-grep ~/dotfiles/bin/; \
-	mv /tmp/ast-grep/sg ~/dotfiles/bin/; \
-	chmod +x ~/dotfiles/bin/ast-grep ~/dotfiles/bin/sg; \
-	rm -rf /tmp/ast-grep; \
-	echo "ast-grep installed successfully"
 
 install-console-jq:
 	curl -sLo ~/dotfiles/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64

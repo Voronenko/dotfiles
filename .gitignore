@@ -140,6 +140,7 @@ bin/promtool
 bin/qsv*
 bin/rakkess
 bin/revdiff
+bin/rg
 bin/rider
 bin/s5cmd
 bin/schemacrawler
@@ -181,6 +182,7 @@ bin/terra.jar
 bin/testssl/
 bin/tflint
 bin/tfschema
+bin/tgrep
 bin/toggl
 bin/toggl_*
 bin/traefik
