@@ -1005,8 +1005,30 @@ alias rsync_mirror='dsfdscfdsfdsf() { PARENTDIR=$(dirname `pwd`); [[ -n $1 ]] &&
 alias gpu_on='sudo prime-select nvidia'
 alias gpu_off='sudo prime-select intel'
 alias gpu='sudo prime-select query'
-# turn displays off
-alias doff='export DISPLAY=:0;sleep 3;xset dpms force off || export DISPLAY=:1;sleep 3;xset dpms force off '
+# turn displays off — Wayland-aware with X11 fallback (Ubuntu 22 GNOME compat)
+doff() {
+  sleep 3
+  if [[ "${XDG_SESSION_TYPE:-}" == "wayland" || -n "${WAYLAND_DISPLAY:-}" ]]; then
+    if command -v wlopm >/dev/null 2>&1; then
+      wlopm --off '*' 2>/dev/null && return
+      local _doff_ok=0 _doff_out
+      for _doff_out in $(wlopm 2>/dev/null | awk '{print $1}'); do wlopm --off "$_doff_out" 2>/dev/null && _doff_ok=1; done
+      [[ $_doff_ok -eq 1 ]] && return
+      unset _doff_out _doff_ok
+    fi
+    command -v swaymsg >/dev/null 2>&1 && swaymsg 'output * dpms off' 2>/dev/null && return
+    command -v hyprctl >/dev/null 2>&1 && hyprctl dispatch dpms off 2>/dev/null && return
+    command -v kscreen-doctor >/dev/null 2>&1 && kscreen-doctor --dpms off 2>/dev/null && return
+    if command -v busctl >/dev/null 2>&1 && busctl --user status org.gnome.Mutter.DisplayConfig >/dev/null 2>&1; then
+      gdbus call --session --dest org.gnome.Mutter.DisplayConfig --object-path /org/gnome/Mutter/DisplayConfig --method org.freedesktop.DBus.Properties.Set "org.gnome.Mutter.DisplayConfig" "PowerSaveMode" "<int32 1>" 2>/dev/null && return
+    fi
+  fi
+  for _doff_d in "${DISPLAY:-}" :0 :1; do
+    [[ -z "$_doff_d" ]] && continue
+    DISPLAY="$_doff_d" xset dpms force off 2>/dev/null && return
+  done
+  xset dpms force off 2>/dev/null || echo "doff: no method succeeded (install wlopm for Wayland: sudo apt install wlopm)" >&2
+}
 # eliminate snaps from df output
 alias df='df -x"squashfs"'
 # shows tag matched to checked-out commit or branch otherwise
