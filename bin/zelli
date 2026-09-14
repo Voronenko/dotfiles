@@ -68,6 +68,46 @@ if [ ! -f "$LAYOUT_PATH" ]; then
     exit 1
 fi
 
+# --- Wayland detection / terminal selection (Pop!_OS 24.04: Wayland → COSMIC Terminal, X11 → GNOME Terminal) ---
+is_wayland() {
+  [[ "${XDG_SESSION_TYPE:-}" == "wayland" ]] || [[ -n "${WAYLAND_DISPLAY:-}" ]]
+}
+
+ZELLI_TERMINAL="${ZELLI_TERMINAL:-}"
+
+launch_in_terminal() {
+  local zellij_cmd="$1"
+  if [[ -n "$ZELLI_TERMINAL" ]]; then
+    case "$ZELLI_TERMINAL" in
+      ghostty) ghostty --class=io.zellij.Zellij --title="Zellij: ${SESSION_NAME}" -e bash -lc "zellij $zellij_cmd" & return ;;
+      cosmic-term|cosmic) cosmic-term -- bash -lc "zellij $zellij_cmd" & return ;;
+      gnome-terminal|gnome) gnome-terminal -- bash -lc "zellij $zellij_cmd" & return ;;
+      kitty) kitty --class=zellij --title="Zellij: ${SESSION_NAME}" -e bash -lc "zellij $zellij_cmd" & return ;;
+      none) eval "zellij $zellij_cmd"; return ;;
+    esac
+  fi
+  if is_wayland; then
+    if command -v ghostty >/dev/null 2>&1; then
+      ghostty --class=io.zellij.Zellij --title="Zellij: ${SESSION_NAME}" -e bash -lc "zellij $zellij_cmd" &
+    elif command -v cosmic-term >/dev/null 2>&1; then
+      cosmic-term -- bash -lc "zellij $zellij_cmd" &
+    elif command -v kitty >/dev/null 2>&1 || [[ -x "$HOME/.local/kitty.app/bin/kitty" ]]; then
+      local kitty_bin
+      kitty_bin="$(command -v kitty 2>/dev/null || echo "$HOME/.local/kitty.app/bin/kitty")"
+      "$kitty_bin" --class=zellij --title="Zellij: ${SESSION_NAME}" -e bash -lc "zellij $zellij_cmd" &
+    else
+      echo "Warning: Wayland detected but cosmic-term not found; falling back to gnome-terminal (will group as org.gnome.Terminal)." >&2
+      gnome-terminal -- bash -lc "zellij $zellij_cmd" &
+    fi
+  else
+    if command -v gnome-terminal >/dev/null 2>&1; then
+      gnome-terminal --title="Zellij: ${SESSION_NAME}" -- bash -lc "zellij $zellij_cmd" &
+    else
+      echo "Error: gnome-terminal not found and not on Wayland" >&2; exit 1
+    fi
+  fi
+}
+
 # Check if the session exists
 SESSION_EXISTS=$(zellij list-sessions --no-formatting 2>/dev/null | grep -c "^${SESSION_NAME} " || true)
 
@@ -87,14 +127,14 @@ fi
 if [ "$SESSION_EXISTS" -gt 0 ]; then
     echo "Joining existing session: $SESSION_NAME"
     if [ "$USE_TERMINAL" = "true" ]; then
-        gnome-terminal -- zellij attach "$SESSION_NAME" &
+        launch_in_terminal "attach \"${SESSION_NAME}\""
     else
         zellij attach "$SESSION_NAME"
     fi
 else
     echo "Creating new session: $SESSION_NAME"
     if [ "$USE_TERMINAL" = "true" ]; then
-        gnome-terminal -- zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}" &
+        launch_in_terminal "--new-session-with-layout \"${SESSION_NAME}\" -s \"${SESSION_NAME}\""
     else
         zellij --new-session-with-layout "${SESSION_NAME}" -s "${SESSION_NAME}"
     fi

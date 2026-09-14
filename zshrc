@@ -166,11 +166,11 @@ function onproject() {
   fi
 
   # Delegate to zelli with appropriate flag
+  # Local mode is Wayland-aware: bin/zelli picks COSMIC Terminal on Wayland,
+  # GNOME Terminal on X11 (override with ZELLI_TERMINAL=cosmic-term|gnome-terminal|kitty|none)
   if [ "$session_type" = "remote/ssh" ]; then
-    # SSH mode: no terminal wrapper
     zelli --no-terminal "$@"
   else
-    # Local mode: use default terminal
     zelli "$@"
   fi
 }
