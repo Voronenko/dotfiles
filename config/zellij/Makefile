@@ -1,6 +1,6 @@
 update:
 	zellij setup --dump-config > /home/slavko/dotfiles/config/zellij/config.kdl
-plugins: pl-zjstatus pl-zj-docker pl-zellij-forgot pl-zellij-bookmarks pl-harpoon pl-ghost
+plugins: pl-zjstatus pl-zj-docker pl-zellij-forgot pl-zellij-bookmarks pl-harpoon pl-ghost pl-zellij-cb pl-zjstatus-hints
 	@echo "Installed plugins"
 pl-zjstatus:
 	mkdir -p ~/dotfiles/config/zellij/plugins/
@@ -27,3 +27,11 @@ pl-ghost:
 	mkdir -p ~/dotfiles/config/zellij/plugins/
 	TAG=$$(curl -s https://api.github.com/repos/vdbulcke/ghost/releases/latest | grep tag_name | cut -d '"' -f 4); \
 	curl -sLo ~/dotfiles/config/zellij/plugins/ghost.wasm "https://github.com/vdbulcke/ghost/releases/download/$$TAG/ghost.wasm"
+pl-zellij-cb:
+	mkdir -p ~/dotfiles/config/zellij/plugins/
+	TAG=$$(curl -s https://api.github.com/repos/ndavd/zellij-cb/releases/latest | grep tag_name | cut -d '"' -f 4); \
+	curl -sLo ~/dotfiles/config/zellij/plugins/zellij-cb.wasm "https://github.com/ndavd/zellij-cb/releases/download/$$TAG/zellij-cb.wasm"
+pl-zjstatus-hints:
+	mkdir -p ~/dotfiles/config/zellij/plugins/
+	TAG=$$(curl -s https://api.github.com/repos/b0o/zjstatus-hints/releases/latest | grep tag_name | cut -d '"' -f 4); \
+	curl -sLo ~/dotfiles/config/zellij/plugins/zjstatus-hints.wasm "https://github.com/b0o/zjstatus-hints/releases/download/$$TAG/zjstatus-hints.wasm"
