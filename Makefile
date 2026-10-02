@@ -1881,6 +1881,9 @@ install-desktop-ai-goose:
 	sudo dpkg -i "$$DEB_FILE"; \
 	echo "goose desktop installed successfully"
 
+install-ai-hf:
+	pipx install huggingface_hub
+
 install-cypher-shell:
 	curl -L -o /tmp/cypher-shell.deb https://dist.neo4j.org/cypher-shell/cypher-shell_5.26.20_all.deb
 	sudo dpkg -i /tmp/cypher-shell.deb || sudo apt-get -f install -y
