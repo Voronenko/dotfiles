@@ -632,6 +632,23 @@ install-nvm-fnm:
 # /DOCKER TOOLS
 
 
+install-neo4j-repo:
+	sudo apt update
+	sudo apt install -y curl gnupg
+	sudo install -d -m 0755 /etc/apt/keyrings
+	curl -fsSL https://debian.neo4j.com/neotechnology.gpg.key | sudo gpg --dearmor --yes -o /etc/apt/keyrings/neotechnology.gpg
+	sudo chmod a+r /etc/apt/keyrings/neotechnology.gpg
+	echo 'deb [signed-by=/etc/apt/keyrings/neotechnology.gpg] https://debian.neo4j.com stable latest' | sudo tee /etc/apt/sources.list.d/neo4j.list
+	sudo apt update
+
+install-neo4j-cypher-shell:
+	sudo apt install -y cypher-shell
+
+install-devops-cartography:
+	pipx install cartography
+	pipx inject cartography 'cartography[neo4j-rust]'
+
+
 # DEVOPS / CONTAINER REGISTRY TOOLS
 
 # https://github.com/google/go-containerregistry
@@ -1203,6 +1220,10 @@ install-hashicorp-terraform:
 install-hashicorp-packer:
 	curl -sLo ~/dotfiles/bin/packer.zip "https://releases.hashicorp.com/packer/1.16.0/packer_1.16.0_linux_amd64.zip"
 	cd ~/dotfiles/bin/ && unzip packer.zip && chmod +x packer && rm packer.zip
+
+install-hashicorp-vagrant:
+	curl -sLo ~/dotfiles/bin/vagrant.zip "https://releases.hashicorp.com/vagrant/2.4.9/vagrant_2.4.9_linux_amd64.zip"
+	cd ~/dotfiles/bin/ && unzip -o vagrant.zip && chmod +x vagrant && rm vagrant.zip
 
 
 #/HASHICORP
