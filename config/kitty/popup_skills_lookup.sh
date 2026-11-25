@@ -29,9 +29,15 @@ PARENT_ID=$(_detect_parent_window)
 _debug_log "PARENT_ID=$PARENT_ID"
 [ -f "$_DEBUG_SENTINEL" ] && _debug_log "kitty @ ls: $(kitty @ ls | jq -c '.')"
 
-# Check if skills directory exists
+# Fall back to the global skills repo when project has none
+if [ ! -d "$SKILLS_DIR" ] && [ -d "$HOME/dotfiles/.ai-files/skills" ]; then
+  SKILLS_DIR="$HOME/dotfiles/.ai-files/skills"
+fi
+
+# Check if skills directory exists — show message in overlay, don't blink
 if [ ! -d "$SKILLS_DIR" ]; then
-  kitty @ send-text --match="id:$PARENT_ID" "No .ai-files/skills directory found"
+  printf 'No .ai-files/skills directory found in %s\nPress any key to close...' "$PROJECT_ROOT"
+  read -r -n 1 -s
   exit 0
 fi
 
@@ -62,7 +68,8 @@ while IFS= read -r -d '' skill_dir; do
 done < <(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -not -name ".*" -print0 2>/dev/null)
 
 [ -z "$skills_list" ] && {
-  kitty @ send-text --match="id:$PARENT_ID" "No skills found in .ai-files/skills"
+  printf 'No skills found in %s\nPress any key to close...' "$SKILLS_DIR"
+  read -r -n 1 -s
   exit 0
 }
 

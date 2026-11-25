@@ -166,6 +166,7 @@ bin/symfony
 bin/task
 bin/tea
 bin/Telegram
+bin/TelegramHelpers/
 bin/telepresence
 bin/terraform
 bin/terraform011
@@ -190,6 +191,7 @@ bin/traefik
 bin/traefik1
 bin/trafficmirror
 bin/Updater
+bin/vagrant
 bin/vault
 bin/webhook
 bin/wtfutil

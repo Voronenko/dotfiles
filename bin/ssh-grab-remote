@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: ssh-grab-remote <ssh-destination> [local-destination]
+       ssh-grab-remote -h | --help
+
+Description:
+  Connect to <ssh-destination> (any form accepted by ssh: host, user@host,
+  alias from ~/.ssh/config, with optional -p / -J etc via SSH_OPTS), pick a
+  remote folder with fzf, confirm with Y, then rsync it recursively to
+  local-destination (default: current directory ".").
+
+Examples:
+  ssh-grab-remote myhost
+  ssh-grab-remote user@example.com ./downloads
+  ssh-grab-remote myhost /tmp/local_copy
+  SSH_OPTS="-p 2222" ssh-grab-remote myhost
+
+Flow:
+  1) ssh to remote, browse folders with fzf
+  2) select folder -> prompt "Copy recursive? [Y/n]"
+  3) Y -> rsync -avz --progress <remote>:<folder>/ <local>/
+     N -> back to fzf to pick another folder
+
+Requires: ssh, rsync, fzf
+EOF
+}
+
+die() { echo "Error: $*" >&2; exit 1; }
+have_cmd() { command -v "$1" >/dev/null 2>&1; }
+
+q_remote() {
+    printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"
+}
+
+REMOTE=""
+LOCAL_DEST="."
+
+if [[ $# -eq 0 ]]; then
+    usage >&2
+    exit 1
+fi
+
+case "${1:-}" in
+    -h|--help) usage; exit 0 ;;
+esac
+
+REMOTE="$1"
+shift || true
+if [[ $# -ge 1 ]]; then
+    LOCAL_DEST="$1"
+    shift || true
+fi
+if [[ $# -ge 1 ]]; then
+    echo "Warning: extra arguments ignored: $*" >&2
+fi
+
+have_cmd ssh || die "ssh not found in PATH"
+have_cmd rsync || die "rsync not found in PATH"
+have_cmd fzf || die "fzf not found in PATH (expected ~/dotfiles/bin/fzf or system fzf)"
+
+SSH_OPTS="${SSH_OPTS:-}"
+SSH_BASE=(ssh)
+if [[ -n "$SSH_OPTS" ]]; then
+    read -ra _extra <<< "$SSH_OPTS"
+    SSH_BASE+=("${_extra[@]}")
+fi
+
+test_ssh() {
+    if ! "${SSH_BASE[@]}" -o ConnectTimeout=7 -o BatchMode=no "$REMOTE" 'echo ok' >/dev/null 2>&1; then
+        echo "Testing ssh connection to '$REMOTE'..." >&2
+        if ! "${SSH_BASE[@]}" -o ConnectTimeout=10 "$REMOTE" 'echo ok' 2>&1; then
+            die "cannot ssh to '$REMOTE'. Check host, keys, or SSH_OPTS."
+        fi
+    fi
+}
+
+pick_remote_folder() {
+    local remote="$1"
+    local current
+    # shellcheck disable=SC2016
+    current=$("${SSH_BASE[@]}" "$remote" 'echo $HOME' 2>/dev/null | tr -d '\r' | head -n1) || true
+    if [[ -z "$current" || "$current" == *"not found"* || "$current" == *"No such"* ]]; then
+        current="/"
+    fi
+    current="${current%/}"
+    [[ -z "$current" ]] && current="/"
+
+    while true; do
+        local q
+        q=$(q_remote "$current")
+        local listing=""
+        # try GNU ls with --, fall back to BSD ls without --
+        listing=$("${SSH_BASE[@]}" "$remote" "ls -1p -A -- $q 2>/dev/null" 2>/dev/null || true)
+        if [[ -z "$listing" ]]; then
+            # second try without --, and check if dir exists
+            local is_dir
+            is_dir=$("${SSH_BASE[@]}" "$remote" "test -d -- $q && echo yes || echo no" 2>/dev/null | tr -d '\r') || is_dir="no"
+            if [[ "$is_dir" != "yes" ]]; then
+                echo "Failed to list '$current' on remote '$remote'." >&2
+                if [[ "$current" != "/" ]]; then
+                    current=$(dirname "$current")
+                    continue
+                else
+                    return 1
+                fi
+            fi
+        fi
+
+        local dirs
+        dirs=$(printf "%s\n" "$listing" | grep '/$' | sed 's|/$||' | sort -f || true)
+
+        local header="Enter: open  |  .: select CURRENT  |  ..: up  |  Esc: cancel"
+        local prompt="📁 $current > "
+
+        local fzf_input
+        fzf_input=$(printf ".\t[SELECT] %s\n..\t[UP — %s]\n" "$current" "$(dirname "$current")")
+        if [[ -n "$dirs" ]]; then
+            while IFS= read -r d; do
+                [[ -z "$d" ]] && continue
+                fzf_input+="$(printf "%s\t%s/\n" "$d" "$d")"
+            done <<< "$dirs"
+        fi
+
+        local sel=""
+        sel=$(printf "%s" "$fzf_input" | fzf --height=60% --reverse --border --prompt="$prompt" --header="$header" --delimiter=$'\t' --with-nth=2 --no-multi --exit-0 || true)
+        if [[ -z "$sel" ]]; then
+            return 1
+        fi
+        local key
+        key=$(printf "%s" "$sel" | cut -f1)
+
+        case "$key" in
+            ".")
+                printf "%s\n" "$current"
+                return 0
+                ;;
+            "..")
+                if [[ "$current" != "/" ]]; then
+                    current=$(dirname "$current")
+                    current="${current%/}"
+                    [[ -z "$current" ]] && current="/"
+                fi
+                ;;
+            "")
+                return 1
+                ;;
+            *)
+                if [[ "$current" == "/" ]]; then
+                    current="/$key"
+                else
+                    current="$current/$key"
+                fi
+                ;;
+        esac
+    done
+}
+
+mkdir -p -- "$LOCAL_DEST" 2>/dev/null || die "cannot create local destination '$LOCAL_DEST'"
+
+echo "→ Checking ssh to '$REMOTE'..." >&2
+test_ssh
+
+while true; do
+    echo "→ Pick remote folder on '$REMOTE' (fzf)..." >&2
+    REMOTE_DIR=""
+    if ! REMOTE_DIR=$(pick_remote_folder "$REMOTE"); then
+        echo "No folder selected, aborting." >&2
+        exit 1
+    fi
+    if [[ -z "$REMOTE_DIR" ]]; then
+        echo "No folder selected, aborting." >&2
+        exit 1
+    fi
+
+    disp_local="$LOCAL_DEST"
+    if [[ "$disp_local" == "." ]]; then
+        disp_local="$(pwd)"
+    fi
+
+    echo "" >&2
+    echo "Selected remote folder: $REMOTE:$REMOTE_DIR" >&2
+    echo "Local destination    : $disp_local" >&2
+    echo -n "Copy recursive? [Y/n] (Y=yes, N=pick other folder) " >&2
+    ans=""
+    if [[ -t 0 ]]; then
+        read -r ans || true
+    else
+        read -r ans < /dev/tty || true
+    fi
+    ans=$(printf "%s" "$ans" | tr -d '[:space:]')
+    if [[ "$ans" =~ ^[Yy]$ ]] || [[ "$ans" =~ ^[Yy][Ee][Ss]$ ]]; then
+        echo "" >&2
+        echo "→ rsync -avz --progress \"$REMOTE:$REMOTE_DIR/\" → \"$LOCAL_DEST/\"" >&2
+        q_src=$(q_remote "${REMOTE_DIR}/")
+        RSYNC_SRC="${REMOTE}:${q_src}"
+        LOCAL_Q="${LOCAL_DEST%/}/"
+
+        RSYNC_SSH="ssh"
+        if [[ -n "$SSH_OPTS" ]]; then
+            RSYNC_SSH="ssh $SSH_OPTS"
+        fi
+
+        echo "Running: rsync -avz --progress -h -e $RSYNC_SSH $RSYNC_SRC $LOCAL_Q" >&2
+        if rsync -avz --progress -h -e "$RSYNC_SSH" -- "$RSYNC_SRC" "$LOCAL_Q"; then
+            echo "" >&2
+            echo "✓ Done. Copied '$REMOTE_DIR' → '$LOCAL_DEST/'" >&2
+            exit 0
+        else
+            rc=$?
+            echo "" >&2
+            echo "rsync failed (exit $rc)." >&2
+            echo -n "Try another folder? [Y/n] " >&2
+            again=""
+            if [[ -t 0 ]]; then read -r again || true; else read -r again < /dev/tty || true; fi
+            again=$(printf "%s" "$again" | tr -d '[:space:]')
+            if [[ "$again" =~ ^[Nn]$ ]] || [[ "$again" =~ ^[Nn][Oo]$ ]]; then
+                exit $rc
+            fi
+            continue
+        fi
+    else
+        echo "→ Picking another folder..." >&2
+        continue
+    fi
+done
